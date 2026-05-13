@@ -1,0 +1,85 @@
+---
+title: "Chemist's AI Workflow"
+description: 化学者の研究タスク・情報収集・計算・アウトプット制作を、必要に応じて拡張できる AI 部署で一貫運用する——研究プロセス全体の AI 化メソッド
+template: splash
+hero:
+  tagline: 研究室を AI 部署で運用する — 拡張可能な AI エージェント実践ハンドブック
+  actions:
+    - text: メソッドを読む
+      link: /core/
+      icon: right-arrow
+      variant: primary
+---
+
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+## 研究プロセスに AI エージェントを統合する体系的メソッド
+
+AI エージェントを単発のチャットツールとしてではなく、研究プロセス全体を支える基盤として運用するための手法をまとめます。
+
+ファイルシステム上に「部署フォルダ」を作り、各部署が固有のルール（CLAUDE.md / AGENTS.md など）に従って働く構造を、**化学・材料・実験系研究者**の業務に合わせて体系化した、日本語の実践ハンドブックです。
+
+## AI 部署が支える 4 つの研究プロセス
+
+<CardGrid>
+  <Card title="研究タスクと記憶の管理" icon="approve-check-circle">
+    秘書部が TODO・意思決定・学び・アイデアを自動で記録・蓄積。1 日 1 ファイル + 追記運用により、過去の判断や知見をプロジェクトの文脈として継続的に参照できる。
+  </Card>
+  <Card title="情報の収集と管理" icon="magnifier">
+    関心テーマに関連する論文を、**DOI・arXiv ID・出版元 URL 等の識別子とともに 100 件規模で一括収集**。書誌情報の整理から、入手済み PDF の**ナレッジベース + クラウドストレージ**への自動登録、要約・タグ付け・引用整理まで一貫運用。対応ツールごとの実装パスは[対応ツール一覧](/tools/)を参照。
+  </Card>
+  <Card title="計算化学の効率化と品質保証" icon="setting">
+    **CLI ベースの計算ソフト**（量子化学・古典 MD・周期系 DFT 等）の入力作成・ジョブ管理・log 解析・結果可視化、コードと計算妥当性のレビューまでを AI 部署に委譲。Playbook（既知の罠と処方）はセッションごとに蓄積される。GUI 必須ソフトは対象外。詳細は[対応ツール一覧](/tools/)。
+  </Card>
+  <Card title="研究アウトプットの一貫制作" icon="pencil">
+    論文（**LaTeX / Word**）・申請書（学振・科研費 等）・発表資料を、研究分野の文体と字数制約に沿って AI と共著。図表・参考文献の整理、査読対応、投稿先スタイルへの再投影まで包括的に対応。詳細は[対応ツール一覧](/tools/)。
+  </Card>
+</CardGrid>
+
+## 自在に拡張できる AI 部署システム
+
+研究業務を **必要に応じて増やしていける「AI 部署」** に分割し、ファイルベースで状態管理します。
+
+下記は著者が現在運用している部署の例です。新しい研究テーマ・業務が出てくれば部署を**追加・分割・統合**でき、自分の研究室に合わせて育てていけます。
+
+<CardGrid>
+  <Card title="秘書（Secretary）" icon="comment">窓口・TODO・壁打ち・意思決定ログ</Card>
+  <Card title="文献部（Research）" icon="magnifier">文献検索・要約・ナレッジ DB 化（Notion / Obsidian / Logseq 等）</Card>
+  <Card title="計算管理部（Computation）" icon="puzzle">量子化学・古典 MD・周期系 DFT など各種ジョブ管理 + Playbook</Card>
+  <Card title="データ解析部（Analysis）" icon="bars">解析スクリプト・可視化</Card>
+  <Card title="開発部（Engineering）" icon="laptop">Python ツール・CLI ユーティリティ</Card>
+  <Card title="論文執筆部（Writing）" icon="pencil">LaTeX 原稿・図表・参考文献</Card>
+  <Card title="レビュー部（Review）" icon="approve-check">コード品質・計算妥当性</Card>
+  <Card title="プレゼン部（Presentation）" icon="seti:powerpoint">発表資料・スライド生成</Card>
+  <Card title="自由に追加" icon="add-document">実験記録部・装置管理部・学外発表部・外注管理部など、業務に合わせて拡張</Card>
+</CardGrid>
+
+部署設計は固定スキーマではなく、最小 1〜2 部署から始めて段階的に増やすことも、最初から多部署で運用することもできます。本書では**部署を新設・分割・統合する判断基準**と**ファイル構造の設計パターン**を体系化しています。
+
+## CLI 中立 + Claude Code 重視 ── 4 ティア構成
+
+特定の CLI に縛られない方法論を核に、4 つの実装ティアを並列に提示します。
+
+<CardGrid>
+  <LinkCard
+    title="Tier 1: Claude Code（premium）"
+    description="Skills / Hooks / Sub-agents / MCP を活用した、本書の主軸となる実装。著者の常用環境。"
+    href="/claude-code/"
+  />
+  <LinkCard
+    title="Tier 2: Codex CLI（次点）"
+    description="OpenAI 系の選択肢。AGENTS.md ベースで Claude Code と同等のワークフローを再現。"
+    href="/codex-cli/"
+  />
+  <LinkCard
+    title="Tier 3: Gemini CLI（OSS）"
+    description="OSS（Apache 2.0）のターミナル native エージェント。個人 Google アカウント連携で手厚い無料枠。"
+    href="/gemini-cli/"
+  />
+  <LinkCard
+    title="Tier 4: ChatGPT / Gemini Web 版（最小）"
+    description="ブラウザのみで完結する圧縮版。CLI が使えない環境向け。"
+    href="/chatgpt-web/"
+  />
+</CardGrid>
+
