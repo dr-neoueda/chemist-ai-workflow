@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/load-playbooks.sh\"",
+            "description": "caw: 直近 .company/secretary/notes と関連 Playbook をコンテキストに自動注入"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/learnings-reminder.sh\"",
+            "description": "caw: 今日の活動があるのに learnings.md が無ければ作成を促す"
+          }
+        ]
+      }
+    ]
+  }
+}

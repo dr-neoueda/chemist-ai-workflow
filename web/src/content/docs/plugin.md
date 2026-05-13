@@ -41,11 +41,12 @@ claude
 
 詳細手順は [環境構築](/claude-code/setup/) を参照。
 
-## 現バージョン（v1.0.0）に含まれる内容
+## 現バージョン（v1.1.0）に含まれる内容
 
 | カテゴリ | 内容 |
 |---|---|
-| **Skills** | `/caw` — オンボーディング → 自動スキャフォールド → 運営モードの一連 |
+| **Skills** | `/caw`（オンボーディング → 自動スキャフォールド → 運営モード）<br>`/caw-paper`（論文検索 + PDF メタデータ抽出 + ナレッジベース・クラウドストレージ自動登録）<br>`/caw-input`（6 ソフトの入力ファイル雛形生成 + ジョブ記録）<br>`/caw-playbook`（計算 log 解析 → Lessons Learned 自動追記） |
+| **Hooks** | SessionStart で `.company/secretary/notes` と関連 Playbook を自動注入、Stop で学びの記録漏れをリマインド |
 | **部署テンプレート** | secretary / research / engineering / computation / analysis / writing / review / presentation の 8 部署 CLAUDE.md |
 | **Playbook 雛形** | Gaussian / GROMACS / CP2K / ORCA / VASP / Quantum ESPRESSO + 汎用 |
 | **作業ディレクトリ** | 選択した計算ソフトに応じて `gaussian/` / `orca/` 等、選択した部署に応じて `papers/` / `manuscripts/` / `slides/` を自動生成 |
@@ -54,22 +55,18 @@ claude
 
 | 予定機能 | 内容 |
 |---|---|
-| `caw-paper` | PDF → ナレッジベース自動登録 |
-| `caw-playbook` | 計算 log 解析 → Playbook 自動追記 |
-| `caw-input` | 計算ソフト別の入力ジェネレータ |
 | `caw-apply` | 申請書ワークフロー（文体プロファイル + 字数制約） |
 | `caw-chem-reviewer` | 化学物理意味論レビュー（応用編） |
-| Hooks | SessionStart で関連 Playbook 自動ロード、Stop で学びを部署 notes に集約 |
 
 ## 配布計画
 
 | Phase | 期間 | 内容 |
 |---|---|---|
 | Phase 1 | 2026-05 | スケルトン構築、`/caw` スキル設計、ローカル実機テスト ✅ |
-| Phase 2 | 2026-05〜 | マーケットプレイス公開（v1.0.0）✅ |
-| Phase 3 | 2026-06〜 | 追加スキル（caw-paper / caw-playbook / caw-input / caw-apply）+ Hooks 実装 |
-| Phase 4 | 2026-07〜 | ベータユーザー試用、フィードバック反映 |
-| Phase 5 | 2026-08〜 | 商品配布物として組み込み |
+| Phase 2 | 2026-05-13 | マーケットプレイス公開（v1.0.0）✅ |
+| Phase 3 | 2026-05-13 | 追加スキル（`/caw-paper` / `/caw-input` / `/caw-playbook`）+ Hooks 実装、v1.1.0 公開 ✅ |
+| Phase 4 | 2026-06〜 | ベータユーザー試用、フィードバック反映、`caw-apply` 等の応用スキル追加 |
+| Phase 5 | 2026-07〜 | 商品配布物として組み込み |
 
 ## 開発リポジトリ
 
@@ -88,4 +85,4 @@ MIT License。商用・私用問わず自由に利用・改変・再配布可能
 
 ## ステータス
 
-**v1.0.0（2026-05-13）公開**：マーケットプレイス経由で導入可能。`/caw` のオンボーディング → スキャフォールド → 運営モードの一連が動作。
+**v1.1.0（2026-05-13）公開**：マーケットプレイス経由で導入可能。`/caw` の基本フローに加え、`/caw-paper` / `/caw-input` / `/caw-playbook` の追加スキルと Hooks（SessionStart / Stop）が同梱。

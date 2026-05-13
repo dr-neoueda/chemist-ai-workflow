@@ -47,12 +47,32 @@ your-research-project/
 └── papers/README.md        ← PDF ステージング
 ```
 
-## 含まれる内容
+## 含まれる内容（v1.1.0）
 
-- **`/caw` スキル**：オンボーディング → 自動スキャフォールド → 運営モードの一連
-- **8 部署 CLAUDE.md テンプレート**：secretary / research / engineering / computation / analysis / writing / review / presentation
-- **Playbook 雛形**：Gaussian / GROMACS / CP2K / ORCA / VASP / Quantum ESPRESSO + 汎用
-- **作業ディレクトリ自動生成**：選択した計算ソフトと部署に応じて配置
+### Skills
+
+- **`/caw`**：オンボーディング → 自動スキャフォールド → 運営モードの一連
+- **`/caw-paper`**：論文検索（arXiv / Crossref / Semantic Scholar / OpenAlex / PubMed）+ 入手済み PDF のメタデータ抽出 → ナレッジベース（Notion / Obsidian 他）+ クラウドストレージ（Google Drive 他）への自動登録
+- **`/caw-input`**：6 ソフト（Gaussian / ORCA / CP2K / GROMACS / VASP / Quantum ESPRESSO）の入力ファイル雛形生成、Playbook デフォルト起点 + ジョブ記録自動生成
+- **`/caw-playbook`**：計算 log の自動解析 → Lessons Learned エントリ起案 → Playbook 末尾追記、memory feedback 昇格判定
+
+### Hooks
+
+- **SessionStart**：`.company/secretary/notes` の直近 3 件と利用可能 Playbook をコンテキスト自動注入
+- **Stop**：今日の活動があるのに `<today>-learnings.md` が無い場合のリマインド
+
+### 部署テンプレート
+
+- 8 部署 CLAUDE.md：secretary / research / engineering / computation / analysis / writing / review / presentation
+
+### Playbook 雛形
+
+- Gaussian / GROMACS / CP2K / ORCA / VASP / Quantum ESPRESSO + 汎用
+
+### 作業ディレクトリ
+
+- 選択した計算ソフトに応じて `gaussian/` / `orca/` / `cp2k/` / `gromacs/` / `vasp/` / `quantum-espresso/`
+- 選択した部署に応じて `papers/` / `manuscripts/` / `slides/`
 
 ## 運営モードでできること
 
