@@ -1,0 +1,20 @@
+{
+  "name": "chemist-ai-workflow",
+  "interface": {
+    "displayName": "Chemist's AI Workflow"
+  },
+  "plugins": [
+    {
+      "name": "caw",
+      "source": {
+        "source": "local",
+        "path": "./codex-plugin"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "NONE"
+      },
+      "category": "Research"
+    }
+  ]
+}

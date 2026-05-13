@@ -19,6 +19,8 @@ description: Chemist's AI Workflow プラグイン — 部署システム・Play
 
 ## インストール
 
+### Claude Code 版
+
 ```bash
 claude
 > /plugin marketplace add dr-neoueda/chemist-ai-workflow
@@ -26,6 +28,15 @@ claude
 ```
 
 `/plugin list` で `caw` が `enabled` 表示されれば導入完了。
+
+### Codex CLI 版
+
+```bash
+codex plugin marketplace add dr-neoueda/chemist-ai-workflow
+codex plugin install caw
+```
+
+`codex plugin list` で `caw` が `enabled` 表示されれば導入完了。Claude Code 版と同一のリポジトリから配信され、内容は基本同一（生成される指示ファイルが `CLAUDE.md` → `AGENTS.md` に変わる点のみ）。
 
 ## クイックスタート
 
@@ -70,14 +81,23 @@ claude
 
 ## 開発リポジトリ
 
-- **公開先**: [`dr-neoueda/chemist-ai-workflow`](https://github.com/dr-neoueda/chemist-ai-workflow)（GitHub、MIT ライセンス）
-- **構造**（Claude Code 規格準拠）:
-  - `.claude-plugin/marketplace.json` ─ マーケットプレイス manifest
-  - `plugin/.claude-plugin/plugin.json` ─ プラグインマニフェスト
-  - `plugin/skills/caw/SKILL.md` ─ メインスキル（trigger: `/caw`）
-  - `plugin/skills/caw/references/claude-md-template.md` ─ ルート CLAUDE.md 生成テンプレ
-  - `plugin/skills/caw/references/chemistry-departments.md` ─ 8 部署 CLAUDE.md テンプレ集
-  - `plugin/skills/caw/references/playbook-starters.md` ─ 計算ソフト Playbook 雛形（Gaussian / GROMACS / CP2K / ORCA / VASP / Quantum ESPRESSO + 汎用）
+- **公開先**: [`dr-neoueda/chemist-ai-workflow`](https://github.com/dr-neoueda/chemist-ai-workflow)（GitHub、MIT ライセンス、Claude Code + Codex CLI 並列配信）
+
+**Claude Code 版（`plugin/`）**:
+- `.claude-plugin/marketplace.json` ─ Claude Code 用マーケットプレイス manifest
+- `plugin/.claude-plugin/plugin.json` ─ プラグインマニフェスト
+- `plugin/skills/caw/SKILL.md` ─ メインスキル（trigger: `/caw`）
+- `plugin/skills/caw/references/claude-md-template.md` ─ ルート CLAUDE.md 生成テンプレ
+- `plugin/skills/caw/references/chemistry-departments.md` ─ 8 部署 CLAUDE.md テンプレ集
+- `plugin/skills/caw/references/playbook-starters.md` ─ 計算ソフト Playbook 雛形（Gaussian / GROMACS / CP2K / ORCA / VASP / Quantum ESPRESSO + 汎用）
+
+**Codex CLI 版（`codex-plugin/`）**:
+- `.agents/plugins/marketplace.json` ─ Codex 用マーケットプレイス manifest
+- `codex-plugin/.codex-plugin/plugin.json` ─ プラグインマニフェスト
+- `codex-plugin/skills/caw/SKILL.md` ─ メインスキル（trigger: `/caw`、AGENTS.md ターゲット）
+- `codex-plugin/skills/caw/references/agents-md-template.md` ─ ルート AGENTS.md 生成テンプレ
+- `codex-plugin/skills/caw/references/chemistry-departments.md` ─ 8 部署 AGENTS.md テンプレ集
+- `codex-plugin/skills/caw/references/playbook-starters.md` ─ 計算ソフト Playbook 雛形（Claude Code 版と同一）
 
 ## ライセンス
 

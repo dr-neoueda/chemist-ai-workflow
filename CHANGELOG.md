@@ -2,6 +2,20 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [Codex 1.0.0] - 2026-05-13
+
+### Added (Codex CLI 版)
+
+- **codex-plugin/**：Codex CLI 用 caw プラグイン（v1.0.0）を新規追加
+  - `codex-plugin/.codex-plugin/plugin.json` — Codex 用プラグインマニフェスト
+  - `codex-plugin/skills/caw/SKILL.md` — `/caw` スキル本体（CLAUDE.md → AGENTS.md ターゲットに変換）
+  - `codex-plugin/skills/caw/references/{agents-md-template, chemistry-departments, playbook-starters}.md`
+- **`.agents/plugins/marketplace.json`**：Codex 用マーケットプレイス manifest（同リポジトリから並列配信）
+- **LP**：`/codex-cli/` セクションを placeholder から実装に書き換え、`/codex-cli/setup/` 環境構築ページを新規作成
+- **plugin.md**：両環境のインストール手順（Claude Code / Codex CLI）を併記
+
+研究室で Claude Code 派と Codex CLI 派が混在しても、同じ caw メソッドで `.company/` を運用できる構成。
+
 ## [1.1.0] - 2026-05-13
 
 ### Added
