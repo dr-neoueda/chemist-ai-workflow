@@ -88,16 +88,17 @@ model_reasoning_effort = "high"
 
 #### 配布ステータス
 
-- **v1.0.0 公開済み（2026-05-13）**: 公式 marketplace（`dr-neoueda/chemist-ai-workflow`、MIT ライセンス）から導入可能
+- **Codex 1.2.1 公開済み（2026-05-14）**: 公式 marketplace（`dr-neoueda/chemist-ai-workflow`、MIT ライセンス）から導入可能。Claude Code 版と同じ 5 Skills（caw / caw-paper / caw-input / caw-playbook / caw-doctor）
 
 #### Step 1: プラグインのインストール
 
+Codex CLI のプラグイン管理は **marketplace 単位**です。marketplace を追加すると、含まれるプラグイン（caw）がそのまま利用可能になります（個別の `install` コマンドはありません）。
+
 ```bash
 codex plugin marketplace add dr-neoueda/chemist-ai-workflow
-codex plugin install caw
 ```
 
-`codex plugin list` で `caw` が `enabled` 表示されれば導入完了。
+`~/.codex/config.toml` に `[plugins."caw@chemist-ai-workflow"]` が追加されていれば導入完了。除去・更新の手順は [アンインストールと環境リセット](/codex-cli/uninstall/) を参照。
 
 #### Step 2: オンボーディング
 

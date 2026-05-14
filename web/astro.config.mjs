@@ -58,6 +58,7 @@ export default defineConfig({
 					items: [
 						{ label: '概要', slug: 'codex-cli' },
 						{ label: '環境構築', slug: 'codex-cli/setup' },
+						{ label: 'アンインストールと環境リセット', slug: 'codex-cli/uninstall' },
 						{ label: '設定の階層と基礎', slug: 'codex-cli/basics' },
 						{ label: 'AGENTS.md の書き方', slug: 'codex-cli/agents-md' },
 						{ label: 'Skills', slug: 'codex-cli/skills' },
