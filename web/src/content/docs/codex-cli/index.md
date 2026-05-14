@@ -19,8 +19,10 @@ codex plugin install caw
 ```bash
 cd ~/your-research-project
 codex
-> /caw
+> caw
 ```
+
+Codex CLI ではスラッシュ不要。`caw` と入力するか、「化学プロジェクトの環境を作って」など自然言語で指示すれば、スキルが自動的に発火します。
 
 `.company/` が存在しない場合、対話的オンボーディング（研究プロファイル 4 問 + 部署選択）が起動し、化学者向けにカスタマイズされた部署と作業ディレクトリが一括生成される。生成される指示ファイルは Codex CLI の標準である **AGENTS.md** 形式。
 

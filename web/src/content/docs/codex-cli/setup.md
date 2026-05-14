@@ -84,7 +84,7 @@ model_reasoning_effort = "high"
 
 ### caw プラグインで自動構築（推奨）
 
-`caw`（Chemist's AI Workflow）の Codex 版は、`/caw` 1 コマンドで研究分野・使用ソフト・ナレッジベース等を対話的にヒアリングし、化学者向けにカスタマイズされた `.company/` 部署と作業ディレクトリを一括で構築します。
+`caw`（Chemist's AI Workflow）の Codex 版は、起動後に `caw` と入力（または「化学プロジェクトの環境を作って」など自然言語で指示）するだけで、研究分野・使用ソフト・ナレッジベース等を対話的にヒアリングし、化学者向けにカスタマイズされた `.company/` 部署と作業ディレクトリを一括で構築します。
 
 #### 配布ステータス
 
@@ -104,7 +104,7 @@ codex plugin install caw
 ```bash
 cd ~/your-research-project
 codex
-> /caw
+> caw
 ```
 
 `.company/` が存在しない場合、対話的オンボーディングモードに入ります。

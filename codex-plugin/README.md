@@ -18,7 +18,7 @@ codex plugin install caw
 ```bash
 cd ~/your-research-project
 codex
-> /caw
+> caw
 ```
 
 `.company/` が存在しない場合、対話的オンボーディングが起動：
@@ -50,7 +50,7 @@ your-research-project/
 
 ## 含まれる内容
 
-- **`/caw` スキル**：オンボーディング → 自動スキャフォールド → 運営モードの一連
+- **`caw` スキル**：オンボーディング → 自動スキャフォールド → 運営モードの一連（起動は `caw` と入力、または自然言語で指示）
 - **8 部署 AGENTS.md テンプレート**：secretary / research / engineering / computation / analysis / writing / review / presentation
 - **Playbook 雛形**：Gaussian / GROMACS / CP2K / ORCA / VASP / Quantum ESPRESSO + 汎用
 - **作業ディレクトリ自動生成**：選択した計算ソフトと部署に応じて配置
