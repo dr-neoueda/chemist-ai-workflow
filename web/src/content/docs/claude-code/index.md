@@ -1,15 +1,21 @@
 ---
-title: "Tier 1: Claude Code（premium）"
-description: Skills / Hooks / Sub-agents / MCP を活用した、本書の主軸となる実装
+title: "Claude Code"
+description: Skills / Hooks / Sub-agents / MCP を活用した、本書の主軸となる実装の片翼（もう片翼は Codex CLI）
 ---
 
-## なぜ Claude Code を主軸に置くか
+Anthropic 製のターミナル CLI エージェント。本書では **Codex CLI と並ぶ主軸 CLI** として扱う。著者の日常運用環境であり、検証密度が最も高い。
+
+## Claude Code の特徴
 
 - **Skills**：プロジェクト固有のメソッドをバージョン管理可能な単位で運用できる
-- **Hooks**：SessionStart / PostToolUse / Stop などのライフサイクルに介入できる
-- **Sub-agents**：特化エージェント（reviewer / planner / TDD など）に分業させられる
+- **Hooks**：SessionStart / PostToolUse / Stop などのライフサイクルに介入できる（Codex より hook 種類が豊富）
+- **Sub-agents**：特化エージェント（reviewer / planner / TDD など）を並列起動でき、専用 context window で動作
 - **MCP（Model Context Protocol）**：各種ナレッジベース・クラウドストレージ・GitHub・Playwright などに直接接続。Notion・Google Drive は Anthropic 公式 MCP、Obsidian / Logseq などファイルベースのツールは Filesystem MCP 経由で連携（[対応ツール一覧](/tools/)）
-- 著者が日常運用している環境であり、本書で最も検証が深い実装
+- **CLAUDE.md** をプロジェクトルールの標準ファイルとする（Codex の `AGENTS.md` に対応）
+
+## Codex CLI との関係
+
+caw プラグインは Claude Code 版と Codex CLI 版の **両方** で並列配信されており、研究室で混在運用が可能。詳細比較は [Codex CLI 概要](/codex-cli/) を参照。
 
 ## このセクションの構成
 

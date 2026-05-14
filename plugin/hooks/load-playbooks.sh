@@ -25,11 +25,9 @@ cat <<EOF
 EOF
 
 if [ -d "$sec_dir" ]; then
-    files=$(find "$sec_dir" -maxdepth 1 -type f \( -name "*-decisions.md" -o -name "*-learnings.md" \) -print0 2>/dev/null \
-        | xargs -0 stat -f "%m %N" 2>/dev/null \
-        | sort -rn \
-        | head -3 \
-        | awk '{ $1=""; sub(/^ /, ""); print }')
+    # mtime 降順で直近 3 件。ls -t は macOS / Linux / WSL / Git Bash 共通（POSIX）。
+    # BSD 専用の `stat -f` / GNU 専用の `stat -c` を避ける。
+    files=$(ls -t "$sec_dir"/*-decisions.md "$sec_dir"/*-learnings.md 2>/dev/null | head -3)
     if [ -n "$files" ]; then
         echo "### 直近の意思決定・学び（mtime 上位 3 件・各 30 行）"
         echo ""

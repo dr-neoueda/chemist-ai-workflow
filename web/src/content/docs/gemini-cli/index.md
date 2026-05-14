@@ -1,5 +1,5 @@
 ---
-title: "Tier 3: Gemini CLI（OSS）"
+title: "Gemini CLI（補助・OSS）"
 description: OSS / Apache 2.0 のターミナル native エージェント。個人 Google アカウント連携で手厚い無料枠
 ---
 

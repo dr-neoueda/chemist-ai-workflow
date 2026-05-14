@@ -56,29 +56,29 @@ AI エージェントを単発のチャットツールとしてではなく、�
 
 部署設計は固定スキーマではなく、最小 1〜2 部署から始めて段階的に増やすことも、最初から多部署で運用することもできます。本書では**部署を新設・分割・統合する判断基準**と**ファイル構造の設計パターン**を体系化しています。
 
-## CLI 中立 + Claude Code 重視 ── 4 ティア構成
+## CLI 中立 ── 主軸 2 本 + 補助 2 本
 
-特定の CLI に縛られない方法論を核に、4 つの実装ティアを並列に提示します。
+特定の CLI に縛られない方法論を核に、**主軸となる 2 つの CLI（Claude Code / Codex CLI）** と **補助選択肢 2 つ** を並列に提示します。Claude Code と Codex CLI はいずれも Skills / Sub-agents / MCP / プラグイン配信に対応しており、caw プラグインは両方に並列配信されています。
 
 <CardGrid>
   <LinkCard
-    title="Tier 1: Claude Code（premium）"
-    description="Skills / Hooks / Sub-agents / MCP を活用した、本書の主軸となる実装。著者の常用環境。"
+    title="Claude Code"
+    description="Anthropic 製。Skills / Hooks / Sub-agents / MCP を活用。CLAUDE.md ベース。著者の常用環境で、本書で最も検証が深い実装。"
     href="/claude-code/"
   />
   <LinkCard
-    title="Tier 2: Codex CLI"
-    description="OpenAI 系の選択肢。AGENTS.md ベース。caw プラグインが並列配信され、Claude Code 版と同等のワークフローを再現。起動はスラッシュ不要（自然言語マッチ）。"
+    title="Codex CLI"
+    description="OpenAI 製。Skills（自然言語マッチ）/ Commands（スラッシュ）/ Sub-agents / MCP に対応。AGENTS.md ベース。caw プラグインを Claude Code 版と並列配信。"
     href="/codex-cli/"
   />
   <LinkCard
-    title="Tier 3: Gemini CLI（OSS）"
-    description="OSS（Apache 2.0）のターミナル native エージェント。個人 Google アカウント連携で手厚い無料枠。"
+    title="Gemini CLI（補助・OSS）"
+    description="OSS（Apache 2.0）のターミナル native エージェント。個人 Google アカウント連携で手厚い無料枠。Phase 2 で執筆予定。"
     href="/gemini-cli/"
   />
   <LinkCard
-    title="Tier 4: ChatGPT / Gemini Web 版（最小）"
-    description="ブラウザのみで完結する圧縮版。CLI が使えない環境向け。"
+    title="ChatGPT / Gemini Web 版（補助・最小）"
+    description="ブラウザのみで完結する圧縮版。CLI が使えない環境向け。Phase 2 で執筆予定。"
     href="/chatgpt-web/"
   />
 </CardGrid>
