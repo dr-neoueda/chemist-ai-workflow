@@ -54,9 +54,15 @@ export default defineConfig({
 					],
 				},
 				{
-					label: 'Tier 2: Codex CLI（次点）',
+					label: 'Tier 2: Codex CLI',
 					items: [
-						{ label: 'codex-cli/ 概要', slug: 'codex-cli' },
+						{ label: '概要', slug: 'codex-cli' },
+						{ label: '環境構築', slug: 'codex-cli/setup' },
+						{ label: '設定の階層と基礎', slug: 'codex-cli/basics' },
+						{ label: 'AGENTS.md の書き方', slug: 'codex-cli/agents-md' },
+						{ label: 'Skills', slug: 'codex-cli/skills' },
+						{ label: 'Commands（スラッシュコマンド）', slug: 'codex-cli/commands' },
+						{ label: 'MCP サーバー連携', slug: 'codex-cli/mcp' },
 					],
 				},
 				{
