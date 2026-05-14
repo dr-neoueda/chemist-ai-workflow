@@ -69,4 +69,4 @@ Codex review（codex exec で起動）
 
 ## 次のステップ
 
-- [Tier 2: Codex CLI](/codex-cli/) — 二段レビューの相方となる実装
+- [Codex CLI](/codex-cli/) — 二段レビューの相方となる実装

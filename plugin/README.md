@@ -12,6 +12,19 @@ claude
 
 `/plugin list` で `caw` が `enabled` 表示されれば導入完了。
 
+## 動作環境
+
+| OS | コア（Skills のワークフロー） | Hooks |
+|---|---|---|
+| macOS | ✅ | ✅ |
+| Linux | ✅ | ✅ |
+| Windows | ✅ | ⚠️ WSL または Git Bash 経由（`hooks.json` が `bash` を呼ぶため） |
+
+- **コア（オンボーディング・部署スキャフォールド・5 Skills）** は OS 非依存。SKILL.md は markdown のワークフロー指示で、Claude Code / Codex CLI のファイルツールがパスをクロスプラットフォーム処理する
+- **Hooks**（SessionStart / PostToolUse / Stop）は bash スクリプト。macOS / Linux はそのまま、Windows は WSL または Git Bash が必要
+- hook スクリプトは POSIX 準拠で記述（`stat -f` などの BSD 専用構文、`date -j` などの macOS 専用構文は使わない）。WSL / Git Bash の GNU 環境でも macOS の BSD 環境でも動作する
+- `.company/` はドット始まりの名前なので macOS Finder / Linux のファイルマネージャでは標準で非表示、Windows Explorer では表示される。OS によらず「運営情報専用エリア」という位置づけは同じ
+
 ## クイックスタート
 
 ```bash
@@ -47,32 +60,40 @@ your-research-project/
 └── papers/README.md        ← PDF ステージング
 ```
 
-## 含まれる内容（v1.1.0）
+## 含まれる内容（v1.3.1）
 
 ### Skills
 
-- **`/caw`**：オンボーディング → 自動スキャフォールド → 運営モードの一連
+- **`/caw`**：オンボーディング（Quick / Standard / Advanced の 3 段階）→ 自動スキャフォールド → 運営モードの一連
 - **`/caw-paper`**：論文検索（arXiv / Crossref / Semantic Scholar / OpenAlex / PubMed）+ 入手済み PDF のメタデータ抽出 → ナレッジベース（Notion / Obsidian 他）+ クラウドストレージ（Google Drive 他）への自動登録
 - **`/caw-input`**：6 ソフト（Gaussian / ORCA / CP2K / GROMACS / VASP / Quantum ESPRESSO）の入力ファイル雛形生成、Playbook デフォルト起点 + ジョブ記録自動生成
 - **`/caw-playbook`**：計算 log の自動解析 → Lessons Learned エントリ起案 → Playbook 末尾追記、memory feedback 昇格判定
+- **`/caw-doctor`**：`.company/` 構造の健全性チェック（部署 CLAUDE.md の存在、旧構造の検出、Playbook 更新滞り等）と修復コマンド提示
 
 ### Hooks
 
 - **SessionStart**：`.company/secretary/notes` の直近 3 件と利用可能 Playbook をコンテキスト自動注入
+- **PostToolUse**：成果物が `.company/<dept>/` 配下に書き込まれた場合に「成果物配置の二層原則」違反として警告
 - **Stop**：今日の活動があるのに `<today>-learnings.md` が無い場合のリマインド
 
 ### 部署テンプレート
 
 - 8 部署 CLAUDE.md：secretary / research / engineering / computation / analysis / writing / review / presentation
+- 成果物は project root 直下（`papers/` `slides/` 等）、運営情報は `.company/<dept>/` という二層構造
 
 ### Playbook 雛形
 
-- Gaussian / GROMACS / CP2K / ORCA / VASP / Quantum ESPRESSO + 汎用
+- 計算ソフト：Gaussian / GROMACS / CP2K / ORCA / VASP / Quantum ESPRESSO / Psi4 / NAMD / LAMMPS / OpenMM + 汎用
+- Python ライブラリ：RDKit / ASE / MDAnalysis / pymatgen（API quirks・よくある罠を体系化）
+
+### MCP セットアップ
+
+- オンボーディングのナレッジベース / クラウドストレージ選択に応じて `.company/.mcp-setup.md`（Notion / Obsidian / Logseq / Google Drive / Dropbox / OneDrive / Gmail の設定手順）を生成。API key は環境変数管理
 
 ### 作業ディレクトリ
 
 - 選択した計算ソフトに応じて `gaussian/` / `orca/` / `cp2k/` / `gromacs/` / `vasp/` / `quantum-espresso/`
-- 選択した部署に応じて `papers/` / `manuscripts/` / `slides/`
+- 選択した部署に応じて `papers/` / `topics/` / `manuscripts/` / `slides/` / `analyses/` / `notebooks/` / `figures/` / `scripts/` / `tools/`
 
 ## 運営モードでできること
 
@@ -80,7 +101,7 @@ your-research-project/
 |---|---|
 | 「今日の TODO を整理して」 | `secretary/todos/YYYY-MM-DD.md` を表示・編集 |
 | 「ORCA で benzene の構造最適化の雛形を作って」 | `orca/<system>_<purpose>_<YYYYMMDD>/` を作成し `.inp` 雛形 + `.company/computation/jobs/` にジョブ記録 |
-| 「読んだ論文を登録して」 | PDF → `.company/research/papers/<author-year>.md` に書誌情報付き md を生成 |
+| 「読んだ論文を登録して」 | PDF → `papers/<author-year>.md`（top-level、ファイラーで見える）に書誌情報付き md を生成 |
 | 「ここまでの会話で決めたことを記録して」 | `secretary/notes/YYYY-MM-DD-decisions.md` に追記 |
 
 ## プラグイン構造
@@ -89,12 +110,23 @@ your-research-project/
 plugin/
 ├── .claude-plugin/plugin.json
 ├── README.md
-└── skills/caw/
-    ├── SKILL.md
-    └── references/
-        ├── claude-md-template.md
-        ├── chemistry-departments.md
-        └── playbook-starters.md
+├── hooks/
+│   ├── hooks.json
+│   ├── load-playbooks.sh        ← SessionStart
+│   ├── output-location-check.sh ← PostToolUse
+│   └── learnings-reminder.sh    ← Stop
+└── skills/
+    ├── caw/
+    │   ├── SKILL.md
+    │   └── references/
+    │       ├── claude-md-template.md
+    │       ├── chemistry-departments.md
+    │       ├── playbook-starters.md
+    │       └── mcp-setup-templates.md
+    ├── caw-paper/SKILL.md
+    ├── caw-input/SKILL.md
+    ├── caw-playbook/SKILL.md
+    └── caw-doctor/SKILL.md
 ```
 
 ## ライセンス

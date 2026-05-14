@@ -93,7 +93,9 @@ type: daily
 
 ## 2. research（文献部）
 
-**サブディレクトリ**: `topics/`, `papers/`（インポート済 PDF メタデータ）
+**`.company/research/` のサブディレクトリ（運営情報のみ）**: `logs/`, `metadata/`
+
+**成果物の置き場（top-level、ファイラーで見える）**: `papers/`, `topics/`, `reports/`
 
 ### research/AGENTS.md
 
@@ -104,10 +106,24 @@ type: daily
 
 論文・先行研究の調査、要約、ナレッジベース登録を担当。化学・材料分野の文献を体系的に蓄積する。
 
+## 成果物の置き場（CRITICAL）
+
+ユーザーが ファイラーから開ける場所に置く：
+
+- **個別論文の要約 md**：`{{PROJECT_ROOT}}/papers/<author-year-keyword>.md`（top-level）
+- **調査トピックまとめ**：`{{PROJECT_ROOT}}/topics/<topic>.md`（top-level）
+- **報告書・調査結果総括**：`{{PROJECT_ROOT}}/reports/<topic>.md`（top-level）
+- **原本 PDF**：`{{PROJECT_ROOT}}/papers/<author-year-keyword>.pdf`（top-level）
+
+❌ `.company/research/papers/<...>.md` のようなパスに書かない（旧 v1.0 / v1.1 設計）
+
+`.company/research/` 配下は運営情報のみ：
+
+- `logs/` — 調査ログ、検索クエリ履歴
+- `metadata/` — Notion 同期状態、DOI 取得ログなど中間データ
+
 ## ルール
 
-- 調査トピックは `topics/topic-name.md`
-- 個別の論文ノートは `papers/<author-year-keyword>.md`
 - 情報源は必ず DOI / arXiv ID / URL を記載
 - 調査結果には必ず「目的」「結論」「ネクストアクション」を含める
 - 化学物質名は IUPAC 名 + 慣用名（よく使われるもの）を併記
@@ -118,21 +134,18 @@ type: daily
 
 `.company/AGENTS.md` の「ナレッジベース」設定に応じて、要約後の登録先を切り替える：
 
-- **Notion** → API / MCP 経由で DB 登録
+- **Notion** → API / MCP 経由で DB 登録（ローカル `papers/` と並列で同期）
 - **Obsidian / Logseq** → vault フォルダに Markdown を保存（frontmatter にメタデータ）
 - **使わない** → `papers/` 配下にローカル蓄積のみ
-
-## フォルダ構成
-
-- `topics/` - 調査トピックごとのファイル
-- `papers/` - 個別論文のメタデータ + 要約
 ```
 
 ---
 
 ## 3. engineering（開発部）
 
-**サブディレクトリ**: `tools/`, `scripts/`, `docs/`
+**`.company/engineering/` のサブディレクトリ（運営情報のみ）**: `design/`, `decisions/`
+
+**成果物の置き場（top-level、ファイラーで見える）**: `scripts/`, `tools/`
 
 ### engineering/AGENTS.md
 
@@ -143,10 +156,22 @@ type: daily
 
 研究で使う Python ツール・CLI・解析スクリプトの設計と実装。再現性を重視した数値計算コードを書く。
 
+## 成果物の置き場（CRITICAL）
+
+ユーザーが ファイラーから実行・編集する場所に置く：
+
+- **本格的なツール**：`{{PROJECT_ROOT}}/tools/<tool-name>/`（top-level）
+- **単発スクリプト**：`{{PROJECT_ROOT}}/scripts/<purpose>_<target>_<date>.py`（top-level）
+
+❌ `.company/engineering/scripts/` や `.company/engineering/tools/` に置かない（実行時のパスがやや回りくどく）
+
+`.company/engineering/` 配下は運営情報のみ：
+
+- `design/` — 設計書、アーキテクチャ図、API スペック
+- `decisions/` — 技術選定の意思決定ログ
+
 ## ルール
 
-- ツール本体は `tools/<tool-name>/`、個別スクリプトは `scripts/<purpose>.py`
-- 技術ドキュメント・設計書は `docs/<topic>.md`
 - Python 3.12+ を使用
 - **型ヒント必須**
 - **物理量には必ず単位コメント**（`# kJ/mol`, `# Å`, `# fs`, `# K` など）
@@ -160,12 +185,6 @@ type: daily
 - 入力ファイル生成は computation 部署と密接に連携
 - 解析スクリプトは analysis 部署に成果物を渡す
 - 重要なツールは review 部署のレビューを通す
-
-## フォルダ構成
-
-- `tools/` - 再利用される本格的なツール
-- `scripts/` - 単発・一時的なスクリプト
-- `docs/` - 技術ドキュメント・設計書
 ```
 
 ---
@@ -229,7 +248,9 @@ type: daily
 
 ## 5. analysis（データ解析部）
 
-**サブディレクトリ**: `results/`, `figures/`, `notebooks/`
+**`.company/analysis/` のサブディレクトリ（運営情報のみ）**: `methods/`, `decisions/`
+
+**成果物の置き場（top-level、ファイラーで見える）**: `analyses/`, `figures/`, `notebooks/`
 
 ### analysis/AGENTS.md
 
@@ -240,11 +261,23 @@ type: daily
 
 実験データ・計算結果の解析、可視化、統計処理。グラフ・図表の作成、機械学習による物性予測などを担当。
 
+## 成果物の置き場（CRITICAL）
+
+ユーザーが ファイラーから開ける場所に置く：
+
+- **解析結果**：`{{PROJECT_ROOT}}/analyses/<topic>/`（top-level、1 トピック 1 フォルダ）
+- **図表**：`{{PROJECT_ROOT}}/figures/fig_<内容>_YYYYMMDD.png` または `.svg`（top-level、presentation と共有）
+- **Jupyter Notebook**：`{{PROJECT_ROOT}}/notebooks/<topic>.ipynb`（top-level）
+
+❌ `.company/analysis/results/` や `.company/analysis/figures/` のような旧パスに書かない（旧設計）
+
+`.company/analysis/` 配下は運営情報のみ：
+
+- `methods/` — 解析手法の選定理由、参照論文
+- `decisions/` — モデル選択・前処理方針の意思決定ログ
+
 ## ルール
 
-- 解析結果は `results/<topic>/`（1 解析 1 フォルダ）
-- 図は `figures/fig_<内容>_YYYYMMDD.png` または `.svg`
-- Jupyter Notebook は `notebooks/<topic>.ipynb`
 - matplotlib + seaborn / plotly を使用。化学者向けには高解像度（dpi=300）+ Type 1 フォント（投稿時の要件）を意識
 - 統計検定を行う場合は p 値だけでなく効果量も報告
 - 機械学習モデルは交差検証 + テストセット分離を厳守
@@ -256,19 +289,15 @@ type: daily
 - 入力データは computation / 実験記録から
 - 重要な可視化は presentation 部署で発表資料に展開
 - 機械学習・統計手法のレビューは review 部署へ
-
-## フォルダ構成
-
-- `results/` - 解析結果（1 トピック 1 フォルダ）
-- `figures/` - 図表（再生成可能な状態を保つ）
-- `notebooks/` - Jupyter Notebook
 ```
 
 ---
 
 ## 6. writing（論文執筆部）
 
-**サブディレクトリ**: `manuscripts/`, `references/`, `style/`
+**`.company/writing/` のサブディレクトリ（運営情報のみ）**: `style/`, `decisions/`
+
+**成果物の置き場（top-level、ファイラーで見える）**: `manuscripts/`
 
 ### writing/AGENTS.md
 
@@ -279,14 +308,27 @@ type: daily
 
 論文ドラフトの執筆・推敲、参考文献整理、図表の配置、投稿先誌のスタイルへの再投影。LaTeX と Word の両方に対応。
 
-## ルール
+## 成果物の置き場（CRITICAL）
 
-- 各論文は `manuscripts/<paper-name>/` 配下に：
+ユーザーが ファイラーから開ける場所に置く：
+
+- **各論文**：`{{PROJECT_ROOT}}/manuscripts/<paper-name>/`（top-level、1 論文 1 フォルダ）
   - `<paper-name>.tex` または `<paper-name>.docx`
   - `references.bib`（BibTeX）または引用管理ツール出力
-  - `figures/`（論文用の図、analysis 部署からコピー）
-- スタイルプロファイルは `style/<journal>.md` に各誌のスタイル要点を記録
-- 文体は指導教員・共著者の文体プロファイル（あれば `style/voice-<name>.md`）に従う
+  - `figures/`（論文用の図、`{{PROJECT_ROOT}}/figures/` からコピー）
+  - `reviews/YYYY-MM-DD-<reviewer>.md`（指導教員・共著者の添削記録）
+- **共通スタイル**：`{{PROJECT_ROOT}}/manuscripts/_style/<journal>.md`（投稿先誌のスタイル要点、文体プロファイル）
+
+❌ `.company/writing/manuscripts/<...>/` のようなパスに書かない（旧 v1.0 / v1.1 設計）
+
+`.company/writing/` 配下は運営情報のみ：
+
+- `style/` — 文体プロファイル（指導教員・共著者）の生データ、抽出パターン
+- `decisions/` — 投稿先選定や論文構成変更の意思決定ログ
+
+## ルール
+
+- 文体は指導教員・共著者の文体プロファイル（あれば `{{PROJECT_ROOT}}/manuscripts/_style/voice-<name>.md`）に従う
 - 引用は文中言及形式が基本（番号引用は投稿時のスタイルガイドに従って後変換）
 
 ## LaTeX 派の運用
@@ -305,14 +347,7 @@ type: daily
 
 ## 共著者対応
 
-- 指導教員 / 共著者からの添削は `manuscripts/<paper-name>/reviews/YYYY-MM-DD-<reviewer>.md` に記録
-- 反映後の差分を `notes/` に意思決定として残す
-
-## フォルダ構成
-
-- `manuscripts/` - 論文ドラフト（1 論文 1 フォルダ）
-- `references/` - 引用管理（BibTeX や Zotero エクスポート）
-- `style/` - 投稿先誌・指導教員の文体プロファイル
+- 添削の反映後の差分を `.company/secretary/notes/YYYY-MM-DD-decisions.md` に意思決定として残す
 ```
 
 ---
@@ -361,7 +396,9 @@ Claude + Codex の二段レビューは応用編。本部署単独で運用し�
 
 ## 8. presentation（プレゼン部）
 
-**サブディレクトリ**: `slides/`, `figures/`, `scripts/`, `notes/`
+**`.company/presentation/` のサブディレクトリ（運営情報のみ）**: `design-notes/`, `decisions/`
+
+**成果物の置き場（top-level、ファイラーで見える）**: `slides/`, `figures/`
 
 ### presentation/AGENTS.md
 
@@ -372,12 +409,23 @@ Claude + Codex の二段レビューは応用編。本部署単独で運用し�
 
 学会・研究会・グループミーティング・教育セッションのスライド生成。python-pptx + matplotlib + RDKit で再現可能な形で作る。
 
+## 成果物の置き場（CRITICAL）
+
+ユーザーが ファイラーから開ける場所に置く：
+
+- **スライド本体**：`{{PROJECT_ROOT}}/slides/<topic>_YYYYMMDD.pptx`（top-level）
+- **生成スクリプト**：`{{PROJECT_ROOT}}/slides/scripts/generate_<topic>_YYYYMMDD.py`（top-level、スライドと同じ slides/ 配下）
+- **中間図**：`{{PROJECT_ROOT}}/figures/fig_<topic>_<n>_YYYYMMDD.png`（top-level、analysis と共有）
+
+❌ `.company/presentation/slides/<...>.pptx` のようなパスに書かない（旧設計）
+
+`.company/presentation/` 配下は運営情報のみ：
+
+- `design-notes/<topic>_source.md` — 何を伝える / どの順序 / 視覚要素の設計ノート
+- `decisions/` — トピック選定や figure 取捨選択の意思決定ログ
+
 ## ルール
 
-- スライド本体は `slides/<topic>_YYYYMMDD.pptx`
-- 生成スクリプトは `scripts/generate_<topic>_YYYYMMDD.py`
-- 中間図は `figures/fig_<topic>_<n>_YYYYMMDD.png`
-- 設計ノートは `notes/<topic>_source.md`（何を伝える / どの順序 / 視覚要素）
 - スタイル: 16:9、MS Gothic + Arial、L1（key message）1 スライド 1 個
 - shape の矩形交差 0 を厳守（python-pptx で検証）
 - 箇条書きは 3 行以下に抑え、長くなったらテーブル / グラフ化
@@ -393,13 +441,6 @@ Claude + Codex の二段レビューは応用編。本部署単独で運用し�
 1. python-pptx で .pptx を再読込、スライド数・shape 数・矩形交差ゼロを確認
 2. soffice があれば PNG 化して目視（重なり・フォント豆腐・L1 配置）
 3. matplotlib が描いた図は Read ツールで視覚確認（化学的に正しいか）
-
-## フォルダ構成
-
-- `slides/` - .pptx ファイル
-- `figures/` - 中間生成図
-- `scripts/` - 生成スクリプト
-- `notes/` - 設計ノート・計画メモ
 ```
 
 ---

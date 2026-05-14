@@ -39,7 +39,7 @@ export default defineConfig({
 					],
 				},
 				{
-					label: 'Tier 1: Claude Code（premium）',
+					label: '主軸 CLI: Claude Code',
 					items: [
 						{ label: '概要', slug: 'claude-code' },
 						{ label: '環境構築', slug: 'claude-code/setup' },
@@ -54,7 +54,7 @@ export default defineConfig({
 					],
 				},
 				{
-					label: 'Tier 2: Codex CLI',
+					label: '主軸 CLI: Codex CLI',
 					items: [
 						{ label: '概要', slug: 'codex-cli' },
 						{ label: '環境構築', slug: 'codex-cli/setup' },
@@ -62,17 +62,18 @@ export default defineConfig({
 						{ label: 'AGENTS.md の書き方', slug: 'codex-cli/agents-md' },
 						{ label: 'Skills', slug: 'codex-cli/skills' },
 						{ label: 'Commands（スラッシュコマンド）', slug: 'codex-cli/commands' },
+						{ label: 'Sub-agents', slug: 'codex-cli/subagents' },
 						{ label: 'MCP サーバー連携', slug: 'codex-cli/mcp' },
 					],
 				},
 				{
-					label: 'Tier 3: Gemini CLI（OSS）',
+					label: '補助選択肢: Gemini CLI（OSS）',
 					items: [
 						{ label: 'gemini-cli/ 概要', slug: 'gemini-cli' },
 					],
 				},
 				{
-					label: 'Tier 4: Web 版（最小）',
+					label: '補助選択肢: Web 版（最小）',
 					items: [
 						{ label: 'chatgpt-web/ 概要', slug: 'chatgpt-web' },
 					],

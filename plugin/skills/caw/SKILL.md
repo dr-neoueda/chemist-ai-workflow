@@ -28,9 +28,38 @@ trigger: /caw
 
 ### Step 2: オンボーディング
 
-`AskUserQuestion` で 2 回に分けて対話的にヒアリングする。秘書の口調（丁寧だが親しみやすい）で話す。ユーザーの言語を自動検出し、同じ言語で応答する。
+`AskUserQuestion` で対話的にヒアリングする。秘書の口調（丁寧だが親しみやすい）で話す。ユーザーの言語を自動検出し、同じ言語で応答する。
 
-#### Call 1: 研究プロファイル（4 問）
+**オンボーディングは 3 段階モード**。まず Call 0 でモードを選んでもらい、選んだモードに応じて質問数を変える。
+
+#### Call 0: セットアップモード選択（1 問）
+
+```
+Q0 (モード): 「caw のセットアップ、どこまで詳しくやりますか？」
+  - Quick — とりあえず秘書だけ。1 問で即スタート（後から /caw で部署追加可）
+  - Standard — 研究プロファイル + 部署を選んで構築（推奨、6 問）
+  - Advanced — Standard に加え HPC・共著者・申請書予定まで詳しく（10+ 問）
+  (multiSelect: false)
+```
+
+- **Quick** → Call 1Q のみ実施 → Step 3（秘書のみ scaffold）
+- **Standard** → Call 1 + Call 2 を実施 → Step 3
+- **Advanced** → Call 1 + Call 2 + Call 3 を実施 → Step 3
+
+#### Call 1Q: Quick モードの最小ヒアリング（1 問、Quick モードのみ）
+
+```
+Q1 (研究分野): 「主な研究分野を教えてください」
+  - 有機化学・生命化学
+  - 物理化学・分析化学
+  - 材料・無機・結晶化学
+  - 計算化学・理論化学
+  (multiSelect: false; Other で自由入力可)
+```
+
+Q2〜Q4 は「未定」扱い、部署は秘書のみ。`.company/CLAUDE.md` には研究分野のみ反映し、他は `{{未設定}}` プレースホルダで「`/caw` で後から拡張できます」と注記。
+
+#### Call 1: 研究プロファイル（4 問、Standard / Advanced）
 
 ```
 Q1 (研究分野): 「主な研究分野を教えてください」
@@ -42,7 +71,7 @@ Q1 (研究分野): 「主な研究分野を教えてください」
 
 Q2 (計算ソフト): 「研究で使う計算ソフトのカテゴリを教えてください（複数可）」
   - 量子化学計算（Gaussian, ORCA, Psi4 等）
-  - 古典 MD（GROMACS, AMBER, LAMMPS 等）
+  - 古典 MD（GROMACS, AMBER, NAMD, LAMMPS, OpenMM 等）
   - 周期系 DFT（CP2K, VASP, Quantum ESPRESSO 等）
   - 計算ソフトは使わない / 主に実験中心
   (multiSelect: true; Other で具体的なソフト名を自由入力可)
@@ -64,7 +93,7 @@ Q4 (クラウドストレージ): 「PDF やデータの保管に使うクラウ
 
 回答内容は後段の scaffold で各部署 CLAUDE.md にパーソナライズとして埋め込む。
 
-#### Call 2: 立ち上げる部署選択（2 問、いずれも multi-select）
+#### Call 2: 立ち上げる部署選択（2 問、Standard / Advanced）
 
 ```
 Q5a (研究・開発系部署): 「最初に立ち上げる部署を選んでください（複数可、選ばなくても OK）」
@@ -83,9 +112,49 @@ Q5b (アウトプット系部署): 「続けて、アウトプット系の部署
 
 選択された部署は Step 3 で一括 scaffold される。何も選ばれなければ秘書のみで起動。
 
+#### Call 3: 詳細プロファイル（4 問、Advanced のみ）
+
+Advanced モードでのみ実施。回答は各部署 CLAUDE.md のパーソナライズメモに反映し、運用初期から精度を上げる。
+
+```
+Q6 (計算環境): 「計算ジョブをどこで回しますか？」
+  - HPC クラスタ（SLURM）
+  - HPC クラスタ（PBS / その他）
+  - ローカルマシンのみ（ワークステーション / ノート PC）
+  - クラウド（AWS / GCP 等）
+  (multiSelect: true; Other 可。computation 部署の CLAUDE.md に submission コマンドの既定を反映)
+
+Q7 (研究体制): 「研究の進め方は？」
+  - 単独研究（指導教員の添削のみ）
+  - 共著者と共同（複数名で執筆・解析を分担）
+  - 研究室全体で .company/ を共有
+  (multiSelect: false; writing / review 部署の運用ルールに反映)
+
+Q8 (申請書の予定): 「申請書・助成金の予定はありますか？」
+  - 学振（DC / PD）
+  - 科研費
+  - 民間財団・その他助成
+  - 予定なし
+  (multiSelect: true; 該当があれば writing 部署に申請書トラッカーの雛形を追加提案)
+
+Q9 (論文ステータス): 「論文執筆の状況は？」
+  - 執筆中の論文がある
+  - 投稿済み・査読対応中
+  - これから書き始める
+  - 当面予定なし
+  (multiSelect: false; writing 部署の初期テンプレに反映)
+```
+
+Advanced で得た回答は `.company/CLAUDE.md` の「パーソナライズメモ」に箇条書きで保存し、各部署が文脈として参照できるようにする。
+
 ### Step 3: 自動スキャフォールド
 
 ヒアリング結果に基づいて、以下を一括生成する。
+
+**モードによる scaffold 範囲**：
+- **Quick** → `.company/` + ルート CLAUDE.md + 秘書部のみ。Q2〜Q4 / Q5a / Q5b は未取得なのでテンプレのプレースホルダは `{{未設定}}`。完了メッセージで「`/caw` で部署や設定を後から足せます」と案内
+- **Standard** → `.company/` + 秘書部 + Q5a/Q5b で選択された部署 + 作業ディレクトリ
+- **Advanced** → Standard と同じ + Call 3（Q6〜Q9）の回答を `.company/CLAUDE.md` のパーソナライズメモと各部署 CLAUDE.md に反映 + Q8 で申請書予定があれば writing 部署に申請書トラッカー雛形を追加
 
 #### 3-1. ルート `.company/` とルート CLAUDE.md
 
@@ -137,45 +206,76 @@ Q5a・Q5b で選択された部署について、`references/chemistry-departmen
 
 各 README には対応する Playbook へのリンク（`../.company/computation/playbooks/<tool>.md`）を必ず含める。
 
-**選択された部署に応じてドメイン作業ディレクトリも作成**：
+**選択された部署に応じてドメイン作業ディレクトリ（成果物置き場）を必ず top-level に作成**：
 
 | 部署 | 作業ディレクトリ | README で示す中身 |
 |---|---|---|
-| research | `papers/` | PDF 文献置き場。ナレッジベース（Notion/Obsidian 等）登録前の一時保管 |
+| research | `papers/` | 文献要約 md（`<author-year>.md`）+ 原本 PDF |
+| research | `topics/` | 調査トピックまとめ md（`<topic>.md`） |
 | writing | `manuscripts/` | 論文ドラフト（LaTeX / Word）、図表、参考文献 |
-| presentation | `slides/` | 発表資料、論文紹介スライド、figures/notes サブフォルダ |
+| presentation | `slides/` | 発表資料、論文紹介スライド、生成スクリプト（`slides/scripts/`） |
+| analysis | `analyses/` | 解析結果（1 トピック 1 サブフォルダ） |
+| analysis | `notebooks/` | Jupyter Notebook |
+| analysis | `figures/` | 解析・論文・スライド用の図表（presentation と共有） |
+| engineering | `scripts/` | 単発・一時スクリプト |
+| engineering | `tools/` | 再利用される本格的なツール |
 
-engineering / analysis / review 部署は `.company/<dept>/` 配下のサブフォルダで十分なので、ルート直下にはディレクトリを作らない。ユーザーが明示的に要求した場合のみ追加する。
+**重要**：成果物は **必ず top-level**。`.company/research/papers/` のようなパスは禁止。`.company/<dept>/` 配下には部署の運営ノート（CLAUDE.md、計画メモ、内部レビュー記録など、ユーザーが日常的に ファイラーで開かないもの）のみ置く。
+
+review 部署は内部品質ゲート記録のみ扱うため、top-level ディレクトリは作らず `.company/review/{code-reviews,validation}/` のみで運用する。
 
 **Q2 で「計算ソフトは使わない / 主に実験中心」を選択していた場合**は、計算ソフト用ディレクトリは作成しない。実験記録用に `experiments/` を作るかどうか、その場で `AskUserQuestion` で 1 問追加して確認する（デフォルト Yes）。
 
-#### 3-5. 完了メッセージ
+#### 3-5. MCP セットアップ手順の生成（Standard / Advanced）
+
+Q3（ナレッジベース）/ Q4（クラウドストレージ）の回答に応じて、`.company/.mcp-setup.md` を生成する。
+
+1. `references/mcp-setup-templates.md` を読み込む
+2. 共通ヘッダを `.company/.mcp-setup.md` に書き出す
+3. Q3 の回答に該当するナレッジベース MCP セクション（Notion / Obsidian / Logseq / 未設定）を追記
+4. Q4 の回答に該当するクラウドストレージ MCP セクション（Google Drive / Dropbox / OneDrive / 未設定）を追記
+5. 「使わない / 未定」を選んだ項目も、未設定セクションを入れておく（後から再生成しやすい）
+
+**重要**：`.company/.mcp-setup.md` は **手順書**であり、API key そのものは絶対に書かない（環境変数経由で渡す手順のみ記載）。Quick モードでは Q3/Q4 未取得のため、MCP セットアップは生成せず「`/caw` で後から生成できます」と案内するに留める。
+
+#### 3-6. 完了メッセージ
 
 ```
 セットアップが完了しました！
 
 プロジェクトルート/
-├── .company/                    ← AI 部署システム（管理側）
+├── .company/                    ← AI 部署システム（管理側・dotfile）
 │   ├── CLAUDE.md
-│   ├── secretary/
+│   ├── secretary/               ← 常設：TODO・意思決定・学び
 │   │   ├── CLAUDE.md
 │   │   ├── inbox/
 │   │   ├── todos/
 │   │   │   └── {{TODAY}}.md
 │   │   └── notes/
-│   └── (選択された他の部署)
+│   └── (選択された他の部署 — 運営情報のみ)
 │
-├── gaussian/                    ← Gaussian 作業ディレクトリ（選択時）
+├── gaussian/                    ← 計算ソフトの入出力（選択時）
 │   └── README.md
-├── gromacs/                     ← GROMACS 作業ディレクトリ（選択時）
+├── gromacs/
 │   └── README.md
-├── (他の選択された計算ソフト)/
 │
-├── papers/                      ← research 部署選択時：PDF 文献置き場
+├── papers/                      ← research 選択時：文献要約 md + PDF
 │   └── README.md
-├── manuscripts/                 ← writing 部署選択時：論文ドラフト
+├── topics/                      ← research 選択時：調査トピックまとめ
 │   └── README.md
-└── slides/                      ← presentation 部署選択時：発表資料
+├── manuscripts/                 ← writing 選択時：論文ドラフト
+│   └── README.md
+├── slides/                      ← presentation 選択時：発表資料
+│   └── README.md
+├── analyses/                    ← analysis 選択時：解析結果
+│   └── README.md
+├── notebooks/                   ← analysis 選択時：Jupyter Notebook
+│   └── README.md
+├── figures/                     ← analysis/presentation 選択時：図表
+│   └── README.md
+├── scripts/                     ← engineering 選択時：単発スクリプト
+│   └── README.md
+└── tools/                       ← engineering 選択時：再利用ツール
     └── README.md
 
 これからは /caw でいつでも秘書に話しかけられます。
@@ -185,7 +285,8 @@ engineering / analysis / review 部署は `.company/<dept>/` 配下のサブフ�
 💡 ヒント:
 - 部署を追加したくなったら「<部署名> を作って」と言うだけで OK
 - computation 部署があれば、各 Playbook に新しい知見を追記していけます
-- 作業ディレクトリ（gaussian/, papers/ 等）には実研究ファイルを置きます
+- **成果物（要約 md、スライド、グラフ等）は top-level ディレクトリ**に保存されます。
+  ファイラーから普通に開けます。`.company/` は AI の運営情報専用です
 ```
 
 ---
@@ -280,6 +381,64 @@ engineering / analysis / review 部署は `.company/<dept>/` 配下のサブフ�
 - 化学者向け部署テンプレ: `references/chemistry-departments.md`
 - ルート CLAUDE.md 生成テンプレ: `references/claude-md-template.md`
 - 計算ソフト Playbook 雛形: `references/playbook-starters.md`
+- MCP セットアップテンプレ: `references/mcp-setup-templates.md`
+
+---
+
+## 成果物配置の二層原則（CRITICAL）
+
+caw のディレクトリ構造は **明確に二層** に分かれる。AI が成果物を生成する際の置き場を間違えないこと。
+
+### 第 1 層：`.company/` 配下 — 運営情報のみ
+
+ユーザーがファイラーで日常的に開くことは想定しない。AI 部署の運営記録を集約する場所（`.company/` はドット始まりの名前なので macOS Finder / Linux では標準で非表示、Windows Explorer では表示されるが、いずれの OS でも運営情報専用エリアという位置づけは同じ）。
+
+- 秘書の TODO / 意思決定 / 学び / Inbox（`secretary/`）
+- 計算 Playbook と job 記録（`computation/playbooks/`, `computation/jobs/`）
+- 内部品質ゲート記録（`review/code-reviews/`, `review/validation/`）
+- 各部署の運営ルールファイル（`<dept>/CLAUDE.md`）
+- 中間メタデータ（PDF DOI ログ、Notion 同期状況など、ユーザーが直接読まないもの）
+
+### 第 2 層：プロジェクトルート直下 — 成果物そのもの
+
+ユーザーが ファイラーで開いて中身を確認したいファイル。**AI が生成したアウトプット（文献要約 md、スライド .pptx、解析グラフ、論文ドラフト等）は必ずここに置く**。
+
+| ディレクトリ | 中身 | 関連部署 |
+|---|---|---|
+| `papers/` | 文献要約 md（`<author-year>.md`）、PDF | research |
+| `topics/` | 調査トピックまとめ md（`<topic>.md`） | research |
+| `manuscripts/` | 論文ドラフト（`.tex` / `.docx`）、`references.bib`、図 | writing |
+| `analyses/` | 解析結果（1 トピック 1 サブフォルダ） | analysis |
+| `notebooks/` | Jupyter Notebook | analysis |
+| `figures/` | 論文・スライド・解析用の図表 | analysis / presentation |
+| `slides/` | 発表資料（`.pptx`）、生成スクリプト | presentation |
+| `scripts/` | 単発・一時スクリプト | engineering |
+| `tools/` | 再利用される本格的なツール | engineering |
+| `reports/` | 報告書、調査結果まとめ | research / analysis |
+| `experiments/` | 実験記録（実験中心の研究で生成） | （実験部・将来追加） |
+| `gaussian/` `gromacs/` `cp2k/` 等 | 計算ソフトの入出力 | computation |
+
+### 禁則
+
+- ❌ 成果物（ユーザーが目視したい md / pptx / docx / png / ipynb 等）を `.company/<dept>/` 配下に置かない
+- ❌ `.company/<dept>/manuscripts/` や `.company/<dept>/papers/` のようなパスを生成しない（旧 v1.0 / v1.1 の設計）
+- ✅ 部署の運営ノートやレビュー記録のように「ユーザーが普段読まない管理情報」は `.company/<dept>/` に置く
+- ✅ 部署が新しい成果物を生成する時は、まず top-level の対応ディレクトリの存在を確認し、無ければ `<dir>/README.md` 付きで作成する
+
+### 例：research 部署が新規論文を要約した時
+
+```
+✅ 正：./papers/wang-2024-mace.md（top-level）
+❌ 誤：.company/research/papers/wang-2024-mace.md（旧設計）
+```
+
+### 例：presentation 部署が論文紹介スライドを生成した時
+
+```
+✅ 正：./slides/wang-2024-intro_20260514.pptx（top-level）
+   生成スクリプトも：./slides/scripts/generate_wang2024_20260514.py
+❌ 誤：.company/presentation/slides/wang-2024-intro_20260514.pptx
+```
 
 ---
 
@@ -295,4 +454,5 @@ engineering / analysis / review 部署は `.company/<dept>/` 配下のサブフ�
 - ファイル名は `kebab-case`、日付ベースは `YYYY-MM-DD`
 - 既存ファイルは上書きしない。追記または新規作成のみ
 - **化学物理・計算手法の用語は正しく扱う**（汎関数名・基底関数・force field・cell parameter など）
+- **成果物は `.company/` 配下に置かない**（上の「成果物配置の二層原則」を参照）
 - 二段レビュー（Claude + Codex）等の高度な品質ゲートは応用編。本 skill 単独では取り入れない（ユーザーが慣れてから手動で追加）

@@ -303,6 +303,450 @@ Quantum ESPRESSO（QE）の周期系 DFT 計算ノウハウ集積。OSS の平�
 
 ---
 
+## Psi4
+
+### computation/playbooks/psi4.md
+
+````markdown
+---
+tool: Psi4
+last_updated: "{{TODAY}}"
+---
+
+# Psi4 Playbook
+
+## 概要
+
+Psi4 の量子化学計算ノウハウ集積。OSS、Python ベースで script 化しやすい。
+
+## 基本ルール
+
+- 入力ファイル: `.in`（Python ベース）または対話的 `psi4` シェル
+- 実行: `psi4 input.in -o output.out` または Python から `psi4.energy("scf/cc-pVDZ", molecule=mol)`
+- 出力: `.out`、wfn オブジェクトを HDF5 で保存可能
+- 並列: `psi4 -n <ncores>` でマルチスレッド
+
+## デフォルト推奨パラメータ
+
+- 単点: `energy('scf/cc-pVDZ')`
+- 構造最適化: `optimize('b3lyp/6-31G(d)')`
+- 振動数解析: `frequency('b3lyp/6-31G(d)')`
+- 励起状態: `energy('eom-ccsd/cc-pVDZ')`
+- 溶媒効果: `set pcm true` + PCM ブロック
+
+## Lessons Learned
+
+### YYYY-MM-DD - <一行サマリ>
+
+- 状況:
+- 原因:
+- 教訓:
+
+## 参考リンク
+
+- 公式: https://psicode.org/
+- Documentation: https://psicode.org/psi4manual/master/
+````
+
+---
+
+## NAMD
+
+### computation/playbooks/namd.md
+
+````markdown
+---
+tool: NAMD
+last_updated: "{{TODAY}}"
+---
+
+# NAMD Playbook
+
+## 概要
+
+NAMD の MD 計算ノウハウ集積。大規模生体分子系で実績あり、CHARMM FF と相性が良い。
+
+## 基本ルール
+
+- 入力ファイル: `.namd`（config）, `.psf`（topology）, `.pdb`（構造）, parameter file
+- 実行: `namd3 +p<ncores> input.namd > output.log`
+- 出力: `.dcd`（軌跡）, `.coor`/`.vel`/`.xsc`（restart）, `.log`
+
+## デフォルト推奨パラメータ
+
+- 平衡化（NVT）: `langevin on`, `langevinTemp 300`, `langevinDamping 1.0`
+- 本計算（NPT）: `langevinPiston on`, `langevinPistonTarget 1.01325`, `langevinPistonPeriod 100`
+- timestep: `timestep 2.0` (fs) with `rigidBonds all`
+- cutoff: `cutoff 12.0`, `switching on`, `switchdist 10.0`, `pairlistdist 14.0`
+- PME: `PME on`, `PMEGridSpacing 1.0`
+
+## Force Field
+
+- CHARMM36 / CHARMM-GUI 生成セットを推奨
+- AMBER force field も読み込み可能（`amber on`, `parmfile`/`coordinates` で .prmtop/.inpcrd を指定）
+
+## Lessons Learned
+
+### YYYY-MM-DD - <一行サマリ>
+
+- 状況:
+- 原因:
+- 教訓:
+
+## 参考リンク
+
+- 公式: https://www.ks.uiuc.edu/Research/namd/
+- Tutorial: https://www.ks.uiuc.edu/Training/Tutorials/namd/namd-tutorial-unix-html/
+````
+
+---
+
+## LAMMPS
+
+### computation/playbooks/lammps.md
+
+````markdown
+---
+tool: LAMMPS
+last_updated: "{{TODAY}}"
+---
+
+# LAMMPS Playbook
+
+## 概要
+
+LAMMPS の MD 計算ノウハウ集積。Sandia 発の汎用 MD。potentialの自由度が高く、材料系・MLIP との連携で実績多い。
+
+## 基本ルール
+
+- 入力ファイル: `in.<system>`（コマンドスクリプト形式）, `data.<system>`（構造 + topology）
+- 実行: `lmp -in in.<system> -log log.<system>`
+- 出力: `dump.*.lammpstrj`, `log.*`, `restart.*`
+
+## デフォルト推奨パラメータ
+
+- units: `units real`（一般有機）または `units metal`（材料）
+- atom_style: `atom_style full`（OPLS/GAFF 系）or `atomic`（金属）
+- pair_style: `pair_style lj/cut/coul/long 10.0` + `kspace_style pppm 1.0e-4`
+- thermostat: `fix nvt all nvt temp 300.0 300.0 100.0`
+- barostat: `fix npt all npt temp 300 300 100 iso 1.0 1.0 1000`
+- timestep: `timestep 1.0` (fs, units real) or `timestep 0.001` (ps, units metal)
+
+## MLIP 連携
+
+- MACE: `pair_style mace`（lammps-mace パッケージ）
+- DeePMD-kit: `pair_style deepmd`（OSS）
+- NequIP: `pair_style nequip`
+
+## Lessons Learned
+
+### YYYY-MM-DD - <一行サマリ>
+
+- 状況:
+- 原因:
+- 教訓:
+
+## 参考リンク
+
+- 公式: https://www.lammps.org/
+- Manual: https://docs.lammps.org/
+- Examples: https://github.com/lammps/lammps/tree/develop/examples
+````
+
+---
+
+## OpenMM
+
+### computation/playbooks/openmm.md
+
+````markdown
+---
+tool: OpenMM
+last_updated: "{{TODAY}}"
+---
+
+# OpenMM Playbook
+
+## 概要
+
+OpenMM の MD 計算ノウハウ集積。Python ネイティブ、GPU 加速が標準、HPC でも個人 workstation でも回しやすい。
+
+## 基本ルール
+
+- 入力: Python script、構造は `.pdb` / `.psf` / `.prmtop`
+- 実行: `python sim.py` または notebook 内
+- 出力: `DCDReporter` / `StateDataReporter` で軌跡・log
+
+## デフォルト推奨パターン
+
+```python
+from openmm.app import *
+from openmm import *
+from openmm.unit import *
+
+pdb = PDBFile('input.pdb')
+forcefield = ForceField('amber14-all.xml', 'amber14/tip3pfb.xml')
+system = forcefield.createSystem(pdb.topology, nonbondedMethod=PME,
+                                  nonbondedCutoff=1.0*nanometer,
+                                  constraints=HBonds)
+integrator = LangevinMiddleIntegrator(300*kelvin, 1/picosecond, 0.002*picoseconds)
+simulation = Simulation(pdb.topology, system, integrator)
+simulation.context.setPositions(pdb.positions)
+simulation.minimizeEnergy()
+simulation.reporters.append(DCDReporter('out.dcd', 1000))
+simulation.reporters.append(StateDataReporter('out.log', 1000, step=True, potentialEnergy=True, temperature=True))
+simulation.step(500000)
+```
+
+## Force Field
+
+- Amber14 / Amber99sb-ildn
+- CHARMM36（CHARMM-GUI 経由）
+- OpenFF（OpenForceField initiative、化学多様性高）
+
+## Lessons Learned
+
+### YYYY-MM-DD - <一行サマリ>
+
+- 状況:
+- 原因:
+- 教訓:
+
+## 参考リンク
+
+- 公式: https://openmm.org/
+- Documentation: http://docs.openmm.org/
+- Cookbook: https://github.com/openmm/openmm-cookbook
+````
+
+---
+
+## Python ライブラリ Playbook
+
+化学計算ソフトの入出力だけでなく、Python ライブラリの API quirks・version 依存挙動・よくある罠も Playbook 化しておく。AI が新しいスクリプトを書く際に必ず最新の Playbook を読み、過去の失敗を再発させない。
+
+### computation/playbooks/rdkit.md
+
+````markdown
+---
+tool: RDKit
+type: python-library
+last_updated: "{{TODAY}}"
+---
+
+# RDKit Playbook
+
+## 概要
+
+RDKit（cheminformatics Python ライブラリ）の API 利用ノウハウ。SMILES 操作・分子描画・記述子計算・反応スキーム解析など。
+
+## 基本ルール
+
+- import: `from rdkit import Chem; from rdkit.Chem import AllChem, Draw, Descriptors`
+- 分子読み込み: `Chem.MolFromSmiles("CCO")`、`Chem.MolFromMolFile("mol.mol")`、`Chem.MolFromPDBFile("input.pdb")`
+- 3D 化: `mol = Chem.AddHs(mol); AllChem.EmbedMolecule(mol); AllChem.UFFOptimizeMolecule(mol)`
+- 出力: `Chem.MolToSmiles(mol)`, `Chem.MolToMolFile(mol, "out.mol")`
+
+## よくある罠
+
+- **`Chem.MolFromSmiles` は失敗時に `None` を返す**（例外を投げない）。必ず `if mol is None: ...` でチェック
+- **アロマ化フラグ**：`Chem.SanitizeMol` を通さないとアロマ判定が反映されないことがある
+- **Atom ordering** は入力順とは限らない。`mol.GetAtoms()` 順を信頼するなら `Chem.GetMolFrags(mol)` で確認
+- **3D embedding の seed**：`AllChem.EmbedMolecule(mol, randomSeed=42)` で再現性確保
+
+## デフォルト推奨パターン
+
+- 記述子計算: `Descriptors.MolWt(mol)`, `Descriptors.MolLogP(mol)`, `Descriptors.NumHAcceptors(mol)`
+- 類似性: `from rdkit import DataStructs; DataStructs.TanimotoSimilarity(fp1, fp2)`
+- フィンガープリント: `AllChem.GetMorganFingerprintAsBitVect(mol, 2, 1024)`
+
+## Lessons Learned
+
+### YYYY-MM-DD - <一行サマリ>
+
+- 状況:
+- 原因:
+- 教訓:
+
+## 参考リンク
+
+- 公式: https://www.rdkit.org/
+- Documentation: https://www.rdkit.org/docs/
+- Blog: https://greglandrum.github.io/rdkit-blog/
+````
+
+### computation/playbooks/ase.md
+
+````markdown
+---
+tool: ASE
+type: python-library
+last_updated: "{{TODAY}}"
+---
+
+# ASE Playbook
+
+## 概要
+
+ASE（Atomic Simulation Environment）の API 利用ノウハウ。構造操作・I/O（Gaussian / VASP / Quantum ESPRESSO / CIF 等の変換）、calculator 抽象化、MD・最適化の上位ラッパー。
+
+## 基本ルール
+
+- import: `from ase import Atoms; from ase.io import read, write; from ase.calculators.<...> import <Calc>`
+- 構造読み込み: `atoms = read("system.cif")` / `read("POSCAR")` / `read("input.xyz")` / `read("out.log")`（Gaussian/VASP log にも対応）
+- 構造書き出し: `write("out.xyz", atoms)`, `write("POSCAR", atoms)`, `write("input.gjf", atoms)`
+- Calculator: `atoms.calc = EMT()` / `Gaussian(...)` / `Vasp(...)` / `MACECalculator(model_path)`
+
+## よくある罠
+
+- **PBC 設定**：`atoms.set_pbc([True, True, True])` を忘れると周期境界が無視される
+- **cell 設定**：`atoms.set_cell([a, b, c])` の単位は Å。3x3 行列でも OK
+- **wrap / unwrap**：MD 軌跡から bond 計算する時は `atoms.wrap()` の挙動に注意（unwrap 必須のケース多数）
+- **neighbor list**：`from ase.neighborlist import NeighborList; nl = NeighborList(...)` で構築。cutoff の単位は Å、bothways=True 推奨
+- **energy / force の単位**：ASE 内部は eV / eV·Å⁻¹
+
+## MLIP との連携
+
+- MACE: `from mace.calculators import MACECalculator; atoms.calc = MACECalculator(model_path)`
+- Allegro: `from allegro.calculators import AllegroCalculator`
+- M3GNet: `from m3gnet.models import M3GNet; atoms.calc = M3GNet.load()`
+
+## Lessons Learned
+
+### YYYY-MM-DD - <一行サマリ>
+
+- 状況:
+- 原因:
+- 教訓:
+
+## 参考リンク
+
+- 公式: https://wiki.fysik.dtu.dk/ase/
+- ase.io 一覧: https://wiki.fysik.dtu.dk/ase/ase/io/io.html
+````
+
+### computation/playbooks/mdanalysis.md
+
+````markdown
+---
+tool: MDAnalysis
+type: python-library
+last_updated: "{{TODAY}}"
+---
+
+# MDAnalysis Playbook
+
+## 概要
+
+MDAnalysis の API 利用ノウハウ。GROMACS / NAMD / LAMMPS / AMBER 等の trajectory を統一 API で解析。
+
+## 基本ルール
+
+- import: `import MDAnalysis as mda`
+- Universe: `u = mda.Universe("topol.tpr", "traj.xtc")`（topology + trajectory）
+  - GROMACS: `.tpr` + `.xtc`/`.trr`
+  - NAMD: `.psf` + `.dcd`
+  - LAMMPS: `.data` + `.lammpstrj`（custom dump 形式は要 reader 指定）
+  - AMBER: `.prmtop` + `.nc`/`.trj`
+- AtomGroup 選択: `u.select_atoms("name CA and resid 1-100")`
+- フレーム反復: `for ts in u.trajectory: ...`、`u.trajectory[i]` で indexing 可能
+
+## よくある罠
+
+- **frame 番号の base**：0-based。論文・実験慣習の 1-based と混同しない
+- **time vs step**：`ts.time` は ps 単位、`ts.frame` はインデックス
+- **PBC**：`u.select_atoms(...).positions` は wrap 座標。bond 計算前に `u.atoms.unwrap()` を呼ぶ
+- **memory load**：`mda.Universe(..., in_memory=True)` で全 frame を一括ロード。大きい trajectory は streaming で
+- **selection 高速化**：`u.select_atoms("...")` は frame ごとに再評価。固定なら `ag = u.select_atoms("...")` で 1 回だけ評価し、`ag.positions` を frame ごとに参照
+
+## デフォルト推奨パターン
+
+```python
+# RMSD 解析
+from MDAnalysis.analysis import rms
+R = rms.RMSD(u, u, select="backbone").run()
+# R.rmsd shape: (n_frames, 3)  [frame, time, rmsd]
+
+# RDF 解析
+from MDAnalysis.analysis.rdf import InterRDF
+g_OO = InterRDF(O_atoms, O_atoms, nbins=200, range=(0, 10)).run()
+```
+
+## Lessons Learned
+
+### YYYY-MM-DD - <一行サマリ>
+
+- 状況:
+- 原因:
+- 教訓:
+
+## 参考リンク
+
+- 公式: https://www.mdanalysis.org/
+- User Guide: https://userguide.mdanalysis.org/
+- API: https://docs.mdanalysis.org/
+````
+
+### computation/playbooks/pymatgen.md
+
+````markdown
+---
+tool: pymatgen
+type: python-library
+last_updated: "{{TODAY}}"
+---
+
+# pymatgen Playbook
+
+## 概要
+
+pymatgen（Python Materials Genomics）の API 利用ノウハウ。VASP / QE / Gaussian の入出力、Materials Project API、結晶構造解析。
+
+## 基本ルール
+
+- import: `from pymatgen.core import Structure, Lattice, Molecule; from pymatgen.io.vasp import Vasprun, Poscar`
+- Structure: `Structure.from_file("POSCAR")` / `Structure.from_file("input.cif")`
+- Molecule: `Molecule.from_file("mol.xyz")` / `Molecule.from_file("input.gjf")`
+- 書き出し: `s.to(filename="POSCAR")` / `s.to(fmt="cif", filename="out.cif")`
+
+## VASP 解析
+
+- run の解析: `vr = Vasprun("vasprun.xml")`, `vr.final_energy`, `vr.eigenvalue_band_properties`
+- DOS: `dos = vr.complete_dos`, `plotter = DosPlotter(); plotter.add_dos("Total", dos)`
+- Band: `bs = vr.get_band_structure()`, `BSPlotter(bs).get_plot()`
+
+## Materials Project 連携
+
+```python
+from mp_api.client import MPRester
+with MPRester(api_key=os.environ["MP_API_KEY"]) as mpr:
+    docs = mpr.materials.summary.search(elements=["Li", "Co", "O"], num_chunks=1)
+```
+
+## よくある罠
+
+- **VASP version**：vasprun.xml のフォーマットは VASP version で微妙に異なる。新しい pymatgen でないと parse error
+- **CIF symmetry**：`Structure.from_file("foo.cif")` で symmetry 情報を保持。`Structure(lattice, species, coords)` 直接構築だと P1 扱い
+- **fractional vs cartesian**：`Structure.frac_coords` と `Structure.cart_coords` の混同に注意
+- **MP API key**：環境変数 `MP_API_KEY` が必要、登録は無料
+
+## Lessons Learned
+
+### YYYY-MM-DD - <一行サマリ>
+
+- 状況:
+- 原因:
+- 教訓:
+
+## 参考リンク
+
+- 公式: https://pymatgen.org/
+- API: https://pymatgen.org/pymatgen.html
+- Materials Project: https://materialsproject.org/
+````
+
+---
+
 ## その他の対応ソフト（雛形のみ）
 
 ユーザーが Q2 で別のソフトを指定した場合の汎用雛形。`<tool>` を該当名に置換して配置。

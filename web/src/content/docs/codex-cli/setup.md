@@ -154,6 +154,6 @@ codex
 
 ## 次のステップ
 
-- [Codex CLI トップ](/codex-cli/) — Tier 2 全体像
+- [Codex CLI トップ](/codex-cli/) — Codex CLI 全体像
 - [配布プラグイン（caw）](/plugin/) — caw の含まれる内容（Claude Code 版・Codex 版共通）
 - [対応ツール一覧](/tools/) — 計算ソフト・ナレッジベース・クラウドストレージのマトリクス

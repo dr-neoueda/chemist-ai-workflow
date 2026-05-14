@@ -1,5 +1,5 @@
 ---
-title: "Tier 4: Web 版（最小）"
+title: "ChatGPT / Gemini Web 版（補助・最小）"
 description: ブラウザのみで完結する圧縮版。CLI を使えない環境向け
 ---
 
