@@ -50,10 +50,14 @@ Codex CLI ではスラッシュ不要。`caw` と入力するか、「化学プ�
 
 ## 章立て
 
-1. [Codex CLI セットアップ + caw プラグイン導入](/codex-cli/setup/)
-2. `AGENTS.md` の書き方 — Claude Code の `CLAUDE.md` との対応（執筆予定）
-3. ルールの記述方法と粒度（執筆予定）
-4. [Claude + Codex 二段レビュー連携](/claude-code/two-stage-review/)（応用編、Claude Code 章を参照）
+1. [環境構築](/codex-cli/setup/) — Codex CLI インストール + 認証 + caw プラグイン導入 + `.company/` 初期化
+2. [設定の階層と基礎](/codex-cli/basics/) — `~/.codex/config.toml`、プロジェクト trust、モデル選択、思考レベル
+3. [`AGENTS.md` の書き方](/codex-cli/agents-md/) — Codex 流のプロジェクトルール記述、Claude Code の `CLAUDE.md` との対応
+4. [Skills](/codex-cli/skills/) — Codex Skills の構造、`SKILL.md` フォーマット、caw を例として
+5. [Commands（スラッシュコマンド）](/codex-cli/commands/) — `commands/<name>.md` の作り方、Skills との使い分け
+6. [MCP サーバー連携](/codex-cli/mcp/) — Notion / Google Drive / Gmail などへの統合
+7. [.company/ 部署テンプレート](/claude-code/company-template/)（共通 — Claude Code 章を参照、AGENTS.md に読み替え）
+8. [Claude + Codex 二段レビュー連携](/claude-code/two-stage-review/)（応用編、Claude Code 章を参照）
 
 ## 著者メモ（応用編）
 
