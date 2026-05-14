@@ -9,10 +9,9 @@ OpenAI 公式のターミナル CLI エージェント。**AGENTS.md** を標準
 
 ```bash
 codex plugin marketplace add dr-neoueda/chemist-ai-workflow
-codex plugin install caw
 ```
 
-`codex plugin list` で `caw` が `enabled` 表示されれば導入完了。
+Codex CLI のプラグイン管理は **marketplace 単位**で、個別の `install` コマンドはありません。`~/.codex/config.toml` に `[plugins."caw@chemist-ai-workflow"]` が追加されていれば導入完了。
 
 ## クイックスタート
 
@@ -55,7 +54,7 @@ Codex CLI ではスラッシュ不要。`caw` と入力するか、「化学プ�
 
 | 観点 | Claude Code 版 | Codex 版 |
 |---|---|---|
-| インストール | `/plugin install caw@chemist-ai-workflow` | `codex plugin install caw` |
+| インストール | `/plugin install caw@chemist-ai-workflow` | `codex plugin marketplace add dr-neoueda/chemist-ai-workflow` |
 | プラグイン構造 | `.claude-plugin/plugin.json` | `.codex-plugin/plugin.json` |
 | 生成される指示ファイル | `<dept>/CLAUDE.md` | `<dept>/AGENTS.md` |
 | 部署テンプレ内容 | 同一 | 同一 |
