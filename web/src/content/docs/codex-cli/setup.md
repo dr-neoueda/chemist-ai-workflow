@@ -88,16 +88,17 @@ model_reasoning_effort = "high"
 
 #### 配布ステータス
 
-- **v1.0.0 公開済み（2026-05-13）**: 公式 marketplace（`dr-neoueda/chemist-ai-workflow`、MIT ライセンス）から導入可能
+- **Codex 1.2.1 公開済み（2026-05-14）**: 公式 marketplace（`dr-neoueda/chemist-ai-workflow`、MIT ライセンス）から導入可能。Claude Code 版と同じ 5 Skills（caw / caw-paper / caw-input / caw-playbook / caw-doctor）
 
 #### Step 1: プラグインのインストール
 
+Codex CLI のプラグイン管理は **marketplace 単位**です。marketplace を追加すると、含まれるプラグイン（caw）がそのまま利用可能になります（個別の `install` コマンドはありません）。
+
 ```bash
 codex plugin marketplace add dr-neoueda/chemist-ai-workflow
-codex plugin install caw
 ```
 
-`codex plugin list` で `caw` が `enabled` 表示されれば導入完了。
+`~/.codex/config.toml` に `[plugins."caw@chemist-ai-workflow"]` が追加されていれば導入完了。除去・更新の手順は [アンインストールと環境リセット](/codex-cli/uninstall/) を参照。
 
 #### Step 2: オンボーディング
 
@@ -147,7 +148,7 @@ codex
 |---|---|
 | 「今日の TODO を整理して」 | `secretary/todos/YYYY-MM-DD.md` を表示・編集 |
 | 「ORCA で benzene の構造最適化の雛形を作って」 | `orca/<system>_<purpose>_<YYYYMMDD>/` を作成し `.inp` 雛形 + `.company/computation/jobs/` にジョブ記録 |
-| 「読んだ論文を登録して」 | PDF → `.company/research/papers/<author-year>.md` に書誌情報付き md を生成 |
+| 「読んだ論文を登録して」 | PDF → `papers/<author-year>.md` に書誌情報付き md を生成 |
 | 「ここまでの会話で決めたことを記録して」 | `secretary/notes/YYYY-MM-DD-decisions.md` に追記 |
 
 オンボーディング（caw 版）または初期セットアップ（手動版）は初回のみ。2 回目以降の起動は既存の `.company/` を検出し、自動的に運営モードに入ります。

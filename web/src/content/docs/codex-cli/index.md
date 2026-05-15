@@ -9,10 +9,9 @@ OpenAI 公式のターミナル CLI エージェント。**AGENTS.md** を標準
 
 ```bash
 codex plugin marketplace add dr-neoueda/chemist-ai-workflow
-codex plugin install caw
 ```
 
-`codex plugin list` で `caw` が `enabled` 表示されれば導入完了。
+Codex CLI のプラグイン管理は **marketplace 単位**で、個別の `install` コマンドはありません。`~/.codex/config.toml` に `[plugins."caw@chemist-ai-workflow"]` が追加されていれば導入完了。
 
 ## クイックスタート
 
@@ -55,7 +54,7 @@ Codex CLI ではスラッシュ不要。`caw` と入力するか、「化学プ�
 
 | 観点 | Claude Code 版 | Codex 版 |
 |---|---|---|
-| インストール | `/plugin install caw@chemist-ai-workflow` | `codex plugin install caw` |
+| インストール | `/plugin install caw@chemist-ai-workflow` | `codex plugin marketplace add dr-neoueda/chemist-ai-workflow` |
 | プラグイン構造 | `.claude-plugin/plugin.json` | `.codex-plugin/plugin.json` |
 | 生成される指示ファイル | `<dept>/CLAUDE.md` | `<dept>/AGENTS.md` |
 | 部署テンプレ内容 | 同一 | 同一 |
@@ -67,14 +66,15 @@ Codex CLI ではスラッシュ不要。`caw` と入力するか、「化学プ�
 ## 章立て
 
 1. [環境構築](/codex-cli/setup/) — Codex CLI インストール + 認証 + caw プラグイン導入 + `.company/` 初期化
-2. [設定の階層と基礎](/codex-cli/basics/) — `~/.codex/config.toml`、プロジェクト trust、モデル選択、思考レベル
-3. [`AGENTS.md` の書き方](/codex-cli/agents-md/) — Codex 流のプロジェクトルール記述、Claude Code の `CLAUDE.md` との対応
-4. [Skills](/codex-cli/skills/) — Codex Skills の構造、`SKILL.md` フォーマット、caw を例として
-5. [Commands（スラッシュコマンド）](/codex-cli/commands/) — `commands/<name>.md` の作り方、Skills との使い分け
-6. [Sub-agents](/codex-cli/subagents/) — Codex の sub-agent 機能、並列調査・並列レビューの組み方
-7. [MCP サーバー連携](/codex-cli/mcp/) — Notion / Google Drive / Gmail などへの統合
-8. [.company/ 部署テンプレート](/claude-code/company-template/)（共通 — Claude Code 章を参照、AGENTS.md に読み替え）
-9. [Claude + Codex 二段レビュー連携](/claude-code/two-stage-review/)（応用編、Claude Code 章を参照）
+2. [アンインストールと環境リセット](/codex-cli/uninstall/) — caw の完全除去、最新版への更新、`.company/` の作り直し
+3. [設定の階層と基礎](/codex-cli/basics/) — `~/.codex/config.toml`、プロジェクト trust、モデル選択、思考レベル
+4. [`AGENTS.md` の書き方](/codex-cli/agents-md/) — Codex 流のプロジェクトルール記述、Claude Code の `CLAUDE.md` との対応
+5. [Skills](/codex-cli/skills/) — Codex Skills の構造、`SKILL.md` フォーマット、caw を例として
+6. [Commands（スラッシュコマンド）](/codex-cli/commands/) — `commands/<name>.md` の作り方、Skills との使い分け
+7. [Sub-agents](/codex-cli/subagents/) — Codex の sub-agent 機能、並列調査・並列レビューの組み方
+8. [MCP サーバー連携](/codex-cli/mcp/) — Notion / Google Drive / Gmail などへの統合
+9. [.company/ 部署テンプレート](/claude-code/company-template/)（共通 — Claude Code 章を参照、AGENTS.md に読み替え）
+10. [Claude + Codex 二段レビュー連携](/claude-code/two-stage-review/)（応用編、Claude Code 章を参照）
 
 ## 著者メモ（応用編）
 

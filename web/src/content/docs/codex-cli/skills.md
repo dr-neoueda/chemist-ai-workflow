@@ -181,14 +181,12 @@ my-plugin/
 
 ```bash
 codex plugin marketplace add <github-user>/<repo>
-codex plugin install <plugin-name>
 ```
 
-caw を実例にすると：
+marketplace を追加すると、含まれるプラグインがそのまま利用可能になります（個別の `install` コマンドはありません）。caw を実例にすると：
 
 ```bash
 codex plugin marketplace add dr-neoueda/chemist-ai-workflow
-codex plugin install caw
 ```
 
 ## スキル設計のベストプラクティス
@@ -246,7 +244,7 @@ ls ~/.codex/skills/
 ls ~/.codex/plugins/cache/*/*/*/skills/
 ```
 
-または `codex plugin list` でプラグイン経由の一覧を確認。
+プラグイン経由で導入済みのものは `~/.codex/config.toml` の `[plugins.*]` セクションでも確認できます。
 
 ## 次のステップ
 

@@ -33,10 +33,9 @@ claude
 
 ```bash
 codex plugin marketplace add dr-neoueda/chemist-ai-workflow
-codex plugin install caw
 ```
 
-`codex plugin list` で `caw` が `enabled` 表示されれば導入完了。Claude Code 版と同一のリポジトリから配信され、内容は基本同一（生成される指示ファイルが `CLAUDE.md` → `AGENTS.md` に変わる点のみ）。
+Codex CLI のプラグイン管理は **marketplace 単位**で、個別の `install` コマンドはありません。`~/.codex/config.toml` に `[plugins."caw@chemist-ai-workflow"]` が追加されていれば導入完了。Claude Code 版と同一のリポジトリから配信され、内容は基本同一（生成される指示ファイルが `CLAUDE.md` → `AGENTS.md` に変わる点のみ）。
 
 導入後の起動：
 
@@ -53,7 +52,7 @@ Codex CLI ではスラッシュ不要。`caw` と入力するか、「化学プ�
 | エージェント | インストール | 起動 |
 |---|---|---|
 | Claude Code | `/plugin marketplace add ...` → `/plugin install caw` | `/caw` |
-| Codex CLI | `codex plugin marketplace add ...` → `codex plugin install caw` | `caw`（または自然言語） |
+| Codex CLI | `codex plugin marketplace add ...`（marketplace 単位、個別 install なし） | `caw`（または自然言語） |
 
 Claude Code はスキル発火を `/` 構文に統合、Codex CLI は `/` を明示的コマンド専用に予約しスキルは自然言語マッチで発火する設計の違いがあります。
 
