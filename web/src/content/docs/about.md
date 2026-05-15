@@ -9,17 +9,17 @@ description: Chemist's AI Workflow の背景・ポジショニング・差別化
 
 AI エージェントを単発のチャットツールとして使うのではなく、研究プロセス全体を支える基盤として運用するための、化学者向けの体系的メソッドです。
 
-## 設計方針：CLI 中立 + Claude Code 最適
+## 設計方針：CLI 中立 + 主軸 2 本柱
 
 | レイヤ | 中立性 | 内容 |
 |--------|--------|------|
 | 核：方法論 | OS / CLI 中立 | 部署設計、ファイル構造、運用ルール、品質ゲート |
-| 実装 A：Claude Code 版（**premium**） | Anthropic 専用 | Skills, Hooks, Sub-agents, MCP フル活用 |
-| 実装 B：Codex CLI 版（次点） | OpenAI 専用 | AGENTS.md ベースの簡易再現 |
-| 実装 C：Gemini CLI 版（無料枠） | Google 専用 | OSS / Apache 2.0、個人アカウントで無料枠 |
-| 実装 D：ChatGPT/Gemini Web 版（最小） | ブラウザのみ | 単一プロンプトに圧縮した最小版 |
+| 主軸 A：Claude Code 版 | Anthropic 専用 | Skills / Hooks / Sub-agents / MCP フル活用。著者の常用環境で検証密度が最も高い |
+| 主軸 B：Codex CLI 版 | OpenAI 専用 | Skills（自然言語マッチ）/ Commands / Sub-agents / MCP に対応。AGENTS.md ベースで Claude Code 版と機能パリティ |
+| 補助 C：Gemini CLI 版 | Google 専用 | OSS / Apache 2.0、個人アカウントで無料枠 |
+| 補助 D：ChatGPT/Gemini Web 版 | ブラウザのみ | 単一プロンプトに圧縮した最小版 |
 
-→ ベンダーロックイン（Anthropic 依存）リスクを回避しつつ、Claude Code の優位性は前面に出す。
+→ Claude Code と Codex CLI を **同格の主軸** として並列配信。研究室で派閥が分かれても共通の `.company/` メソッドで運用でき、ベンダーロックインリスクを回避。
 
 ## 差別化ポイント
 
