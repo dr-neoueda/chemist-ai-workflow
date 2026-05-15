@@ -797,3 +797,16 @@ last_updated: "{{TODAY}}"
 - `last_updated` フィールドを必ず更新
 - **既存エントリの上書き禁止、末尾追記のみ**
 - 数値計算スクリプトのバグや汎関数 / basis の選択ミスなど、再現させない知見を体系化する
+
+---
+
+## 計算外ソフトの Playbook（参考）
+
+スライド生成・論文執筆・申請書執筆など、計算ソフト以外の **再現可能な手順** が必要な部署にも同じ Playbook 思想が適用できる。これらは個別の Skill で実装されている:
+
+| 部署 | Skill | Playbook 相当の知見の場所 |
+|---|---|---|
+| presentation | `caw-slides` | `references/style-guide.md`（14 セクション + canonical 実装パターン）+ `references/pptx_helpers.py`（1000+ 行ヘルパ）+ 4 用途バリアントテンプレート |
+| writing | （Phase 2 で追加予定） | `manuscripts/_style/` 配下の文体プロファイル |
+
+`caw-slides` の場合、新しい失敗パターン（フォント豆腐・shape 重なり・L1 違反など）を見つけたら `.company/presentation/CLAUDE.md` (or AGENTS.md) の Lessons Learned セクションに追記する。スタイルガイド本体（plugin 同梱の `references/style-guide.md`）は plugin 更新で上書きされるため触らない。

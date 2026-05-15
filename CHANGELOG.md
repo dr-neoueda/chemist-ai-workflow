@@ -2,6 +2,40 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.4.0 / Codex 1.3.0] - 2026-05-15
+
+### Added — `caw-slides` Skill（PowerPoint スライド生成）
+
+化学研究発表用 PowerPoint スライドを python-pptx ベースで生成する専用 Skill。実運用された 12 件のスライドから抽出したスタイルガイドを内蔵し、4 用途バリアントで「学会発表 / 論文紹介 / 報告会 / 講義」に対応する。
+
+- **発火**: 自然言語マッチ（「スライド作って」「パワポ」「学会発表」「論文紹介」「報告会」「講義スライド」等）
+- **同梱資産**（plugin / codex-plugin 並列配信）:
+  - `references/pptx_helpers.py`（1000+ 行）: `add_slide_chrome` / `add_key_message_band` / `mixed_runs` / `assert_no_overlap` / `add_bar_chart` / `add_scatter_line_chart` / `add_flow_box` / `add_data_table` 等のヘルパ。MS Gothic のクロスプラットフォーム探索（macOS / Windows / Linux、`CAW_SLIDES_MSGOTHIC` 環境変数で override 可）
+  - `references/style-guide.md`: 14 セクション + canonical 実装パターン（16:9、フォント混在、L1 強調 1 個ルール、4 層 y 座標構造、3 tier 強調 L1/L2/L4、native chart 強制、座標 hygiene）
+  - `references/codex-exec-templates.md`: Codex 委譲 v2（完全お任せ）プロンプトテンプレ集
+  - `templates/generate_conference.py`: 学会発表 variant（口頭・ポスター、20-50 枚）
+  - `templates/generate_journal_club.py`: 論文紹介 variant（6-12 枚、pdftoppm + crop ワークフロー）
+  - `templates/generate_lab_report.py`: 研究室報告会 variant（6-15 枚、native chart + table）
+  - `templates/generate_lecture.py`: 講義・チュートリアル variant（15-30 枚、概念フロー図）
+- **品質ゲート**: `assert_no_overlap` で shape 矩形交差を物理的に禁止（ValueError raise）、L1 1 個ルール、Excel-editable native chart のみ
+- **動作確認**: 4 templates 全て smoke test 成功（標準的な 4 枚のデモ .pptx を生成、`assert_no_overlap` pass）
+
+### Changed
+
+- **`plugin/skills/caw/references/chemistry-departments.md`**: presentation 部の説明を caw-slides skill 利用前提に更新。サブディレクトリ列挙に `scripts/`, `notes/`, `references/` を追加、成果物パスを `slides/` → `presentations/slides/` に統一
+- **`plugin/skills/caw/references/playbook-starters.md`**: 「計算外ソフトの Playbook」セクションを追加し、caw-slides との関係を明示
+- **`web/src/content/docs/claude-code/application.md`**: §5 を caw-slides skill ベースに改稿（4 用途バリアント、共通スタイルガイド、`assert_no_overlap` 保証）
+- `plugin/.claude-plugin/plugin.json` version 1.3.1 → 1.4.0
+- `codex-plugin/.codex-plugin/plugin.json` version 1.2.1 → 1.3.0
+- `.claude-plugin/marketplace.json` plugin 列挙の version 同期
+
+### Notes
+
+- スライド生成システムは元々ユーザーの `.company/presentation/` で実運用されていた成熟資産を caw plugin 化したもの。新規開発ではなく **配信パッケージング**として実装。個人情報（著者名・研究室名・特定研究テーマ・機器型番）はすべて除去済み
+- Codex CLI 版（codex-plugin）も同一資産を並列配信。両 CLI で完全機能パリティ
+- python-pptx の依存（`python-pptx`、`matplotlib`、`Pillow`）はユーザーが事前にインストール
+- スタイルガイド本体（`references/style-guide.md`）はプラグイン更新で上書きされる。プロジェクト固有のオーバーライドは `.company/presentation/CLAUDE.md` (or AGENTS.md) に追加
+
 ## [1.3.1 / Codex 1.2.1] - 2026-05-14
 
 ### Fixed（B16 — Windows / Linux 対応）
