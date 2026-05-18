@@ -105,8 +105,6 @@ def build_theme_slide(prs, slide_number: int):
                      alignment=PP_ALIGN.CENTER)],
     )
     rects.append(h.CODEX_KEY_MSG_RECT + ("<key-msg>",))
-    h.add_source_line(slide, "")
-    rects.append(h.CODEX_SOURCE_RECT + ("<source>",))
     h.assert_no_overlap(rects)
 
 
@@ -134,8 +132,6 @@ def build_progress_chart_slide(prs, slide_number: int):
                      alignment=PP_ALIGN.CENTER)],
     )
     rects.append(h.CODEX_KEY_MSG_RECT + ("<key-msg>",))
-    h.add_source_line(slide, "")
-    rects.append(h.CODEX_SOURCE_RECT + ("<source>",))
     h.assert_no_overlap(rects)
 
 
@@ -163,8 +159,6 @@ def build_progress_table_slide(prs, slide_number: int):
                      alignment=PP_ALIGN.CENTER)],
     )
     rects.append(h.CODEX_KEY_MSG_RECT + ("<key-msg>",))
-    h.add_source_line(slide, "")
-    rects.append(h.CODEX_SOURCE_RECT + ("<source>",))
     h.assert_no_overlap(rects)
 
 
@@ -195,8 +189,6 @@ def build_next_steps_slide(prs, slide_number: int):
                      alignment=PP_ALIGN.CENTER)],
     )
     rects.append(h.CODEX_KEY_MSG_RECT + ("<key-msg>",))
-    h.add_source_line(slide, "")
-    rects.append(h.CODEX_SOURCE_RECT + ("<source>",))
     h.assert_no_overlap(rects)
 
 

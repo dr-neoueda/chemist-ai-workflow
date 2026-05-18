@@ -11,7 +11,7 @@
 - **発火**: 自然言語マッチ（「スライド作って」「パワポ」「学会発表」「論文紹介」「報告会」「講義スライド」等）
 - **同梱資産**（plugin / codex-plugin 並列配信）:
   - `references/pptx_helpers.py`（1000+ 行）: `add_slide_chrome` / `add_key_message_band` / `mixed_runs` / `assert_no_overlap` / `add_bar_chart` / `add_scatter_line_chart` / `add_flow_box` / `add_data_table` 等のヘルパ。MS Gothic のクロスプラットフォーム探索（macOS / Windows / Linux、`CAW_SLIDES_MSGOTHIC` 環境変数で override 可）
-  - `references/style-guide.md`: 14 セクション + canonical 実装パターン（16:9、フォント混在、L1 強調 1 個ルール、4 層 y 座標構造、3 tier 強調 L1/L2/L4、native chart 強制、座標 hygiene）
+  - `references/style-guide.md`: 14 セクション + canonical 実装パターン（16:9、フォント混在、L1 強調 1 個ルール、3 層 y 座標構造（chrome / 本文 / key-message band）、3 tier 強調 L1/L2/L4（L2 = 影なし・枠線あり・塗りなしの透明箱）、native chart 強制、座標 hygiene、出典は用途別に任意で `add_source_line`）
   - `references/codex-exec-templates.md`: Codex 委譲 v2（完全お任せ）プロンプトテンプレ集
   - `templates/generate_conference.py`: 学会発表 variant（口頭・ポスター、20-50 枚）
   - `templates/generate_journal_club.py`: 論文紹介 variant（6-12 枚、pdftoppm + crop ワークフロー）

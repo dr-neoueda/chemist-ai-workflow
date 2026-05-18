@@ -479,24 +479,25 @@ plt.rcParams['font.family'] = _FN   # MS Gothic を再アサート
 
 ### 14-1. 物理レイアウト（16:9 / 13.33" × 7.5"）
 
-コンテンツスライドは 4 層構造に統一：
+コンテンツスライドは 3 層構造に統一：
 
 | y 座標 (inch) | 要素 | helper |
 |-------------:|------|--------|
 | 0.12 – 0.82 | Title + Slide number + 青の separator bar | `add_slide_chrome(slide, title, slide_number)` |
 | 1.18 – 6.13 | 本文ゾーン（body card / chart / table / flow diagram） | 各種 `add_*` helper |
 | 6.28 – 6.86 | Key-message band（**L1 強調**: pale blue fill + 黒枠 + shadow） | `add_key_message_band` or `loud_key_message` |
-| 7.02 – 7.20 | Source line（Pt 9, #B0B0B0, marginalia） | `add_source_line` |
 
-表紙スライドは例外：category pill / 大見出し / hero chart or figure / focus pill (L1) / source line。
+表紙スライドは例外：category pill / 大見出し / hero chart or figure / focus pill (L1)。
+
+> 出典・引用が必要なスライド（特に論文紹介）では、本文ゾーン内に出典文を置くか、必要なら `add_source_line` ヘルパを呼んで本文の末尾に小さく添える。出典をすべてのスライドに置くルールは廃止（読み手の認知負荷削減のため）。
 
 ### 14-2. 強調の 3 tier（L1 / L2 / L4。L3 は廃止）
 
 | Level | shadow | border | fill | 使用場面 |
 |-------|:------:|:------:|:----:|---------|
 | **L1 LOUD** | ✓ | ✓ | ✓ | 各スライドで **一番伝えたい 1 要素**。通常は key-message band、表紙のみ focus pill |
-| **L2 STRONG** | ✓ | ✓ | ✗ | 強めに目を引きたい透明箱。稀 |
-| **L4 QUIET** | ✗ | ✗ | ✗ | 本文・callout・source line など装飾なしで置くテキスト |
+| **L2 STRONG** | ✗ | ✓ | ✗ | 枠線だけで目を引きたい透明箱。稀 |
+| **L4 QUIET** | ✗ | ✗ | ✗ | 本文・callout など装飾なしで置くテキスト |
 
 #### 鉄則
 
@@ -514,9 +515,8 @@ plt.rcParams['font.family'] = _FN   # MS Gothic を再アサート
 | text_summary の「数値」 | 24pt Bold（headline は 28pt） | 強調色（navy / red / green） |
 | text_summary の「タイトル行」 | 12pt Bold | `COLOR_LABEL_GREY` (#888888) |
 | text_summary の「キャプション」 | 10pt | `COLOR_LABEL_GREY` |
-| **Source line** | **9pt** | `COLOR_SOURCE_GREY` (#B0B0B0) |
 
-Source line は marginalia。本文 16pt の半分強、色も薄く「読む気を起こさせない」存在感に。
+> 必要に応じて出典を入れる場合は **9pt / `COLOR_SOURCE_GREY` (#B0B0B0)** を使う（`add_source_line` ヘルパが既定値）。本文 16pt の半分強、色も薄く marginalia として「読む気を起こさせない」存在感に。
 
 ### 14-4. グラフは Excel-editable native chart のみ
 
@@ -573,7 +573,7 @@ Helper:
 2. `.company/presentation/notes/YYYY-MM-DD-plan.md` に構成計画（スライドタイトル / 各スライドの L1 メッセージ）を書く
 3. `.company/presentation/scripts/generate_<purpose>_<YYYYMMDD>.py` を作成し、`pptx_helpers` から必要な helper を import
 4. 本セクションの 14-1 〜 14-5 に沿って各スライドビルダーを書く：
-   - `add_slide_chrome` → 本文ゾーン → `loud_key_message` → `add_source_line`
+   - `add_slide_chrome` → 本文ゾーン → `loud_key_message`（出典が必要なら本文ゾーン内 or 末尾に `add_source_line`）
    - 全座標を `int()` で coerce、`//` で整数除算
    - 本文カードは装飾なし（デフォルト）、`text_summary` で値 callout、pill は L1 に限定
 5. `assert_no_overlap` が末尾で必ず走ることを確認

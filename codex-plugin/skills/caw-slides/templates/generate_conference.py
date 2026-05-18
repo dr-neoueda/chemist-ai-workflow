@@ -125,8 +125,6 @@ def build_motivation_slide(prs, slide_number: int):
     )
     rects.append(h.CODEX_KEY_MSG_RECT + ("<key-msg>",))
 
-    h.add_source_line(slide, "")
-    rects.append(h.CODEX_SOURCE_RECT + ("<source>",))
     h.assert_no_overlap(rects)
 
 
@@ -156,8 +154,6 @@ def build_results_slide(prs, slide_number: int):
     )
     rects.append(h.CODEX_KEY_MSG_RECT + ("<key-msg>",))
 
-    h.add_source_line(slide, "")
-    rects.append(h.CODEX_SOURCE_RECT + ("<source>",))
     h.assert_no_overlap(rects)
 
 
@@ -190,8 +186,6 @@ def build_conclusion_slide(prs, slide_number: int):
     )
     rects.append(h.CODEX_KEY_MSG_RECT + ("<key-msg>",))
 
-    h.add_source_line(slide, "")
-    rects.append(h.CODEX_SOURCE_RECT + ("<source>",))
     h.assert_no_overlap(rects)
 
 

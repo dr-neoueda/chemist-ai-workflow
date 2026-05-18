@@ -110,8 +110,6 @@ def build_goals_slide(prs, slide_number: int):
                      alignment=PP_ALIGN.CENTER)],
     )
     rects.append(h.CODEX_KEY_MSG_RECT + ("<key-msg>",))
-    h.add_source_line(slide, "")
-    rects.append(h.CODEX_SOURCE_RECT + ("<source>",))
     h.assert_no_overlap(rects)
 
 
@@ -157,8 +155,6 @@ def build_concept_flow_slide(prs, slide_number: int):
                      alignment=PP_ALIGN.CENTER)],
     )
     rects.append(h.CODEX_KEY_MSG_RECT + ("<key-msg>",))
-    h.add_source_line(slide, "")
-    rects.append(h.CODEX_SOURCE_RECT + ("<source>",))
     h.assert_no_overlap(rects)
 
 
@@ -190,8 +186,6 @@ def build_summary_slide(prs, slide_number: int):
                      alignment=PP_ALIGN.CENTER)],
     )
     rects.append(h.CODEX_KEY_MSG_RECT + ("<key-msg>",))
-    h.add_source_line(slide, "")
-    rects.append(h.CODEX_SOURCE_RECT + ("<source>",))
     h.assert_no_overlap(rects)
 
 
