@@ -63,15 +63,15 @@
 - 文章で書きたい内容が図表に置き換えられない場合、その内容は **そもそも口頭で話せばよい**（スライドは話を補助する道具）
 - スライドに残すかどうか迷ったら捨てる。**読み手の認知負荷を下げる方が情報量を増やすより常に正しい**
 
-### 自動チェック（推奨ヘルパ、Phase 2 で実装予定）
+### 自動チェック（実装済み・v1.4.0 以降）
 
-`pptx_helpers.assert_text_minimal(slide)` を各スライドビルダー末尾で呼び、以下を自動検証する仕組みは Phase 2 で追加予定。現状は人間（または生成 AI）が手動で本セクションを参照して判定する。
+`pptx_helpers.assert_text_minimal(slide)` を各スライドビルダー末尾で呼び、以下を自動検証する。違反は `ValueError` で生成停止（`assert_no_overlap` と同じ仕組み）。
 
-- テキストボックス数 ≤ 4
-- 本文総行数 ≤ 8
-- 1 ボックス内文字数 ≤ 120
+- **テキストボックス数 ≤ 5**（タイトル + slide_number + 本文 + key-msg + 補足 1）。`split_2col` を使うときは `max_textboxes=6` を明示
+- **本文総行数 ≤ 12**（chrome 3 + 本文 ~8 + key-msg）
+- **1 ボックス内文字数 ≤ 120**
 
-違反は `ValueError` で生成停止（`assert_no_overlap` と同じ仕組み）。
+加えて `pptx_helpers.assert_title_assertive(title)` でタイトルが「結果」「考察」「方法」等の無味な見出しでないか lint する。意図的な総括スライド（「結語」「Conclusion」「Summary」）は blacklist 外で許容。
 
 ### 既存ルールとの関係
 
@@ -626,7 +626,24 @@ Helper:
 | `add_source_line(slide, text)` | Pt 9 grey marginalia | L4 |
 | `mixed_runs(text, size=, bold=, color=)` | JA/EN 言語分割 runs | — |
 | `assert_no_overlap(rects)` | overlap guard | — |
+| **`assert_text_minimal(slide)`** | **§0 文字数上限の自動検証**（v1.4.0+） | — |
+| **`assert_title_assertive(title)`** | **タイトル主張形 lint**（v1.4.0+） | — |
 | `configure_matplotlib_japanese()` | MS Gothic を matplotlib に登録 | — |
+
+#### 化学特化ヘルパ（v1.4.0+）
+
+| helper | 役割 |
+|--------|------|
+| `add_molecule(slide, smiles, ...)` | SMILES → RDKit Draw → PNG embed（lazy import） |
+| `add_reaction_scheme(slide, reactants, products, conditions)` | 反応式（reactant + reactant → product, conditions）を横並び合成 |
+| `add_energy_diagram(slide, levels, labels, y_label)` | 反応座標 vs エネルギー の 1 ライン図（matplotlib + smoothstep curve） |
+
+#### レイアウトパターン（v1.4.0+）
+
+| helper | 役割 |
+|--------|------|
+| `split_2col(slide, left_paragraphs, right_paragraphs, ...)` | 2 カラム比較レイアウト（Form I/II・実験/シミュ・before/after）。`assert_text_minimal(slide, max_textboxes=6)` が必要 |
+| `add_timeline(slide, milestones=[(date, event), ...])` | 横軸時系列バー（先行研究年表・実験スケジュール・プロジェクト Milestone） |
 
 ### 14-7. 生成後の自動検証（必ず通す）
 

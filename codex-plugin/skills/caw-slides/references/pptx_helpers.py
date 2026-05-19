@@ -13,6 +13,8 @@ Drop-in to any chemistry project — no project-specific names or paths.
 from __future__ import annotations
 
 import os
+import tempfile
+import warnings
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -1073,3 +1075,504 @@ def add_data_table(
             run.font.name = FONT_JA if _is_japanese(value) else FONT_EN
 
     return shape
+
+
+# ---------------------------------------------------------------------------
+# §0 absolute-rule enforcement (text minimization)
+# ---------------------------------------------------------------------------
+
+
+def assert_text_minimal(
+    slide,
+    *,
+    max_textboxes: int = 5,
+    max_chars_per_box: int = 120,
+    max_total_lines: int = 12,
+) -> None:
+    """Enforce §0 (text minimization). Raise ``ValueError`` on violation.
+
+    Counts shapes with non-empty ``text_frame.text``. Default ``max_textboxes=5``
+    accounts for chrome (title + slide_number) + body content (key-message band +
+    1 main body shape + 1 supplement) per §0:
+
+      タイトル + 本文 + key-message band = 3 個まで, 補足ラベル 1 個まで許容
+      (= 4 content boxes), plus chrome's slide_number = 5 total textboxes.
+
+    Layouts that legitimately need more boxes (e.g. ``split_2col`` which adds
+    2 body cards) should pass ``max_textboxes=6`` explicitly.
+
+    Other §0 limits enforced here:
+      - 本文ブロックは総 8 行まで（chrome の title + slide_number + key-msg を足して max 12）
+      - 1 ボックス内 120 字まで
+
+    Call at the end of each slide builder, alongside :func:`assert_no_overlap`.
+    """
+    text_shapes: list[tuple[object, str]] = []
+    for shape in slide.shapes:
+        if not getattr(shape, "has_text_frame", False):
+            continue
+        text = shape.text_frame.text.strip()
+        if not text:
+            continue
+        text_shapes.append((shape, text))
+
+    n_boxes = len(text_shapes)
+    if n_boxes > max_textboxes:
+        raise ValueError(
+            f"§0 violation (textbox count): {n_boxes} text boxes on slide "
+            f"(max {max_textboxes} = title + body + key-message + 1 optional). "
+            f"Reduce text or split slide."
+        )
+
+    total_lines = 0
+    for shape, text in text_shapes:
+        paras = [p for p in shape.text_frame.paragraphs if p.text.strip()]
+        total_lines += len(paras)
+        n_chars = len(text)
+        if n_chars > max_chars_per_box:
+            raise ValueError(
+                f"§0 violation (per-box char count): {n_chars} chars (max "
+                f"{max_chars_per_box}). First 60 chars: {text[:60]!r}. "
+                f"Reduce text or split into multiple shapes."
+            )
+
+    if total_lines > max_total_lines:
+        raise ValueError(
+            f"§0 violation (total lines): {total_lines} non-empty paragraphs "
+            f"(max {max_total_lines} = ~8 body + title + key-message + margin). "
+            f"Reduce body content or split slide."
+        )
+
+
+# Generic non-assertive title heads to warn against. 結語/Conclusion/Summary are
+# intentionally NOT here -- they are valid recap-slide titles. The point of this
+# lint is to push data/insight slides toward assertive headlines like
+# "Form I が 175 分で Form II に転移" instead of bland "結果".
+_TITLE_BLACKLIST_GENERIC: frozenset[str] = frozenset({
+    # 日本語: 無味な見出し
+    "結果", "考察", "方法", "実験", "実験結果", "解析", "解析結果",
+    "目的", "前提", "実験手順", "手順", "概要", "背景", "今後の予定",
+    # English: bland section headers
+    "results", "discussion", "method", "methods", "experimental",
+    "introduction", "background", "next steps", "purpose",
+    "objective", "objectives", "procedure", "assumptions", "overview",
+})
+# Precomputed lowercase set for fast lookup (avoid per-call rebuild)
+_TITLE_BLACKLIST_LOWER: frozenset[str] = frozenset(
+    b.lower() for b in _TITLE_BLACKLIST_GENERIC
+)
+
+
+def assert_title_assertive(
+    title: str,
+    *,
+    blacklist: frozenset[str] | None = None,
+) -> None:
+    """Warn (raise ``ValueError``) if a slide title is a generic non-assertive heading.
+
+    Per §0: titles should be assertive claims (e.g., "Form I が 175 分で Form II
+    に転移") rather than bland headings ("結果", "考察"). The blacklist is
+    case-insensitive and matches the title's trimmed text exactly.
+
+    Override with ``blacklist=frozenset()`` to disable, or pass a custom set.
+    """
+    if blacklist is None:
+        bl_lower = _TITLE_BLACKLIST_LOWER  # precomputed at module load
+    else:
+        bl_lower = frozenset(b.lower() for b in blacklist)
+    normalized = title.strip().lower()
+    if normalized in bl_lower:
+        raise ValueError(
+            f"§0 violation (title not assertive): {title!r}. Use a specific "
+            f"claim (e.g. 'Form I が 175 分で Form II に転移') instead of a "
+            f"generic heading. Override with blacklist=frozenset() if "
+            f"intentional (e.g. for a section divider)."
+        )
+
+
+# ---------------------------------------------------------------------------
+# Lazy matplotlib JA configuration (used by helpers that render JA text)
+# ---------------------------------------------------------------------------
+
+_matplotlib_ja_configured: bool = False
+
+
+def _ensure_matplotlib_japanese() -> None:
+    """Configure matplotlib to render Japanese once per process.
+
+    Helpers that draw Japanese text via matplotlib (e.g. ``add_timeline``,
+    ``add_energy_diagram``) call this on first use. Emits a ``RuntimeWarning``
+    and falls back to the matplotlib default (DejaVu Sans, will tofu on CJK)
+    if MS Gothic is missing or unreadable. English-only diagrams still work.
+    """
+    global _matplotlib_ja_configured
+    if _matplotlib_ja_configured:
+        return
+    try:
+        configure_matplotlib_japanese()
+    except (FileNotFoundError, OSError) as exc:
+        warnings.warn(
+            f"MS Gothic not configured ({exc}). Japanese text in matplotlib "
+            f"diagrams will render as tofu (□). Set CAW_SLIDES_MSGOTHIC "
+            f"env var to your msgothic.ttc path to fix.",
+            RuntimeWarning,
+            stacklevel=3,
+        )
+    _matplotlib_ja_configured = True
+
+
+# ---------------------------------------------------------------------------
+# Chemistry-specific visual helpers
+# (RDKit + matplotlib are lazy-imported to keep base import light)
+# ---------------------------------------------------------------------------
+
+
+def add_molecule(
+    slide,
+    smiles: str,
+    *,
+    left: Emu,
+    top: Emu,
+    max_width: Emu,
+    max_height: Emu,
+    img_size: tuple[int, int] = (400, 400),
+):
+    """Render a SMILES string via RDKit and embed the resulting PNG.
+
+    The PNG is sized to ``img_size`` pixels then scaled into the bounding box
+    via :func:`add_picture_fit` (aspect-preserving, centered).
+
+    Requires ``rdkit`` to be installed (``pip install rdkit``).
+    """
+    try:
+        from rdkit import Chem
+        from rdkit.Chem import Draw
+    except ImportError as exc:  # pragma: no cover -- import error path
+        raise ImportError(
+            "rdkit is required for add_molecule. Install with: pip install rdkit"
+        ) from exc
+
+    mol = Chem.MolFromSmiles(smiles)
+    if mol is None:
+        raise ValueError(f"Invalid SMILES: {smiles!r}")
+
+    img = Draw.MolToImage(mol, size=img_size)
+
+    tmp_path: str | None = None
+    try:
+        # Close-then-reopen pattern: NamedTemporaryFile holds the file open on
+        # Windows, which blocks PIL.Image.open inside add_picture_fit. Closing
+        # before re-opening makes the helper Windows-safe.
+        with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
+            tmp_path = tmp.name
+        img.save(tmp_path, "PNG")
+        return add_picture_fit(
+            slide, tmp_path,
+            left=left, top=top, max_width=max_width, max_height=max_height,
+        )
+    finally:
+        if tmp_path and os.path.exists(tmp_path):
+            os.unlink(tmp_path)
+
+
+def add_reaction_scheme(
+    slide,
+    *,
+    reactants: list[str],
+    products: list[str],
+    conditions: str = "",
+    left: Emu,
+    top: Emu,
+    width: Emu,
+    height: Emu,
+):
+    """Compose a reaction scheme horizontally: reactants → products with conditions label.
+
+    ``reactants`` and ``products`` are lists of SMILES strings rendered via
+    :func:`add_molecule`. Molecules are joined with "+" between same-side
+    entries and a right arrow between the two sides. Conditions text is placed
+    above the arrow.
+
+    All molecules share equal horizontal width inside the bounding box.
+    """
+    n_r, n_p = len(reactants), len(products)
+    n_mols = n_r + n_p
+    if n_mols == 0:
+        raise ValueError("reactants and products cannot both be empty")
+
+    arrow_w = int(Inches(0.8))
+    plus_w = int(Inches(0.3))
+    n_plus = max(0, n_r - 1) + max(0, n_p - 1)
+    mol_w = (int(width) - arrow_w - n_plus * plus_w) // n_mols
+    mol_h = int(height)
+    if mol_w <= 0:
+        raise ValueError(
+            f"add_reaction_scheme: width {width} too small for {n_mols} "
+            f"molecules + arrow + {n_plus} plus signs"
+        )
+
+    def _plus_at(x: int) -> None:
+        add_rich_text_box(
+            slide,
+            [Paragraph(
+                [Run("+", size=Pt(28), bold=True, color=COLOR_TEXT_BODY, font=FONT_EN)],
+                alignment=PP_ALIGN.CENTER,
+            )],
+            left=x, top=top, width=plus_w, height=mol_h,
+            anchor=MSO_ANCHOR.MIDDLE,
+        )
+
+    x = int(left)
+    # Reactants
+    for i, smi in enumerate(reactants):
+        add_molecule(slide, smi, left=x, top=top, max_width=mol_w, max_height=mol_h)
+        x += mol_w
+        if i < n_r - 1:
+            _plus_at(x)
+            x += plus_w
+
+    # Arrow (vertically centered) with conditions label above.
+    # Clamp arrow_h to mol_h so arrow never extends outside the bounding box,
+    # which also keeps the conditions label height non-negative.
+    arrow_h = min(int(Inches(0.4)), mol_h)
+    arrow_top = int(top) + (mol_h - arrow_h) // 2
+    add_flow_arrow(
+        slide, left=x, top=arrow_top,
+        width=arrow_w, height=arrow_h, direction="right",
+    )
+    cond_h = arrow_top - int(top)
+    if conditions and cond_h > 0:
+        add_rich_text_box(
+            slide,
+            [Paragraph(
+                mixed_runs(conditions, size=Pt(12), color=COLOR_TEXT_BODY),
+                alignment=PP_ALIGN.CENTER,
+            )],
+            left=x, top=int(top), width=arrow_w, height=cond_h,
+            anchor=MSO_ANCHOR.BOTTOM,
+        )
+    x += arrow_w
+
+    # Products
+    for i, smi in enumerate(products):
+        add_molecule(slide, smi, left=x, top=top, max_width=mol_w, max_height=mol_h)
+        x += mol_w
+        if i < n_p - 1:
+            _plus_at(x)
+            x += plus_w
+
+
+def add_energy_diagram(
+    slide,
+    *,
+    levels: list[float],
+    labels: list[str],
+    left: Emu,
+    top: Emu,
+    width: Emu,
+    height: Emu,
+    y_label: str = "Energy (kcal/mol)",
+):
+    """Render a reaction-coordinate energy diagram via matplotlib and embed as PNG.
+
+    Each ``level`` is drawn as a short horizontal segment with the corresponding
+    ``label`` above it. Adjacent levels are connected with smooth interpolation
+    curves to visualize transitions (TS, intermediates).
+
+    ``levels`` are interpreted in the same units as ``y_label`` implies.
+    """
+    if len(levels) != len(labels):
+        raise ValueError(
+            f"levels ({len(levels)}) and labels ({len(labels)}) must match"
+        )
+    if len(levels) < 2:
+        raise ValueError("need at least 2 levels for an energy diagram")
+
+    import numpy as np
+
+    _ensure_matplotlib_japanese()
+    n = len(levels)
+    fig_w = max(4.0, float(width) / 914400.0)  # EMU -> inches
+    fig_h = max(2.0, float(height) / 914400.0)
+    fig, ax = plt.subplots(figsize=(fig_w, fig_h), dpi=150)
+    line_rgb = "#1A56A0"
+
+    # Endpoint segments are wider (stable reactant/product), intermediate
+    # segments (TS, intermediates) are short dashes so they read as a peak
+    # rather than a flat plateau.
+    def _seg_width(idx: int) -> float:
+        return 0.6 if idx in (0, n - 1) else 0.15
+
+    for i, (e, label) in enumerate(zip(levels, labels)):
+        sw = _seg_width(i)
+        ax.plot([i - sw / 2, i + sw / 2], [e, e], color=line_rgb, lw=3)
+        ax.annotate(
+            label, xy=(i, e), xytext=(0, 8),
+            textcoords="offset points", ha="center",
+            fontsize=11, color="#222222",
+        )
+        if i < n - 1:
+            x0 = i + sw / 2
+            x1 = (i + 1) - _seg_width(i + 1) / 2
+            xs = np.linspace(x0, x1, 30)
+            t = (xs - x0) / (x1 - x0)
+            # Smoothstep for a gentler curve than linear
+            t_smooth = t * t * (3 - 2 * t)
+            curve = e + (levels[i + 1] - e) * t_smooth
+            ax.plot(xs, curve, color=line_rgb, lw=2, ls="--", alpha=0.6)
+
+    ax.set_xlim(-0.5, n - 0.5)
+    ax.set_xticks([])
+    ax.set_ylabel(y_label, fontsize=12)
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    ax.spines["bottom"].set_visible(False)
+    fig.tight_layout()
+
+    tmp_path: str | None = None
+    try:
+        with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
+            tmp_path = tmp.name
+        fig.savefig(tmp_path, dpi=150, transparent=True)
+        plt.close(fig)
+        return add_picture_fit(
+            slide, tmp_path,
+            left=left, top=top, max_width=width, max_height=height,
+        )
+    finally:
+        plt.close(fig)  # idempotent if already closed
+        if tmp_path and os.path.exists(tmp_path):
+            os.unlink(tmp_path)
+
+
+# ---------------------------------------------------------------------------
+# Layout patterns
+# ---------------------------------------------------------------------------
+
+
+def split_2col(
+    slide,
+    *,
+    left_paragraphs: list[Paragraph],
+    right_paragraphs: list[Paragraph],
+    top: Emu,
+    height: Emu,
+    left_title: str | None = None,
+    right_title: str | None = None,
+    ratio: float = 0.5,
+    body_left: Emu = Inches(0.4),
+    body_right_margin: Emu = Inches(0.4),
+    gap: Emu = Inches(0.2),
+):
+    """Two-column comparison layout. Returns the (left_shape, right_shape) tuple.
+
+    The left column gets ``ratio`` of the available horizontal space (default
+    50/50). Titles, if provided, are added as 21pt bold navy headers above the
+    body paragraphs of each column. Both columns use :func:`add_shape_card`
+    with default L4 styling (no border / no fill / no shadow).
+
+    Use this whenever §0 says "概念の対比 → 2 カラム" (e.g., Form I vs Form II,
+    experiment vs simulation, before vs after).
+    """
+    if not (0.0 < ratio < 1.0):
+        raise ValueError(f"ratio must be in (0, 1), got {ratio}")
+
+    total_avail = int(SLIDE_WIDTH) - int(body_left) - int(body_right_margin) - int(gap)
+    if total_avail <= 0:
+        raise ValueError(
+            f"split_2col: margins + gap exceed slide width "
+            f"(body_left={body_left}, body_right_margin={body_right_margin}, "
+            f"gap={gap}). Increase slide width or reduce margins."
+        )
+    left_w = int(total_avail * ratio)
+    right_w = total_avail - left_w
+    left_x = int(body_left)
+    right_x = left_x + left_w + int(gap)
+
+    if left_title:
+        left_paragraphs = [
+            Paragraph(mixed_runs(left_title, size=Pt(21), bold=True, color=COLOR_TITLE)),
+            *left_paragraphs,
+        ]
+    if right_title:
+        right_paragraphs = [
+            Paragraph(mixed_runs(right_title, size=Pt(21), bold=True, color=COLOR_TITLE)),
+            *right_paragraphs,
+        ]
+
+    left_shape = add_shape_card(
+        slide, left=left_x, top=top, width=left_w, height=height,
+        paragraphs=left_paragraphs,
+    )
+    right_shape = add_shape_card(
+        slide, left=right_x, top=top, width=right_w, height=height,
+        paragraphs=right_paragraphs,
+    )
+    return left_shape, right_shape
+
+
+def add_timeline(
+    slide,
+    *,
+    milestones: list[tuple[str, str]],
+    left: Emu,
+    top: Emu,
+    width: Emu,
+    height: Emu,
+):
+    """Horizontal timeline: dates as bottom labels, events as top labels.
+
+    ``milestones`` is a list of ``(date_label, event_label)`` tuples, rendered
+    left-to-right with equal spacing. Useful for 先行研究年表, 実験スケジュール,
+    プロジェクト Milestone in 報告会 / 申請書 slides.
+    """
+    if not milestones:
+        raise ValueError("milestones cannot be empty")
+    if len(milestones) > 8:
+        raise ValueError(
+            f"add_timeline: {len(milestones)} milestones is too dense for one "
+            f"slide (labels will collide). Split into multiple slides or "
+            f"reduce milestones to ≤ 8."
+        )
+
+    _ensure_matplotlib_japanese()
+    n = len(milestones)
+    fig_w = max(4.0, float(width) / 914400.0)
+    fig_h = max(1.2, float(height) / 914400.0)
+    fig, ax = plt.subplots(figsize=(fig_w, fig_h), dpi=150)
+    line_rgb = "#1A56A0"
+
+    ax.plot([0.05, 0.95], [0, 0], color=line_rgb, lw=3)
+    for i, (date, event) in enumerate(milestones):
+        x = 0.05 + 0.9 * (i / max(1, n - 1)) if n > 1 else 0.5
+        ax.scatter([x], [0], color=line_rgb, s=200, zorder=3)
+        ax.annotate(
+            date, xy=(x, 0), xytext=(0, -22),
+            textcoords="offset points", ha="center",
+            fontsize=10, color=line_rgb, fontweight="bold",
+        )
+        ax.annotate(
+            event, xy=(x, 0), xytext=(0, 16),
+            textcoords="offset points", ha="center",
+            fontsize=11, color="#222222",
+        )
+
+    ax.set_xlim(-0.05, 1.05)
+    ax.set_ylim(-1, 1)
+    ax.axis("off")
+    fig.tight_layout()
+
+    tmp_path: str | None = None
+    try:
+        with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
+            tmp_path = tmp.name
+        fig.savefig(tmp_path, dpi=150, transparent=True)
+        plt.close(fig)
+        return add_picture_fit(
+            slide, tmp_path,
+            left=left, top=top, max_width=width, max_height=height,
+        )
+    finally:
+        plt.close(fig)
+        if tmp_path and os.path.exists(tmp_path):
+            os.unlink(tmp_path)

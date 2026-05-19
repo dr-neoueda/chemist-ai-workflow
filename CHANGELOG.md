@@ -11,7 +11,11 @@
 - **発火**: 自然言語マッチ（「スライド作って」「パワポ」「学会発表」「論文紹介」「報告会」「講義スライド」等）
 - **同梱資産**（plugin / codex-plugin 並列配信）:
   - `references/pptx_helpers.py`（1000+ 行）: `add_slide_chrome` / `add_key_message_band` / `mixed_runs` / `assert_no_overlap` / `add_bar_chart` / `add_scatter_line_chart` / `add_flow_box` / `add_data_table` 等のヘルパ。MS Gothic のクロスプラットフォーム探索（macOS / Windows / Linux、`CAW_SLIDES_MSGOTHIC` 環境変数で override 可）
-  - `references/style-guide.md`: 14 セクション + canonical 実装パターン（16:9、フォント混在、L1 強調 1 個ルール、3 層 y 座標構造（chrome / 本文 / key-message band）、3 tier 強調 L1/L2/L4（L2 = 影なし・枠線あり・塗りなしの透明箱）、native chart 強制、座標 hygiene、出典は用途別に任意で `add_source_line`）
+  - `references/style-guide.md`: 14 セクション + canonical 実装パターン（**§0 絶対ルール = 文字数を極限まで減らし図表で直感的に伝える**、16:9、フォント混在、L1 強調 1 個ルール、3 層 y 座標構造（chrome / 本文 / key-message band）、3 tier 強調 L1/L2/L4（L2 = 影なし・枠線あり・塗りなしの透明箱）、native chart 強制、座標 hygiene、出典は用途別に任意で `add_source_line`）
+  - **§0 強制ヘルパ（実装済み）**: `assert_text_minimal(slide)` でテキストボックス数 ≤ 5 / 本文総行数 ≤ 12 / 1 ボックス内 ≤ 120 字を自動検証（違反は ValueError）; `assert_title_assertive(title)` で「結果」「考察」「方法」「目的」等の無味な見出しを lint（22 ワードの blacklist 内蔵）
+  - **化学特化ヘルパ**: `add_molecule(slide, smiles)` — SMILES → RDKit Draw → PNG embed (lazy import); `add_reaction_scheme(slide, reactants, products, conditions)` — 反応式の横並び合成（reactant + reactant → product, conditions ラベル付き）; `add_energy_diagram(slide, levels, labels)` — 反応座標 vs エネルギーの 1 ライン図（matplotlib smoothstep、TS は短い dash で sharp peak 表現）
+  - **レイアウトパターン**: `split_2col(slide, left_paragraphs, right_paragraphs)` — 2 カラム比較（Form I/II・before/after 等の概念対比受け皿）; `add_timeline(slide, milestones=[(date, event), ...])` — 横軸時系列バー（≤ 8 milestones、衝突 guard 付き）
+  - **クロスプラットフォーム / 安全性**: matplotlib 日本語 lazy auto-config（`_ensure_matplotlib_japanese`、未検出時は `RuntimeWarning` で診断）; PNG temp file は `try/finally + os.unlink` で確実 cleanup（Windows の PIL 再オープン bug 対策含む）
   - `references/codex-exec-templates.md`: Codex 委譲 v2（完全お任せ）プロンプトテンプレ集
   - `templates/generate_conference.py`: 学会発表 variant（口頭・ポスター、20-50 枚）
   - `templates/generate_journal_club.py`: 論文紹介 variant（6-12 枚、pdftoppm + crop ワークフロー）
