@@ -98,7 +98,7 @@ description: >
 ```
 log 解析完了：
 
-ファイル: gaussian/aaBrAdox_04c_20260508/aaBrAdox_04c.log
+ファイル: gaussian/<molecule>_ts_20260508/<molecule>_ts.log
 ソフト: Gaussian
 終了状態: walltime exceeded（76 step 経過、未収束）
 
@@ -109,7 +109,7 @@ log 解析完了：
 - **状況**: 78 atom + BS-UHF + scf=qc 系の opt=(ts,calcfc) で 76 step 経過、Lambda0=1.797e-6 まで小さくなり saddle 以外の soft mode が出現しかけ
 - **原因**: calcfc は初回 1 度のみで以降は updatefc（BFGS-like）。76 step 経過で Hessian update が陳腐化
 - **教訓**: `opt=(ts,calcfc,recalcfc=20,maxstep=6)` をデフォルトに（20 step ごとに Hessian 再評価で陳腐化リセット）
-- **参照**: jobs/2026-05-08-aaBrAdox-04c.md
+- **参照**: jobs/2026-05-08-<molecule>-ts.md
 
 これを `.company/computation/playbooks/gaussian.md` の Lessons Learned に追記してよろしいですか？
 ```

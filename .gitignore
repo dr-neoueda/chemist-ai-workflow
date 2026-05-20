@@ -24,3 +24,11 @@ node_modules/
 # Build artifacts (covered also by per-subdir .gitignore)
 dist/
 .astro/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# caw-slides smoke test artifacts (top-level presentations/ from running templates)
+presentations/

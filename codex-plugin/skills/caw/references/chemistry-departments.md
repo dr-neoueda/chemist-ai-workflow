@@ -4,7 +4,7 @@
 
 各部署のセクションには：
 
-1. **`AGENTS.md` 本文**：そのまま `<dept>/AGENTS.md` に書き込むテンプレ
+1. **`CLAUDE.md` 本文**：そのまま `<dept>/CLAUDE.md` に書き込むテンプレ
 2. **サブディレクトリ構成**：`mkdir -p` で作るサブフォルダ
 3. **必要に応じて README または初期テンプレファイル**
 
@@ -14,7 +14,7 @@
 
 **サブディレクトリ**: `inbox/`, `todos/`, `notes/`
 
-### secretary/AGENTS.md
+### secretary/CLAUDE.md
 
 ```markdown
 # 秘書室
@@ -97,7 +97,7 @@ type: daily
 
 **成果物の置き場（top-level、ファイラーで見える）**: `papers/`, `topics/`, `reports/`
 
-### research/AGENTS.md
+### research/CLAUDE.md
 
 ```markdown
 # 文献部（research）
@@ -132,7 +132,7 @@ type: daily
 
 ## ナレッジベース連携
 
-`.company/AGENTS.md` の「ナレッジベース」設定に応じて、要約後の登録先を切り替える：
+`.company/CLAUDE.md` の「ナレッジベース」設定に応じて、要約後の登録先を切り替える：
 
 - **Notion** → API / MCP 経由で DB 登録（ローカル `papers/` と並列で同期）
 - **Obsidian / Logseq** → vault フォルダに Markdown を保存（frontmatter にメタデータ）
@@ -147,7 +147,7 @@ type: daily
 
 **成果物の置き場（top-level、ファイラーで見える）**: `scripts/`, `tools/`
 
-### engineering/AGENTS.md
+### engineering/CLAUDE.md
 
 ```markdown
 # 開発部（engineering）
@@ -193,7 +193,7 @@ type: daily
 
 **サブディレクトリ**: `jobs/`, `parameters/`, `playbooks/`
 
-### computation/AGENTS.md
+### computation/CLAUDE.md
 
 ```markdown
 # 計算管理部（computation）
@@ -204,7 +204,7 @@ type: daily
 
 ## 対応ソフト
 
-`.company/AGENTS.md` の「使う計算ソフト」設定に応じて、各ソフトの Playbook が `playbooks/` 配下に配置されています。
+`.company/CLAUDE.md` の「使う計算ソフト」設定に応じて、各ソフトの Playbook が `playbooks/` 配下に配置されています。
 
 - 量子化学: Gaussian, ORCA, Psi4, GAMESS, NWChem
 - 古典 MD: GROMACS, AMBER, NAMD, LAMMPS, OpenMM
@@ -252,7 +252,7 @@ type: daily
 
 **成果物の置き場（top-level、ファイラーで見える）**: `analyses/`, `figures/`, `notebooks/`
 
-### analysis/AGENTS.md
+### analysis/CLAUDE.md
 
 ```markdown
 # データ解析部（analysis）
@@ -299,7 +299,7 @@ type: daily
 
 **成果物の置き場（top-level、ファイラーで見える）**: `manuscripts/`
 
-### writing/AGENTS.md
+### writing/CLAUDE.md
 
 ```markdown
 # 論文執筆部（writing）
@@ -356,7 +356,7 @@ type: daily
 
 **サブディレクトリ**: `code-reviews/`, `validation/`
 
-### review/AGENTS.md
+### review/CLAUDE.md
 
 ```markdown
 # レビュー部（review）
@@ -396,51 +396,67 @@ Claude + Codex の二段レビューは応用編。本部署単独で運用し�
 
 ## 8. presentation（プレゼン部）
 
-**`.company/presentation/` のサブディレクトリ（運営情報のみ）**: `design-notes/`, `decisions/`
+**`.company/presentation/` のサブディレクトリ（運営情報のみ）**: `design-notes/`, `decisions/`, `notes/`, `references/`, `scripts/`
 
-**成果物の置き場（top-level、ファイラーで見える）**: `slides/`, `figures/`
+**成果物の置き場（top-level、ファイラーで見える）**: `presentations/slides/`, `presentations/figures/`
 
-### presentation/AGENTS.md
+### caw-slides skill との連携（強く推奨）
+
+スライド生成は専用 Skill **`caw-slides`** が同梱されており、これを使うことで caw-slides スタイルガイド（16:9 / フォント混在 / L1 強調 1 個 / assert_no_overlap）に従った高品質スライドを安全に生成できる。発火キーワード:
+
+- 「スライド作って」「パワポ作って」「発表資料お願い」
+- 「学会発表用」「論文紹介」「報告会の資料」「講義スライド」
+
+`caw-slides` skill は 4 用途バリアント（学会発表 / 論文紹介 / 報告会 / 講義）+ 共通 `pptx_helpers.py`（1000+ 行のヘルパ）+ 詳細スタイルガイドを提供する。詳細は同 skill の `SKILL.md` 参照。
+
+### presentation/CLAUDE.md
 
 ```markdown
 # プレゼン部（presentation）
 
 ## 役割
 
-学会・研究会・グループミーティング・教育セッションのスライド生成。python-pptx + matplotlib + RDKit で再現可能な形で作る。
+学会・研究会・グループミーティング・教育セッションのスライド生成。python-pptx + matplotlib + RDKit で再現可能な形で作る。**`caw-slides` skill を起点に**運用する。
 
 ## 成果物の置き場（CRITICAL）
 
 ユーザーが ファイラーから開ける場所に置く：
 
-- **スライド本体**：`{{PROJECT_ROOT}}/slides/<topic>_YYYYMMDD.pptx`（top-level）
-- **生成スクリプト**：`{{PROJECT_ROOT}}/slides/scripts/generate_<topic>_YYYYMMDD.py`（top-level、スライドと同じ slides/ 配下）
-- **中間図**：`{{PROJECT_ROOT}}/figures/fig_<topic>_<n>_YYYYMMDD.png`（top-level、analysis と共有）
+- **スライド本体**：`{{PROJECT_ROOT}}/presentations/slides/<topic>_YYYYMMDD.pptx`（top-level）
+- **生成スクリプト**：`{{PROJECT_ROOT}}/.company/presentation/scripts/generate_<topic>_YYYYMMDD.py`（運営情報、再生成用）
+- **中間図**：`{{PROJECT_ROOT}}/presentations/figures/fig_<topic>_<n>_YYYYMMDD.png`（top-level、analysis と共有）
 
 ❌ `.company/presentation/slides/<...>.pptx` のようなパスに書かない（旧設計）
 
 `.company/presentation/` 配下は運営情報のみ：
 
-- `design-notes/<topic>_source.md` — 何を伝える / どの順序 / 視覚要素の設計ノート
+- `scripts/` — 生成スクリプト + コピーされた `pptx_helpers.py`（source of truth、再生成用）
+- `notes/<YYYY-MM-DD>-plan.md` — 各スライドの構成・L1 メッセージ計画
+- `design-notes/<topic>_source.md` — 視覚要素の設計ノート
 - `decisions/` — トピック選定や figure 取捨選択の意思決定ログ
+- `references/` — 原論文 PDF・crop 済 figure 等
 
 ## ルール
 
 - スタイル: 16:9、MS Gothic + Arial、L1（key message）1 スライド 1 個
-- shape の矩形交差 0 を厳守（python-pptx で検証）
+- shape の矩形交差 0 を厳守（`assert_no_overlap` で自動検証）
 - 箇条書きは 3 行以下に抑え、長くなったらテーブル / グラフ化
+- グラフは **Excel-editable native chart のみ**（PNG 禁止）
+- フロー図は **native shape + arrow のみ**
 
 ## 用途別
 
-- **研究発表**: 測定条件・参考文献の著者・誌名を必ず明記
-- **論文紹介**: 原論文・SI の図を主、自作補助。Figure 番号を出典に明記
-- **教育セッション**: 平易な比喩を積極使用、専門記号や Debye 単位は避ける
+- **学会発表（口頭・ポスター）**: `caw-slides` の `generate_conference.py` テンプレ。専門家向け、20-50 枚
+- **論文紹介**: `generate_journal_club.py`。原論文・SI の図を主、自作補助。Figure 番号を出典に明記
+- **研究室報告会・進捗共有**: `generate_lab_report.py`。自前データ主体、6-15 枚
+- **講義・チュートリアル**: `generate_lecture.py`。平易語・概念図、15-30 枚
 
 ## 検証手順
 
-1. python-pptx で .pptx を再読込、スライド数・shape 数・矩形交差ゼロを確認
-2. soffice があれば PNG 化して目視（重なり・フォント豆腐・L1 配置）
-3. matplotlib が描いた図は Read ツールで視覚確認（化学的に正しいか）
+1. `assert_no_overlap` がスクリプト内で自動 raise（重なりゼロ保証）
+2. python-pptx で .pptx を再読込、スライド数・16:9 アスペクト確認
+3. soffice があれば PNG 化して目視（フォント豆腐・L1 配置）
+4. matplotlib が描いた図は Read ツールで視覚確認（化学的に正しいか）
 ```
 
 ---
@@ -449,7 +465,7 @@ Claude + Codex の二段レビューは応用編。本部署単独で運用し�
 
 ユーザーが上記以外の部署を作りたいと言った場合のフォールバック。
 
-### `<dept>/AGENTS.md`
+### `<dept>/CLAUDE.md`
 
 ```markdown
 # {{DEPARTMENT_NAME}}
