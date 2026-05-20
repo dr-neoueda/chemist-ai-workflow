@@ -1036,43 +1036,72 @@ def add_data_table(
     font_size: Pt = Pt(16),
     header_size: Pt = Pt(16),
     first_col_bold: bool = True,
+    row_height: Emu | None = None,
+    cell_margin: Emu = Pt(3),
+    word_wrap: bool = False,
 ):
     """Add an editable native PowerPoint table.
 
     Font is auto-selected per cell (MS Gothic for JA, Arial for EN) to honor
     section 1 of the style guide. Header row is filled with ``header_fill``.
+
+    Whitespace control (§0 — avoid "AI 作成感"):
+    - ``row_height``: explicit per-row height (applies to every row). **Default
+      (None / 0) auto-fits**: header row to ``header_size × 2.0`` and body rows
+      to ``font_size × 2.0`` (× 2.0 leaves CJK glyph headroom). ``height`` only
+      sets the table's initial bounding box; the final shape height is the sum
+      of row heights.
+    - ``cell_margin``: top/bottom inner margin (default 3 pt).
+    - ``word_wrap``: **default False** — data-table cells should hold short
+      single-line entries. Wrapping silently expands the tight row height (the
+      OOXML row height is a minimum, not a clip), which reintroduces the
+      AI-looking whitespace. Set ``True`` only for genuinely long cells, and
+      bump ``row_height`` accordingly.
+
+    Rule of thumb: **size the table to its content, not to the slide.** A
+    4-row table of short entries is ~1.6" tall. Center a narrow table rather
+    than stretching it full-width.
     """
     n_rows = len(rows) + 1
     n_cols = len(headers)
     shape = slide.shapes.add_table(n_rows, n_cols, left, top, width, height)
     tbl = shape.table
 
+    # Tight per-row heights so cells hug their text (kills AI-looking whitespace).
+    # Header and body sized separately so a large header does not inflate body rows.
+    # ``Emu(0)`` is treated as "auto" (falsy guard) per review.
+    header_rh = int(int(header_size) * 2.0)
+    body_rh = int(int(font_size) * 2.0)
+    explicit_rh = int(row_height) if row_height else None
+    for r in range(n_rows):
+        tbl.rows[r].height = explicit_rh if explicit_rh else (header_rh if r == 0 else body_rh)
+
+    def _fill_cell(cell, text, *, size, bold, color, align):
+        cell.text_frame.word_wrap = word_wrap
+        cell.margin_top = int(cell_margin)
+        cell.margin_bottom = int(cell_margin)
+        cell.vertical_anchor = MSO_ANCHOR.MIDDLE
+        p = cell.text_frame.paragraphs[0]
+        p.alignment = align
+        run = p.add_run()
+        run.text = text
+        run.font.size = size
+        run.font.bold = bold
+        run.font.color.rgb = color
+        run.font.name = FONT_JA if _is_japanese(text) else FONT_EN
+
     for c, htext in enumerate(headers):
         cell = tbl.cell(0, c)
         cell.fill.solid()
         cell.fill.fore_color.rgb = header_fill
-        cell.text_frame.word_wrap = True
-        p = cell.text_frame.paragraphs[0]
-        p.alignment = PP_ALIGN.CENTER
-        run = p.add_run()
-        run.text = htext
-        run.font.size = header_size
-        run.font.bold = True
-        run.font.color.rgb = header_text
-        run.font.name = FONT_JA if _is_japanese(htext) else FONT_EN
+        _fill_cell(cell, htext, size=header_size, bold=True,
+                   color=header_text, align=PP_ALIGN.CENTER)
 
     for r, row in enumerate(rows, start=1):
         for c, value in enumerate(row):
             cell = tbl.cell(r, c)
-            cell.text_frame.word_wrap = True
-            p = cell.text_frame.paragraphs[0]
-            p.alignment = PP_ALIGN.LEFT if c == 0 else PP_ALIGN.CENTER
-            run = p.add_run()
-            run.text = value
-            run.font.size = font_size
-            run.font.bold = first_col_bold and c == 0
-            run.font.color.rgb = body_text
-            run.font.name = FONT_JA if _is_japanese(value) else FONT_EN
+            _fill_cell(cell, value, size=font_size, bold=(first_col_bold and c == 0),
+                       color=body_text, align=PP_ALIGN.LEFT if c == 0 else PP_ALIGN.CENTER)
 
     return shape
 

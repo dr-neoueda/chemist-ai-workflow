@@ -2,6 +2,22 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.4.1 / Codex 1.3.1] - 2026-05-20
+
+### Changed — caw-slides の「AI 作成感」除去（実デッキ添削 fb 反映）
+
+MLIP 研究紹介デッキを caw-slides で生成し、その添削から得た改善を `pptx_helpers.py` と `style-guide.md` に反映。
+
+- **表の空白圧縮（`add_data_table`）**: デフォルト `word_wrap=False`、header 行 = `header_size × 2.0` / body 行 = `font_size × 2.0` に分離（CJK headroom）、セル上下余白 3pt、`row_height=Emu(0)` を auto 扱い。4 行表が 0.9"/行(3.6") → 0.44"/行(1.78") に圧縮。`row_height` / `cell_margin` / `word_wrap` パラメータ追加（後方互換）
+- **style-guide.md §0 に「表とまとめスライドの作り込み（AI 作成感の除去）」節を新設**:
+  - 表は内容に密着（tight 行・全幅に伸ばさず中央寄せ）。埋めたいなら空白でなく情報を足す
+  - まとめ/結語スライドにも必ず図を置く（positioning 図等）
+  - **コンテンツスライドは「図・表・グラフ + L1 + 支持本文」を基本構成に**（図 + L1 だけのスパース構成を避ける。視覚要素が幅を埋めないなら左に視覚・右に支持本文の 2 ゾーン、横長テーブルは上に視覚・下に支持本文）
+  - **「箱に文字を詰めた」text-box フロー図（`add_flow_box` × N）は原則作らない**。第一選択はプロセスの効果をグラフで示す（例 active learning → 学習曲線）、第二選択はイラスト/アイコン + 最小ラベル
+  - 図表構成要素（フロー box・テーブル・split_2col）は §0 文字数上限の対象外（`assert_text_minimal` の override 指針）
+- PR ループ: python-reviewer + codex-rescue。`add_data_table` 改修で HIGH 1（行高さ × word_wrap）+ MEDIUM 2（header/body 分離・CJK 余裕）+ LOW 2 を修正
+- バージョン: plugin 1.4.0 → 1.4.1 / codex-plugin 1.3.0 → 1.3.1 / marketplace 同期
+
 ## [1.4.0 / Codex 1.3.0] - 2026-05-15
 
 ### Added — `caw-slides` Skill（PowerPoint スライド生成）
