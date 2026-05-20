@@ -2,6 +2,20 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.4.2 / Codex 1.3.2] - 2026-05-20
+
+### Changed — カテゴリカル配色（青一色の解消）
+
+CP2K 初学者向けデッキ生成の添削で「全体が青中心で単調」と判明。図表・グラフに識別・対比・強調のための複数色を導入。
+
+- **`CATEGORICAL_HEX` / `CATEGORICAL_RGB`**: 青→橙→緑→赤→シアン→紫→アンバーの 7 色パレット
+- **`add_bar_chart` / `add_scatter_line_chart`**: 系列をパレットで自動色分け（線 + マーカー）。マーカー着色は `show_markers` 時のみ
+- **`add_data_table(highlight_row=N)`**: 推奨案 / hero 行を淡アンバー（`COLOR_ROW_HIGHLIGHT_FILL` #FFF2CC）で塗る。範囲外は ValueError
+- **`add_energy_diagram`**: 状態を役割色（始=青 / 終=緑 / TS・中間体=赤）、connector はグレー。位置（山/谷）が意味を担うため赤緑 CVD でも判別可
+- **style-guide.md §0 に「図表・グラフは青一色を避け、カテゴリカル配色」節**を追加（多系列はパレット巡回、テーブルは highlight_row、対比の鉄則は維持）
+- PR ループ: python-reviewer（HIGH 1 + MEDIUM 1 + LOW 2 修正、show_markers ガード等）。codex-rescue は背景継続が時間内未完のため Claude + 自己評価で補完
+- バージョン: plugin 1.4.1 → 1.4.2 / codex-plugin 1.3.1 → 1.3.2 / marketplace 同期
+
 ## [1.4.1 / Codex 1.3.1] - 2026-05-20
 
 ### Changed — caw-slides の「AI 作成感」除去（実デッキ添削 fb 反映）
