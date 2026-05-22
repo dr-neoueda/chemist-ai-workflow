@@ -105,14 +105,14 @@ def build_motivation_slide(prs, slide_number: int):
         left=Inches(0.4), top=Inches(1.18), width=Inches(12.53), height=Inches(4.95),
         paragraphs=[
             h.Paragraph(h.mixed_runs("▸ 先行研究の到達点と残された課題",
-                                     size=Pt(21), bold=True, color=h.COLOR_TITLE)),
-            h.Paragraph(h.mixed_runs("・<課題 1>", size=Pt(16))),
-            h.Paragraph(h.mixed_runs("・<課題 2>", size=Pt(16))),
-            h.Paragraph(h.mixed_runs("", size=Pt(16))),
+                                     size=Pt(24), bold=True, color=h.COLOR_TITLE)),
+            h.Paragraph(h.mixed_runs("・<課題 1>", size=Pt(20))),
+            h.Paragraph(h.mixed_runs("・<課題 2>", size=Pt(20))),
+            h.Paragraph(h.mixed_runs("", size=Pt(20))),
             h.Paragraph(h.mixed_runs("▸ 本研究の目的",
-                                     size=Pt(21), bold=True, color=h.COLOR_TITLE)),
-            h.Paragraph(h.mixed_runs("・<目的 1>", size=Pt(16))),
-            h.Paragraph(h.mixed_runs("・<目的 2>", size=Pt(16))),
+                                     size=Pt(24), bold=True, color=h.COLOR_TITLE)),
+            h.Paragraph(h.mixed_runs("・<目的 1>", size=Pt(20))),
+            h.Paragraph(h.mixed_runs("・<目的 2>", size=Pt(20))),
         ],
     )
     rects.append((Inches(0.4), Inches(1.18), Inches(12.53), Inches(4.95), "<motivation>"))
@@ -120,7 +120,7 @@ def build_motivation_slide(prs, slide_number: int):
     h.add_key_message_band(
         slide,
         [h.Paragraph(h.mixed_runs("<L1 一行: なぜこの研究が必要か>",
-                                  size=Pt(20), bold=True, color=h.COLOR_TEXT_BODY),
+                                  size=Pt(24), bold=True, color=h.COLOR_TEXT_BODY),
                      alignment=PP_ALIGN.CENTER)],
     )
     rects.append(h.CODEX_KEY_MSG_RECT + ("<key-msg>",))
@@ -149,7 +149,7 @@ def build_results_slide(prs, slide_number: int):
     h.add_key_message_band(
         slide,
         [h.Paragraph(h.mixed_runs("<L1 一行: 結果が示す主張>",
-                                  size=Pt(20), bold=True, color=h.COLOR_TEXT_BODY),
+                                  size=Pt(24), bold=True, color=h.COLOR_TEXT_BODY),
                      alignment=PP_ALIGN.CENTER)],
     )
     rects.append(h.CODEX_KEY_MSG_RECT + ("<key-msg>",))
@@ -166,14 +166,14 @@ def build_conclusion_slide(prs, slide_number: int):
         left=Inches(0.4), top=Inches(1.18), width=Inches(12.53), height=Inches(4.95),
         paragraphs=[
             h.Paragraph(h.mixed_runs("▸ まとめ",
-                                     size=Pt(21), bold=True, color=h.COLOR_TITLE)),
-            h.Paragraph(h.mixed_runs("○ <主要な結論 1>", size=Pt(16))),
-            h.Paragraph(h.mixed_runs("○ <主要な結論 2>", size=Pt(16))),
-            h.Paragraph(h.mixed_runs("", size=Pt(16))),
+                                     size=Pt(24), bold=True, color=h.COLOR_TITLE)),
+            h.Paragraph(h.mixed_runs("○ <主要な結論 1>", size=Pt(20))),
+            h.Paragraph(h.mixed_runs("○ <主要な結論 2>", size=Pt(20))),
+            h.Paragraph(h.mixed_runs("", size=Pt(20))),
             h.Paragraph(h.mixed_runs("▸ 今後の展望",
-                                     size=Pt(21), bold=True, color=h.COLOR_TITLE)),
-            h.Paragraph(h.mixed_runs("○ <今後の課題 1>", size=Pt(16))),
-            h.Paragraph(h.mixed_runs("○ <今後の課題 2>", size=Pt(16))),
+                                     size=Pt(24), bold=True, color=h.COLOR_TITLE)),
+            h.Paragraph(h.mixed_runs("○ <今後の課題 1>", size=Pt(20))),
+            h.Paragraph(h.mixed_runs("○ <今後の課題 2>", size=Pt(20))),
         ],
     )
     rects.append((Inches(0.4), Inches(1.18), Inches(12.53), Inches(4.95), "<conclusion>"))
@@ -181,7 +181,7 @@ def build_conclusion_slide(prs, slide_number: int):
     h.add_key_message_band(
         slide,
         [h.Paragraph(h.mixed_runs("<L1 一行: この研究で何が変わったか>",
-                                  size=Pt(20), bold=True, color=h.COLOR_TEXT_BODY),
+                                  size=Pt(24), bold=True, color=h.COLOR_TEXT_BODY),
                      alignment=PP_ALIGN.CENTER)],
     )
     rects.append(h.CODEX_KEY_MSG_RECT + ("<key-msg>",))

@@ -128,6 +128,27 @@ COLOR_TITLE = RGBColor(0x1A, 0x56, 0xA0)
 COLOR_EMPH_7PRINCIPLES_RED = RGBColor(0xC0, 0x39, 0x3A)
 
 # ---------------------------------------------------------------------------
+# Categorical palette — 図表・グラフ・多系列で青一色を避け、識別しやすい配色に
+# (§3 色分けルール準拠: 対比は赤/青/緑、系列はこの順で巡回)
+# ---------------------------------------------------------------------------
+# matplotlib 用（hex 文字列）
+CATEGORICAL_HEX: tuple[str, ...] = (
+    "#4472C4",  # 青
+    "#E8743B",  # オレンジ
+    "#00AC48",  # 緑
+    "#C0393A",  # 赤
+    "#2BBCE3",  # シアン
+    "#8E5BA6",  # 紫
+    "#FFC000",  # アンバー
+)
+# native chart 用（RGBColor）
+CATEGORICAL_RGB: tuple[RGBColor, ...] = tuple(
+    RGBColor(int(hx[1:3], 16), int(hx[3:5], 16), int(hx[5:7], 16)) for hx in CATEGORICAL_HEX
+)
+# 行ハイライト用の淡色塗り（テーブルの hero 行など）
+COLOR_ROW_HIGHLIGHT_FILL = RGBColor(0xFF, 0xF2, 0xCC)  # 淡いアンバー
+
+# ---------------------------------------------------------------------------
 # Layout constants (16:9 slide, §1)
 # ---------------------------------------------------------------------------
 
@@ -325,6 +346,102 @@ def add_picture_fit(
     return slide.shapes.add_picture(
         str(image_path), x, y, width=target_w, height=target_h
     )
+
+
+# ---------------------------------------------------------------------------
+# Showcase / 宣伝・紹介デッキ helpers (§15)
+# ---------------------------------------------------------------------------
+
+
+def add_context_header(
+    slide,
+    program_label: str,
+    slide_number: int,
+    *,
+    tool_name: str | None = None,
+) -> list[Rect]:
+    """showcase（宣伝・紹介・募集）デッキ用ヘッダ。
+
+    研究発表用の :func:`add_slide_chrome` がスライド固有の断定見出しを置くのに対し、
+    こちらはプログラム/文脈ラベル（例: 配布プログラム名）をタイトル位置に置く想定。
+    ``tool_name`` を渡すと区切り線の下にツール正式名称を中央サブ行で添える
+    （タイトルスライド向け。略称初出は full form で書くこと）。
+
+    Returns rects (chrome + optional tool-name) for :func:`assert_no_overlap`.
+    """
+    rects = list(add_slide_chrome(slide, program_label, slide_number))
+    if tool_name is not None:
+        tn = (Inches(2.5), Inches(0.92), Inches(8.33), Inches(0.5))
+        add_rich_text_box(
+            slide,
+            [Paragraph(mixed_runs(tool_name, size=Pt(18), color=COLOR_TEXT_BODY),
+                       alignment=PP_ALIGN.CENTER)],
+            left=tn[0], top=tn[1], width=tn[2], height=tn[3],
+            anchor=MSO_ANCHOR.MIDDLE,
+        )
+        rects.append(tn + ("<tool-name>",))
+    return rects
+
+
+def add_collage_caption(
+    slide,
+    heading: str,
+    sub: str,
+    *,
+    left: Emu,
+    top: Emu,
+    width: Emu,
+    color: RGBColor = COLOR_TITLE,
+    height: Emu = Inches(0.67),
+) -> Rect:
+    """コラージュ用 2 行キャプション（スクリーンショットの真上に置く）。
+
+    1 行目 = 見出し（``color`` で着色・bold）、2 行目 = 一文説明（本文色）。
+    showcase デッキの使用例スライドで、各画像の上に左寄せで置く想定。
+    Returns the caption rect for :func:`assert_no_overlap`.
+    """
+    add_rich_text_box(
+        slide,
+        [Paragraph(mixed_runs(heading, size=Pt(20), bold=True, color=color)),
+         Paragraph(mixed_runs(sub, size=Pt(14), color=COLOR_TEXT_BODY))],
+        left=left, top=top, width=width, height=height,
+    )
+    return (left, top, width, height, f"<caption:{heading}>")
+
+
+def add_logo_cluster(
+    slide,
+    icon_paths: list[str | Path],
+    *,
+    left: Emu,
+    top: Emu,
+    width: Emu,
+    height: Emu = Inches(0.5),
+    slot: Emu = Inches(0.6),
+) -> Rect:
+    """使用アプリのロゴを小さく等間隔で 1 列に並べる（実使用ツールの裏付け）。
+
+    showcase デッキで使用例キャプションの脇・画像下に置く想定。各ロゴはアスペクト比を
+    保って ``slot`` 幅のスロット内に中央寄せされる。``icon_paths`` が空、または割り当て幅が
+    0 以下になる場合は何も描かない。
+
+    返すのは **宣言した** bounding rect ``(left, top, width, height)`` で、実際に描画される
+    ロゴ群の footprint より広い（中央寄せの余白を含む）。これは :func:`add_picture_fit` と
+    同じ方針で、:func:`assert_no_overlap` には保守的（広め）に効く。
+    """
+    n = len(icon_paths)
+    if n == 0:
+        return (left, top, width, height, "<logos:empty>")
+    slot = min(slot, width // n)
+    if slot <= 0:
+        return (left, top, width, height, "<logos:empty>")
+    x0 = left + (width - slot * n) // 2
+    for i, path in enumerate(icon_paths):
+        add_picture_fit(
+            slide, path, left=x0 + slot * i, top=top,
+            max_width=slot, max_height=height,
+        )
+    return (left, top, width, height, "<logos>")
 
 
 # ---------------------------------------------------------------------------
@@ -917,6 +1034,13 @@ def add_bar_chart(
     )
     chart = frame.chart
     _style_chart_common(chart, title=title, gridlines=gridlines)
+    # カテゴリカル配色（青一色を避ける）
+    for i, plot_series in enumerate(chart.series):
+        try:
+            plot_series.format.fill.solid()
+            plot_series.format.fill.fore_color.rgb = CATEGORICAL_RGB[i % len(CATEGORICAL_RGB)]
+        except Exception:
+            pass
     if y_label is not None:
         try:
             chart.value_axis.has_title = True
@@ -964,6 +1088,21 @@ def add_scatter_line_chart(
     chart = frame.chart
     _style_chart_common(chart, title=title, show_legend=show_legend,
                         gridlines=gridlines)
+    # カテゴリカル配色（線 + マーカーを系列ごとに色分け）
+    for i, s in enumerate(chart.series):
+        col = CATEGORICAL_RGB[i % len(CATEGORICAL_RGB)]
+        try:
+            s.format.line.color.rgb = col
+        except Exception:
+            pass
+        # マーカー着色は markers 表示時のみ（NO_MARKERS では no-op + API が raise しうる）
+        if show_markers:
+            try:
+                s.marker.format.fill.solid()
+                s.marker.format.fill.fore_color.rgb = col
+                s.marker.format.line.color.rgb = col
+            except Exception:
+                pass
     if x_label is not None:
         try:
             chart.category_axis.has_title = True
@@ -1039,11 +1178,18 @@ def add_data_table(
     row_height: Emu | None = None,
     cell_margin: Emu = Pt(3),
     word_wrap: bool = False,
+    highlight_row: int | None = None,
+    highlight_fill: RGBColor = COLOR_ROW_HIGHLIGHT_FILL,
 ):
     """Add an editable native PowerPoint table.
 
     Font is auto-selected per cell (MS Gothic for JA, Arial for EN) to honor
     section 1 of the style guide. Header row is filled with ``header_fill``.
+
+    Color (§3 — 青一色を避ける):
+    - ``highlight_row``: 1-based body row index to fill with ``highlight_fill``
+      (淡いアンバー既定）。比較表で「推奨案 / hero 行」に目を引かせる。
+      例: FF/DFT/MLIP 比較で MLIP 行を highlight_row=3。
 
     Whitespace control (§0 — avoid "AI 作成感"):
     - ``row_height``: explicit per-row height (applies to every row). **Default
@@ -1062,6 +1208,11 @@ def add_data_table(
     4-row table of short entries is ~1.6" tall. Center a narrow table rather
     than stretching it full-width.
     """
+    if highlight_row is not None and not (1 <= highlight_row <= len(rows)):
+        raise ValueError(
+            f"highlight_row={highlight_row} out of range; use 1-based body row "
+            f"index 1..{len(rows)}"
+        )
     n_rows = len(rows) + 1
     n_cols = len(headers)
     shape = slide.shapes.add_table(n_rows, n_cols, left, top, width, height)
@@ -1100,6 +1251,9 @@ def add_data_table(
     for r, row in enumerate(rows, start=1):
         for c, value in enumerate(row):
             cell = tbl.cell(r, c)
+            if highlight_row is not None and r == highlight_row:
+                cell.fill.solid()
+                cell.fill.fore_color.rgb = highlight_fill
             _fill_cell(cell, value, size=font_size, bold=(first_col_bold and c == 0),
                        color=body_text, align=PP_ALIGN.LEFT if c == 0 else PP_ALIGN.CENTER)
 
@@ -1424,7 +1578,7 @@ def add_energy_diagram(
     fig_w = max(4.0, float(width) / 914400.0)  # EMU -> inches
     fig_h = max(2.0, float(height) / 914400.0)
     fig, ax = plt.subplots(figsize=(fig_w, fig_h), dpi=150)
-    line_rgb = "#1A56A0"
+    connector_rgb = "#888888"  # 状態間をつなぐ破線は中立グレー
 
     # Endpoint segments are wider (stable reactant/product), intermediate
     # segments (TS, intermediates) are short dashes so they read as a peak
@@ -1432,13 +1586,22 @@ def add_energy_diagram(
     def _seg_width(idx: int) -> float:
         return 0.6 if idx in (0, n - 1) else 0.15
 
+    # State role colors: 始状態=青 / 終状態=緑 / 中間(TS・中間体)=赤
+    # （役割が色で読めると初学者にも障壁/安定性が直感的）
+    def _state_color(idx: int) -> str:
+        if idx == 0:
+            return "#4472C4"   # reactant 青
+        if idx == n - 1:
+            return "#00AC48"   # product 緑
+        return "#C0393A"       # TS / intermediate 赤
+
     for i, (e, label) in enumerate(zip(levels, labels)):
         sw = _seg_width(i)
-        ax.plot([i - sw / 2, i + sw / 2], [e, e], color=line_rgb, lw=3)
+        ax.plot([i - sw / 2, i + sw / 2], [e, e], color=_state_color(i), lw=4)
         ax.annotate(
             label, xy=(i, e), xytext=(0, 8),
             textcoords="offset points", ha="center",
-            fontsize=11, color="#222222",
+            fontsize=11, fontweight="bold", color=_state_color(i),
         )
         if i < n - 1:
             x0 = i + sw / 2
@@ -1448,7 +1611,7 @@ def add_energy_diagram(
             # Smoothstep for a gentler curve than linear
             t_smooth = t * t * (3 - 2 * t)
             curve = e + (levels[i + 1] - e) * t_smooth
-            ax.plot(xs, curve, color=line_rgb, lw=2, ls="--", alpha=0.6)
+            ax.plot(xs, curve, color=connector_rgb, lw=2, ls="--", alpha=0.6)
 
     ax.set_xlim(-0.5, n - 0.5)
     ax.set_xticks([])

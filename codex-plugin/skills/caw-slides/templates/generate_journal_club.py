@@ -91,7 +91,7 @@ def build_title_slide(prs):
 
     h.add_rich_text_box(
         slide,
-        [h.Paragraph(h.mixed_runs(f"presented by {PRESENTER}", size=Pt(16),
+        [h.Paragraph(h.mixed_runs(f"presented by {PRESENTER}", size=Pt(20),
                                   color=h.COLOR_LABEL_GREY),
                      alignment=PP_ALIGN.CENTER)],
         left=Inches(0.6), top=Inches(5.8), width=Inches(12.1), height=Inches(0.4),
@@ -128,7 +128,7 @@ def build_figure_slide(prs, slide_number: int, title: str, fig_path: Path,
             left=fig_left, top=fig_top, width=fig_w, height=fig_h,
             paragraphs=[h.Paragraph(
                 h.mixed_runs("[ Figure placeholder — drop the cropped PNG here ]",
-                             size=Pt(16), color=h.COLOR_LABEL_GREY),
+                             size=Pt(20), color=h.COLOR_LABEL_GREY),
                 alignment=PP_ALIGN.CENTER,
             )],
             border=h.COLOR_CARD_BORDER,
@@ -138,7 +138,7 @@ def build_figure_slide(prs, slide_number: int, title: str, fig_path: Path,
     h.add_key_message_band(
         slide,
         [h.Paragraph(h.mixed_runs(key_message,
-                                  size=Pt(20), bold=True, color=h.COLOR_TEXT_BODY),
+                                  size=Pt(24), bold=True, color=h.COLOR_TEXT_BODY),
                      alignment=PP_ALIGN.CENTER)],
     )
     rects.append(h.CODEX_KEY_MSG_RECT + ("<key-msg>",))
@@ -157,14 +157,14 @@ def build_takeaway_slide(prs, slide_number: int):
         left=Inches(0.4), top=Inches(1.18), width=Inches(12.53), height=Inches(4.95),
         paragraphs=[
             h.Paragraph(h.mixed_runs("▸ この論文から得られる示唆",
-                                     size=Pt(21), bold=True, color=h.COLOR_TITLE)),
-            h.Paragraph(h.mixed_runs("・<示唆 1>", size=Pt(16))),
-            h.Paragraph(h.mixed_runs("・<示唆 2>", size=Pt(16))),
-            h.Paragraph(h.mixed_runs("", size=Pt(16))),
+                                     size=Pt(24), bold=True, color=h.COLOR_TITLE)),
+            h.Paragraph(h.mixed_runs("・<示唆 1>", size=Pt(20))),
+            h.Paragraph(h.mixed_runs("・<示唆 2>", size=Pt(20))),
+            h.Paragraph(h.mixed_runs("", size=Pt(20))),
             h.Paragraph(h.mixed_runs("▸ 私たちの研究への活かし方",
-                                     size=Pt(21), bold=True, color=h.COLOR_TITLE)),
-            h.Paragraph(h.mixed_runs("・<活かし方 1>", size=Pt(16))),
-            h.Paragraph(h.mixed_runs("・<活かし方 2>", size=Pt(16))),
+                                     size=Pt(24), bold=True, color=h.COLOR_TITLE)),
+            h.Paragraph(h.mixed_runs("・<活かし方 1>", size=Pt(20))),
+            h.Paragraph(h.mixed_runs("・<活かし方 2>", size=Pt(20))),
         ],
     )
     rects.append((Inches(0.4), Inches(1.18), Inches(12.53), Inches(4.95), "<takeaway>"))
@@ -172,7 +172,7 @@ def build_takeaway_slide(prs, slide_number: int):
     h.add_key_message_band(
         slide,
         [h.Paragraph(h.mixed_runs("<L1 一行: なぜこの論文を選んだのか／何を持ち帰るか>",
-                                  size=Pt(20), bold=True, color=h.COLOR_TEXT_BODY),
+                                  size=Pt(24), bold=True, color=h.COLOR_TEXT_BODY),
                      alignment=PP_ALIGN.CENTER)],
     )
     rects.append(h.CODEX_KEY_MSG_RECT + ("<key-msg>",))
