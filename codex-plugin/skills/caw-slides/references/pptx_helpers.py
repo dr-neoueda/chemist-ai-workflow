@@ -349,6 +349,102 @@ def add_picture_fit(
 
 
 # ---------------------------------------------------------------------------
+# Showcase / 宣伝・紹介デッキ helpers (§15)
+# ---------------------------------------------------------------------------
+
+
+def add_context_header(
+    slide,
+    program_label: str,
+    slide_number: int,
+    *,
+    tool_name: str | None = None,
+) -> list[Rect]:
+    """showcase（宣伝・紹介・募集）デッキ用ヘッダ。
+
+    研究発表用の :func:`add_slide_chrome` がスライド固有の断定見出しを置くのに対し、
+    こちらはプログラム/文脈ラベル（例: 配布プログラム名）をタイトル位置に置く想定。
+    ``tool_name`` を渡すと区切り線の下にツール正式名称を中央サブ行で添える
+    （タイトルスライド向け。略称初出は full form で書くこと）。
+
+    Returns rects (chrome + optional tool-name) for :func:`assert_no_overlap`.
+    """
+    rects = list(add_slide_chrome(slide, program_label, slide_number))
+    if tool_name is not None:
+        tn = (Inches(2.5), Inches(0.92), Inches(8.33), Inches(0.5))
+        add_rich_text_box(
+            slide,
+            [Paragraph(mixed_runs(tool_name, size=Pt(18), color=COLOR_TEXT_BODY),
+                       alignment=PP_ALIGN.CENTER)],
+            left=tn[0], top=tn[1], width=tn[2], height=tn[3],
+            anchor=MSO_ANCHOR.MIDDLE,
+        )
+        rects.append(tn + ("<tool-name>",))
+    return rects
+
+
+def add_collage_caption(
+    slide,
+    heading: str,
+    sub: str,
+    *,
+    left: Emu,
+    top: Emu,
+    width: Emu,
+    color: RGBColor = COLOR_TITLE,
+    height: Emu = Inches(0.67),
+) -> Rect:
+    """コラージュ用 2 行キャプション（スクリーンショットの真上に置く）。
+
+    1 行目 = 見出し（``color`` で着色・bold）、2 行目 = 一文説明（本文色）。
+    showcase デッキの使用例スライドで、各画像の上に左寄せで置く想定。
+    Returns the caption rect for :func:`assert_no_overlap`.
+    """
+    add_rich_text_box(
+        slide,
+        [Paragraph(mixed_runs(heading, size=Pt(20), bold=True, color=color)),
+         Paragraph(mixed_runs(sub, size=Pt(14), color=COLOR_TEXT_BODY))],
+        left=left, top=top, width=width, height=height,
+    )
+    return (left, top, width, height, f"<caption:{heading}>")
+
+
+def add_logo_cluster(
+    slide,
+    icon_paths: list[str | Path],
+    *,
+    left: Emu,
+    top: Emu,
+    width: Emu,
+    height: Emu = Inches(0.5),
+    slot: Emu = Inches(0.6),
+) -> Rect:
+    """使用アプリのロゴを小さく等間隔で 1 列に並べる（実使用ツールの裏付け）。
+
+    showcase デッキで使用例キャプションの脇・画像下に置く想定。各ロゴはアスペクト比を
+    保って ``slot`` 幅のスロット内に中央寄せされる。``icon_paths`` が空、または割り当て幅が
+    0 以下になる場合は何も描かない。
+
+    返すのは **宣言した** bounding rect ``(left, top, width, height)`` で、実際に描画される
+    ロゴ群の footprint より広い（中央寄せの余白を含む）。これは :func:`add_picture_fit` と
+    同じ方針で、:func:`assert_no_overlap` には保守的（広め）に効く。
+    """
+    n = len(icon_paths)
+    if n == 0:
+        return (left, top, width, height, "<logos:empty>")
+    slot = min(slot, width // n)
+    if slot <= 0:
+        return (left, top, width, height, "<logos:empty>")
+    x0 = left + (width - slot * n) // 2
+    for i, path in enumerate(icon_paths):
+        add_picture_fit(
+            slide, path, left=x0 + slot * i, top=top,
+            max_width=slot, max_height=height,
+        )
+    return (left, top, width, height, "<logos>")
+
+
+# ---------------------------------------------------------------------------
 # Forbidden-character guard (§11)
 # ---------------------------------------------------------------------------
 

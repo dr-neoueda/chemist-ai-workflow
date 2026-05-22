@@ -44,8 +44,9 @@ description: >
 caw-slides Skill の `references/` と `templates/` から、ユーザーの `.company/presentation/scripts/` に必要ファイルをコピー:
 
 ```bash
-# pptx_helpers.py（ヘルパライブラリ）をコピー
+# pptx_helpers.py（ヘルパライブラリ）と research_icons.py（概念イラスト）をコピー
 cp "${CAW_SLIDES_DIR}/references/pptx_helpers.py" .company/presentation/scripts/
+cp "${CAW_SLIDES_DIR}/references/research_icons.py" .company/presentation/scripts/
 
 # 用途別テンプレートをコピーして日付付き名前に変える
 USE_CASE=conference   # or journal_club / lab_report / lecture
@@ -138,7 +139,7 @@ soffice --headless --convert-to png --outdir figures/_preview presentations/slid
 - 各スライドのタイトル + L1 メッセージ一覧
 - 使ったテンプレート種別
 
-## 4 用途バリアント
+## 5 用途バリアント
 
 | 用途 | テンプレ | 想定枚数 | 特徴 |
 |------|--------|---------|------|
@@ -146,8 +147,10 @@ soffice --headless --convert-to png --outdir figures/_preview presentations/slid
 | 論文紹介（journal club） | `generate_journal_club.py` | 6-12 | 原論文・SI 図主体、pdftoppm + crop 抽出、source line 必須 |
 | 研究室報告会・進捗共有 | `generate_lab_report.py` | 6-15 | 自前データ主体、native chart + table、今後の予定 |
 | 講義・チュートリアル | `generate_lecture.py` | 15-30 | 平易語、概念フロー図、目標 + 前提 + サマリ |
+| 宣伝・紹介・募集（showcase） | `generate_showcase.py` | 5-8 | 実スクショ主役のコラージュ、プログラム名ヘッダ、キャプション画像上、アプリロゴ。**§0 緩和**（style-guide §15） |
 
-詳細は各テンプレの docstring を参照。
+詳細は各テンプレの docstring を参照。showcase variant は研究発表用 4 種と設計思想が異なり、
+§0 のテキスト最小ルールを緩和する（密なコラージュ）。詳細は style-guide §15。
 
 ## スタイルガイドの絶対ルール
 
@@ -180,12 +183,14 @@ soffice --headless --convert-to png --outdir figures/_preview presentations/slid
 | ファイル | 役割 |
 |---------|------|
 | `references/pptx_helpers.py` | 共通ヘルパ（1000+ 行、`add_slide_chrome` / `add_key_message_band` / `mixed_runs` / `assert_no_overlap` / `add_bar_chart` / `add_scatter_line_chart` 等） |
-| `references/style-guide.md` | スタイルガイド本体（14 セクション + canonical 実装パターン） |
+| `references/research_icons.py` | 概念イラスト（線画アイコン 10 種 + `hub_diagram` / `cycle_diagram` / `converging_diagram` 構図ビルダー）。詳細は style-guide §11bis |
+| `references/style-guide.md` | スタイルガイド本体（15 セクション + canonical 実装パターン。§15 = showcase レイアウト） |
 | `references/codex-exec-templates.md` | Codex 委譲プロンプトテンプレ集 |
 | `templates/generate_conference.py` | 学会発表 variant |
 | `templates/generate_journal_club.py` | 論文紹介 variant |
 | `templates/generate_lab_report.py` | 報告会 variant |
 | `templates/generate_lecture.py` | 講義 variant |
+| `templates/generate_showcase.py` | 宣伝・紹介・募集 variant（コラージュ型・§15） |
 
 ## 重要な注意事項
 

@@ -462,6 +462,94 @@ MS Gothic は `✓`（U+2713）や `✗`（U+2717）をサポートしない →
 
 ---
 
+## 11bis. 概念イラスト（schematic）作成 — `research_icons`
+
+研究紹介・プロダクト紹介・概念説明で「線画アイコンを並べた図」を一定品質で量産
+するための再利用モジュール `research_icons.py`（references 層、`pptx_helpers` と同階層）。
+
+```python
+import pptx_helpers as h
+import research_icons as ic
+```
+
+### イラスト vs チャートの題材判断（最初に必ず分類）
+
+**「絵にする題材」と「チャートにする題材」を取り違えない。** これを誤ると、いくら
+描き込んでも伝わらない図になる（GROMACS デッキで実証：規模比較を箱イラストにして失敗 →
+log-log マップで解決）。
+
+| 題材 | 正しい表現 | 理由 |
+|------|-----------|------|
+| **能力・規模・性能・桁の比較**（手法/系/時間スケール） | **定量チャート**（log-log 到達領域マップ等） | 数値の大小・桁が情報の本体。アイコンにすると桁が消える |
+| **手順・段階・状態遷移** | フロー or 効果のグラフ（§0-4） | プロセスの効果はグラフで示す |
+| **構成要素・関係・空間配置・サイクル**（部署/分子/結晶/反応機構/研究フロー） | **schematic イラスト**（本節 `research_icons`） | 形・配置・つながりそのものが情報 |
+| **雰囲気・装飾・概念** | （必要なら）AI 画像 — 科学図には使わない | 正確さを担保しない |
+
+### アイコンカタログ（`ic.icon_*`、共通シグネチャ `icon(ax, x, y, s=1.0, color=...)`）
+
+| 関数 | 図柄 | 主な意味 |
+|------|------|---------|
+| `icon_researcher` | 人 | 研究者・担当者・あなた |
+| `icon_flask` | 三角フラスコ | 実験・測定（`fill_frac` で液量） |
+| `icon_molecule` | ベンゼン環 | 計算・分子 |
+| `icon_document` | 文書 | 論文・申請書 |
+| `icon_chart` | 棒グラフ | データ整理・解析 |
+| `icon_slides` | 提示ボード | 発表 |
+| `icon_gear` | 歯車 | 計算・処理 |
+| `icon_magnifier` | ルーペ+チェック | レビュー・検証 |
+| `icon_laptop` | ノート PC | CLI・ツール |
+| `icon_sparkle` | きらめき | AI・強調・成果 |
+
+配色は `ic.BLUE / ORANGE / GREEN / RED / CYAN / PURPLE / AMBER`（`pptx_helpers.CATEGORICAL_HEX` と一致）。`s` はどの図でも同縮尺なので混在可。文字列指定したいときは `ic.ICONS["flask"]`。
+
+### 構図ビルダー（PNG を返す → `h.add_picture_fit` に渡す）
+
+```python
+# ① hub_diagram — 中心 + 放射（構成要素・部署図）
+fig = ic.hub_diagram("秘書",
+    [("計算", "Gaussian·CP2K", ic.icon_gear, ic.BLUE),
+     ("実験データ", "命名·配置を自動", ic.icon_flask, ic.GREEN)],
+    "figures/dept.png", center_sub="あなたの窓口")
+
+# ② cycle_diagram — 円環 + 隙間に弧矢印（研究サイクル・反復プロセス）
+fig = ic.cycle_diagram(
+    [("実験", "測定", ic.icon_flask, ic.GREEN), ("計算", "MD", ic.icon_molecule, ic.PURPLE)],
+    "figures/loop.png", center_label="研究", center_sub="サイクル")
+
+# ③ converging_diagram — 周辺要素が中心へ収束（負荷・要求が押し寄せる課題図）
+fig = ic.converging_diagram((ic.icon_researcher, ic.RED),
+    [("実験", ic.icon_flask, ic.GREEN), ("計算", ic.icon_gear, ic.BLUE)],
+    "figures/overload.png", center_label="研究者（あなた）")
+
+h.add_picture_fit(slide, fig, left=Inches(0.5), top=Inches(1.45),
+                  max_width=Inches(7.7), max_height=Inches(4.1))
+```
+
+ビルダーに無い構図（段階成長 stage-flow・分配図など）は `ic.icon_*` + `ic.label/sublabel`
++ `ic.new_figure/save_figure` で組む。下記の品質ルールを必ず守る。
+
+### イラスト品質ルール（過去の手戻りから確定）
+
+1. **矢印は要素を貫かない・浮かせない**：
+   - 収束図 → 中心の頭まわりの**リム**に角度を散らして着地（矢じりが一点に重ならない）
+   - サイクル図 → 駅の角度 ± gap を空け、**隙間に弧**を置いて隣駅手前へ着地
+2. **情報密度はサブラベルで上げる**：各アイコンに主ラベル（太字）＋補助ラベル（小・灰）。
+   要素を結ぶ spoke 線も密度に効く。
+3. **アイコンとラベルは近づける**：名称はアイコンの**すぐ下**（中心から ~0.6 データ単位）に置く。
+   離れていると「スカスカ」に見える（`research_icons` のビルダーは詰めた配置済）。
+4. **イラスト内の文字も本文サイズを目安に大きく**：図中ラベルが本文より極端に小さいと貧弱に見える。
+   PNG は配置時に縮小されるので **matplotlib fontsize は主ラベル ~16–19 / 強調語 ~22–24 / 補助 ~13–15** を
+   目安にする（スライド上で本文 20pt と同等に見える）。`research_icons` の `label` 既定 17 / `sublabel` 既定 13。
+5. **アイコンは等間隔・等縮尺**：放射/円環は `np.linspace` で均等配置。`s` を揃える。
+6. **背景は白基調を保つ**：薄い背景パネル/ノード円/連結リングは「やりすぎ」になりやすい。
+   構造線（spoke・弧）と余白で締めるのが基本（過度な装飾はユーザー判断で不採用になった実績あり）。
+7. **題材分類を最初に**：上の表で「チャート行」に該当するならイラストを作らない。
+8. **ドメイン特有のアイコンは patches で自作してよい**：フラスコ・分子・電池(ATP)・酵素(Pac-Man 型)など、
+   題材に合う schematic は `matplotlib.patches` で手描きすると「材料＝登場人物」のように直感的に説明できる
+   （アウトリーチ・初学者向けで有効。蛍の発光デッキで実証）。
+
+---
+
 ## 12. スライドデザイン7原則（プロジェクター映え・視認性優先）
 
 フィードバック（2026-04-03）を受けて制定。研究発表スライドを作るときは常にこの7原則を守る。
@@ -532,14 +620,14 @@ plt.rcParams['font.family'] = _FN   # MS Gothic を再アサート
 │              [ 図・グラフ（中央・大） ]                    │
 │              （スライド高さの約 75%）                      │
 │                                                         │
-│ [キーメッセージ 20pt  通常＋Bold＋色文字 混在  1〜2行]      │
+│ [キーメッセージ(L1) 24pt Bold＋色文字  1〜2行]            │
 └────────────────────────────────────────────────────────┘
 ```
 
 - **タイトル**：左上 `x=0.4"`, `y=0.12"`, 28pt Bold, `#1A56A0`
 - **セパレーター**：タイトル直下（`y≈0.82"`）、横線 1.5pt、`#4472C4`
 - **図**：中央揃え、`top≈0.95"` から `height≈5.6"` を目安
-- **キーメッセージ**：`y≈6.8"` 付近、20pt、重要語のみ 24pt Bold＋色
+- **キーメッセージ(L1)**：`y≈6.8"` 付近、**常に 24pt Bold**（L1 = 強調 tier は固定 24pt）、必要に応じ色文字
 
 ### テキストボックス・レイアウト検証ルール
 
@@ -608,7 +696,7 @@ plt.rcParams['font.family'] = _FN   # MS Gothic を再アサート
 
 | Level | shadow | border | fill | 使用場面 |
 |-------|:------:|:------:|:----:|---------|
-| **L1 LOUD** | ✓ | ✓ | ✓ | 各スライドで **一番伝えたい 1 要素**。通常は key-message band、表紙のみ focus pill |
+| **L1 LOUD** | ✓ | ✓ | ✓ | 各スライドで **一番伝えたい 1 要素**。通常は key-message band（**文字は常に 24pt Bold**）、表紙のみ focus pill |
 | **L2 STRONG** | ✗ | ✓ | ✗ | 枠線だけで目を引きたい透明箱。稀 |
 | **L4 QUIET** | ✗ | ✗ | ✗ | 本文・callout など装飾なしで置くテキスト |
 
@@ -618,18 +706,30 @@ plt.rcParams['font.family'] = _FN   # MS Gothic を再アサート
 2. **同列に並ぶ要素は必ず同じ tier。** 4 つの pill が並ぶ場合、1 個だけ L1 にせず全部 L4 にして、強調したい 1 個だけ font size / color で差を付ける
 3. **L1 の中身はそのスライドで一番伝えたい内容**を書く（「まとめ」のような汎用語ではなく具体的な主張）
 
-### 14-3. フォントサイズ・色で強調を足す
+### 14-3. フォントサイズ・色で強調を足す（**固定 3 段 + 色の役割分担**）
 
-| 用途 | サイズ | 色 |
+**サイズは 3 段に固定**: タイトル 28pt / 強調(L1・重要本文) 24pt / 本文 20pt。
+L1（key-message band）は**常に 24pt**。本文 20pt の中でも特に大切な 1 行は 24pt に上げる。
+
+| 用途 | サイズ | 色（役割で使い分ける） |
 |------|------:|-----|
-| スライドタイトル | 28pt Bold | `COLOR_TITLE` (#1A56A0) |
-| ▸ セクションヘッダー | 21pt Bold | `COLOR_TITLE` |
-| 本文 `・` 箇条書き | 16pt | `COLOR_TEXT_BODY` (#222222) |
+| スライドタイトル | **28pt Bold** | `COLOR_TITLE` (#1A56A0) ＝見出し |
+| ▸ セクションヘッダー | **24pt Bold** | `COLOR_TITLE` ＝見出し |
+| **L1 キーメッセージ band** | **24pt Bold** | `COLOR_TEXT_BODY`（地） or 強調色 |
+| 本文 `・` 箇条書き | **20pt** | `COLOR_TEXT_BODY` (#222222) ＝地の文 |
+| 本文の**大切な 1 行**（重要本文） | **24pt Bold** | `COLOR_EMPH_BLUE`(#0070C0)＝要点 / `COLOR_EMPH_RED`(#FF0000)＝注意・否定 |
 | text_summary の「数値」 | 24pt Bold（headline は 28pt） | 強調色（navy / red / green） |
-| text_summary の「タイトル行」 | 12pt Bold | `COLOR_LABEL_GREY` (#888888) |
-| text_summary の「キャプション」 | 10pt | `COLOR_LABEL_GREY` |
+| 補足・キャプション・実験条件 | 12pt | `COLOR_LABEL_GREY` (#888888) |
 
-> 必要に応じて出典を入れる場合は **9pt / `COLOR_SOURCE_GREY` (#B0B0B0)** を使う（`add_source_line` ヘルパが既定値）。本文 16pt の半分強、色も薄く marginalia として「読む気を起こさせない」存在感に。
+**色の役割（混在させず一貫させる）**:
+- **navy `COLOR_TITLE`** = タイトル・セクション見出し（構造）
+- **dark `COLOR_TEXT_BODY`** = 地の本文（読ませる文）
+- **blue `COLOR_EMPH_BLUE`** = ポジティブな要点・結論
+- **red `COLOR_EMPH_RED`** = 注意・否定・できないこと（多用しない）
+- **grey `COLOR_LABEL_GREY` / `COLOR_SOURCE_GREY`** = 補足・出典 marginalia
+- 図表・グラフ内は別途カテゴリカル配色（§0「青一色を避ける」）
+
+> 出典は **9pt / `COLOR_SOURCE_GREY` (#B0B0B0)**（`add_source_line` 既定）。本文 20pt の半分以下、色も薄く marginalia として「読む気を起こさせない」存在感に。
 
 ### 14-4. グラフは Excel-editable native chart のみ
 
@@ -691,6 +791,16 @@ Helper:
 | `split_2col(slide, left_paragraphs, right_paragraphs, ...)` | 2 カラム比較レイアウト（Form I/II・実験/シミュ・before/after）。`assert_text_minimal(slide, max_textboxes=6)` が必要 |
 | `add_timeline(slide, milestones=[(date, event), ...])` | 横軸時系列バー（先行研究年表・実験スケジュール・プロジェクト Milestone） |
 
+#### 概念イラスト `research_icons`（schematic、詳細は §11bis）
+
+| helper | 役割 |
+|--------|------|
+| `ic.icon_*(ax, x, y, s=, color=)` | 線画アイコン 10 種（flask/molecule/gear/document/chart/slides/magnifier/laptop/researcher/sparkle） |
+| `ic.hub_diagram(center_label, nodes, out_path, ...)` | 中心 + 放射（部署図・構成要素）→ PNG パス |
+| `ic.cycle_diagram(stations, out_path, ...)` | 円環 + 隙間弧矢印（研究サイクル）→ PNG パス |
+| `ic.converging_diagram(center, items, out_path, ...)` | 周辺→中心の収束（負荷が押し寄せる課題図）→ PNG パス |
+| `ic.label / sublabel / new_figure / save_figure` | 自前構図を組むときの部品 |
+
 ### 14-7. 生成後の自動検証（必ず通す）
 
 1. `assert_no_overlap(rects)` を各スライドビルダー末尾で呼ぶ → 重なりがあれば `ValueError` で停止
@@ -711,3 +821,49 @@ Helper:
 5. `assert_no_overlap` が末尾で必ず走ることを確認
 6. 生成 → python-pptx で再読込して 14-7 の検証を全項目パス
 7. PowerPoint で実際に開いて目視確認（LibreOffice があれば PNG レンダリング）
+
+## 15. showcase（宣伝・紹介・募集）デッキ レイアウト
+
+ツール/プログラムを紹介し、利用者・テストユーザーを募るためのデッキ。研究発表用
+variant（conference / lab_report / journal_club / lecture）の §0「テキスト最小・きれいな
+2分割・余白多め」とは**設計思想が別**で、**実スクリーンショットを主役にした密なコラージュ型**を採る。
+テンプレは `templates/generate_showcase.py`、専用 helper は §15-2。
+
+### 15-1. レイアウト原則（研究発表 variant との違い）
+
+| 観点 | 研究発表 variant | showcase variant |
+|---|---|---|
+| タイトル位置 | スライド固有の**断定見出し**（assertive） | **プログラム/文脈ラベル**（例: 配布プログラム名）。本文タイトルは**短い名詞**（「メイン機能」「使用例」） |
+| タイトルスライド | 大きな表題 | プログラムヘッダ + **ツール正式名称の中央サブ行**（略称初出は full form） |
+| 主役 | 自前データのチャート/表 | **実スクリーンショット**（実際に使ってきた証拠） |
+| 配置 | 1スライド1主題・余白多め | 1スライドに複数枚を**コラージュ**（密でよい） |
+| キャプション | L1 band | **画像の真上に2行**（見出し / 一文説明）、左寄せ |
+| アプリ連携 | 言及しない | **アプリロゴを小さく(~0.5") キャプション脇・画像下にクラスタ**。基盤は「動作環境: <CLI>」と明記 |
+| §0 テキスト最小 | 厳格（`assert_text_minimal`） | **緩和**（コラージュは要素数が多い）。`assert_no_overlap` は必ず通す |
+| 用語 | 専門語可 | **一般化**（"Paper DB"→"データベース"、"アプリ開発（Python/Web）"併記） |
+
+関連スライドは**統合**して密度を上げてよい（例: 概念図＋階層＝1枚で、左に大きめヒーロー図＋右に
+説明カードを2枚積み）。装飾過多（塗り背景パネル/グロー/散らし）は §11bis #4 の通り引き続き禁止——
+密度はスクショとカードで埋め、塗りでは埋めない。
+
+### 15-2. showcase helper（`pptx_helpers.py`）
+
+```python
+# プログラム/文脈ヘッダ（+ タイトルスライド用にツール名サブ行）。chrome rects を返す
+rects = h.add_context_header(slide, "<プログラム名>", 1, tool_name="ツール名：<Full Name (abbr)>")
+
+# 画像の真上に置く 2 行キャプション（見出し色付き bold + 一文説明）。rect を返す
+rects.append(h.add_collage_caption(slide, "<用途>", "<一文>", left=L, top=T, width=W, color=h.COLOR_SUB_GREEN))
+
+# 使用アプリのロゴを小さく等間隔に並べる（空リストなら何も描かない）。bounding rect を返す
+rects.append(h.add_logo_cluster(slide, [str(p) for p in logos], left=L, top=T, width=W))
+```
+
+スクショは `add_picture_fit` で配置（アスペクト比保持・bbox 中央寄せ）。テンプレの `_shot()` は
+画像が無ければラベル付きプレースホルダ箱を描くので、画像差し込み前でも実行できる。
+
+### 15-3. 個人化の禁止（配布物として）
+
+配布テンプレは**個人化を含めない**：著者名・研究室名・特定化合物名・機器型番・特定スクショは
+入れず、すべて `<...>` プレースホルダにする。一般的なツール名（CLI 名、Notion 等）は可。
+利用者が自分のスクショ・ロゴ・連絡先を差し込んで使う。

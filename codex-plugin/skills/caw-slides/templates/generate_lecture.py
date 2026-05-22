@@ -91,14 +91,14 @@ def build_goals_slide(prs, slide_number: int):
         slide,
         left=Inches(0.4), top=Inches(1.18), width=Inches(12.53), height=Inches(4.95),
         paragraphs=[
-            h.Paragraph(h.mixed_runs("▸ 目標", size=Pt(21), bold=True, color=h.COLOR_TITLE)),
-            h.Paragraph(h.mixed_runs("○ <目標 1: 〜できるようになる>", size=Pt(16))),
-            h.Paragraph(h.mixed_runs("○ <目標 2: 〜を説明できるようになる>", size=Pt(16))),
-            h.Paragraph(h.mixed_runs("○ <目標 3: 〜を計算できるようになる>", size=Pt(16))),
-            h.Paragraph(h.mixed_runs("", size=Pt(16))),
-            h.Paragraph(h.mixed_runs("▸ 前提知識", size=Pt(21), bold=True, color=h.COLOR_TITLE)),
-            h.Paragraph(h.mixed_runs("・<前提 1>", size=Pt(16))),
-            h.Paragraph(h.mixed_runs("・<前提 2>", size=Pt(16))),
+            h.Paragraph(h.mixed_runs("▸ 目標", size=Pt(24), bold=True, color=h.COLOR_TITLE)),
+            h.Paragraph(h.mixed_runs("○ <目標 1: 〜できるようになる>", size=Pt(20))),
+            h.Paragraph(h.mixed_runs("○ <目標 2: 〜を説明できるようになる>", size=Pt(20))),
+            h.Paragraph(h.mixed_runs("○ <目標 3: 〜を計算できるようになる>", size=Pt(20))),
+            h.Paragraph(h.mixed_runs("", size=Pt(20))),
+            h.Paragraph(h.mixed_runs("▸ 前提知識", size=Pt(24), bold=True, color=h.COLOR_TITLE)),
+            h.Paragraph(h.mixed_runs("・<前提 1>", size=Pt(20))),
+            h.Paragraph(h.mixed_runs("・<前提 2>", size=Pt(20))),
         ],
     )
     rects.append((Inches(0.4), Inches(1.18), Inches(12.53), Inches(4.95), "<goals>"))
@@ -106,7 +106,7 @@ def build_goals_slide(prs, slide_number: int):
     h.add_key_message_band(
         slide,
         [h.Paragraph(h.mixed_runs("<L1: この講義で一番伝えたいこと>",
-                                  size=Pt(20), bold=True, color=h.COLOR_TEXT_BODY),
+                                  size=Pt(24), bold=True, color=h.COLOR_TEXT_BODY),
                      alignment=PP_ALIGN.CENTER)],
     )
     rects.append(h.CODEX_KEY_MSG_RECT + ("<key-msg>",))
@@ -151,7 +151,7 @@ def build_concept_flow_slide(prs, slide_number: int):
     h.add_key_message_band(
         slide,
         [h.Paragraph(h.mixed_runs("<L1: 3 段階のうち一番重要な気づき>",
-                                  size=Pt(20), bold=True, color=h.COLOR_TEXT_BODY),
+                                  size=Pt(24), bold=True, color=h.COLOR_TEXT_BODY),
                      alignment=PP_ALIGN.CENTER)],
     )
     rects.append(h.CODEX_KEY_MSG_RECT + ("<key-msg>",))
@@ -167,14 +167,14 @@ def build_summary_slide(prs, slide_number: int):
         left=Inches(0.4), top=Inches(1.18), width=Inches(12.53), height=Inches(4.95),
         paragraphs=[
             h.Paragraph(h.mixed_runs("▸ 今日のポイント",
-                                     size=Pt(21), bold=True, color=h.COLOR_TITLE)),
-            h.Paragraph(h.mixed_runs("○ <ポイント 1>", size=Pt(16))),
-            h.Paragraph(h.mixed_runs("○ <ポイント 2>", size=Pt(16))),
-            h.Paragraph(h.mixed_runs("", size=Pt(16))),
+                                     size=Pt(24), bold=True, color=h.COLOR_TITLE)),
+            h.Paragraph(h.mixed_runs("○ <ポイント 1>", size=Pt(20))),
+            h.Paragraph(h.mixed_runs("○ <ポイント 2>", size=Pt(20))),
+            h.Paragraph(h.mixed_runs("", size=Pt(20))),
             h.Paragraph(h.mixed_runs("▸ さらに学びたい人へ",
-                                     size=Pt(21), bold=True, color=h.COLOR_TITLE)),
-            h.Paragraph(h.mixed_runs("・<参考書・論文 1>", size=Pt(16))),
-            h.Paragraph(h.mixed_runs("・<参考書・論文 2>", size=Pt(16))),
+                                     size=Pt(24), bold=True, color=h.COLOR_TITLE)),
+            h.Paragraph(h.mixed_runs("・<参考書・論文 1>", size=Pt(20))),
+            h.Paragraph(h.mixed_runs("・<参考書・論文 2>", size=Pt(20))),
         ],
     )
     rects.append((Inches(0.4), Inches(1.18), Inches(12.53), Inches(4.95), "<summary>"))
@@ -182,7 +182,7 @@ def build_summary_slide(prs, slide_number: int):
     h.add_key_message_band(
         slide,
         [h.Paragraph(h.mixed_runs(f"<L1: {TOPIC} を学ぶ意義を一行で>",
-                                  size=Pt(20), bold=True, color=h.COLOR_TEXT_BODY),
+                                  size=Pt(24), bold=True, color=h.COLOR_TEXT_BODY),
                      alignment=PP_ALIGN.CENTER)],
     )
     rects.append(h.CODEX_KEY_MSG_RECT + ("<key-msg>",))

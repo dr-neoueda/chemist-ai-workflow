@@ -2,6 +2,59 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.4.5 / Codex 1.3.5] - 2026-05-21
+
+### Added — showcase（宣伝・紹介・募集）variant（実デッキ添削からの学び）
+
+ユーザーが手で添削した宣伝デッキを手本に、研究発表用 4 variant とは設計思想の異なる
+「実スクリーンショット主役のコラージュ型」を 5 つ目の用途バリアントとして追加。
+
+- **`templates/generate_showcase.py`**（新規・5-8 枚）: 概念（プログラムヘッダ + ツール名サブ行 + ヒーロー図 + 説明カード2枚 + 動作環境ロゴ）／メイン機能（俯瞰図 + カード + 機能図2枚）／使用例（スクショ・コラージュ + キャプション画像上 + アプリロゴクラスタ）／募集（CTA）。個人化なし・全 `<...>` プレースホルダ。画像未挿入でもラベル箱で実行可
+- **`pptx_helpers.py` に showcase helper 3 種**: `add_context_header`（プログラムヘッダ + ツール名サブ行）／`add_collage_caption`（画像上 2 行キャプション）／`add_logo_cluster`（アプリロゴを小さく等間隔・空リストは無描画）。いずれも `assert_no_overlap` 用 rect を返す
+- **style-guide §15**（showcase レイアウト）: 研究発表 variant との差分表（タイトル＝プログラム名／実スクショ主役／コラージュ密度／キャプション画像上／アプリロゴ／§0 緩和／用語一般化）、helper 早見、配布物の個人化禁止
+- **SKILL.md**: 用途バリアント 4→5、同梱資産に generate_showcase.py を追記（plugin / codex 両 SKILL.md）
+- PR ループ: python-reviewer → codex（記録: `~/lab/.company/review/code-reviews/2026-05-21-showcase-template.md`）
+- バージョン: plugin 1.4.4 → 1.4.5 / codex-plugin 1.3.4 → 1.3.5 / marketplace 同期
+
+## [1.4.4 / Codex 1.3.4] - 2026-05-21
+
+### Changed — フォント階層の固定化 + イラスト文字の本文スケール化（蛍デッキ反復の学び）
+
+子供実験教室「ホタルの発光」デッキをイラスト主体で作る一連の添削から、3 つの調整を caw-slides に恒久反映。
+
+- **フォント階層を 3 段に固定**（style-guide §2 / §14-2 / §14-3）: タイトル 28pt / 強調=L1=重要本文 24pt / 本文 20pt。**key-message band（L1）は常に 24pt**。色も役割分担（navy=見出し / dark=本文 / blue=要点 / red=注意 / grey=補足）。§14-3 がこれまで header 21・body 16 で §2 と矛盾していたのを統一
+- **4 テンプレ**（generate_conference/journal_club/lab_report/lecture）の font を新階層に: ▸ヘッダー 21→24 / 本文 16→20 / L1 band 20→24
+- **`research_icons` のイラスト内文字を本文スケールに拡大 + アイコンへ近接**: `label` 既定 12→17 / `sublabel` 9→13、3 ビルダーの node/center ラベルも 17–18 に、ラベル位置をアイコン直下へ寄せた（離れた配置の「スカスカ感」を解消）
+- **style-guide §11bis 品質ルール拡張**: 「アイコンとラベルは近接」「イラスト内文字も本文サイズ目安（fontsize 主 16–19 / 強調 22–24 / 補助 13–15）」「ドメイン特有アイコンは patches で自作可（材料＝登場人物）」を追加
+- PR: python-reviewer（constant-tuning、回帰なし APPROVE。figure-lifecycle/guards 健在）。research_icons は 1.4.3 で codex 二段済・本変更は定数のみのため codex 再実行なし。記録: `~/lab/.company/review/code-reviews/2026-05-21-firefly-deck-and-falsepositive.md`
+- バージョン: plugin 1.4.3 → 1.4.4 / codex-plugin 1.3.3 → 1.3.4 / marketplace 同期
+
+## [1.4.3 / Codex 1.3.3] - 2026-05-20
+
+### Added — 概念イラストモジュール `research_icons`
+
+caw 宣伝デッキ等のイラスト作成を重ねて確立したノウハウを、再利用可能な配布
+モジュールとして恒久化（references 層、`pptx_helpers` と同階層）。任意テーマの
+スライドで同等品質の概念イラストを量産できる。
+
+- **線画アイコン 10 種**（`icon_researcher` / `icon_flask` / `icon_molecule` /
+  `icon_document` / `icon_chart` / `icon_slides` / `icon_gear` / `icon_magnifier` /
+  `icon_laptop` / `icon_sparkle`）。共通シグネチャ `icon(ax, x, y, s=1.0, color=)`、
+  同縮尺で混在可。`ICONS` 名前レジストリ付き。配色は `CATEGORICAL_HEX` に整合
+- **構図ビルダー 3 種**（PNG パスを返す → `add_picture_fit` に渡す）:
+  - `hub_diagram` — 中心 + 放射（部署図・構成要素）
+  - `cycle_diagram` — 円環 + 駅間の隙間に弧矢印（研究サイクル。駅を貫かない）
+  - `converging_diagram` — 周辺要素が中心へ収束（負荷が押し寄せる課題図。矢じりはリム着地）
+- ヘルパ `label` / `sublabel` / `new_figure` / `save_figure`（ビルダーに無い構図を自作する用）
+- **style-guide.md §11bis「概念イラスト（schematic）作成」を新設**: イラスト vs チャートの
+  題材判断表（規模・桁比較は定量チャート、構成・サイクルはイラスト）、アイコンカタログ、
+  3 ビルダーの使い方、品質ルール（矢印はリム/隙間着地・サブラベルで密度・等間隔等縮尺・
+  背景は白基調で過度な装飾を避ける）。§14-6 早見表と SKILL.md にも追記
+- PR ループ: python-reviewer（HIGH 1 = Figure リーク + MEDIUM 5 + LOW 2）→ codex-rescue
+  二段（MEDIUM 2 = 高密度サイクルの弧反転・save 時クリーンアップ順序 + LOW 2）。全件対応。
+  記録: `~/lab/.company/review/code-reviews/2026-05-20-research-icons.md`
+- バージョン: plugin 1.4.2 → 1.4.3 / codex-plugin 1.3.2 → 1.3.3 / marketplace 同期
+
 ## [1.4.2 / Codex 1.3.2] - 2026-05-20
 
 ### Changed — カテゴリカル配色（青一色の解消）
