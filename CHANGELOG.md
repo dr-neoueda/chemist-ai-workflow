@@ -2,6 +2,19 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.5.0 / Codex 1.4.0] - 2026-05-27
+
+### Added — 初心者向け初期環境（投入フォルダ・過去データ取り込み・自動インストーラ）
+
+パソコン操作初心者に寄り添うオンボーディングへ拡張。
+
+- **投入フォルダの自動生成**（caw scaffold）: 各計算ソフトディレクトリに `inbox/`（これから計算する入力の置き場）と `_past-data/`（過去の入出力の置き場）、research に `papers/inbox/`（PDF の置き場）を、平易な README 付きで生成。「どこに何を置くか」で迷わせない
+- **過去データ一括取り込み**（caw-playbook 拡張）: `_past-data/` の過去入出力を解析し、よく使う汎関数・基底・収束設定・頻出エラーを Playbook の `## Lessons Learned` に初期 seed → その人向けに最適化
+- **`caw-setup` スキル（新規）**: 外部ツール（Python・poppler・python-pptx 等）の不足を検出し、計画提示 → 一度の承認 → 順番にインストール（macOS / Windows、冪等、sudo 不使用、失敗継続）
+- **bootstrap スクリプト（新規）**: `setup/caw-setup.sh`（macOS / Homebrew）・`setup/caw-setup.ps1`（Windows / winget + Scoop）。CLI・Node・git まで含めて導入（鶏卵問題対応）。同じ「計画提示 → 一括」方式
+- README（plugin / codex）に caw-setup と過去データ取り込みを追記
+- バージョン: plugin 1.4.5 → 1.5.0 / codex-plugin 1.3.5 → 1.4.0 / marketplace 同期（新スキル追加のため minor）
+
 ## [1.4.5 / Codex 1.3.5] - 2026-05-21
 
 ### Added — showcase（宣伝・紹介・募集）variant（実デッキ添削からの学び）

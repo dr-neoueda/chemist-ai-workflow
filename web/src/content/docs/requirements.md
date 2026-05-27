@@ -20,8 +20,8 @@ caw のコア（オンボーディング、部署スキャフォールド、Play
 | 土台 | AI CLI（Claude Code または Codex CLI） | caw の実行環境 | いずれか必須 |
 | 土台 | Node.js（LTS） | Claude Code 本体・npx ベースの MCP サーバー | 必須 |
 | 土台 | git | プラグインの取得・バージョン管理 | 必須 |
-| Python 機能 | Python 3.12 以上 | スライド・図・解析・PDF 処理の基盤 | 十分活用に必須 |
-| Python 機能 | python-pptx / matplotlib / pillow / numpy | caw-slides の図・スライド生成 | 同上 |
+| Python<br />機能 | Python 3.12 以上 | スライド・図・解析・PDF 処理の基盤 | 十分活用に必須 |
+| Python<br />機能 | python-pptx / matplotlib / pillow / numpy | caw-slides の図・スライド生成 | 同上 |
 | PDF 処理 | poppler（pdftoppm / pdftotext / pdfinfo） | 論文 PDF の図抽出・メタデータ抽出 | PDF を扱うなら必須 |
 | Windows のみ | Git Bash または WSL2 | Hooks（bash スクリプト）の実行 | Windows で必須 |
 | 任意 | GitHub CLI（gh） | engineering / review 部署の PR ワークフロー | 任意 |
@@ -32,6 +32,31 @@ caw のコア（オンボーディング、部署スキャフォールド、Play
 :::note
 Python パッケージはシステム環境を汚さないよう、仮想環境（`python -m venv` など）に入れることを推奨します。
 :::
+
+## 一番かんたん：自動セットアップスクリプト
+
+1 つずつ手で入れるのが不安な場合は、配布リポジトリの **セットアップスクリプト**が便利です。OS を判定し、
+不足しているものを検出 → **やることを一覧で提示 → 一度だけ承認 → 順番にインストール**します（既に入って
+いるものはスキップ）。
+
+```bash
+# macOS（ダウンロードして実行）
+curl -fsSL https://raw.githubusercontent.com/dr-neoueda/chemist-ai-workflow/main/setup/caw-setup.sh -o caw-setup.sh
+bash caw-setup.sh
+```
+
+```powershell
+# Windows（PowerShell でダウンロードして実行）
+iwr https://raw.githubusercontent.com/dr-neoueda/chemist-ai-workflow/main/setup/caw-setup.ps1 -OutFile caw-setup.ps1
+powershell -ExecutionPolicy Bypass -File caw-setup.ps1
+```
+
+:::tip
+すでに Claude Code / Codex CLI が動く環境なら、CLI の中で **`/caw-setup`**（Codex では「環境を整えて」）と
+言うだけで、不足ツールの検出から導入まで同じ「計画提示 → 一括」方式で行えます。
+:::
+
+以下は、何が入るのかを把握したい場合の **手動インストール手順**です。
 
 ## macOS でのインストール
 
