@@ -28,6 +28,7 @@ export default defineConfig({
 						{ label: 'プロジェクト概要', slug: 'about' },
 						{ label: '誰のためのものか', slug: 'audience' },
 						{ label: '対応ツール一覧', slug: 'tools' },
+						{ label: '必要なツールとインストール', slug: 'requirements' },
 						{ label: '配布プラグイン（caw）', slug: 'plugin' },
 						{ label: 'ロードマップ', slug: 'roadmap' },
 					],

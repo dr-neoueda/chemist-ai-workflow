@@ -14,16 +14,18 @@ claude
 
 ## 動作環境
 
+対応 OS は **macOS** と **Windows** の 2 つ（同列にサポート）。
+
 | OS | コア（Skills のワークフロー） | Hooks |
 |---|---|---|
 | macOS | ✅ | ✅ |
-| Linux | ✅ | ✅ |
-| Windows | ✅ | ⚠️ WSL または Git Bash 経由（`hooks.json` が `bash` を呼ぶため） |
+| Windows | ✅ | ✅（Git Bash または WSL2 を併用。`hooks.json` が `bash` を呼ぶため） |
 
 - **コア（オンボーディング・部署スキャフォールド・5 Skills）** は OS 非依存。SKILL.md は markdown のワークフロー指示で、Claude Code / Codex CLI のファイルツールがパスをクロスプラットフォーム処理する
-- **Hooks**（SessionStart / PostToolUse / Stop）は bash スクリプト。macOS / Linux はそのまま、Windows は WSL または Git Bash が必要
-- hook スクリプトは POSIX 準拠で記述（`stat -f` などの BSD 専用構文、`date -j` などの macOS 専用構文は使わない）。WSL / Git Bash の GNU 環境でも macOS の BSD 環境でも動作する
-- `.company/` はドット始まりの名前なので macOS Finder / Linux のファイルマネージャでは標準で非表示、Windows Explorer では表示される。OS によらず「運営情報専用エリア」という位置づけは同じ
+- **Hooks**（SessionStart / PostToolUse / Stop）は bash スクリプト。macOS はそのまま、Windows は Git Bash または WSL2 で動作する
+- hook スクリプトは POSIX 準拠で記述（`stat -f` などの BSD 専用構文、`date -j` などの macOS 専用構文は使わない）。Windows の Git Bash / WSL2 でも macOS の環境でも動作する
+- `.company/` はドット始まりの名前なので macOS Finder では標準で非表示、Windows Explorer では表示される。OS によらず「運営情報専用エリア」という位置づけは同じ
+- 必要な外部ツールと OS 別のインストール手順は LP の「必要なツールとインストール」を参照
 
 ## クイックスタート
 

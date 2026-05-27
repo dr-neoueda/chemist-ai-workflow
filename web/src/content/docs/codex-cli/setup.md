@@ -7,9 +7,12 @@ description: Codex CLI のインストール、認証、caw プラグイン導�
 
 ## 動作環境
 
+caw の対応 OS は **macOS** と **Windows**（同列にサポート）。
+
 - **macOS**（Apple Silicon / Intel）
-- **Linux**（主要ディストリビューション）
-- **Windows**: WSL2 経由で Linux 同等の操作感
+- **Windows**：caw の Hooks は bash スクリプトのため、Git Bash または WSL2 を併用します
+
+必要な外部ツールと OS 別のインストール手順は [必要なツールとインストール](/requirements/) にまとめています。
 
 ## インストール
 

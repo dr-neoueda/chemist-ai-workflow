@@ -7,11 +7,12 @@ description: Claude Code のインストール、認証、IDE 連携、モデル
 
 ## 動作環境
 
-- **macOS**（Apple Silicon / Intel）
-- **Linux**（主要ディストリビューション）
-- **Windows**: WSL2 経由で Linux 同等の操作感
+caw の対応 OS は **Windows** と **macOS** です。
 
-著者環境は macOS Tahoe（M5 Max, 128 GB RAM）。
+- **macOS**（Apple Silicon / Intel）
+- **Windows**：Claude Code はネイティブ動作。caw の Hooks は bash スクリプトのため、Git Bash または WSL2 を併用します
+
+必要な外部ツールと OS 別のインストール手順は [必要なツールとインストール](/requirements/) にまとめています。著者環境は macOS Tahoe（M5 Max, 128 GB RAM）。
 
 ## インストール
 
