@@ -53,7 +53,9 @@ your-research-project/
 - **`caw` スキル**：オンボーディング → 自動スキャフォールド → 運営モードの一連（起動は `caw` と入力、または自然言語で指示）
 - **8 部署 AGENTS.md テンプレート**：secretary / research / engineering / computation / analysis / writing / review / presentation
 - **Playbook 雛形**：Gaussian / GROMACS / CP2K / ORCA / VASP / Quantum ESPRESSO + 汎用
-- **作業ディレクトリ自動生成**：選択した計算ソフトと部署に応じて配置
+- **作業ディレクトリ自動生成**：選択した計算ソフトと部署に応じて配置。初心者向けに投入用 `inbox/` と過去データ用 `_past-data/` も生成
+- **`caw-setup` スキル**：外部ツール（Python・poppler・python-pptx 等）の不足を検出し、計画提示 → 一度の承認 → 順番にインストール（macOS / Windows）。CLI/Node 自体は `setup/caw-setup.sh`・`setup/caw-setup.ps1` を案内
+- **`caw-playbook` の過去データ取り込み**：`_past-data/` の過去入出力を解析し、その人の傾向を Playbook に初期 seed
 
 ## Claude Code 版との関係
 

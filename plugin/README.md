@@ -69,8 +69,9 @@ your-research-project/
 - **`/caw`**：オンボーディング（Quick / Standard / Advanced の 3 段階）→ 自動スキャフォールド → 運営モードの一連
 - **`/caw-paper`**：論文検索（arXiv / Crossref / Semantic Scholar / OpenAlex / PubMed）+ 入手済み PDF のメタデータ抽出 → ナレッジベース（Notion / Obsidian 他）+ クラウドストレージ（Google Drive 他）への自動登録
 - **`/caw-input`**：6 ソフト（Gaussian / ORCA / CP2K / GROMACS / VASP / Quantum ESPRESSO）の入力ファイル雛形生成、Playbook デフォルト起点 + ジョブ記録自動生成
-- **`/caw-playbook`**：計算 log の自動解析 → Lessons Learned エントリ起案 → Playbook 末尾追記、memory feedback 昇格判定
+- **`/caw-playbook`**：計算 log の自動解析 → Lessons Learned エントリ起案 → Playbook 末尾追記、memory feedback 昇格判定。`_past-data/` に置いた過去データの一括取り込み（その人向けに Playbook を初期最適化）にも対応
 - **`/caw-doctor`**：`.company/` 構造の健全性チェック（部署 CLAUDE.md の存在、旧構造の検出、Playbook 更新滞り等）と修復コマンド提示
+- **`/caw-setup`**：caw を十分に使うための外部ツール（Python・poppler・python-pptx 等）の不足を検出し、計画提示 → 一度の承認 → 順番にインストール（macOS / Windows、冪等）。CLI/Node 自体の導入は `setup/caw-setup.sh`・`setup/caw-setup.ps1` を案内
 
 ### Hooks
 
@@ -128,7 +129,8 @@ plugin/
     ├── caw-paper/SKILL.md
     ├── caw-input/SKILL.md
     ├── caw-playbook/SKILL.md
-    └── caw-doctor/SKILL.md
+    ├── caw-doctor/SKILL.md
+    └── caw-setup/SKILL.md
 ```
 
 ## ライセンス

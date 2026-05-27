@@ -25,6 +25,7 @@ export default defineConfig({
 				{
 					label: 'はじめに',
 					items: [
+						{ label: 'はじめての方へ（ターミナル・IDE の基本）', slug: 'beginner' },
 						{ label: 'プロジェクト概要', slug: 'about' },
 						{ label: '誰のためのものか', slug: 'audience' },
 						{ label: '対応ツール一覧', slug: 'tools' },
