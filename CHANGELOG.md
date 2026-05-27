@@ -2,6 +2,13 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.5.1 / Codex 1.4.1] - 2026-05-27
+
+### Changed — オンボーディング最初の質問を「経験レベルを率直に尋ねる」形に
+
+- Q0（セットアップモード選択）を「どこまで詳しくやりますか？」から **「パソコンのターミナルや AI エージェントを使うのは初めてですか？」** へ言い換え。「はい、初めて」を先頭に強調し、Quick/Standard/Advanced の語が分からない初心者を取りこぼさないようにした（内部モード名は不変）。plugin / codex 両方
+- バージョン: plugin 1.5.0 → 1.5.1 / codex-plugin 1.4.0 → 1.4.1 / marketplace 同期
+
 ## [1.5.0 / Codex 1.4.0] - 2026-05-27
 
 ### Added — 初心者向け初期環境（投入フォルダ・過去データ取り込み・自動インストーラ）
