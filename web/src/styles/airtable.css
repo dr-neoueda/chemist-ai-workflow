@@ -1,0 +1,240 @@
+/* caw site theme — Airtable-inspired tokens applied to Starlight.
+   Source: web/DESIGN.md (installed via `npx getdesign@latest add airtable`).
+   Philosophy: white canvas + dark-ink type + near-black primary CTA + signature
+   surface cards in coral / forest / dark navy / cream. No bold display weight,
+   no hover-only states. Pricing-style pill radius reserved for that sub-system. */
+
+:root {
+  /* ---- Tokens ---- */
+  --caw-primary: #181d26;
+  --caw-primary-active: #0d1218;
+  --caw-ink: #181d26;
+  --caw-body: #333840;
+  --caw-muted: #41454d;
+  --caw-hairline: #dddddd;
+  --caw-border-strong: #9297a0;
+  --caw-canvas: #ffffff;
+  --caw-surface-soft: #f8fafc;
+  --caw-surface-strong: #e0e2e6;
+  --caw-surface-dark: #181d26;
+  --caw-surface-dark-elevated: #1d1f25;
+  --caw-coral: #aa2d00;
+  --caw-forest: #0a2e0e;
+  --caw-cream: #f5e9d4;
+  --caw-peach: #fcab79;
+  --caw-mint: #a8d8c4;
+  --caw-yellow: #f4d35e;
+  --caw-mustard: #d9a441;
+  --caw-link: #1b61c9;
+  --caw-link-active: #1a3866;
+  --caw-on-primary: #ffffff;
+
+  --caw-radius-xs: 2px;
+  --caw-radius-sm: 6px;
+  --caw-radius-md: 10px;
+  --caw-radius-lg: 12px;
+  --caw-radius-pill: 9999px;
+
+  --caw-space-xxs: 4px;
+  --caw-space-xs: 8px;
+  --caw-space-sm: 12px;
+  --caw-space-md: 16px;
+  --caw-space-lg: 24px;
+  --caw-space-xl: 32px;
+  --caw-space-xxl: 48px;
+  --caw-space-section: 96px;
+
+  --caw-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Helvetica Neue', sans-serif;
+
+  /* ---- Starlight overrides (light, default) ---- */
+  --sl-font: var(--caw-font-sans);
+  --sl-font-system: var(--caw-font-sans);
+  --sl-color-text: var(--caw-body);
+  --sl-color-text-accent: var(--caw-link);
+  --sl-color-bg: var(--caw-canvas);
+  --sl-color-bg-nav: var(--caw-canvas);
+  --sl-color-bg-sidebar: var(--caw-canvas);
+  --sl-color-hairline: var(--caw-hairline);
+  --sl-color-hairline-shade: var(--caw-hairline);
+  --sl-color-hairline-light: var(--caw-hairline);
+  --sl-color-accent: var(--caw-primary);
+  --sl-color-accent-low: var(--caw-surface-soft);
+  --sl-color-accent-high: var(--caw-primary-active);
+  --sl-color-white: #ffffff;
+  --sl-color-black: var(--caw-ink);
+}
+
+/* Dark theme — Airtable’s monochrome bias: dark surface + white type */
+:root[data-theme='dark'] {
+  --sl-color-text: #d7dae0;
+  --sl-color-text-accent: #6aa1ff;
+  --sl-color-bg: var(--caw-surface-dark);
+  --sl-color-bg-nav: var(--caw-surface-dark-elevated);
+  --sl-color-bg-sidebar: var(--caw-surface-dark-elevated);
+  --sl-color-hairline: #2a2d34;
+  --sl-color-hairline-shade: #2a2d34;
+  --sl-color-hairline-light: #2a2d34;
+  --sl-color-accent: #ffffff;
+  --sl-color-accent-high: #f0f1f3;
+}
+
+/* ---- Typography: modest weights, no bold for display ---- */
+.sl-markdown-content h1,
+.sl-markdown-content h2,
+.sl-markdown-content h3,
+.sl-markdown-content h4 {
+  font-family: var(--caw-font-sans);
+  letter-spacing: 0;
+  color: var(--caw-ink);
+}
+:root[data-theme='dark'] .sl-markdown-content h1,
+:root[data-theme='dark'] .sl-markdown-content h2,
+:root[data-theme='dark'] .sl-markdown-content h3,
+:root[data-theme='dark'] .sl-markdown-content h4 { color: #ffffff; }
+
+.sl-markdown-content h1 { font-weight: 500; font-size: 40px; line-height: 1.2; }
+.sl-markdown-content h2 { font-weight: 500; font-size: 32px; line-height: 1.2; margin-top: var(--caw-space-xxl); }
+.sl-markdown-content h3 { font-weight: 500; font-size: 24px; line-height: 1.35; letter-spacing: 0.12px; margin-top: var(--caw-space-xl); }
+.sl-markdown-content h4 { font-weight: 500; font-size: 20px; line-height: 1.5; margin-top: var(--caw-space-lg); }
+
+.sl-markdown-content p,
+.sl-markdown-content li {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--caw-body);
+}
+:root[data-theme='dark'] .sl-markdown-content p,
+:root[data-theme='dark'] .sl-markdown-content li { color: #c8ccd3; }
+
+/* Links: blue ink, no underline by default, low-opacity underline on hover/focus */
+.sl-markdown-content a {
+  color: var(--caw-link);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color .15s;
+}
+.sl-markdown-content a:hover,
+.sl-markdown-content a:focus { border-bottom-color: var(--caw-link); }
+.sl-markdown-content a:active { color: var(--caw-link-active); }
+
+/* ---- Buttons: near-black primary, white outlined secondary ---- */
+.sl-link-button.primary,
+a.sl-link-button[data-variant='primary'] {
+  background: var(--caw-primary) !important;
+  color: var(--caw-on-primary) !important;
+  border: 1px solid var(--caw-primary) !important;
+  border-radius: var(--caw-radius-lg) !important;
+  font-weight: 500 !important;
+  padding: 14px 24px !important;
+  box-shadow: none !important;
+}
+.sl-link-button.primary:hover,
+a.sl-link-button[data-variant='primary']:hover {
+  background: var(--caw-primary-active) !important;
+  border-color: var(--caw-primary-active) !important;
+}
+.sl-link-button.secondary,
+a.sl-link-button[data-variant='secondary'] {
+  background: var(--caw-canvas) !important;
+  color: var(--caw-ink) !important;
+  border: 1px solid var(--caw-hairline) !important;
+  border-radius: var(--caw-radius-lg) !important;
+  font-weight: 500 !important;
+  padding: 14px 24px !important;
+  box-shadow: none !important;
+}
+
+/* Header / nav hairline */
+header.header { border-bottom: 1px solid var(--caw-hairline); }
+
+/* ---- Cards: white canvas, hairline, rounded-md ---- */
+.sl-markdown-content .card,
+starlight-card-grid .card {
+  background: var(--caw-canvas);
+  border: 1px solid var(--caw-hairline) !important;
+  border-radius: var(--caw-radius-md) !important;
+  box-shadow: none !important;
+  padding: var(--caw-space-md);
+}
+:root[data-theme='dark'] .sl-markdown-content .card,
+:root[data-theme='dark'] starlight-card-grid .card {
+  background: var(--caw-surface-dark-elevated);
+  border-color: #2a2d34 !important;
+}
+
+/* Code blocks: rounded-md */
+.sl-markdown-content pre,
+.expressive-code pre {
+  border-radius: var(--caw-radius-md) !important;
+}
+
+/* ---- Signature surface utilities (use in MDX as <div class="caw-signature coral">…</div>) ---- */
+
+.caw-signature {
+  border-radius: var(--caw-radius-lg);
+  padding: var(--caw-space-xxl);
+  margin: var(--caw-space-xxl) 0;
+  color: var(--caw-on-primary);
+}
+.caw-signature > :first-child { margin-top: 0; }
+.caw-signature > :last-child  { margin-bottom: 0; }
+.caw-signature h2,
+.caw-signature h3,
+.caw-signature h4 { color: inherit; font-weight: 500; }
+.caw-signature p { color: inherit; opacity: .92; }
+.caw-signature.coral  { background: var(--caw-coral); }
+.caw-signature.forest { background: var(--caw-forest); }
+.caw-signature.dark   { background: var(--caw-surface-dark); }
+.caw-signature.cream  { background: var(--caw-cream); color: var(--caw-ink); }
+.caw-signature.cream p { color: var(--caw-ink); opacity: .85; }
+
+.caw-cta-band {
+  background: var(--caw-surface-strong);
+  color: var(--caw-ink);
+  border-radius: var(--caw-radius-lg);
+  padding: var(--caw-space-xxl);
+  margin: var(--caw-space-xxl) 0;
+}
+.caw-cta-band h2 { color: var(--caw-ink); margin-top: 0; font-weight: 500; }
+
+/* In-card button (use inside .caw-signature) */
+.caw-btn {
+  display: inline-block;
+  background: var(--caw-canvas);
+  color: var(--caw-ink) !important;
+  padding: 12px 24px;
+  border-radius: var(--caw-radius-lg);
+  font-weight: 500;
+  text-decoration: none !important;
+  border: 1px solid transparent;
+  margin-top: var(--caw-space-md);
+}
+.caw-btn.outline {
+  background: transparent;
+  color: var(--caw-on-primary) !important;
+  border-color: var(--caw-on-primary);
+}
+.caw-signature.cream .caw-btn.outline,
+.caw-cta-band .caw-btn.outline { color: var(--caw-ink) !important; border-color: var(--caw-ink); }
+
+/* Demo grid (uneven 3-up of small pastel cards) */
+.caw-demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--caw-space-lg);
+  margin: var(--caw-space-xl) 0;
+}
+.caw-demo-grid .caw-demo {
+  border-radius: var(--caw-radius-md);
+  padding: var(--caw-space-md) var(--caw-space-lg);
+  font-weight: 500;
+  color: var(--caw-ink);
+}
+.caw-demo.peach   { background: var(--caw-peach); }
+.caw-demo.mint    { background: var(--caw-mint); }
+.caw-demo.yellow  { background: var(--caw-yellow); }
+.caw-demo.mustard { background: var(--caw-mustard); color: var(--caw-ink); }
+.caw-demo.cream   { background: var(--caw-cream); }
+
+/* Section rhythm (96px vertical bands when used as wrapper) */
+.caw-section { padding: var(--caw-space-section) 0; }

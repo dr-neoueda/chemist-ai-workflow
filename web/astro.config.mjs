@@ -21,6 +21,12 @@ export default defineConfig({
 				root: { label: '日本語', lang: 'ja' },
 			},
 			social: [],
+			customCss: ['./src/styles/airtable.css'],
+			head: [
+				{ tag: 'link', attrs: { rel: 'preconnect', href: 'https://fonts.googleapis.com' } },
+				{ tag: 'link', attrs: { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' } },
+				{ tag: 'link', attrs: { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap' } },
+			],
 			sidebar: [
 				{
 					label: 'はじめに',
