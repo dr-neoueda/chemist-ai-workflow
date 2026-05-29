@@ -2,6 +2,23 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.5.2 / Codex 1.4.2] - 2026-05-29
+
+### Added — 初回ツアーの「サンプル PDF」フォールバック
+
+- 初回ツアーの論文登録ステップで、手元に PDF が無いユーザー向けに **matplotlib で 1 枚のラベル付きサンプル PDF を生成**（`papers/inbox/caw-sample.pdf`、先頭に「練習用サンプル（削除可）」明記）→ 登録フローを体験 → 確認のうえ削除、という導線を追加。偽の論文をリポジトリに同梱せず、その場で生成して環境を汚さない。plugin / codex 両方
+- バージョン: plugin 1.5.1 → 1.5.2 / codex-plugin 1.4.1 → 1.4.2 / marketplace 同期
+
+### Web — Airtable テーマの仕上げ
+
+- splash hero タイトルが白地に白文字で消えていた不具合を修正（`--sl-color-white` / `--sl-color-black` の上書きを削除。Starlight ではこれらは「高/低コントラスト」セマンティクスで literal 色ではない）
+- favicon を Airtable パレットの化学フラスコアイコンに刷新（`web/public/favicon.svg`）
+- ソーシャルカード（OGP）を追加：`web/public/og-default.png`（1200×630、白キャンバス + インク見出し + コーラルのフラスコ）と `og:image` / `twitter:card=summary_large_image` メタ
+
+### Repo — 整合性チェックスクリプト
+
+- `scripts/check-consistency.sh` を追加：plugin↔marketplace のバージョン一致、plugin↔codex の `caw-slides` references/templates の byte 一致、配布ツリーの個人化リーク（固有名詞）を一括検査。手作業ミラーの取りこぼし防止（CI 利用可）
+
 ## [1.5.1 / Codex 1.4.1] - 2026-05-27
 
 ### Changed — オンボーディング最初の質問を「経験レベルを率直に尋ねる」形に
