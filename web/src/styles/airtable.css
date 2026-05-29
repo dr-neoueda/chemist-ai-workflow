@@ -60,8 +60,10 @@
   --sl-color-accent: var(--caw-primary);
   --sl-color-accent-low: var(--caw-surface-soft);
   --sl-color-accent-high: var(--caw-primary-active);
-  --sl-color-white: #ffffff;
-  --sl-color-black: var(--caw-ink);
+  /* NOTE: Do not override --sl-color-white / --sl-color-black here.
+     Starlight uses them as high-contrast / low-contrast semantics,
+     not as literal colors — overriding to #fff/#000 makes the splash
+     hero title white-on-white in light mode. Leave Starlight defaults. */
 }
 
 /* Dark theme — Airtable’s monochrome bias: dark surface + white type */

@@ -21,11 +21,18 @@ export default defineConfig({
 				root: { label: '日本語', lang: 'ja' },
 			},
 			social: [],
+			favicon: '/favicon.svg',
 			customCss: ['./src/styles/airtable.css'],
 			head: [
 				{ tag: 'link', attrs: { rel: 'preconnect', href: 'https://fonts.googleapis.com' } },
 				{ tag: 'link', attrs: { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' } },
 				{ tag: 'link', attrs: { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap' } },
+				// Social card. Set `site` in this config to upgrade /og-default.png to an absolute URL for scrapers that require it.
+				{ tag: 'meta', attrs: { property: 'og:image', content: '/og-default.png' } },
+				{ tag: 'meta', attrs: { property: 'og:image:width', content: '1200' } },
+				{ tag: 'meta', attrs: { property: 'og:image:height', content: '630' } },
+				{ tag: 'meta', attrs: { name: 'twitter:card', content: 'summary_large_image' } },
+				{ tag: 'meta', attrs: { name: 'twitter:image', content: '/og-default.png' } },
 			],
 			sidebar: [
 				{
