@@ -219,6 +219,29 @@ starlight-card-grid .card {
 .caw-signature.cream .caw-btn.outline,
 .caw-cta-band .caw-btn.outline { color: var(--caw-ink) !important; border-color: var(--caw-ink); }
 
+/* ---- Dark-mode neutral-surface fixes ----
+   Brand-color signatures (coral / forest / cream) are intentionally kept as-is
+   in dark mode: they punctuate the dark page and their text stays readable.
+   The NEUTRAL surfaces, however, collide with the dark theme's own neutrals:
+   - .caw-signature.dark uses --caw-surface-dark (#181d26), which equals the
+     dark page background, so the card loses its panel edge entirely.
+   - .caw-cta-band uses light grey (--caw-surface-strong), which becomes a
+     jarring bright block in dark mode, and its ink-colored heading/outline
+     button would be invisible if the band were darkened.
+   Lift both onto the elevated dark surface with a hairline, and flip the band
+   heading + outline button to light ink. */
+:root[data-theme='dark'] .caw-signature.dark,
+:root[data-theme='dark'] .caw-cta-band {
+  background: var(--caw-surface-dark-elevated);
+  border: 1px solid #2a2d34;
+}
+:root[data-theme='dark'] .caw-cta-band,
+:root[data-theme='dark'] .caw-cta-band h2 { color: #ffffff; }
+:root[data-theme='dark'] .caw-cta-band .caw-btn.outline {
+  color: #ffffff !important;
+  border-color: #ffffff;
+}
+
 /* Demo grid (uneven 3-up of small pastel cards) */
 .caw-demo-grid {
   display: grid;
