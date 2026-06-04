@@ -25,12 +25,14 @@ json_version() { # $1 = file
 pv=$(json_version plugin/.claude-plugin/plugin.json)
 mv=$(json_version .claude-plugin/marketplace.json)
 cv=$(json_version codex-plugin/.codex-plugin/plugin.json)
+cpv=$(json_version copilot-plugin/plugin.json)
 if [ -n "$pv" ] && [ "$pv" = "$mv" ]; then
   ok "plugin version == marketplace version ($pv)"
 else
   bad "plugin ($pv) != marketplace ($mv) — bump both together"
 fi
 printf '%s    codex-plugin version: %s%s\n' "$dim" "${cv:-?}" "$off"
+printf '%s    copilot-plugin version: %s (PoC track)%s\n' "$dim" "${cpv:-?}" "$off"
 
 # --- 2. plugin <-> codex mirror (byte-identical shared assets only) ---
 mirror_dirs=(
@@ -55,10 +57,10 @@ done
 # --- 3. personalization leak scan (distributed tree only) ---
 # Specific proper nouns only — generic field terms (MLIP/CP2K/DFT) are allowed.
 leak_re='aaBrAdox|SPReAD|Bis\(BrPhCH2O\)|NU-[0-9]|PILATUS|n267302|neoueda@'
-hits=$(grep -RInE "$leak_re" plugin codex-plugin 2>/dev/null \
+hits=$(grep -RInE "$leak_re" plugin codex-plugin copilot-plugin .github/plugin 2>/dev/null \
         | grep -v 'Binary file' || true)
 if [ -z "$hits" ]; then
-  ok "no personalization leaks in plugin/ or codex-plugin/"
+  ok "no personalization leaks in plugin/, codex-plugin/, copilot-plugin/, .github/plugin/"
 else
   bad "personalization leak(s) found:"
   printf '%s\n' "$hits" | sed 's/^/      /'

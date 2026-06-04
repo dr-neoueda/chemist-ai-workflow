@@ -89,6 +89,12 @@ export default defineConfig({
 					],
 				},
 				{
+					label: '補助選択肢: GitHub Copilot CLI（PoC）',
+					items: [
+						{ label: 'copilot-cli/ 概要', slug: 'copilot-cli' },
+					],
+				},
+				{
 					label: '補助選択肢: Web 版（最小）',
 					items: [
 						{ label: 'chatgpt-web/ 概要', slug: 'chatgpt-web' },

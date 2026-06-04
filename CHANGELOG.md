@@ -2,6 +2,21 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [copilot-plugin 1.0.0 + Web] - 2026-06-04
+
+### Added — GitHub Copilot CLI 対応（PoC）
+
+- `copilot-plugin/` 新設：GitHub Copilot CLI 版 caw（`plugin.json` + 2 スキル `caw` / `caw-setup`、`caw` は `references/` 同梱）。Codex CLI 版（AGENTS.md ターゲット）から **CLI 固有箇所のみ**翻訳（起動コマンド `copilot`、MCP は `.mcp.json` 標準 `mcpServers` 形式）
+- `.github/plugin/marketplace.json`：Copilot マーケットプレイス定義（`source: ./copilot-plugin`、登録は `copilot plugin marketplace add dr-neoueda/chemist-ai-workflow`）
+- `docs/copilot-compatibility.md`：互換性アセスメント。GitHub Copilot CLI が caw のプリミティブ（AGENTS.md/CLAUDE.md 読込・`SKILL.md`・custom agents・**hooks は同名ライフサイクル**・MCP・plugin+marketplace 配布）を同型サポートする根拠と出典、移植コスト、対象外（M365 / Copilot Studio / 消費者 Copilot）を整理
+- Web：補助ティアに「GitHub Copilot CLI（PoC 実証済）」を追加（`web/src/content/docs/copilot-cli/`、sidebar、splash の LinkCard + CLI 中立セクションの文言を補助 3 本に更新）
+- `scripts/check-consistency.sh`：copilot-plugin の版表示 + 個人化リークスキャン対象に `copilot-plugin` / `.github/plugin` を追加
+
+### Note
+
+- plugin（Claude）1.5.2 / codex-plugin 1.4.2 は**無変更**。本リリースは新トラック **copilot-plugin 1.0.0** + Web + docs の追加
+- PoC 簡略化：部署テンプレ見出しの `CLAUDE.md` 表記は据え置き（Copilot は `AGENTS.md`/`CLAUDE.md` 両読みのため機能上問題なし）。フルポート（残りスキル `caw-slides`/`caw-paper` 等・`hooks.json`・`.mcp.json`・実機動作確認）は Phase 2 検討
+
 ## [1.5.2 / Codex 1.4.2] - 2026-05-29
 
 ### Added — 初回ツアーの「サンプル PDF」フォールバック

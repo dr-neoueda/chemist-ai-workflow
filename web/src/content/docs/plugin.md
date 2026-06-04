@@ -47,12 +47,22 @@ codex
 
 Codex CLI ではスラッシュ不要。`caw` と入力するか、「化学プロジェクトの環境を作って」など自然言語で指示すれば、スキルが発火します。
 
-### 両 CLI の起動作法（比較）
+### GitHub Copilot CLI 版（PoC）
+
+```bash
+copilot plugin marketplace add dr-neoueda/chemist-ai-workflow
+copilot plugin install caw
+```
+
+GitHub Copilot CLI は `AGENTS.md`（および `CLAUDE.md`）・`SKILL.md`・hooks・MCP を caw と同型でサポートします。本リポジトリには PoC プラグイン（`copilot-plugin/`、`caw` / `caw-setup` の 2 スキル）を同梱。対象は **GitHub Copilot CLI / VS Code Agent Mode** で、Microsoft 365 Copilot・消費者 Copilot は対象外です。詳細は [GitHub Copilot CLI](/copilot-cli/)。
+
+### 各 CLI の起動作法（比較）
 
 | エージェント | インストール | 起動 |
 |---|---|---|
 | Claude Code | `/plugin marketplace add ...` → `/plugin install caw` | `/caw` |
 | Codex CLI | `codex plugin marketplace add ...`（marketplace 単位、個別 install なし） | `caw`（または自然言語） |
+| GitHub Copilot CLI（PoC） | `copilot plugin marketplace add ...` → `copilot plugin install caw` | `caw`（または自然言語） |
 
 Claude Code はスキル発火を `/` 構文に統合、Codex CLI は `/` を明示的コマンド専用に予約しスキルは自然言語マッチで発火する設計の違いがあります。
 
@@ -99,7 +109,7 @@ claude
 
 ## 開発リポジトリ
 
-- **公開先**: [`dr-neoueda/chemist-ai-workflow`](https://github.com/dr-neoueda/chemist-ai-workflow)（GitHub、MIT ライセンス、Claude Code + Codex CLI 並列配信）
+- **公開先**: [`dr-neoueda/chemist-ai-workflow`](https://github.com/dr-neoueda/chemist-ai-workflow)（GitHub、MIT ライセンス、Claude Code + Codex CLI 並列配信、GitHub Copilot CLI は PoC 同梱）
 
 **Claude Code 版（`plugin/`）**:
 - `.claude-plugin/marketplace.json` ─ Claude Code 用マーケットプレイス manifest
@@ -116,6 +126,13 @@ claude
 - `codex-plugin/skills/caw/references/agents-md-template.md` ─ ルート AGENTS.md 生成テンプレ
 - `codex-plugin/skills/caw/references/chemistry-departments.md` ─ 8 部署 AGENTS.md テンプレ集
 - `codex-plugin/skills/caw/references/playbook-starters.md` ─ 計算ソフト Playbook 雛形（Claude Code 版と同一）
+
+**GitHub Copilot CLI 版（`copilot-plugin/`、PoC）**:
+- `.github/plugin/marketplace.json` ─ Copilot 用マーケットプレイス manifest
+- `copilot-plugin/plugin.json` ─ プラグインマニフェスト
+- `copilot-plugin/skills/caw/SKILL.md` ─ メインスキル（`AGENTS.md` / `CLAUDE.md` ターゲット）
+- `copilot-plugin/skills/caw-setup/SKILL.md` ─ 前提ツール検出・順次インストール
+- 互換性分析: `docs/copilot-compatibility.md`
 
 ## ライセンス
 
