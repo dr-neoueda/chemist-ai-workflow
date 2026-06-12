@@ -92,6 +92,12 @@ if ($claudePlan) {
   else { Skip 'Claude Code（npm 未導入。Node.js 導入後に再実行してください）' }
 }
 
+# --- 代替 AI CLI（任意・案内のみ） ---
+# caw は Claude Code を既定（Tier 1）として導入するが、Codex CLI / GitHub Copilot CLI でも動く。
+Head '代替 AI CLI（任意）'
+if (Have 'codex')   { OK 'Codex CLI は導入済み' }          else { Say '  ・Codex CLI を使う場合: npm install -g @openai/codex' }
+if (Have 'copilot') { OK 'GitHub Copilot CLI は導入済み' } else { Say '  ・GitHub Copilot CLI を使う場合: npm install -g @github/copilot（Node.js 22 以上）' }
+
 # --- poppler（Scoop） ---
 if ($popplerPlan) {
   Head 'poppler'
@@ -137,5 +143,5 @@ if (Have 'python') {
 
 Head '完了'
 Say "詳細ログ: $log"
-Say "次は、研究プロジェクトのフォルダで 'claude' を起動し /caw を実行してください。"
+Say "次は、研究プロジェクトのフォルダで 'claude'（または 'codex' / 'copilot'）を起動し caw を実行してください。"
 Say "（caw の Hooks は bash を使うため、Git Bash か WSL2 を併用してください）"

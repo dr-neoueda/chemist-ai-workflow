@@ -50,10 +50,12 @@ copilot plugin install caw
 
 ## 既知の PoC 簡略化
 
-- `skills/caw/references/chemistry-departments.md` の部署テンプレ見出しは `CLAUDE.md` 表記のまま
-  （Copilot は `AGENTS.md`/`CLAUDE.md` を両方読むため機能上は問題なし。フルポートで `AGENTS.md` に統一予定）。
+- 部署テンプレ `skills/caw/references/chemistry-departments.md` の見出しは `AGENTS.md` に統一済み
+  （Copilot は `AGENTS.md`/`CLAUDE.md` を両方読むが、primary の `AGENTS.md` で揃えた）。
 - MCP 設定は Claude 形式コマンド例を残しつつ、Copilot 用 `.mcp.json`（標準 `mcpServers` 形式）を併記
   （`skills/caw/references/mcp-setup-templates.md`）。
+- 同梱スキルは `caw` / `caw-setup` の 2 つ（PoC）。残りの 5 スキル（caw-doctor / caw-input / caw-paper /
+  caw-playbook / caw-slides）と hooks のフルポートは Phase 2 検討。
 
 ## ライセンス
 

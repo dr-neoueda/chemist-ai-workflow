@@ -56,7 +56,7 @@ description: >
 - `.company/engineering/scripts/`
 - `.company/engineering/tools/`
 
-これらに該当するファイルがあれば、project root 直下の対応ディレクトリ（`papers/`, `topics/`, `manuscripts/`, `analyses/`, `figures/`, `notebooks/`, `slides/`, `scripts/`, `tools/`）への移動を提案。
+これらに該当するファイルがあれば、project root 直下の対応ディレクトリ（`papers/`, `topics/`, `manuscripts/`, `analyses/`, `figures/`, `notebooks/`, `presentations/slides/`, `scripts/`, `tools/`）への移動を提案。
 
 ### 5. Playbook の更新状況
 
@@ -73,10 +73,20 @@ description: >
 | research | `papers/`, `topics/` |
 | writing | `manuscripts/` |
 | analysis | `analyses/`, `notebooks/`, `figures/` |
-| presentation | `slides/` |
+| presentation | `presentations/slides/` |
 | engineering | `scripts/`, `tools/` |
 
 存在しなければ `README.md` 付きで作成を提案。
+
+### 6b. 初心者向け投入フォルダ（inbox / _past-data）
+
+オンボーディングで作られる「投入フォルダ」が消えていないか確認（消えていると初心者が PDF・過去データの置き場で迷う）：
+
+- [ ] research を選択している場合、`papers/inbox/` が存在する
+- [ ] 各計算ソフトディレクトリ（`gaussian/` `gromacs/` `cp2k/` 等）に `inbox/` と `_past-data/` が存在する
+- [ ] START HERE 文書 `はじめにお読みください.md` が project root に存在する（はじめてモードで特に重要）
+
+存在しなければ「`caw` で再生成するか、手動で作成」を提案する。
 
 ### 7. 同日ファイル重複
 
@@ -125,7 +135,7 @@ for old in \
     ".company/analysis/results:analyses/" \
     ".company/analysis/figures:figures/" \
     ".company/analysis/notebooks:notebooks/" \
-    ".company/presentation/slides:slides/" \
+    ".company/presentation/slides:presentations/slides/" \
     ".company/engineering/scripts:scripts/" \
     ".company/engineering/tools:tools/"
 do

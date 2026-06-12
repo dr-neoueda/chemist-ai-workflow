@@ -229,7 +229,7 @@ Q5a・Q5b で選択された部署について、`references/chemistry-departmen
 | research | `papers/` | 文献要約 md（`<author-year>.md`）+ 原本 PDF |
 | research | `topics/` | 調査トピックまとめ md（`<topic>.md`） |
 | writing | `manuscripts/` | 論文ドラフト（LaTeX / Word）、図表、参考文献 |
-| presentation | `slides/` | 発表資料、論文紹介スライド、生成スクリプト（`slides/scripts/`） |
+| presentation | `presentations/slides/` | 発表資料・論文紹介スライド（`.pptx`）。生成スクリプトは `.company/presentation/scripts/`（再生成用） |
 | analysis | `analyses/` | 解析結果（1 トピック 1 サブフォルダ） |
 | analysis | `notebooks/` | Jupyter Notebook |
 | analysis | `figures/` | 解析・論文・スライド用の図表（presentation と共有） |
@@ -311,7 +311,7 @@ Q3（ナレッジベース）/ Q4（クラウドストレージ）の回答に�
 │   └── README.md
 ├── manuscripts/                 ← writing 選択時：論文ドラフト
 │   └── README.md
-├── slides/                      ← presentation 選択時：発表資料
+├── presentations/slides/        ← presentation 選択時：発表資料（.pptx）
 │   └── README.md
 ├── analyses/                    ← analysis 選択時：解析結果
 │   └── README.md
@@ -503,7 +503,7 @@ caw のディレクトリ構造は **明確に二層** に分かれる。AI が�
 | `analyses/` | 解析結果（1 トピック 1 サブフォルダ） | analysis |
 | `notebooks/` | Jupyter Notebook | analysis |
 | `figures/` | 論文・スライド・解析用の図表 | analysis / presentation |
-| `slides/` | 発表資料（`.pptx`）、生成スクリプト | presentation |
+| `presentations/slides/` | 発表資料（`.pptx`） | presentation |
 | `scripts/` | 単発・一時スクリプト | engineering |
 | `tools/` | 再利用される本格的なツール | engineering |
 | `reports/` | 報告書、調査結果まとめ | research / analysis |
@@ -527,8 +527,8 @@ caw のディレクトリ構造は **明確に二層** に分かれる。AI が�
 ### 例：presentation 部署が論文紹介スライドを生成した時
 
 ```
-✅ 正：./slides/wang-2024-intro_20260514.pptx（top-level）
-   生成スクリプトも：./slides/scripts/generate_wang2024_20260514.py
+✅ 正：./presentations/slides/wang-2024-intro_20260514.pptx（top-level）
+   生成スクリプトは：.company/presentation/scripts/generate_wang2024_20260514.py（運営層・再生成用）
 ❌ 誤：.company/presentation/slides/wang-2024-intro_20260514.pptx
 ```
 
