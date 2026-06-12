@@ -2,6 +2,18 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.7.1 / Codex 1.6.1 / copilot 1.1.1] - 2026-06-12
+
+### Added — caw-doctor の就活トラック診断
+
+- **就活ルート設定に `> トラック: 就活` マーカー**を書くようにし（`job-hunting-departments.md` §B-1）、`caw-doctor` がこれを読んでトラックを自動判定するようにした
+- **`caw-doctor` に §0 トラック判定 + §J 就活トラックの検査**を追加：就活なら研究向けの §5（Playbook）・§6/§6b（計算ソフト・研究成果物）をスキップし、就活部署（company-research / self-analysis / documents / interview）の設定ファイル、成果物フォルダ（`companies/` `documents/` `self-analysis/` `interview-prep/`）、`documents/inbox/`・START HERE の存在を点検
+- caw-doctor は plugin + codex 配信（copilot は PoC で caw-doctor 未収載）。`> トラック` マーカーは 3 系統の job-hunting テンプレに追加
+
+### Note
+
+- 版: plugin 1.7.0 → **1.7.1** / codex 1.6.0 → **1.6.1** / copilot 1.1.0 → **1.1.1** / marketplace 同期
+
 ## [1.7.0 / Codex 1.6.0] - 2026-06-12
 
 ### Added — 就活専用スキル 3 本
