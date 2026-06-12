@@ -2,6 +2,22 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.8.0 / Codex 1.7.0] - 2026-06-12
+
+### Added — caw-company に HTML 可視化
+
+`caw-company`（企業・業界研究）を拡張し、`companies/*.md` に集めた情報を **ブラウザで開ける HTML** に可視化できるようにした。
+
+- **3 ビュー**: 企業プロファイル（1社、`companies/<企業>.html`）／企業比較（複数社、`companies/_compare.html`、比較テーブル + 属性チャート + 選考スケジュール timeline）／業界ポジショニングマップ（`companies/_industry/<業界>.html`、2 軸散布図）
+- **チャートは 2 方式に対応し、実行時に `AskUserQuestion` で選択**: ①オフライン自己完結（インライン SVG + CSS、ネット不要・ダブルクリックで確実に開く・推奨）②Chart.js（CDN、リッチだがネット必要）
+- 製品 Web と統一したクリーンな配色（白基調 + インク + コーラル）。雛形（SVG 横棒・Chart.js レーダー）を skill に同梱
+- ガードレール: `companies/*.md` の事実のみ・数値の捏造禁止・推定値は「推定」明記・個人情報/非公開情報は HTML に書かない
+- caw-company は plugin + codex 配信（copilot は PoC で未収載）
+
+### Note
+
+- 版: plugin 1.7.1 → **1.8.0** / codex 1.6.1 → **1.7.0** / marketplace 同期（copilot 1.1.1 据え置き）
+
 ## [1.7.1 / Codex 1.6.1 / copilot 1.1.1] - 2026-06-12
 
 ### Added — caw-doctor の就活トラック診断

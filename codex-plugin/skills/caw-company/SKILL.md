@@ -2,7 +2,8 @@
 name: caw-company
 description: >
   企業・業界研究スキル。企業名や業界を受けて採用ページ・IR・ニュース等の公開情報を調べ、
-  companies/<企業名>.md に構造化（事業・求める人物像・選考フロー・自分との接点）。志望動機の素材も抽出する。
+  companies/<企業名>.md に構造化（事業・求める人物像・選考フロー・自分との接点）。志望動機の素材も抽出し、
+  集めた情報をブラウザで開ける HTML（企業プロファイル・企業比較・業界マップ）に可視化する。
 ---
 
 # caw-company — 企業・業界研究
@@ -13,6 +14,7 @@ description: >
 
 - `/caw-company` を実行したとき
 - 「○○社について調べて」「企業研究して」「業界研究」「この会社どう？」と言われたとき
+- 「HTML で可視化して」「比較表を作って」「業界マップ」「ダッシュボードにして」と言われたとき
 
 `.company/`（就活モード）が無ければ `/caw` で就活トラックを促す。企業・業界研究部が未作成なら作成を提案する。
 
@@ -56,6 +58,73 @@ description: >
 ### Step 6: 選考フローを秘書に共有
 
 選考フロー・締切は秘書（`secretary/todos/`）の選考スケジュールにも反映を提案する（抜け漏れ防止）。
+
+## HTML 可視化
+
+`companies/*.md` に集めた情報を、ブラウザでダブルクリックして開ける HTML に可視化する。「HTML で可視化して」「比較表を作って」「業界マップ」「ダッシュボードにして」で発火、または収集後に提案する。
+
+### Step V0: グラフの作り方を選ぶ（毎回 `AskUserQuestion`）
+
+```
+グラフの作り方を選んでください:
+  - オフライン自己完結（推奨）— ネット不要・ダブルクリックで確実に開く・CDN 切れで壊れない
+  - Chart.js（リッチ）— インタラクティブだが開くときネット接続が必要
+```
+
+- **オフライン自己完結** → チャートはインライン `<svg>`（棒=`<rect>`、レーダー=`<polygon>`、散布=`<circle>`）。外部リソース 0
+- **Chart.js** → `<head>` に `<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>`、`<canvas>` + JS でレーダー/棒/散布を描く
+
+### 共通デザイン（インライン CSS、製品 Web と統一）
+
+白基調 + インク文字 + コーラルのアクセント、ハネ線カード、システム/Inter フォント。`<style>` に次を入れる：
+`:root{--ink:#181d26;--body:#333840;--accent:#aa2d00;--line:#ddd;--bg:#fff}` ／
+`body{font-family:Inter,-apple-system,'Segoe UI',sans-serif;color:var(--body);background:var(--bg);max-width:960px;margin:24px auto;padding:0 16px;line-height:1.6}` ／
+カード=`border:1px solid var(--line);border-radius:10px;padding:16px`。見出しは `--ink`、強調・バッジは `--accent`。
+
+### 生成するビュー（依頼・データ量に応じて）
+
+**A. 企業プロファイル（1社）→ `companies/<企業slug>.html`**
+ヘッダ（社名 + 業界バッジ + 志望度 ★n/5）→ 事業概要 → 強み/弱み（2 カラムカード）→ 求める人物像 → 募集要項テーブル → 選考フロー（横並びステップ ●ES→●適性→●一次→●最終、各ノードに日付）→ 自分との接点 → フッタ（出典・取得日）。
+
+**B. 企業比較（複数社）→ `companies/_compare.html`**
+比較テーブル（行=社、列=規模/志望度/働き方/年収レンジ/締切 等を `companies/*.md` から抽出）→ 属性チャート（4〜6 軸のレーダー、または属性別の横棒）→ 選考スケジュール timeline（横軸=日付、各社の締切・選考日をマーカー、締切が近いほど色を強める）。
+
+**C. 業界ポジショニングマップ → `companies/_industry/<業界slug>.html`**
+2 軸の散布図（既定: 横=規模、縦=成長性。軸はユーザーに確認可）。各社を点 + 社名ラベルでプロット。四隅に象限の意味を薄く注記。
+
+### チャート雛形
+
+オフライン（横棒、値は 0–100 に正規化）:
+```html
+<svg viewBox="0 0 320 22" width="320" height="22" role="img">
+  <rect x="80" y="5" width="240" height="12" fill="#eee" rx="6"/>
+  <rect x="80" y="5" width="170" height="12" fill="#aa2d00" rx="6"/>
+  <text x="0" y="15" font-size="12" fill="#333840">技術力</text>
+</svg>
+```
+レーダーは中心 (cx,cy) + 半径 × 値で各軸の点を求め `<polygon points="...">`、散布は線形スケールで `<circle>` + `<text>`（社名ラベル）。
+
+Chart.js（CDN モード、レーダー例）:
+```html
+<canvas id="c" width="400" height="400"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+new Chart(document.getElementById('c'),{type:'radar',
+  data:{labels:['規模','成長性','志望度','働き方','年収'],
+        datasets:[{label:'A社',data:[4,5,4,3,4],borderColor:'#aa2d00'}]}});
+</script>
+```
+
+### 保存と確認
+
+- 保存先（すべて top-level）: `companies/<企業slug>.html` ／ `companies/_compare.html` ／ `companies/_industry/<業界slug>.html`
+- 生成後にファイルパスを伝え、「ブラウザで開いてください」と案内（はじめてモードなら開き方も 1 行添える）
+
+### 可視化の注意
+
+- データは `companies/*.md` の事実のみ。HTML のために数値を**捏造しない**。値が無い属性は「—」やグレー表示にする
+- 規模・成長性などの**推定スコアを使う場合は「推定」と明記**し、出典のある事実と区別する
+- 個人情報・企業の非公開情報は HTML に書かない（共有されやすい形式のため）
 
 ## 重要な注意事項
 
