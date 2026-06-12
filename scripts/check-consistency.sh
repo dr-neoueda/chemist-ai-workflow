@@ -54,6 +54,23 @@ for d in "${mirror_dirs[@]}"; do
   fi
 done
 
+# --- 2b. codex <-> copilot shared reference files (PoC) ---
+# copilot-plugin reuses codex's CLI-agnostic templates verbatim for these two.
+# (SKILL.md and mcp-setup-templates.md intentionally differ per CLI; chemistry-
+#  departments may carry CLI-specific wording — so only the pure-shared template
+#  files are enforced byte-identical here.)
+for f in skills/caw/references/agents-md-template.md skills/caw/references/playbook-starters.md; do
+  cf="codex-plugin/$f"; pf="copilot-plugin/$f"
+  if [ ! -f "$cf" ] || [ ! -f "$pf" ]; then
+    printf '%s    skip copilot mirror %s (missing)%s\n' "$dim" "$f" "$off"; continue
+  fi
+  if diff -q "$cf" "$pf" >/dev/null 2>&1; then
+    ok "copilot mirror identical: $f"
+  else
+    bad "copilot mirror DRIFT: $f (codex vs copilot differ)"
+  fi
+done
+
 # --- 3. personalization leak scan (distributed tree only) ---
 # Specific proper nouns only — generic field terms (MLIP/CP2K/DFT) are allowed.
 leak_re='aaBrAdox|SPReAD|Bis\(BrPhCH2O\)|NU-[0-9]|PILATUS|n267302|neoueda@'

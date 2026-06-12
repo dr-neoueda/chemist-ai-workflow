@@ -1,0 +1,34 @@
+name: consistency
+
+# 配布物の整合性を CI で強制する：
+#   - plugin↔marketplace の版一致 / plugin↔codex の mirror byte 一致 /
+#     codex↔copilot の共有テンプレ一致 / 個人化リーク検査
+#   - Web（Astro Starlight）のビルドが通ること
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  consistency:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run check-consistency.sh
+        run: bash scripts/check-consistency.sh
+
+  web-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install web deps
+        run: npm ci
+      - name: Build site
+        run: npm run build

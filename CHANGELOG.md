@@ -2,6 +2,33 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.5.3 / Codex 1.4.3 / copilot 1.0.1] - 2026-06-12
+
+プロジェクト全体監査（4 観点並列）で見つかった不整合・陳腐化の一括修正。
+
+### Fixed
+
+- **スライド出力パスの矛盾を解消（実害バグ）**: `caw/SKILL.md` だけが `slides/` を案内し、生成側 `caw-slides` と部署テンプレ `chemistry-departments` は `presentations/slides/` を使っていた。outlier の `caw/SKILL.md` を多数派（`presentations/slides/` + スクリプトは `.company/presentation/scripts/`）に統一（plugin / codex / copilot の 3 系統）。`caw-doctor` の期待パス・旧構造移行先も追従
+- **`plugin/README.md` の版数 v1.3.1 → v1.5.2 表記、`caw-slides` の記載漏れを修正**（スキル一覧とプラグイン構成ツリーに追加）
+- **Web `plugin.md` の陳腐化を修正**: 「現バージョン v1.1.0」→ CLI 別の版テーブル（1.5.2 / 1.4.2 / 1.0.0）、Skills 7 件を完全列挙（caw-doctor / caw-setup / caw-slides を追加）、Hooks に PostToolUse 追記、Phase 表の同日重複を修正、ステータス更新
+
+### Changed
+
+- **Web に GitHub Copilot CLI を反映**: `requirements.md`・`beginner.md` の対応 CLI に追加、インストール手順に `npm install -g @github/copilot`（Node 22+）を併記、関連リンク追加
+- **codex / copilot の `chemistry-departments.md` を `CLAUDE.md` → `AGENTS.md` に統一**（AGENTS.md ターゲットとの不一致を解消。plugin 版は CLAUDE.md のまま）
+- **「はじめてモード」を `caw-paper` / `caw-input` / `caw-playbook` でも尊重**（plugin / codex）: 各スキル冒頭で `> 運用モード: はじめて` フラグを読み、平易な日本語・用語の 1 行説明・次の 1 手提示を適用
+- **`caw-doctor` の診断を拡充**: 初心者向け投入フォルダ（`inbox/` / `_past-data/` / `papers/inbox/`）と START HERE 文書の存在チェックを追加
+- **setup スクリプト（`.sh` / `.ps1`）に代替 AI CLI の案内を追加**: Claude Code を既定（Tier 1）のまま、Codex CLI / GitHub Copilot CLI の検出と導入コマンドを表示
+
+### Infra
+
+- **`scripts/check-consistency.sh`**: codex↔copilot の共有テンプレ（`agents-md-template.md` / `playbook-starters.md`）の byte 一致検査を追加
+- **GitHub Actions CI を追加**（`.github/workflows/consistency.yml`）: push / PR で `check-consistency.sh` と Web ビルドを自動実行
+
+### Note
+
+- plugin 1.5.2 → **1.5.3** / codex 1.4.2 → **1.4.3** / copilot 1.0.0 → **1.0.1** / marketplace 同期
+
 ## [copilot-plugin 1.0.0 + Web] - 2026-06-04
 
 ### Added — GitHub Copilot CLI 対応（PoC）

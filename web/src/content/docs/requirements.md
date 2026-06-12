@@ -17,7 +17,7 @@ caw のコア（オンボーディング、部署スキャフォールド、Play
 
 | 区分 | ツール | 役割 | 必須度 |
 |---|---|---|---|
-| 土台 | AI CLI（Claude Code または Codex CLI） | caw の実行環境 | いずれか必須 |
+| 土台 | AI CLI（Claude Code / Codex CLI / GitHub Copilot CLI のいずれか） | caw の実行環境 | いずれか必須 |
 | 土台 | Node.js（LTS） | Claude Code 本体・npx ベースの MCP サーバー | 必須 |
 | 土台 | git | プラグインの取得・バージョン管理 | 必須 |
 | Python<br />機能 | Python 3.12 以上 | スライド・図・解析・PDF 処理の基盤 | 十分活用に必須 |
@@ -52,7 +52,7 @@ powershell -ExecutionPolicy Bypass -File caw-setup.ps1
 ```
 
 :::tip
-すでに Claude Code / Codex CLI が動く環境なら、CLI の中で **`/caw-setup`**（Codex では「環境を整えて」）と
+すでに Claude Code / Codex CLI / GitHub Copilot CLI が動く環境なら、CLI の中で **`/caw-setup`**（Codex / Copilot では「環境を整えて」）と
 言うだけで、不足ツールの検出から導入まで同じ「計画提示 → 一括」方式で行えます。
 :::
 
@@ -70,6 +70,8 @@ brew install node git python poppler
 npm install -g @anthropic-ai/claude-code
 # Codex CLI を使う場合（任意）
 npm install -g @openai/codex
+# GitHub Copilot CLI を使う場合（任意、Node.js 22 以上）
+npm install -g @github/copilot
 
 # Python パッケージ（caw-slides の図・スライド生成）
 python3 -m pip install python-pptx matplotlib pillow numpy
@@ -99,6 +101,8 @@ winget install TheDocumentFoundation.LibreOffice
 npm install -g @anthropic-ai/claude-code
 # Codex CLI を使う場合（任意）
 npm install -g @openai/codex
+# GitHub Copilot CLI を使う場合（任意、Node.js 22 以上）
+npm install -g @github/copilot
 
 # Python パッケージ
 py -m pip install python-pptx matplotlib pillow numpy
@@ -128,5 +132,6 @@ python -c "import pptx, matplotlib, PIL, numpy; print('python deps OK')"
 
 - [Claude Code の環境構築](/claude-code/setup/) — Claude Code のインストール・認証・IDE 連携の詳細
 - [Codex CLI の環境構築](/codex-cli/setup/) — Codex CLI を使う場合
+- [GitHub Copilot CLI（PoC）](/copilot-cli/) — GitHub Copilot CLI で使う場合（`npm install -g @github/copilot`）
 - [対応ツール一覧](/tools/) — ナレッジベース・クラウドストレージ・計算ソフト・執筆環境の対応状況
 - [配布プラグイン（caw）](/plugin/) — プラグイン本体の導入とスキル一覧

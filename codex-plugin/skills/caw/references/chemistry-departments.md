@@ -4,7 +4,7 @@
 
 各部署のセクションには：
 
-1. **`CLAUDE.md` 本文**：そのまま `<dept>/CLAUDE.md` に書き込むテンプレ
+1. **`AGENTS.md` 本文**：そのまま `<dept>/AGENTS.md` に書き込むテンプレ
 2. **サブディレクトリ構成**：`mkdir -p` で作るサブフォルダ
 3. **必要に応じて README または初期テンプレファイル**
 
@@ -14,7 +14,7 @@
 
 **サブディレクトリ**: `inbox/`, `todos/`, `notes/`
 
-### secretary/CLAUDE.md
+### secretary/AGENTS.md
 
 ```markdown
 # 秘書室
@@ -97,7 +97,7 @@ type: daily
 
 **成果物の置き場（top-level、ファイラーで見える）**: `papers/`, `topics/`, `reports/`
 
-### research/CLAUDE.md
+### research/AGENTS.md
 
 ```markdown
 # 文献部（research）
@@ -132,7 +132,7 @@ type: daily
 
 ## ナレッジベース連携
 
-`.company/CLAUDE.md` の「ナレッジベース」設定に応じて、要約後の登録先を切り替える：
+`.company/AGENTS.md` の「ナレッジベース」設定に応じて、要約後の登録先を切り替える：
 
 - **Notion** → API / MCP 経由で DB 登録（ローカル `papers/` と並列で同期）
 - **Obsidian / Logseq** → vault フォルダに Markdown を保存（frontmatter にメタデータ）
@@ -147,7 +147,7 @@ type: daily
 
 **成果物の置き場（top-level、ファイラーで見える）**: `scripts/`, `tools/`
 
-### engineering/CLAUDE.md
+### engineering/AGENTS.md
 
 ```markdown
 # 開発部（engineering）
@@ -193,7 +193,7 @@ type: daily
 
 **サブディレクトリ**: `jobs/`, `parameters/`, `playbooks/`
 
-### computation/CLAUDE.md
+### computation/AGENTS.md
 
 ```markdown
 # 計算管理部（computation）
@@ -204,7 +204,7 @@ type: daily
 
 ## 対応ソフト
 
-`.company/CLAUDE.md` の「使う計算ソフト」設定に応じて、各ソフトの Playbook が `playbooks/` 配下に配置されています。
+`.company/AGENTS.md` の「使う計算ソフト」設定に応じて、各ソフトの Playbook が `playbooks/` 配下に配置されています。
 
 - 量子化学: Gaussian, ORCA, Psi4, GAMESS, NWChem
 - 古典 MD: GROMACS, AMBER, NAMD, LAMMPS, OpenMM
@@ -252,7 +252,7 @@ type: daily
 
 **成果物の置き場（top-level、ファイラーで見える）**: `analyses/`, `figures/`, `notebooks/`
 
-### analysis/CLAUDE.md
+### analysis/AGENTS.md
 
 ```markdown
 # データ解析部（analysis）
@@ -299,7 +299,7 @@ type: daily
 
 **成果物の置き場（top-level、ファイラーで見える）**: `manuscripts/`
 
-### writing/CLAUDE.md
+### writing/AGENTS.md
 
 ```markdown
 # 論文執筆部（writing）
@@ -356,7 +356,7 @@ type: daily
 
 **サブディレクトリ**: `code-reviews/`, `validation/`
 
-### review/CLAUDE.md
+### review/AGENTS.md
 
 ```markdown
 # レビュー部（review）
@@ -409,7 +409,7 @@ Claude + Codex の二段レビューは応用編。本部署単独で運用し�
 
 `caw-slides` skill は 4 用途バリアント（学会発表 / 論文紹介 / 報告会 / 講義）+ 共通 `pptx_helpers.py`（1000+ 行のヘルパ）+ 詳細スタイルガイドを提供する。詳細は同 skill の `SKILL.md` 参照。
 
-### presentation/CLAUDE.md
+### presentation/AGENTS.md
 
 ```markdown
 # プレゼン部（presentation）
@@ -465,7 +465,7 @@ Claude + Codex の二段レビューは応用編。本部署単独で運用し�
 
 ユーザーが上記以外の部署を作りたいと言った場合のフォールバック。
 
-### `<dept>/CLAUDE.md`
+### `<dept>/AGENTS.md`
 
 ```markdown
 # {{DEPARTMENT_NAME}}

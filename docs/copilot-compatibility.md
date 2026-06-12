@@ -66,7 +66,7 @@ SKILL.md・custom agents・hooks・MCP・plugin+marketplace 配布）を **同�
 - `copilot-plugin/`: `plugin.json` + 2 スキル（`caw` / `caw-setup`、`caw` は references 同梱）
 - `.github/plugin/marketplace.json`: Copilot マーケットプレイス定義（`source: ./copilot-plugin`）
 - 版: copilot-plugin 1.0.0（新トラック）。plugin 1.5.2 / codex 1.4.2 は無変更
-- 既知の簡略化: 部署テンプレ見出しの `CLAUDE.md` 表記は据え置き（Copilot は両読みで機能的に問題なし）
+- 部署テンプレ見出しは `AGENTS.md` に統一済み（Copilot は AGENTS.md/CLAUDE.md 両読みだが primary で揃えた）
 
 ## 次の一手（フルポート時）
 
