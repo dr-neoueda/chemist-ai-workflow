@@ -35,14 +35,14 @@ EOF
 )"
 ```
 
-`<project_root>/.company/presentation/AGENTS.md` および `<project_root>/AGENTS.md` は Codex が cwd 起点で自動ロードする。
+`<project_root>/office/presentation/AGENTS.md` および `<project_root>/AGENTS.md` は Codex が cwd 起点で自動ロードする。
 
 ---
 
 ## テンプレ汎用版（推奨ベース）
 
 ```
-<project_root>/.company/presentation/AGENTS.md と <project_root>/AGENTS.md のスタイルガイドに厳密に従って、
+<project_root>/office/presentation/AGENTS.md と <project_root>/AGENTS.md のスタイルガイドに厳密に従って、
 研究発表用 PowerPoint スライドを生成してください。
 
 ## 元データ
@@ -63,9 +63,9 @@ EOF
 - 内容の取捨選択と圧縮（元データの何を残し何を捨てるか）
 
 ## 必須事項
-- 着手前に `.company/presentation/notes/<YYYY-MM-DD>-plan.md` に計画
+- 着手前に `office/presentation/notes/<YYYY-MM-DD>-plan.md` に計画
   （構成・各スライドのタイトル・L1 メッセージ・視覚要素の方針）を必ず書き残してから実装に入る
-- 生成スクリプト: `.company/presentation/scripts/generate_<目的>_<YYYYMMDD>.py`
+- 生成スクリプト: `office/presentation/scripts/generate_<目的>_<YYYYMMDD>.py`
 - .pptx: `presentations/slides/<目的>_<YYYYMMDD>.pptx`
 - `pptx_helpers.py` を import して再利用（重複実装しない）
 - 各スライドビルダー末尾で `assert_no_overlap(rects)` を呼ぶ
@@ -84,12 +84,12 @@ EOF
 
 ```
 <project_root>/<元データへのパス> を読んで、<発表場面（例: 研究室報告会）>用の <言語（例: 日本語）> スライドを生成してください。
-<project_root>/.company/presentation/AGENTS.md および <project_root>/AGENTS.md のスタイルガイドに従い、
+<project_root>/office/presentation/AGENTS.md および <project_root>/AGENTS.md のスタイルガイドに従い、
 構成・L1 メッセージ・視覚デザインは Codex の裁量で決めてください。
 
-着手前に計画を `.company/presentation/notes/<YYYY-MM-DD>-plan.md` に記録してから実装してください。
+着手前に計画を `office/presentation/notes/<YYYY-MM-DD>-plan.md` に記録してから実装してください。
 出力は `presentations/slides/<目的>_<YYYYMMDD>.pptx`、
-スクリプトは `.company/presentation/scripts/generate_<目的>_<YYYYMMDD>.py` に保存してください。
+スクリプトは `office/presentation/scripts/generate_<目的>_<YYYYMMDD>.py` に保存してください。
 完了時に枚数の根拠と L1 メッセージ一覧を返してください。
 ```
 
@@ -142,14 +142,14 @@ EOF
 ## テンプレ既存スライド差分修正
 
 ```
-既存の生成スクリプト .company/presentation/scripts/<script_name>.py を読み、
+既存の生成スクリプト office/presentation/scripts/<script_name>.py を読み、
 以下の修正を加えてから .pptx を再生成してください。
 
 ## 修正内容
 <具体的な修正指示。例: "スライド 5 の L1 メッセージを XX に変更"、"スライド 8 の図を YY.png に差し替え" など>
 
 ## 制約
-- .company/presentation/AGENTS.md のスタイルガイドを引き続き厳守
+- office/presentation/AGENTS.md のスタイルガイドを引き続き厳守
 - 既存の他スライドには触らない（指定スライドのみ修正）
 - assert_no_overlap が末尾で必ず走ることを確認
 

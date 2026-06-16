@@ -59,7 +59,7 @@ done
 # (SKILL.md and mcp-setup-templates.md intentionally differ per CLI; chemistry-
 #  departments may carry CLI-specific wording — so only the pure-shared template
 #  files are enforced byte-identical here.)
-for f in skills/caw/references/agents-md-template.md skills/caw/references/playbook-starters.md skills/caw/references/job-hunting-departments.md; do
+for f in skills/caw/references/agents-md-template.md skills/caw/references/playbook-starters.md skills/caw/references/job-hunting-departments.md skills/caw/references/engine-validation-map.md; do
   cf="codex-plugin/$f"; pf="copilot-plugin/$f"
   if [ ! -f "$cf" ] || [ ! -f "$pf" ]; then
     printf '%s    skip copilot mirror %s (missing)%s\n' "$dim" "$f" "$off"; continue
@@ -81,6 +81,17 @@ if [ -z "$hits" ]; then
 else
   bad "personalization leak(s) found:"
   printf '%s\n' "$hits" | sed 's/^/      /'
+fi
+
+# --- 4. ABSOLUTE: no Finder/Explorer-invisible (dot-prefixed) ops folder ---
+# caw must scaffold only VISIBLE folders in the user's project (ops dir = 'office/').
+# Guard against regressing to the old hidden '.company/' name.
+hidden=$(grep -RIn --exclude-dir=dist --exclude-dir=node_modules '\.company' plugin codex-plugin copilot-plugin web docs README.md RESUME.md 2>/dev/null || true)
+if [ -z "$hidden" ]; then
+  ok "no hidden '.company' ops-folder references (visible 'office/' is used)"
+else
+  bad "hidden '.company' folder reference found — caw must scaffold the visible 'office/' dir:"
+  printf '%s\n' "$hidden" | sed 's/^/      /'
 fi
 
 echo

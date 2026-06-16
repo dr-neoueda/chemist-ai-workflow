@@ -177,7 +177,7 @@ description: ローカル secretary/todos と Notion ToDo DB を双方向同期
 
 ```markdown
 ---
-description: 計算ジョブを HPC に投入し、ジョブ記録を .company/computation/jobs/ に作成
+description: 計算ジョブを HPC に投入し、ジョブ記録を office/computation/jobs/ に作成
 ---
 
 # /job-submit
@@ -194,7 +194,7 @@ description: 計算ジョブを HPC に投入し、ジョブ記録を .company/c
 2. ジョブスクリプト存在確認
 3. HPC へ qsub / sbatch
 4. job ID 取得
-5. `.company/computation/jobs/<YYYY-MM-DD>-<system>-<purpose>.md` にジョブ ID + 投入時刻を記録
+5. `office/computation/jobs/<YYYY-MM-DD>-<system>-<purpose>.md` にジョブ ID + 投入時刻を記録
 ```
 
 ## Command の作り方
@@ -235,8 +235,8 @@ Codex で利用可能な Commands は `/` を入力すると候補一覧が表�
 
 将来 Commands を追加する場合の候補：
 
-- `/caw-reset` — 既存 `.company/` を破棄して再 scaffold（destructive 操作なので明示的 command が妥当）
-- `/caw-export` — `.company/` 全体を tar.gz でエクスポート（バックアップ用途）
+- `/caw-reset` — 既存 `office/` を破棄して再 scaffold（destructive 操作なので明示的 command が妥当）
+- `/caw-export` — `office/` 全体を tar.gz でエクスポート（バックアップ用途）
 - `/caw-import <path>` — エクスポートを別プロジェクトに展開
 
 destructive または 副作用が強い操作は Command として明示し、ユーザーの確認を 1 ステップ挟む設計が安全。

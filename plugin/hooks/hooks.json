@@ -7,7 +7,7 @@
           {
             "type": "command",
             "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/load-playbooks.sh\"",
-            "description": "caw: 直近 .company/secretary/notes と関連 Playbook をコンテキストに自動注入"
+            "description": "caw: 直近 office/secretary/notes と関連 Playbook をコンテキストに自動注入"
           }
         ]
       }
@@ -19,7 +19,7 @@
           {
             "type": "command",
             "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/output-location-check.sh\"",
-            "description": "caw: 成果物配置の二層原則違反（.company/<dept>/<旧パス>/ への書き込み）を検出して警告"
+            "description": "caw: 成果物配置の二層原則違反（office/<dept>/<旧パス>/ への書き込み）を検出して警告"
           }
         ]
       }

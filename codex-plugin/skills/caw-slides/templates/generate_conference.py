@@ -9,11 +9,11 @@ Slides emphasize: research question → method → results → discussion → co
 
 Usage
 -----
-1. Copy this file to ``.company/presentation/scripts/generate_<theme>_<YYYYMMDD>.py``
+1. Copy this file to ``office/presentation/scripts/generate_<theme>_<YYYYMMDD>.py``
 2. Replace ``<...>`` placeholders with your content
 3. Run::
 
-       python .company/presentation/scripts/generate_<theme>_<YYYYMMDD>.py
+       python office/presentation/scripts/generate_<theme>_<YYYYMMDD>.py
 
    The .pptx is written to ``presentations/slides/<theme>_<YYYYMMDD>.pptx``.
 
@@ -31,7 +31,7 @@ from pathlib import Path
 # Locate ``pptx_helpers.py`` in this priority:
 #   1. Same directory as this script (after the user copies pptx_helpers.py
 #      alongside ``generate_<purpose>_<YYYYMMDD>.py`` in
-#      ``.company/presentation/scripts/``)
+#      ``office/presentation/scripts/``)
 #   2. ``../references/`` (running this script directly from the plugin install)
 # The caw-slides Skill workflow copies ``pptx_helpers.py`` into the user's
 # project automatically, so case 1 covers the documented usage.

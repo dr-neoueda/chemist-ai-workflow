@@ -19,7 +19,7 @@ Structure
 
 Usage
 -----
-1. Copy this file to ``.company/presentation/scripts/generate_lecture_<topic>_<YYYYMMDD>.py``
+1. Copy this file to ``office/presentation/scripts/generate_lecture_<topic>_<YYYYMMDD>.py``
 2. Replace placeholders + add concept diagrams
 3. Run — output to ``presentations/slides/lecture_<topic>_<YYYYMMDD>.pptx``
 """

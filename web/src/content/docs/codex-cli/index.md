@@ -23,7 +23,7 @@ codex
 
 Codex CLI ではスラッシュ不要。`caw` と入力するか、「化学プロジェクトの環境を作って」など自然言語で指示すれば、スキルが自動的に発火します。
 
-`.company/` が存在しない場合、対話的オンボーディング（研究プロファイル 4 問 + 部署選択）が起動し、化学者向けにカスタマイズされた部署と作業ディレクトリが一括生成される。生成される指示ファイルは Codex CLI の標準である **AGENTS.md** 形式。
+`office/` が存在しない場合、対話的オンボーディング（研究プロファイル 4 問 + 部署選択）が起動し、化学者向けにカスタマイズされた部署と作業ディレクトリが一括生成される。生成される指示ファイルは Codex CLI の標準である **AGENTS.md** 形式。
 
 詳細手順は [環境構築](/codex-cli/setup/) を参照。
 
@@ -61,19 +61,19 @@ Codex CLI ではスラッシュ不要。`caw` と入力するか、「化学プ�
 | Playbook 雛形 | 同一 | 同一 |
 | 配布元 | `dr-neoueda/chemist-ai-workflow`（同一リポジトリ） | 同左 |
 
-両版は同じ `chemist-ai-workflow` リポジトリから並列配信。研究室で Claude Code 派と Codex CLI 派が混在しても、共通の `.company/` メソッドで運用できる。
+両版は同じ `chemist-ai-workflow` リポジトリから並列配信。研究室で Claude Code 派と Codex CLI 派が混在しても、共通の `office/` メソッドで運用できる。
 
 ## 章立て
 
-1. [環境構築](/codex-cli/setup/) — Codex CLI インストール + 認証 + caw プラグイン導入 + `.company/` 初期化
-2. [アンインストールと環境リセット](/codex-cli/uninstall/) — caw の完全除去、最新版への更新、`.company/` の作り直し
+1. [環境構築](/codex-cli/setup/) — Codex CLI インストール + 認証 + caw プラグイン導入 + `office/` 初期化
+2. [アンインストールと環境リセット](/codex-cli/uninstall/) — caw の完全除去、最新版への更新、`office/` の作り直し
 3. [設定の階層と基礎](/codex-cli/basics/) — `~/.codex/config.toml`、プロジェクト trust、モデル選択、思考レベル
 4. [`AGENTS.md` の書き方](/codex-cli/agents-md/) — Codex 流のプロジェクトルール記述、Claude Code の `CLAUDE.md` との対応
 5. [Skills](/codex-cli/skills/) — Codex Skills の構造、`SKILL.md` フォーマット、caw を例として
 6. [Commands（スラッシュコマンド）](/codex-cli/commands/) — `commands/<name>.md` の作り方、Skills との使い分け
 7. [Sub-agents](/codex-cli/subagents/) — Codex の sub-agent 機能、並列調査・並列レビューの組み方
 8. [MCP サーバー連携](/codex-cli/mcp/) — Notion / Google Drive / Gmail などへの統合
-9. [.company/ 部署テンプレート](/claude-code/company-template/)（共通 — Claude Code 章を参照、AGENTS.md に読み替え）
+9. [office/ 部署テンプレート](/claude-code/company-template/)（共通 — Claude Code 章を参照、AGENTS.md に読み替え）
 10. [Claude + Codex 二段レビュー連携](/claude-code/two-stage-review/)（応用編、Claude Code 章を参照）
 
 ## 著者メモ（応用編）

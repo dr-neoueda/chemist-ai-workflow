@@ -17,7 +17,7 @@
    - **Tier 2（次点）**: Codex CLI（OpenAI 派・AGENTS.md ベース）
    - **Tier 3（無料枠アピール）**: Gemini CLI（OSS / Apache 2.0 / 個人 Google アカウント連携で大幅な無料枠）★ 2026-05-09 追加
    - **Tier 4（最小）**: ChatGPT / Gemini Web 版（ブラウザのみ、CLI 中立性担保のため残す）
-4. **差別化**：化学特化（Gaussian/GROMACS/IR/NMR 等）＋ ユーザー自身が日常運用している `.company/` 8 部署の実働システムをテンプレート化
+4. **差別化**：化学特化（Gaussian/GROMACS/IR/NMR 等）＋ ユーザー自身が日常運用している `office/` 8 部署の実働システムをテンプレート化
 5. **Web ページ**：Astro + Starlight で `~/lab/spring/chemist-ai-workflow/web/` に構築。LP + ドキュメントの統合サイト
 6. **棚上げ中の論点**：価格、販売チャネル（note / Zenn Book / 自前 Stripe）、商品名は仮、デプロイ先（Cloudflare Pages / Vercel / GitHub Pages）
 
@@ -38,8 +38,8 @@
 | `~/lab/spring/chemist-ai-workflow/README.md` | プロジェクト全体像・ポジショニング |
 | `~/lab/spring/chemist-ai-workflow/docs/concept.md` | 設計方針・差別化・やらないこと |
 | `~/lab/spring/chemist-ai-workflow/docs/roadmap.md` | Phase 0〜4 の詳細 |
-| `~/lab/.company/CLAUDE.md` | 「主要プロジェクト」テーブルに登録済み |
-| `~/lab/.company/secretary/notes/2026-04-29-decisions.md` | 立ち上げ意思決定ログ |
+| `~/lab/office/CLAUDE.md` | 「主要プロジェクト」テーブルに登録済み |
+| `~/lab/office/secretary/notes/2026-04-29-decisions.md` | 立ち上げ意思決定ログ |
 | `~/.claude/projects/-Users-neoueda-lab/memory/project_spring_chemist_ai_workflow.md` | auto-memory 子ファイル（次セッション自動参照） |
 
 ## 再開時の最初の 4 アクション（Phase 1 起動チェックリスト）
@@ -48,7 +48,7 @@ DC2 提出が確定したら、以下を順に着手：
 
 1. **顧客ヒアリング 3〜5 名**（化学系 D 生・PD・若手 PI に「研究で AI どう使ってる？」「論文 DB と計算管理が AI で回ったらいくら払う？」を聞く）
 2. **競合調査**（note / Zenn / Udemy / 海外）— `search-first` スキルで実施
-3. **自分の時短ログ取得**：`.company/` 運用での実時短を case-studies/ に記録開始
+3. **自分の時短ログ取得**：`office/` 運用での実時短を case-studies/ に記録開始
 4. **章立てラフ**を `content/core/outline.md` に起こす
 
 期限はいずれも 2026-05-末。
@@ -56,10 +56,10 @@ DC2 提出が確定したら、以下を順に着手：
 ## 凍結中の運用ルール
 
 - 本プロジェクトに関する**新規作業は行わない**
-- アイデアが出たら `~/lab/.company/secretary/inbox/YYYY-MM-DD.md` に投げ込むだけ
+- アイデアが出たら `~/lab/office/secretary/inbox/YYYY-MM-DD.md` に投げ込むだけ
 - 関連ファイルの編集はしない（誤って章立てを書き始めない）
 
 ## 関連メモリ
 
 - `MEMORY.md` のインデックスから `project_spring_chemist_ai_workflow.md` を辿れる
-- 学振 DC2 の最優先タスクは `~/lab/.company/secretary/todos/YYYY-MM-DD.md` に常駐
+- 学振 DC2 の最優先タスクは `~/lab/office/secretary/todos/YYYY-MM-DD.md` に常駐

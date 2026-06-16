@@ -44,7 +44,7 @@ User と Project に同名ファイルがあれば、Claude Code は両方をマ
 - 単位コメント必須（# kJ/mol, # Å）
 ```
 
-複数の `CLAUDE.md` を nested に配置することも可能（`~/lab/CLAUDE.md` + `~/lab/.company/<部署>/CLAUDE.md` のような構造）。Claude Code はカレントディレクトリから親方向に遡って関連 `CLAUDE.md` を見つけます。
+複数の `CLAUDE.md` を nested に配置することも可能（`~/lab/CLAUDE.md` + `~/lab/office/<部署>/CLAUDE.md` のような構造）。Claude Code はカレントディレクトリから親方向に遡って関連 `CLAUDE.md` を見つけます。
 
 ## settings.json の典型構造
 
@@ -83,7 +83,7 @@ User と Project に同名ファイルがあれば、Claude Code は両方をマ
 ├── .claude/
 │   ├── settings.json    ← permissions, hooks
 │   └── agents/          ← python-reviewer, codex-rescue 等
-├── .company/            ← 部署システム
+├── office/            ← 部署システム
 │   ├── CLAUDE.md
 │   └── <部署>/CLAUDE.md
 ├── papers/              ← 文献管理パイプライン
@@ -97,4 +97,4 @@ User と Project に同名ファイルがあれば、Claude Code は両方をマ
 
 - [Skills](/claude-code/skills/) — プロジェクト固有のメソッドをスキル化
 - [Hooks](/claude-code/hooks/) — ライフサイクルに自動化を仕込む
-- [.company/ 部署テンプレート](/claude-code/company-template/)
+- [office/ 部署テンプレート](/claude-code/company-template/)

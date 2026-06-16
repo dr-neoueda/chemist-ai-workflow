@@ -18,7 +18,7 @@ Structure
 
 Usage
 -----
-1. Copy this file to ``.company/presentation/scripts/generate_report_<YYYYMMDD>.py``
+1. Copy this file to ``office/presentation/scripts/generate_report_<YYYYMMDD>.py``
 2. Replace placeholders + plug in your data
 3. Run — output to ``presentations/slides/report_<YYYYMMDD>.pptx``
 """

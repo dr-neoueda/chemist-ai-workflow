@@ -15,13 +15,13 @@ trigger: /caw-input
 - ユーザーが「Gaussian で benzene の構造最適化したい」「ORCA の入力ファイル作って」「CP2K の AIMD 雛形くれる？」など、**計算ソフト + 目的**を指定したとき
 - 計算ジョブの新規立ち上げ時
 
-`.company/computation/` が存在しない場合、`/caw` で computation 部署を追加することを促す。
+`office/computation/` が存在しない場合、`/caw` で computation 部署を追加することを促す。
 
 ---
 
 ## はじめてモードを尊重する
 
-このスキルを実行する前に `.company/CLAUDE.md`（Codex CLI / GitHub Copilot CLI では `AGENTS.md`）を読み、冒頭に `> 運用モード: はじめて` があれば、`caw` skill の「はじめてモードの挙動」を全応答に適用する：**平易な日本語**で話し、専門用語（化学・計算手法・書誌の用語）は初出で 1 行説明を添え、各ステップの最後に**「次はこれをしましょう」を 1 つ**だけ提示する。元に戻せない操作（削除・上書き・外部登録・送信）は必ず事前確認する。
+このスキルを実行する前に `office/CLAUDE.md`（Codex CLI / GitHub Copilot CLI では `AGENTS.md`）を読み、冒頭に `> 運用モード: はじめて` があれば、`caw` skill の「はじめてモードの挙動」を全応答に適用する：**平易な日本語**で話し、専門用語（化学・計算手法・書誌の用語）は初出で 1 行説明を添え、各ステップの最後に**「次はこれをしましょう」を 1 つ**だけ提示する。元に戻せない操作（削除・上書き・外部登録・送信）は必ず事前確認する。
 
 ## ワークフロー
 
@@ -40,7 +40,7 @@ Q1: どの計算ソフトの入力ファイルを生成しますか？
 ```
 
 選択されたソフトに対応する Playbook を最初に読む：
-- `.company/computation/playbooks/<tool>.md`（存在しない場合は `references/playbook-starters.md` から該当セクションを参照）
+- `office/computation/playbooks/<tool>.md`（存在しない場合は `references/playbook-starters.md` から該当セクションを参照）
 
 ### Step 2: 計算目的の確定
 
@@ -169,7 +169,7 @@ mkdir -p <tool>/<system>_<purpose>_<YYYYMMDD>
 
 ### Step 6: ジョブ記録の作成
 
-`.company/computation/jobs/YYYY-MM-DD-<system>-<purpose>.md` に記録：
+`office/computation/jobs/YYYY-MM-DD-<system>-<purpose>.md` に記録：
 
 ```markdown
 # YYYY-MM-DD <system> <purpose>
@@ -222,7 +222,7 @@ cd ../../../<tool>/<system>_<purpose>_<YYYYMMDD>/
 
 - 作業ディレクトリ: <tool>/<system>_<purpose>_<YYYYMMDD>/
 - 入力: <file>
-- ジョブ記録: .company/computation/jobs/YYYY-MM-DD-<system>-<purpose>.md
+- ジョブ記録: office/computation/jobs/YYYY-MM-DD-<system>-<purpose>.md
 
 実行コマンド:
   cd <tool>/<system>_<purpose>_<YYYYMMDD>/

@@ -21,13 +21,13 @@ description: Phase 0〜4 のマイルストーンと現在地
 - [ ] 顧客ヒアリング 3〜5 名（化学系 D 生・PD・若手 PI）
   - 質問：「研究で AI どう使ってる？」「もし論文 DB と計算管理が AI で回ったらいくら払う？」
 - [ ] 競合調査（note / Zenn / Udemy / 海外）
-- [ ] 自分の時短ログ取得（`.company/` 運用での実時短）
+- [ ] 自分の時短ログ取得（`office/` 運用での実時短）
 - [ ] 章立てラフを `content/core/outline.md` に起こす
 
 ### Phase 2: 教材ドラフト（2026-06）
 
 - [ ] 核（core/）：CLI 中立の方法論を 5〜7 章で執筆
-- [ ] Claude Code 版（claude-code/）：`.company/` テンプレート + Skills 設定例
+- [ ] Claude Code 版（claude-code/）：`office/` テンプレート + Skills 設定例
 - [ ] Codex CLI 版（codex-cli/）：AGENTS.md ベース簡易版
 - [ ] Gemini CLI 版（gemini-cli/）：OSS 無料枠での再現
 - [ ] ChatGPT / Gemini Web 版（chatgpt-web/）：Custom Instructions 化した最小版

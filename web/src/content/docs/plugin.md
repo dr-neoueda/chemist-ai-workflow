@@ -74,7 +74,7 @@ claude
 > /caw
 ```
 
-`.company/` が存在しない場合、対話的オンボーディングが起動し、研究プロファイル（4 問）と立ち上げる部署を選択。選択内容に応じて、`.company/` 部署と作業ディレクトリ（`gaussian/`、`papers/` 等）が一括生成されます。
+`office/` が存在しない場合、対話的オンボーディングが起動し、研究プロファイル（4 問）と立ち上げる部署を選択。選択内容に応じて、`office/` 部署と作業ディレクトリ（`gaussian/`、`papers/` 等）が一括生成されます。
 
 2 回目以降の `/caw` は運営モードで起動し、秘書を窓口にした対話型の研究支援に入ります。
 
@@ -94,8 +94,8 @@ Codex 版はリリース日を Claude Code 版と揃えつつ、別トラック�
 
 | カテゴリ | 内容 |
 |---|---|
-| **Skills**（7） | `/caw`（オンボーディング → 自動スキャフォールド → 運営モード）<br>`/caw-paper`（論文検索 + PDF メタデータ抽出 + ナレッジベース・クラウドストレージ自動登録）<br>`/caw-input`（6 ソフトの入力ファイル雛形生成 + ジョブ記録）<br>`/caw-playbook`（計算 log 解析 → Lessons Learned 自動追記）<br>`/caw-doctor`（`.company/` 構造の健全性チェック + 修復提示）<br>`/caw-setup`（前提ツール検出 → 計画提示 → 順次インストール）<br>`/caw-slides`（発表用 PowerPoint 生成・4 用途バリアント + スタイルガイド） |
-| **Hooks** | SessionStart（`.company/secretary/notes` 直近 + Playbook 注入）／ PostToolUse（成果物の `.company/` 誤配置を二層原則違反として警告）／ Stop（学びの記録漏れリマインド） |
+| **Skills**（7） | `/caw`（オンボーディング → 自動スキャフォールド → 運営モード）<br>`/caw-paper`（論文検索 + PDF メタデータ抽出 + ナレッジベース・クラウドストレージ自動登録）<br>`/caw-input`（6 ソフトの入力ファイル雛形生成 + ジョブ記録）<br>`/caw-playbook`（計算 log 解析 → Lessons Learned 自動追記）<br>`/caw-doctor`（`office/` 構造の健全性チェック + 修復提示）<br>`/caw-setup`（前提ツール検出 → 計画提示 → 順次インストール）<br>`/caw-slides`（発表用 PowerPoint 生成・4 用途バリアント + スタイルガイド） |
+| **Hooks** | SessionStart（`office/secretary/notes` 直近 + Playbook 注入）／ PostToolUse（成果物の `office/` 誤配置を二層原則違反として警告）／ Stop（学びの記録漏れリマインド） |
 | **部署テンプレート** | secretary / research / engineering / computation / analysis / writing / review / presentation の 8 部署テンプレ |
 | **Playbook 雛形** | Gaussian / GROMACS / CP2K / ORCA / VASP / Quantum ESPRESSO + 汎用 |
 | **作業ディレクトリ** | 選択した計算ソフトに応じて `gaussian/` / `orca/` 等、選択した部署に応じて `papers/` / `manuscripts/` / `presentations/slides/` を自動生成 |

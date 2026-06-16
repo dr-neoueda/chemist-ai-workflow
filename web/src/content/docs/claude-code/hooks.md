@@ -27,7 +27,7 @@ Hooks はセッションのライフサイクルに介入する shell コマン�
         "hooks": [
           {
             "type": "command",
-            "command": "cat ~/lab/.company/secretary/notes/$(date +%F)*.md 2>/dev/null | head -50"
+            "command": "cat ~/lab/office/secretary/notes/$(date +%F)*.md 2>/dev/null | head -50"
           }
         ]
       }

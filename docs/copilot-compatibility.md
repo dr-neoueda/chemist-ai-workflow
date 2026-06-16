@@ -39,7 +39,7 @@ SKILL.md・custom agents・hooks・MCP・plugin+marketplace 配布）を **同�
 ## 移植コストの honest assessment
 
 **ほぼそのまま動く**
-- `.company/<部署>/` の AGENTS.md / CLAUDE.md（Copilot は両方読む）
+- `office/<部署>/` の AGENTS.md / CLAUDE.md（Copilot は両方読む）
 - skills/<name>/SKILL.md（同形式）
 - MCP 設定（Notion・Drive、`.mcp.json`）
 - hooks（イベント名一致でシェルスクリプト流用可能）

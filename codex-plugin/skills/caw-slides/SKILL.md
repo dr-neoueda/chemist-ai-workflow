@@ -42,8 +42,8 @@ Codex は自分で構成・L1 メッセージ・視覚デザインを決定し�
 ### Step 2: スタイルガイド読込 + 計画メモ
 
 1. `references/style-guide.md`（同梱）を読み、適用すべきルールを把握
-2. プロジェクトに `<project_root>/.company/presentation/AGENTS.md` があればそれも読む（プロジェクト固有のオーバライド）
-3. `.company/presentation/notes/<YYYY-MM-DD>-plan.md` を作成し、以下を書き残してから実装に入る:
+2. プロジェクトに `<project_root>/office/presentation/AGENTS.md` があればそれも読む（プロジェクト固有のオーバライド）
+3. `office/presentation/notes/<YYYY-MM-DD>-plan.md` を作成し、以下を書き残してから実装に入る:
    - スライド数（場面別目安: 報告会 6-15 / 国内学会 20-50 / 国際学会 20-25 / 修論 25-35 / 論文紹介 6-12 / 講義 15-30）
    - 各スライドのタイトル
    - 各スライドの L1 メッセージ（1 スライド 1 個、具体的な主張）
@@ -55,16 +55,16 @@ Codex は自分で構成・L1 メッセージ・視覚デザインを決定し�
 # Codex CLI install location は ~/.codex/plugins/cache/*/skills/caw-slides/
 CAW_SLIDES_DIR=$(find ~/.codex/plugins/cache -type d -name "caw-slides" | head -1)
 
-cp "${CAW_SLIDES_DIR}/references/pptx_helpers.py" .company/presentation/scripts/
-cp "${CAW_SLIDES_DIR}/references/research_icons.py" .company/presentation/scripts/
+cp "${CAW_SLIDES_DIR}/references/pptx_helpers.py" office/presentation/scripts/
+cp "${CAW_SLIDES_DIR}/references/research_icons.py" office/presentation/scripts/
 
 USE_CASE=conference   # conference / journal_club / lab_report / lecture
 TODAY=$(date +%Y%m%d)
 cp "${CAW_SLIDES_DIR}/templates/generate_${USE_CASE}.py" \
-   ".company/presentation/scripts/generate_<purpose>_${TODAY}.py"
+   "office/presentation/scripts/generate_<purpose>_${TODAY}.py"
 ```
 
-**`.company/presentation/` が未存在**なら、先に `caw` Skill でスキャフォールド。
+**`office/presentation/` が未存在**なら、先に `caw` Skill でスキャフォールド。
 
 ### Step 4: 実装（テンプレ編集）
 
@@ -81,7 +81,7 @@ cp "${CAW_SLIDES_DIR}/templates/generate_${USE_CASE}.py" \
 ### Step 5: 生成 + 検証
 
 ```bash
-python .company/presentation/scripts/generate_<purpose>_<YYYYMMDD>.py
+python office/presentation/scripts/generate_<purpose>_<YYYYMMDD>.py
 ```
 
 `assert_no_overlap` が `ValueError` で停止したら、座標を調整して再実行。
@@ -103,7 +103,7 @@ soffice --headless --convert-to png --outdir figures/_preview presentations/slid
 
 ### Step 6: 完了報告
 
-`.company/secretary/notes/<YYYY-MM-DD>-decisions.md` に記録:
+`office/secretary/notes/<YYYY-MM-DD>-decisions.md` に記録:
 
 - 出力 .pptx パス
 - 採用した枚数 + 根拠
@@ -165,7 +165,7 @@ showcase variant は研究発表用 4 種と設計思想が異なり、§0 の�
 ## 重要な注意事項
 
 - 既存スライドの修正は **PowerPoint 上の手修正ではなくスクリプトを正とする**
-- スタイルガイド本体（`references/style-guide.md`）はプラグイン更新で上書きされる。プロジェクト固有ルールは `.company/presentation/AGENTS.md` に追加
+- スタイルガイド本体（`references/style-guide.md`）はプラグイン更新で上書きされる。プロジェクト固有ルールは `office/presentation/AGENTS.md` に追加
 - Python 依存:
 
 ```bash
@@ -184,6 +184,6 @@ pip install python-pptx matplotlib Pillow
 
 ## 関連 Skill
 
-- `caw` — `.company/` 部署スキャフォールド（presentation 部含む）
+- `caw` — `office/` 部署スキャフォールド（presentation 部含む）
 - `caw-paper` — 論文 PDF を `papers/` に登録
 - `caw-playbook` — 計算ソフト Playbook 蓄積

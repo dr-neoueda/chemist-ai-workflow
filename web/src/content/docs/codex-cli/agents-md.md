@@ -20,7 +20,7 @@ Codex CLI は以下の順で `AGENTS.md` を探索し、コンテキストに注
 
 - **グローバル**：研究者個人の好み（言語、コーディング規約、思考レベル）
 - **プロジェクトルート**：その研究プロジェクト共通のルール（使う計算ソフト、ファイル命名規則）
-- **サブディレクトリ**：部署単位 / 計算単位の固有ルール（caw の `.company/<dept>/AGENTS.md` がこの層）
+- **サブディレクトリ**：部署単位 / 計算単位の固有ルール（caw の `office/<dept>/AGENTS.md` がこの層）
 
 ## 最小構成
 
@@ -85,8 +85,8 @@ Codex CLI は以下の順で `AGENTS.md` を探索し、コンテキストに注
 
 ## 関連
 
-- 部署システム: `.company/`（caw プラグインで scaffold 済）
-- 計算 Playbook: `.company/computation/playbooks/<tool>.md`
+- 部署システム: `office/`（caw プラグインで scaffold 済）
+- 計算 Playbook: `office/computation/playbooks/<tool>.md`
 - 文献 DB: `<KB の場所>`
 ```
 
@@ -116,8 +116,8 @@ caw プラグインが生成する構造の場合：
 ```
 my-research-project/
 ├── AGENTS.md                            ← プロジェクト全体ルール（任意）
-└── .company/
-    ├── AGENTS.md                        ← .company/ 運営ルール（caw 生成）
+└── office/
+    ├── AGENTS.md                        ← office/ 運営ルール（caw 生成）
     ├── secretary/AGENTS.md              ← 秘書部 ロール
     ├── research/AGENTS.md               ← 文献部 ロール
     ├── computation/AGENTS.md            ← 計算管理部 ロール
@@ -169,4 +169,4 @@ caw プラグインの運用知（学び 3-5 件を毎日 `secretary/notes/<date
 
 - [Skills](/codex-cli/skills/) — `AGENTS.md` ではなく Skills として括り出すべき機能
 - [Commands](/codex-cli/commands/) — スラッシュコマンドとの使い分け
-- [.company/ 部署テンプレート](/claude-code/company-template/) — 各部署 AGENTS.md の典型構成
+- [office/ 部署テンプレート](/claude-code/company-template/) — 各部署 AGENTS.md の典型構成

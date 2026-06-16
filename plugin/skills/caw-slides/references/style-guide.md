@@ -6,7 +6,7 @@
 
 - **目的**: プロジェクター映え・編集可能性・視認性を最優先する研究発表スライドの設計仕様
 - **対象 CLI**: Claude Code / Codex CLI / その他（CLAUDE.md / AGENTS.md / GEMINI.md いずれからも参照可）
-- **このスタイルを変えたいとき**: 該当セクションを編集し、プロジェクトの `.company/presentation/CLAUDE.md` (or AGENTS.md) に反映する。`pptx_helpers.py` の定数も併せて更新
+- **このスタイルを変えたいとき**: 該当セクションを編集し、プロジェクトの `office/presentation/CLAUDE.md` (or AGENTS.md) に反映する。`pptx_helpers.py` の定数も併せて更新
 
 ---
 
@@ -670,7 +670,7 @@ plt.rcParams['font.family'] = _FN   # MS Gothic を再アサート
 
 **このルールの目的**：同じ指摘を繰り返さずに済むようにするため。フィードバックは次回以降の作成に自動的に活かされる。
 
-プロジェクト固有のルールを追加する場合は `.company/presentation/CLAUDE.md` (or AGENTS.md) に追加し、本ガイド本体は触らない（caw plugin 更新時の上書き衝突を防ぐ）。
+プロジェクト固有のルールを追加する場合は `office/presentation/CLAUDE.md` (or AGENTS.md) に追加し、本ガイド本体は触らない（caw plugin 更新時の上書き衝突を防ぐ）。
 
 ---
 
@@ -812,8 +812,8 @@ Helper:
 ### 14-8. canonical 作成手順
 
 1. 発表場面・枚数目安・言語・既存アセットを確認
-2. `.company/presentation/notes/YYYY-MM-DD-plan.md` に構成計画（スライドタイトル / 各スライドの L1 メッセージ）を書く
-3. `.company/presentation/scripts/generate_<purpose>_<YYYYMMDD>.py` を作成し、`pptx_helpers` から必要な helper を import
+2. `office/presentation/notes/YYYY-MM-DD-plan.md` に構成計画（スライドタイトル / 各スライドの L1 メッセージ）を書く
+3. `office/presentation/scripts/generate_<purpose>_<YYYYMMDD>.py` を作成し、`pptx_helpers` から必要な helper を import
 4. 本セクションの 14-1 〜 14-5 に沿って各スライドビルダーを書く：
    - `add_slide_chrome` → 本文ゾーン → `loud_key_message`（出典が必要なら本文ゾーン内 or 末尾に `add_source_line`）
    - 全座標を `int()` で coerce、`//` で整数除算

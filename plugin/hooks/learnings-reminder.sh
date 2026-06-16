@@ -7,7 +7,7 @@ set -euo pipefail
 cat > /dev/null
 
 project_dir="${CLAUDE_PROJECT_DIR:-$PWD}"
-company_dir="$project_dir/.company"
+company_dir="$project_dir/office"
 
 [ -d "$company_dir" ] || exit 0
 

@@ -98,7 +98,7 @@ caw プラグインの `/caw-paper` スキル（Claude Code 版 v1.1.0）がこ�
 ### パターン 2: TODO の双方向同期
 
 ```
-.company/secretary/todos/<today>.md  ⇄  Notion ToDo DB（Cabinet）
+office/secretary/todos/<today>.md  ⇄  Notion ToDo DB（Cabinet）
                                      ⇄  Linear / Jira（オプション）
 ```
 
@@ -109,7 +109,7 @@ caw プラグインの `/caw-paper` スキル（Claude Code 版 v1.1.0）がこ�
 ```
 HPC で計算完了 → ローカルに log 取得
      ↓ caw-playbook で解析
-.company/computation/playbooks/<tool>.md に Lessons Learned 追記
+office/computation/playbooks/<tool>.md に Lessons Learned 追記
      ↓ Slack MCP
 研究室の #computation チャンネルに「benzene Opt 完了 / 22 step 収束」と自動 post
 ```
@@ -119,7 +119,7 @@ HPC で計算完了 → ローカルに log 取得
 ### パターン 4: 共同研究者とのメール下書き
 
 ```
-.company/secretary/notes/<today>-decisions.md（今日の決定事項）
+office/secretary/notes/<today>-decisions.md（今日の決定事項）
      ↓ AGENTS.md ガイドライン参照
      ↓ Gmail MCP
 共著者宛ての進捗メール下書きを生成 → Drafts に保存（送信は手動確認）

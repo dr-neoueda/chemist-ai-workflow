@@ -23,8 +23,8 @@ Figure extraction workflow (from a PDF placed at ``references/<paper>.pdf``)
 
 Usage
 -----
-1. Copy this file to ``.company/presentation/scripts/generate_<paper-id>_<YYYYMMDD>.py``
-2. Place the paper at ``.company/presentation/references/<paper>.pdf``
+1. Copy this file to ``office/presentation/scripts/generate_<paper-id>_<YYYYMMDD>.py``
+2. Place the paper at ``office/presentation/references/<paper>.pdf``
 3. Replace ``<...>`` placeholders and figure paths
 4. Run the script — output to ``presentations/slides/<paper-id>_<YYYYMMDD>.pptx``
 """
@@ -184,13 +184,13 @@ def main() -> None:
     build_title_slide(prs)
     build_figure_slide(
         prs, slide_number=2, title="<Scheme 1: 反応スキーム>",
-        fig_path=Path(".company/presentation/references/fig_scheme1.png"),
+        fig_path=Path("office/presentation/references/fig_scheme1.png"),
         key_message="<L1: 反応の特徴を一行で>",
         source=f"Source: {PAPER_AUTHORS}, {PAPER_JOURNAL} {PAPER_YEAR}, Scheme 1.",
     )
     build_figure_slide(
         prs, slide_number=3, title="<Figure 3: 結果プロット>",
-        fig_path=Path(".company/presentation/references/fig_3.png"),
+        fig_path=Path("office/presentation/references/fig_3.png"),
         key_message="<L1: 結果が示す主張を一行で>",
         source=f"Source: {PAPER_AUTHORS}, {PAPER_JOURNAL} {PAPER_YEAR}, Figure 3.",
     )

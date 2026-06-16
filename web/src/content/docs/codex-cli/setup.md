@@ -1,9 +1,9 @@
 ---
 title: 環境構築（Codex CLI）
-description: Codex CLI のインストール、認証、caw プラグイン導入、.company/ 部署システムの初期化までの一通り
+description: Codex CLI のインストール、認証、caw プラグイン導入、office/ 部署システムの初期化までの一通り
 ---
 
-このページでは、Codex CLI をゼロから「化学プロジェクトで動く `.company/` 部署システム」が立ち上がるところまで一通り通します。**Codex CLI 自体に触るのが初めての方も対象**です。
+このページでは、Codex CLI をゼロから「化学プロジェクトで動く `office/` 部署システム」が立ち上がるところまで一通り通します。**Codex CLI 自体に触るのが初めての方も対象**です。
 
 ## 動作環境
 
@@ -81,13 +81,13 @@ model_reasoning_effort = "high"
 
 セッション中の切り替えコマンドもあり（`codex --help` で確認）。
 
-## `.company/` 部署システムの構築
+## `office/` 部署システムの構築
 
-研究プロジェクトの中心となる `.company/` 部署システムを構築します。**caw プラグイン**による自動構築を推奨。
+研究プロジェクトの中心となる `office/` 部署システムを構築します。**caw プラグイン**による自動構築を推奨。
 
 ### caw プラグインで自動構築（推奨）
 
-`caw`（Chemist's AI Workflow）の Codex 版は、起動後に `caw` と入力（または「化学プロジェクトの環境を作って」など自然言語で指示）するだけで、研究分野・使用ソフト・ナレッジベース等を対話的にヒアリングし、化学者向けにカスタマイズされた `.company/` 部署と作業ディレクトリを一括で構築します。
+`caw`（Chemist's AI Workflow）の Codex 版は、起動後に `caw` と入力（または「化学プロジェクトの環境を作って」など自然言語で指示）するだけで、研究分野・使用ソフト・ナレッジベース等を対話的にヒアリングし、化学者向けにカスタマイズされた `office/` 部署と作業ディレクトリを一括で構築します。
 
 #### 配布ステータス
 
@@ -111,7 +111,7 @@ codex
 > caw
 ```
 
-`.company/` が存在しない場合、対話的オンボーディングモードに入ります。
+`office/` が存在しない場合、対話的オンボーディングモードに入ります。
 
 **研究プロファイル（4 問）**
 
@@ -130,10 +130,10 @@ codex
 
 | 場所 | 内容 |
 |---|---|
-| `.company/AGENTS.md` | ルート組織図 + 化学者向け運用ルール |
-| `.company/secretary/` | 秘書部（窓口・TODO・意思決定ログ・学び） |
-| `.company/<選択部署>/` | 選択した各部署の AGENTS.md とサブフォルダ |
-| `.company/computation/playbooks/` | 選択した計算ソフトの Playbook 雛形 |
+| `office/AGENTS.md` | ルート組織図 + 化学者向け運用ルール |
+| `office/secretary/` | 秘書部（窓口・TODO・意思決定ログ・学び） |
+| `office/<選択部署>/` | 選択した各部署の AGENTS.md とサブフォルダ |
+| `office/computation/playbooks/` | 選択した計算ソフトの Playbook 雛形 |
 | ルート直下 `gaussian/` `orca/` 等 | 選択した計算ソフトの作業ディレクトリ（README 付き） |
 | ルート直下 `papers/` `manuscripts/` `slides/` | 選択した部署に対応するドメイン作業ディレクトリ |
 
@@ -141,7 +141,7 @@ codex
 
 ### 手動セットアップ（caw を使わない場合）
 
-`caw` プラグインを使わずに `.company/` を手動で構築することも可能です。Claude Code 用の [手動セットアップ手順](/claude-code/setup/) と同じ流れで、各 `CLAUDE.md` を `AGENTS.md` に置き換えるだけで Codex 環境にも対応できます。
+`caw` プラグインを使わずに `office/` を手動で構築することも可能です。Claude Code 用の [手動セットアップ手順](/claude-code/setup/) と同じ流れで、各 `CLAUDE.md` を `AGENTS.md` に置き換えるだけで Codex 環境にも対応できます。
 
 ## 試運転
 
@@ -150,11 +150,11 @@ codex
 | 入力例 | 動作 |
 |---|---|
 | 「今日の TODO を整理して」 | `secretary/todos/YYYY-MM-DD.md` を表示・編集 |
-| 「ORCA で benzene の構造最適化の雛形を作って」 | `orca/<system>_<purpose>_<YYYYMMDD>/` を作成し `.inp` 雛形 + `.company/computation/jobs/` にジョブ記録 |
+| 「ORCA で benzene の構造最適化の雛形を作って」 | `orca/<system>_<purpose>_<YYYYMMDD>/` を作成し `.inp` 雛形 + `office/computation/jobs/` にジョブ記録 |
 | 「読んだ論文を登録して」 | PDF → `papers/<author-year>.md` に書誌情報付き md を生成 |
 | 「ここまでの会話で決めたことを記録して」 | `secretary/notes/YYYY-MM-DD-decisions.md` に追記 |
 
-オンボーディング（caw 版）または初期セットアップ（手動版）は初回のみ。2 回目以降の起動は既存の `.company/` を検出し、自動的に運営モードに入ります。
+オンボーディング（caw 版）または初期セットアップ（手動版）は初回のみ。2 回目以降の起動は既存の `office/` を検出し、自動的に運営モードに入ります。
 
 ## 次のステップ
 

@@ -1,14 +1,14 @@
 # MCP セットアップテンプレート集
 
-caw のオンボーディング Step 3 で、Q3（ナレッジベース）/ Q4（クラウドストレージ）の選択に応じて `.company/.mcp-setup.md` を生成するためのテンプレート。
+caw のオンボーディング Step 3 で、Q3（ナレッジベース）/ Q4（クラウドストレージ）の選択に応じて `office/.mcp-setup.md` を生成するためのテンプレート。
 
-MCP（Model Context Protocol）サーバを設定すると、caw の各部署が Notion / Google Drive / Gmail などの外部サービスに直接アクセスできる。**API key を含むため `.company/.mcp-setup.md` は手順書であって認証情報そのものは置かない**。認証情報は環境変数または各 CLI の設定ファイルで管理する。
+MCP（Model Context Protocol）サーバを設定すると、caw の各部署が Notion / Google Drive / Gmail などの外部サービスに直接アクセスできる。**API key を含むため `office/.mcp-setup.md` は手順書であって認証情報そのものは置かない**。認証情報は環境変数または各 CLI の設定ファイルで管理する。
 
 > **GitHub Copilot CLI での設定方法**：本テンプレート中のコマンド例は Claude Code 形式（`claude mcp add ...`）で記載しています。GitHub Copilot CLI では同じ MCP サーバを **`.mcp.json`（標準 `mcpServers` 形式）**で設定します（プラグイン同梱の `.mcp.json`、またはワークスペース／ユーザの MCP 設定）。env / 認証情報の考え方は CLI 共通です。具体形は末尾「GitHub Copilot CLI での設定」を参照。
 
 ---
 
-## `.company/.mcp-setup.md` のヘッダ（共通）
+## `office/.mcp-setup.md` のヘッダ（共通）
 
 ````markdown
 # MCP セットアップ手順
@@ -21,7 +21,7 @@ MCP（Model Context Protocol）サーバを設定すると、caw の各部署が
 - ❌ API key を **この .mcp-setup.md にもコミット対象ファイルにも直接書かない**
 - ✅ API key は環境変数（`~/.zshrc` / `~/.bashrc`）または各 CLI の設定ファイルへ
 - ✅ 各 MCP サーバの権限スコープは **最小限**に（read-only で済むものは read-only）
-- ✅ `.company/.mcp-setup.md` 自体は手順書なので commit して良い（鍵を書かない限り）
+- ✅ `office/.mcp-setup.md` 自体は手順書なので commit して良い（鍵を書かない限り）
 
 ## セットアップ状況
 
@@ -32,7 +32,7 @@ MCP（Model Context Protocol）サーバを設定すると、caw の各部署が
 ---
 ````
 
-以下、Q3 / Q4 の選択に応じて該当セクションを `.company/.mcp-setup.md` に追記する。
+以下、Q3 / Q4 の選択に応じて該当セクションを `office/.mcp-setup.md` に追記する。
 
 ---
 
@@ -78,7 +78,7 @@ claude
 
 - research 部署が `papers/<author-year>.md` を生成 → Notion Paper DB に同期
 - 秘書部の TODO ⇄ Notion ToDo DB の双方向同期
-- データソース ID は `.company/AGENTS.md` の「オーナープロフィール」付近にメモしておくと再利用しやすい
+- データソース ID は `office/AGENTS.md` の「オーナープロフィール」付近にメモしておくと再利用しやすい
 ````
 
 ### Q3 = Obsidian
@@ -103,7 +103,7 @@ claude mcp add filesystem -- npx -y @modelcontextprotocol/server-filesystem /pat
 ### caw との連携
 
 - research 部署が生成した `papers/<author-year>.md` を vault にコピー（frontmatter 付き）
-- vault パスは `.company/AGENTS.md` にメモしておく
+- vault パスは `office/AGENTS.md` にメモしておく
 ````
 
 ### Q3 = Logseq
@@ -227,7 +227,7 @@ claude mcp add gmail --env GOOGLE_CREDENTIALS_PATH=$HOME/.config/gmail-creds.jso
 
 ### caw との連携
 
-- writing 部署が `.company/secretary/notes/<today>-decisions.md` を元に共著者宛ての進捗メール下書きを生成 → Drafts に保存（送信は手動確認）
+- writing 部署が `office/secretary/notes/<today>-decisions.md` を元に共著者宛ての進捗メール下書きを生成 → Drafts に保存（送信は手動確認）
 - ⚠️ 送信権限は付けず、下書き作成権限のみに絞ることを推奨
 ````
 
@@ -259,8 +259,8 @@ GitHub Copilot CLI は MCP サーバを **JSON 設定（`.mcp.json`、標準 `mc
 
 ## セットアップテンプレートの運用ルール
 
-- `.company/.mcp-setup.md` は **手順書**。実際の API key は絶対に書かない（環境変数経由）
-- `.company/.mcp-setup.md` は git commit して良い（鍵を書かない限り、チームで手順を共有できる）
-- caw は Step 3 で Q3 / Q4 の回答に該当するセクションだけを抜粋して `.company/.mcp-setup.md` を生成する
+- `office/.mcp-setup.md` は **手順書**。実際の API key は絶対に書かない（環境変数経由）
+- `office/.mcp-setup.md` は git commit して良い（鍵を書かない限り、チームで手順を共有できる）
+- caw は Step 3 で Q3 / Q4 の回答に該当するセクションだけを抜粋して `office/.mcp-setup.md` を生成する
 - 「使わない」を選んだ項目も、未設定セクションを入れておく（後から再生成しやすい）
 - ユーザーが後でナレッジベース / クラウドストレージを決めた場合、caw で「MCP セットアップを生成して」と言えば再生成できる

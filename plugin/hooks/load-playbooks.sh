@@ -1,6 +1,6 @@
 #!/bin/bash
 # SessionStart hook (caw plugin)
-# カレントプロジェクトの .company/ を検出し、直近の secretary/notes と
+# カレントプロジェクトの office/ を検出し、直近の secretary/notes と
 # computation/playbooks/ をコンテキストに注入する。
 # ユーザー個人パスをハードコードしない（プラグイン配布版）。
 
@@ -9,7 +9,7 @@ cat > /dev/null  # Claude Code から渡される JSON を読み捨て
 
 # Claude Code が CLAUDE_PROJECT_DIR を提供する。未定義なら cwd フォールバック。
 project_dir="${CLAUDE_PROJECT_DIR:-$PWD}"
-company_dir="$project_dir/.company"
+company_dir="$project_dir/office"
 
 [ -d "$company_dir" ] || exit 0
 
@@ -20,7 +20,7 @@ cat <<EOF
 ## caw SessionStart コンテキスト
 
 プロジェクト: $project_dir
-.company/ 検出済。秘書を窓口に運営モードで起動。
+office/ 検出済。秘書を窓口に運営モードで起動。
 
 EOF
 
