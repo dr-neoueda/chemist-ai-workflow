@@ -32,10 +32,13 @@ claude
 ### Codex CLI 版
 
 ```bash
+# 1. marketplace を登録
 codex plugin marketplace add dr-neoueda/chemist-ai-workflow
+# 2. caw プラグイン本体を追加
+codex plugin add caw@chemist-ai-workflow
 ```
 
-Codex CLI のプラグイン管理は **marketplace 単位**で、個別の `install` コマンドはありません。`~/.codex/config.toml` に `[plugins."caw@chemist-ai-workflow"]` が追加されていれば導入完了。Claude Code 版と同一のリポジトリから配信され、内容は基本同一（生成される指示ファイルが `CLAUDE.md` → `AGENTS.md` に変わる点のみ）。
+Codex CLI は **marketplace を登録 → そこから caw プラグイン本体を追加**の 2 ステップです。`~/.codex/config.toml` に `[plugins."caw@chemist-ai-workflow"]` が追加されていれば導入完了。Claude Code 版と同一のリポジトリから配信され、内容は基本同一（生成される指示ファイルが `CLAUDE.md` → `AGENTS.md` に変わる点のみ）。
 
 導入後の起動：
 
@@ -61,7 +64,7 @@ GitHub Copilot CLI は `AGENTS.md`（および `CLAUDE.md`）・`SKILL.md`・hoo
 | エージェント | インストール | 起動 |
 |---|---|---|
 | Claude Code | `/plugin marketplace add ...` → `/plugin install caw` | `/caw` |
-| Codex CLI | `codex plugin marketplace add ...`（marketplace 単位、個別 install なし） | `caw`（または自然言語） |
+| Codex CLI | `codex plugin marketplace add ...` → `codex plugin add caw@chemist-ai-workflow` | `caw`（または自然言語） |
 | GitHub Copilot CLI（PoC） | `copilot plugin marketplace add ...` → `copilot plugin install caw` | `caw`（または自然言語） |
 
 Claude Code はスキル発火を `/` 構文に統合、Codex CLI は `/` を明示的コマンド専用に予約しスキルは自然言語マッチで発火する設計の違いがあります。

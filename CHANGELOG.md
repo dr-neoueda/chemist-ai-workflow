@@ -2,6 +2,30 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.19.0 / Codex 1.18.0 / copilot 1.10.0] - 2026-06-16
+
+### Changed — 初期環境構築でモードに応じた全部署を作成＋化学者モードの質問を再設計
+
+初期 scaffold が「ユーザーが選んだ部署だけ」を作っていたのを、**モードに応じた全部署を常に作成**に変更。これに合わせて化学者モードのオンボーディング質問を作り直した。
+
+- **化学者モード（全 8 部署を常に作成）**：`caw/SKILL.md`（3 系統）。
+  - **部署選択質問（Call 2 / Q5a・Q5b）を廃止**。「どの部署を作るか」をユーザーに尋ねない。
+  - **Quick（秘書のみ）モードを廃止**。経験レベルは **はじめて / 通常 / 詳しく** の 3 段階に整理（Standard→通常、Advanced→詳しく）。どのモードでも全 8 部署（secretary / research / engineering / computation / analysis / writing / review / presentation）を作成し、モードで変わるのは personalization 質問の深さだけ。
+  - 旧 Call 3（詳細プロファイル Q6〜Q9）は Call 2 に繰り上げ。scaffold 範囲・3-3・プレースホルダ説明・MCP 生成条件（Quick→はじめて）を全部署前提に更新。
+- **就活モード（全 4 部署を常に作成）**：`job-hunting-departments.md`（3 系統 byte 一致）§B-3。QJ3a の悩みは「どの部署を作るか」ではなく **START HERE の最初の一歩の優先度**に使うよう役割変更（部署は秘書＋ research/analysis/writing/presentation を常に作成）。
+- 付随更新：`claude-md-template.md` / `agents-md-template.md`（DEPARTMENT プレースホルダの説明を「全部署」に）、`caw-doctor/SKILL.md`（全部署前提のチェック文言）、`plugin/README.md`・`plugin/TESTING.md`。
+- copilot marketplace の `metadata.version` が 1.8.0 で取り残されていたのを 1.10.0 に同期。
+
+### Fixed — Codex CLI のインストールが失敗する問題（authentication）＋ 導入手順の是正
+
+- **`.agents/plugins/marketplace.json` の `"authentication": "NONE"` → `"ON_INSTALL"`**。これが入っていると `codex plugin marketplace add dr-neoueda/chemist-ai-workflow`（marketplace 登録）が（特に Windows で）失敗する。`web/.../codex-cli/skills.md` のサンプルも同様に修正。
+- **Codex の導入手順を実態に合わせて 2 ステップ化**：`codex plugin marketplace add ...`（marketplace 登録）→ `codex plugin add caw@chemist-ai-workflow`（プラグイン本体追加）。web 各所の「個別 install コマンドはありません」という誤記を全面修正（`plugin.md` / `codex-cli/{index,setup,skills}.md`）。Desktop 配布 HTML（repo 外）も同時修正。
+- **アンインストール手順も是正**（`codex-cli/uninstall.md`）：「caw だけの個別アンインストールは無い」は誤り。実際は 2 レベル—`codex plugin remove caw@chemist-ai-workflow`（プラグイン本体のみ削除、marketplace 登録は残る）／`codex plugin marketplace remove chemist-ai-workflow`（marketplace ごと削除）。再現フロー・モード名（はじめて/通常/詳しく）も更新。
+
+### Note
+
+- 版: plugin 1.18.0 → **1.19.0** / codex 1.17.0 → **1.18.0** / copilot 1.9.0 → **1.10.0** / marketplace 同期
+
 ## [1.18.0 / Codex 1.17.0 / copilot 1.9.0] - 2026-06-16
 
 ### Added — 文体プロファイル（`documents/voice-style.md`）を caw-es に正式組込

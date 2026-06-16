@@ -44,7 +44,7 @@ description: >
 
 ### 3. 各部署の構造
 
-選択された部署 (research / engineering / computation / analysis / writing / review / presentation) ごとに：
+化学者モードの全部署 (research / engineering / computation / analysis / writing / review / presentation) ごとに：
 
 - [ ] `office/<dept>/AGENTS.md` が存在
 - [ ] `office/<dept>/` 配下のサブディレクトリが運営情報のみ（成果物ディレクトリが含まれていない）
@@ -208,7 +208,7 @@ fi
 
 ### Step 5: top-level 成果物ディレクトリの確認
 
-選択された部署を `office/AGENTS.md` の「部署一覧」テーブルから読み取り、対応する top-level dir の存在をチェック。
+`office/AGENTS.md` の「部署一覧」テーブルの全部署について、対応する top-level dir の存在をチェック。
 
 ### Step 6: レポート生成
 

@@ -66,7 +66,7 @@ your-research-project/
 
 ### Skills
 
-- **`/caw`**：オンボーディング（Quick / Standard / Advanced の 3 段階）→ 自動スキャフォールド → 運営モードの一連
+- **`/caw`**：オンボーディング（はじめて / 通常 / 詳しく の 3 段階。部署はモード共通で全作成）→ 自動スキャフォールド → 運営モードの一連
 - **`/caw-paper`**：論文検索（arXiv / Crossref / Semantic Scholar / OpenAlex / PubMed）+ 入手済み PDF のメタデータ抽出 → ナレッジベース（Notion / Obsidian 他）+ クラウドストレージ（Google Drive 他）への自動登録
 - **`/caw-input`**：6 ソフト（Gaussian / ORCA / CP2K / GROMACS / VASP / Quantum ESPRESSO）の入力ファイル雛形生成、Playbook デフォルト起点 + ジョブ記録自動生成
 - **`/caw-playbook`**：計算 log の自動解析 → Lessons Learned エントリ起案 → Playbook 末尾追記、memory feedback 昇格判定。`_past-data/` に置いた過去データの一括取り込み（その人向けに Playbook を初期最適化）にも対応
@@ -97,7 +97,7 @@ your-research-project/
 ### 作業ディレクトリ
 
 - 選択した計算ソフトに応じて `gaussian/` / `orca/` / `cp2k/` / `gromacs/` / `vasp/` / `quantum-espresso/`
-- 選択した部署に応じて `papers/` / `topics/` / `manuscripts/` / `presentations/slides/` / `analyses/` / `notebooks/` / `figures/` / `scripts/` / `tools/`
+- 化学者モードの全部署に対応して `papers/` / `topics/` / `manuscripts/` / `presentations/slides/` / `analyses/` / `notebooks/` / `figures/` / `scripts/` / `tools/`
 
 ## 運営モードでできること
 

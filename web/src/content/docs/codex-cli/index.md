@@ -8,10 +8,13 @@ OpenAI 公式のターミナル CLI エージェント。**AGENTS.md** を標準
 ## caw プラグイン（Codex 版）導入
 
 ```bash
+# 1. marketplace を登録
 codex plugin marketplace add dr-neoueda/chemist-ai-workflow
+# 2. caw プラグイン本体を追加
+codex plugin add caw@chemist-ai-workflow
 ```
 
-Codex CLI のプラグイン管理は **marketplace 単位**で、個別の `install` コマンドはありません。`~/.codex/config.toml` に `[plugins."caw@chemist-ai-workflow"]` が追加されていれば導入完了。
+Codex CLI は **marketplace を登録 → そこからプラグインを追加**の 2 ステップです。`~/.codex/config.toml` に `[plugins."caw@chemist-ai-workflow"]` が追加されていれば導入完了。
 
 ## クイックスタート
 
@@ -23,7 +26,7 @@ codex
 
 Codex CLI ではスラッシュ不要。`caw` と入力するか、「化学プロジェクトの環境を作って」など自然言語で指示すれば、スキルが自動的に発火します。
 
-`office/` が存在しない場合、対話的オンボーディング（研究プロファイル 4 問 + 部署選択）が起動し、化学者向けにカスタマイズされた部署と作業ディレクトリが一括生成される。生成される指示ファイルは Codex CLI の標準である **AGENTS.md** 形式。
+`office/` が存在しない場合、対話的オンボーディング（研究プロファイルのヒアリング）が起動し、化学者向けの全部署と作業ディレクトリが一括生成される。生成される指示ファイルは Codex CLI の標準である **AGENTS.md** 形式。
 
 詳細手順は [環境構築](/codex-cli/setup/) を参照。
 
@@ -54,7 +57,7 @@ Codex CLI ではスラッシュ不要。`caw` と入力するか、「化学プ�
 
 | 観点 | Claude Code 版 | Codex 版 |
 |---|---|---|
-| インストール | `/plugin install caw@chemist-ai-workflow` | `codex plugin marketplace add dr-neoueda/chemist-ai-workflow` |
+| インストール | `/plugin install caw@chemist-ai-workflow` | `codex plugin marketplace add dr-neoueda/chemist-ai-workflow` → `codex plugin add caw@chemist-ai-workflow` |
 | プラグイン構造 | `.claude-plugin/plugin.json` | `.codex-plugin/plugin.json` |
 | 生成される指示ファイル | `<dept>/CLAUDE.md` | `<dept>/AGENTS.md` |
 | 部署テンプレ内容 | 同一 | 同一 |
