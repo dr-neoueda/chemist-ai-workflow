@@ -2,7 +2,7 @@
 name: caw-es
 description: >
   ES（エントリーシート）・履歴書・職務経歴書・志望動機・自己PR を、企業の設問と文字数制約に合わせて生成・推敲するスキル。
-  self-analysis/ の素材と companies/ の企業研究から、文字数厳守・結論先出し・STAR 構造のドラフトを作る。
+  self-analysis/ の素材と、caw-research が出力した companies/<企業>.md を必ず参照して、文字数厳守・結論先出し・STAR 構造のドラフトを作る。
 ---
 
 # caw-es — ES・応募書類ジェネレータ
@@ -33,8 +33,8 @@ description: >
 
 ### Step 2: 素材を集める
 
+- **企業固有の書類（志望動機・ES・自己PR 等）は、必ず最初に `companies/<企業名>.md`（`caw-research` の出力）を読む。** これが志望動機・「自分との接点」の一次ソース。研究内容（A 事業・C 強み・D 競合・G 求める人物像・H 接点）を志望動機・接点に必ず反映する。**`companies/<企業名>.md` が無ければ「先に `caw-research` で <企業> を調べましょう」と促し**、ユーザーが望めば `caw-research` を実行してから ES を書く（例: 企業 A の ES は `companies/A.md` を踏まえて自動で書く）
 - `self-analysis/experiences.md`（STAR 化された経験）・`self-analysis/strengths.md`（強み・価値観）・`self-analysis/gakuchika.md`（ガクチカ候補）を読む
-- 志望動機系なら `companies/<企業名>.md`（企業研究）から「自分との接点・刺さる理由」を引く
 - `documents/inbox/` に過去の ES があれば読み、本人の語彙・文体・トーンを踏襲する
 - 素材が足りなければ、自己分析部（`/caw` で自己分析）を案内するか、最低限その場でヒアリングする
 
@@ -69,5 +69,6 @@ description: >
 - **嘘・誇張を書かない**。`self-analysis/` の事実と本人の経験の範囲で書く。面接で深掘りされて答えられない内容は入れない
 - **設問の意図に答える**。聞かれていないことを長々書かない
 - **企業ごとにカスタマイズ**。志望動機はその企業の特徴に紐づける。汎用的な使い回しは避ける
+- **企業固有の書類は `companies/<企業名>.md`（`caw-research` の出力）を必ず参照する**（絶対）。未作成なら `caw-research` を先に実行/提案してから書く。研究内容を踏まえて志望動機・接点を具体化する
 - 個人情報（氏名・連絡先・学籍番号等）はローカル（`documents/`）に留め、外部サービスへ送る前に必ず確認
 - 成果物は top-level `documents/` に置く（`office/` 配下に書かない）
