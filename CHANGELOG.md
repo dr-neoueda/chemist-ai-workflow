@@ -2,6 +2,19 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.18.0 / Codex 1.17.0 / copilot 1.9.0] - 2026-06-16
+
+### Added — 文体プロファイル（`documents/voice-style.md`）を caw-es に正式組込
+
+「自分の文体で書く AI」を **書類部の AGENTS.md（CLAUDE.md）を書き換えずに**実現する仕組みを追加。本人の過去の文章（`documents/inbox/`）から文体（トーン・言い回し・一文の長さ・構成の癖）を抽出し、**専用ファイル `documents/voice-style.md` に書き出す**。設定（部署の AGENTS.md）と文体プロファイルを分離することで、誤って部署設定を上書きする事故を防ぐ。
+
+- `caw-es/SKILL.md`（plugin + codex）: 「文体を学習して／私の文体を覚えて」で `documents/inbox/` を読み `documents/voice-style.md` を生成・更新するワークフローを新設。ES 生成時（Step 2）は `voice-style.md` があれば必ず読み、その文体で書く。重要な注意事項に「部署・`office/` の `AGENTS.md`（`CLAUDE.md`）は書き換えない」を明記。
+- `job-hunting-departments.md`（3 系統）: §B-4 ディレクトリ表の `documents/` 行に `voice-style.md` を追記、§C 書類部テンプレの成果物に「文体プロファイル（『文体を学習して』で inbox から生成。設定ファイルは書き換えない）」を追記。
+
+### Note
+
+- 版: plugin 1.17.1 → **1.18.0** / codex 1.16.1 → **1.17.0** / copilot 1.8.0 → **1.9.0** / marketplace 同期
+
 ## [1.17.1 / Codex 1.16.1] - 2026-06-16
 
 ### Fixed — caw-research は発動時に必ず調査レベル/出力形式を尋ねる
