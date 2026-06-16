@@ -2,6 +2,38 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.17.1 / Codex 1.16.1] - 2026-06-16
+
+### Fixed — caw-research は発動時に必ず調査レベル/出力形式を尋ねる
+
+テストで「○○について企業研究して」と伝えると caw-research が**尋ねずに既定（L2・md）で実行**される問題を修正。Step 1 の「既定は md・指定なければ md で進める」が「尋ねなくてよい」と解釈されていたため、**【必須・省略禁止】毎回必ず `AskUserQuestion` で調査レベルと出力形式を尋ねる**（企業名・業界だけ言われても自動で既定にしない）と明記。「既定」表現を「推奨（初期選択）」に変え、重要な注意事項にも追記。plugin + codex（copilot は caw-research 未収載で据え置き）。
+
+### Note
+
+- 版: plugin 1.17.0 → **1.17.1** / codex 1.16.0 → **1.16.1** / copilot 1.8.0 据え置き / marketplace 同期
+
+## [1.17.0 / Codex 1.16.0 / copilot 1.8.0] - 2026-06-16
+
+### Changed — 就活: 初期環境構築の後に「何をしますか？」と尋ねる
+
+scaffold ＋ START HERE 生成の直後、**秘書がいきなり作業を始めず、まず `AskUserQuestion` で「何をしますか？」と尋ねる**ようにした（`job-hunting-departments.md` §D2 新設）。立ち上げた部署・QJ3a の悩みに合わせて、最初の一歩（自己分析／企業研究 `caw-research`／ES `caw-es`／面接 `caw-interview`／締切 `caw-events`／予定確認）を 4 つに絞って提示。冒頭の流れ説明にも反映。3 系統 byte 一致。
+
+### Note
+
+- 版: plugin 1.16.0 → **1.17.0** / codex 1.15.0 → **1.16.0** / copilot 1.7.0 → **1.8.0** / marketplace 同期
+
+## [1.16.0 / Codex 1.15.0 / copilot 1.7.0] - 2026-06-16
+
+### Changed — 就活オンボーディング: Q0（経験レベル）廃止＋志望職種の追加
+
+- **就活トラックでは経験レベル（Q0「ターミナル/AI は初めてか」）を聞かない**ようにした。就活生は技術初心者が多いので、**常にはじめてモード（平易な日本語・用語説明）で進める**（`office` 設定に `> 運用モード: はじめて` を必ず書く。慣れた人が「もう普通でいい」と言えば外す）。
+- **志望職種の質問（QJ2c）を追加**：志望業界（QJ2a/QJ2b）に加えて「気になっている職種は？」を複数選択で聞く（営業・販売／企画・管理／技術・研究／専門職・クリエイティブ ＋ Other）。
+- `job-hunting-departments.md` §A（Q0 廃止・QJ2c 追加・注記更新）・§B-1（常に はじめてモード フラグ）、`caw/SKILL.md` の Call T 就活分岐を 3 系統で更新。
+
+### Note
+
+- 版: plugin 1.15.0 → **1.16.0** / codex 1.14.0 → **1.15.0** / copilot 1.6.0 → **1.7.0** / marketplace 同期
+
 ## [1.15.0 / Codex 1.14.0] - 2026-06-16
 
 ### Changed — caw-es / caw-interview が caw-research の md を必ず参照
