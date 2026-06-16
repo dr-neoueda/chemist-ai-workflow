@@ -2,6 +2,36 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.15.0 / Codex 1.14.0] - 2026-06-16
+
+### Changed — caw-es / caw-interview が caw-research の md を必ず参照
+
+`caw-es`・`caw-interview` が、企業固有の作業で **`caw-research` の出力 `companies/<企業>.md` を必ず参照**するようにした（任意 → 絶対）。企業 A の ES を書くと `companies/A.md` を踏まえて自動でより良いドラフトが書かれる。
+
+- **caw-es**: Step 2 で企業固有の書類（志望動機・ES・自己PR）は最初に `companies/<企業>.md` を読む。研究の 8 ブロック（A 事業・C 強み・D 競合・G 求める人物像・H 接点）を志望動機・接点に反映。**未作成なら `caw-research` を先に実行/提案**してから書く。
+- **caw-interview**: 想定問答（A）・逆質問（C）で `companies/<企業>.md` を必ず踏まえる。未作成なら `caw-research` を先に促す。
+- 配信 plugin + codex（copilot は両スキル未収載で据え置き）。
+
+### Note
+
+- 版: plugin 1.14.0 → **1.15.0** / codex 1.13.0 → **1.14.0** / copilot 1.6.0 据え置き / marketplace 同期
+
+## [1.14.0 / Codex 1.13.0 / copilot 1.6.0] - 2026-06-16
+
+### Changed — caw-company を caw-research にリネーム＋調査レベル/出力形式の選択を追加
+
+`caw-company`（企業・業界研究スキル）を **`caw-research`** に改名（「company」だと業界研究の面が伝わらず分かりにくいため）。あわせて発動時の選択肢と既定出力を見直した。
+
+- **発動時に `AskUserQuestion` で 3 点を確認**：対象（企業/業界）／**調査レベル（L1 クイック / L2 スタンダード / L3 ディープ）**／**出力形式（md のみ / html のみ / 両方）**。
+- **既定の成果物を md に**：何も指定しなければ `companies/<企業>.md`（業界は `companies/_industry/<業界>.md`）のみ生成。HTML は html / 両方 を選んだときだけ。
+- **汎用 8 ブロック（A基本〜H接点）× 調査レベルの深さマッピング**を skill 本体に明文化（L1=A·B·C·F 要約／L2=+D·E·G·H／L3=全 8＋拡張）。出典強度ルール・HTML 可視化規約（id 衝突回避等）は継続。
+- リネーム：`git mv` でスキルディレクトリ（plugin+codex、履歴保持）。参照（`caw-events` SKILL.md・`engine-validation-map.md`）も `caw-research` に更新。トリガは `/caw-research`。
+- 配信 plugin + codex（copilot は caw-research スキル未収載・共有 `engine-validation-map.md` のみ同期）。LP/README 非掲載は継続。
+
+### Note
+
+- 版: plugin 1.13.0 → **1.14.0** / codex 1.12.0 → **1.13.0** / copilot 1.5.0 → **1.6.0** / marketplace 同期
+
 ## [1.13.0 / Codex 1.12.0 / copilot 1.5.0] - 2026-06-13
 
 ### Changed — 就活オンボーディングの質問を改善（全モードで業界・悩みを聞く）
