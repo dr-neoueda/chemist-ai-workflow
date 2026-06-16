@@ -109,7 +109,7 @@ QJ3b (悩み・進め方/状況): 「進め方やコンディションで当て�
 | ディレクトリ | 中身 | 関連部署 |
 |---|---|---|
 | `companies/` | 企業研究まとめ（`<企業名>.md`）・求人票・選考フロー記録 | `research` |
-| `documents/` | ES・履歴書・職務経歴書・自己PR・志望動機のドラフト（`<企業名>_<書類>.md`） | `writing` |
+| `documents/` | ES・履歴書・職務経歴書・自己PR・志望動機のドラフト（`<企業名>_<書類>.md`）・文体プロファイル `voice-style.md` | `writing` |
 | `self-analysis/` | 自己分析（経験の棚卸し・強み・ガクチカ素材・価値観） | `analysis` |
 | `interview-prep/` | 想定問答・逆質問・面接後の振り返り（`<企業名>.md`） | `presentation` |
 | `recruit/` | 業界横断のインターン・説明会・選考イベントのカタログ（`<業界>.md`）と HTML（カタログ/締切カレンダー/比較表） | 秘書 + `research` |
@@ -219,6 +219,7 @@ ES（エントリーシート）・履歴書・職務経歴書・志望動機・
 ## 成果物（top-level）
 - `documents/<企業名>_es.md` / `documents/<企業名>_rirekisho.md` 等
 - `documents/inbox/` … 過去に書いた書類を入れる → 書き方の傾向を取り込み
+- `documents/voice-style.md` … 文体プロファイル（「文体を学習して」で inbox から生成。**この部署の設定ファイル（AGENTS.md/CLAUDE.md）は書き換えない**）
 
 ## 注意
 - 文字数オーバー・コピペ流用の言い回し残りを必ずチェック

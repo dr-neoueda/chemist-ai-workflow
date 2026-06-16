@@ -19,13 +19,13 @@ caw の対応 OS は **macOS** と **Windows**（同列にサポート）。
 ### npm 経由（推奨）
 
 ```bash
-npm install -g @openai/codex-cli
+npm install -g @openai/codex
 ```
 
 最新版へ更新：
 
 ```bash
-npm update -g @openai/codex-cli
+npm update -g @openai/codex
 ```
 
 ### 公式 docs
