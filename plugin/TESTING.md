@@ -203,7 +203,7 @@ office/
 |---|---|
 | ルート `office/CLAUDE.md` のプレースホルダが全て置換されている | `grep -n '{{' office/CLAUDE.md` が何も出ない |
 | ルート CLAUDE.md に研究分野・計算ソフト・KB・ストレージが反映 | 目視 |
-| 選択した部署のみ存在（未選択は無い） | `ls office/` |
+| 化学者モードの全 8 部署が存在する | `ls office/` |
 | `computation/playbooks/` に gaussian.md と cp2k.md がある | `ls office/computation/playbooks/` |
 | 選択外の playbook（gromacs.md など）は無い | 同上 |
 | 各部署 CLAUDE.md の `## 役割` `## ルール` が空でない | 目視 |

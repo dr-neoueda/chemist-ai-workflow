@@ -19,9 +19,22 @@ caw 周りで「消す・戻す」と言っても、対象が 3 つあります�
 
 ## ① caw プラグインのアンインストール
 
-Codex CLI のプラグイン管理は **marketplace 単位**です（`codex plugin marketplace add / upgrade / remove`）。caw だけを個別アンインストールするコマンドは無く、marketplace ごと除去します。
+Codex CLI は **プラグイン単位**と **marketplace 単位**の 2 レベルで管理します。目的に応じて使い分けます。
 
-### Step 1: marketplace 登録を削除
+- `codex plugin remove caw@chemist-ai-workflow` … **caw プラグイン本体だけ**を削除（marketplace 登録は残る）
+- `codex plugin marketplace remove chemist-ai-workflow` … **marketplace 登録ごと**削除（配布元の登録を消す）
+
+「caw を一度も入れたことがない状態」に戻すには、両方を実行したうえで残骸を手動削除します。
+
+### Step 1: caw プラグイン本体を削除
+
+```bash
+codex plugin remove caw@chemist-ai-workflow
+```
+
+caw プラグインがアンインストールされます。**marketplace 登録（chemist-ai-workflow）は残る**ので、`codex plugin add caw@chemist-ai-workflow` だけで入れ直せます。プラグインだけ消したいならここで完了です。
+
+### Step 2: marketplace 登録も削除（完全除去する場合）
 
 ```bash
 codex plugin marketplace remove chemist-ai-workflow
@@ -31,20 +44,20 @@ codex plugin marketplace remove chemist-ai-workflow
 
 > marketplace 名が分からない場合は `cat ~/.codex/config.toml` で確認してください（Codex CLI には marketplace 一覧コマンドが無いため、config 直読みが確実）。
 
-### Step 2: 残骸の手動削除
+### Step 3: 残骸の手動削除
 
-`remove` で消えるのは **marketplace 登録だけ**です。以下が残るので手動で削除します。
+`remove` 後も以下が残ることがあるので、完全除去なら手動で削除します。
 
-**2-1. config.toml の有効化設定**
+**3-1. config.toml の有効化設定**
 
-`~/.codex/config.toml` に以下のブロックが残っています。この 2 行を削除してください。
+`~/.codex/config.toml` に以下のブロックが残っていたら、この 2 行を削除してください。
 
 ```toml
 [plugins."caw@chemist-ai-workflow"]
 enabled = true
 ```
 
-**2-2. キャッシュ・clone 実体**
+**3-2. キャッシュ・clone 実体**
 
 ```bash
 rm -rf ~/.codex/plugins/cache/chemist-ai-workflow
@@ -56,7 +69,7 @@ rm -rf ~/.codex/.tmp/marketplaces/.staging/marketplace-add-*
 - `marketplaces/` — clone した marketplace リポジトリ
 - `.tmp/marketplaces/.staging/` — `add` 操作時の中断 staging 残骸（temp）
 
-### Step 3: 完全除去の確認
+### Step 4: 完全除去の確認
 
 ```bash
 find ~/.codex -iname '*caw*' -o -iname '*chemist*'
@@ -79,10 +92,11 @@ codex plugin marketplace upgrade chemist-ai-workflow
 
 GitHub から再取得して最新版に更新されます。**アンインストール → 再インストールよりこちらが手早い**です。クリーンに入れ直したい場合のみ ① の手順を使います。
 
-再インストールは ① で完全除去したあと、改めて：
+再インストールは ① で完全除去したあと、改めて 2 ステップで：
 
 ```bash
 codex plugin marketplace add dr-neoueda/chemist-ai-workflow
+codex plugin add caw@chemist-ai-workflow
 ```
 
 ---
@@ -125,15 +139,17 @@ codex
 「caw を初めて入れる人」の体験を確認したいときの典型的な流れ：
 
 ```bash
-# 1. 完全除去（① の Step 1〜3）
+# 1. 完全除去（① の Step 1〜4）
+codex plugin remove caw@chemist-ai-workflow
 codex plugin marketplace remove chemist-ai-workflow
-# config.toml の [plugins."caw@..."] ブロックを削除
+# config.toml の [plugins."caw@..."] ブロックが残っていれば削除
 rm -rf ~/.codex/plugins/cache/chemist-ai-workflow \
        ~/.codex/marketplaces/chemist-ai-workflow \
        ~/.codex/.tmp/marketplaces/.staging/marketplace-add-*
 
-# 2. まっさらな状態から導入
+# 2. まっさらな状態から導入（2 ステップ）
 codex plugin marketplace add dr-neoueda/chemist-ai-workflow
+codex plugin add caw@chemist-ai-workflow
 
 # 3. 新規プロジェクトで初期構築を試す
 cd ~/path/to/fresh-test-project
@@ -141,7 +157,7 @@ codex
 > caw
 ```
 
-オンボーディング（Quick / Standard / Advanced のモード選択）から `office/` 生成までを、配布先のユーザーと同じ条件で確認できます。
+オンボーディング（はじめて / 通常 / 詳しく のモード選択）から `office/` 生成までを、配布先のユーザーと同じ条件で確認できます。
 
 ## 次のステップ
 

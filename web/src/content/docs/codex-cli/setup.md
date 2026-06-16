@@ -95,10 +95,13 @@ model_reasoning_effort = "high"
 
 #### Step 1: プラグインのインストール
 
-Codex CLI のプラグイン管理は **marketplace 単位**です。marketplace を追加すると、含まれるプラグイン（caw）がそのまま利用可能になります（個別の `install` コマンドはありません）。
+Codex CLI は **marketplace を登録 → そこから caw プラグイン本体を追加**の 2 ステップです。
 
 ```bash
+# 1. marketplace を登録
 codex plugin marketplace add dr-neoueda/chemist-ai-workflow
+# 2. caw プラグイン本体を追加
+codex plugin add caw@chemist-ai-workflow
 ```
 
 `~/.codex/config.toml` に `[plugins."caw@chemist-ai-workflow"]` が追加されていれば導入完了。除去・更新の手順は [アンインストールと環境リセット](/codex-cli/uninstall/) を参照。

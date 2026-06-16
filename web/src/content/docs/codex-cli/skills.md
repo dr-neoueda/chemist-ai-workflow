@@ -168,7 +168,7 @@ my-plugin/
     {
       "name": "my-plugin",
       "source": { "source": "local", "path": "./my-plugin" },
-      "policy": { "installation": "AVAILABLE", "authentication": "NONE" },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
       "category": "Research"
     }
   ]
@@ -180,13 +180,19 @@ my-plugin/
 ### ユーザー側の導入
 
 ```bash
+# 1. marketplace を登録
 codex plugin marketplace add <github-user>/<repo>
+# 2. プラグイン本体を追加
+codex plugin add <plugin-name>@<marketplace-name>
 ```
 
-marketplace を追加すると、含まれるプラグインがそのまま利用可能になります（個別の `install` コマンドはありません）。caw を実例にすると：
+marketplace を登録したあと、そこから caw プラグイン本体を追加します（2 ステップ）。caw を実例にすると：
 
 ```bash
+# 1. marketplace を登録
 codex plugin marketplace add dr-neoueda/chemist-ai-workflow
+# 2. caw プラグイン本体を追加
+codex plugin add caw@chemist-ai-workflow
 ```
 
 ## スキル設計のベストプラクティス

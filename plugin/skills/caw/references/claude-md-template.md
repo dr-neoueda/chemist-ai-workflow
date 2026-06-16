@@ -142,15 +142,15 @@ office/
 | `{{KNOWLEDGE_BASE}}` | Q3 | ナレッジベース（Notion, Obsidian, Logseq 等） |
 | `{{CLOUD_STORAGE}}` | Q4 | クラウドストレージ（Google Drive, Dropbox 等） |
 | `{{CREATED_DATE}}` | 自動 | 組織構築日（YYYY-MM-DD） |
-| `{{DEPARTMENT_TREE}}` | Q5a + Q5b | 選択された部署のディレクトリツリー（インデント済） |
-| `{{DEPARTMENT_TABLE_ROWS}}` | Q5a + Q5b | 選択された部署のテーブル行 |
+| `{{DEPARTMENT_TREE}}` | 全部署（固定） | 化学者モード全 8 部署のディレクトリツリー（インデント済） |
+| `{{DEPARTMENT_TABLE_ROWS}}` | 全部署（固定） | 化学者モード全 8 部署のテーブル行 |
 | `{{PERSONALIZATION_NOTES}}` | Q1〜Q4 から派生 | 研究分野と使用ツールに応じた運用ヒント |
 
 ---
 
 ## 部署 → ツリー / テーブル マッピング
 
-選択された部署を `{{DEPARTMENT_TREE}}` と `{{DEPARTMENT_TABLE_ROWS}}` に反映するための対応表：
+全 8 部署を `{{DEPARTMENT_TREE}}` と `{{DEPARTMENT_TABLE_ROWS}}` に反映するための対応表（化学者モードは全部署を常に作成）：
 
 | 部署 ID | ツリー行 | テーブル行 |
 |---|---|---|
