@@ -2,6 +2,98 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.13.0 / Codex 1.12.0 / copilot 1.5.0] - 2026-06-13
+
+### Changed — 就活オンボーディングの質問を改善（全モードで業界・悩みを聞く）
+
+就活トラックの初期ヒアリング（`job-hunting-departments.md` §A Call 1J）を刷新。**経験レベル（はじめて/Quick/Standard/Advanced）に関わらず QJ1〜QJ3 を全モードで聞く**ようにした（区分・志望業界・悩みは「プログラミング/AI が初心者か」とは無関係なため、はじめてモードでも省略しない）。
+
+- **QJ2 志望業界を 2 段階の詳細分類に**：QJ2a（大分類 4 つ multiSelect＝メーカー／商社・流通・小売・不動産・運輸／IT・通信・メディア／金融・コンサル・インフラ・公共）→ QJ2b（選んだ大分類ごとに中分類を確認、代表 4 つ＋Other）。
+- **QJ3 を「悩み」型の複数選択に**：QJ3a（テーマ別の悩み multiSelect＝自己分析／業界・企業研究／ES・書類／面接）＋ QJ3b（進め方・状況 multiSelect＝何から始めれば／複数社の締切管理／モチベ・メンタル）。
+- **部署の立ち上げを QJ3a の悩みに連動**（§B-3 を更新）：選んだ悩み → 対応部署（analysis/research/writing/presentation）。何も選ばない／「何から始めれば」→ research＋analysis を既定。「締切管理」→ 秘書のスケジュール強化、「メンタル」→ 秘書が寄り添い。
+- 3 系統 byte 一致（plugin の CLI 差分は注記の CLAUDE/AGENTS のみ）。LP/README 非掲載は継続。
+
+### Note
+
+- 版: plugin 1.12.0 → **1.13.0** / codex 1.11.0 → **1.12.0** / copilot 1.4.0 → **1.5.0** / marketplace 同期
+
+## [1.12.0 / Codex 1.11.0 / copilot 1.4.0] - 2026-06-13
+
+### Changed — 運営フォルダを可視化（`.company/` → `office/`）【絶対ルール】
+
+**caw は環境構築でユーザーのプロジェクトに先頭ドット（`.`）始まりの Finder/Explorer 不可視フォルダを作らない**を絶対ルール化。IDE を導入しないユーザーが運営フォルダを確認できないのは不便なため。
+
+- **運営フォルダ `.company/` → 可視の `office/` に全面改名**（製品リポジトリ全体 約290 箇所、plugin/codex/copilot/web/docs/hooks/README/RESUME）。成果物は従来どおり top-level（**二層原則は不変**、運営層の名前だけ可視化）。
+- 二層原則の説明文（旧「ドット始まりなので非表示」）を「先頭ドットなしの可視フォルダ」に修正し、絶対ルールを `caw/SKILL.md`・ルート設定テンプレ（`claude-md-template` / `agents-md-template`）・README・`output-location-check` フックに明記。
+- **`check-consistency.sh` に回帰防止ガード**を追加（配布ツリーに `.company` が再混入したら BAD で落とす）。
+- ユーザー個人の既存 `~/lab/.company/`（著者の実運用環境）は製品とは別物のため不変。`~/.claude` など CLI 自身の設定ディレクトリは対象外（必須）。
+
+### Note
+
+- 版: plugin 1.11.0 → **1.12.0** / codex 1.10.0 → **1.11.0** / copilot 1.3.0 → **1.4.0** / marketplace 同期
+
+## [1.11.0 / Codex 1.10.0 / copilot 1.3.0] - 2026-06-13
+
+### Changed — 就活部署フォルダを化学トラックと統一
+
+就活トラックが作る部署フォルダ名を化学トラックと**共通化**（中身〔CLAUDE.md / AGENTS.md〕は就活向けで別物のまま）。これにより就活 scaffold が化学と同じ部署パスを通り、間接テストハーネス（v1.10.0）の scaffold 検証がより厳密になる。
+
+- **部署フォルダの対応**：`secretary`（窓口/選考スケ）・`research`（企業・業界研究）・`analysis`（自己分析）・`writing`（応募書類）・`presentation`（面接対策）＝化学 8 部署のサブセット。`engineering`/`computation`/`review` は化学専用で就活では作らない。
+- **成果物フォルダ（top-level）は据え置き**：`companies/`・`recruit/`（research）／`self-analysis/`（analysis）／`documents/`（writing）／`interview-prep/`（presentation）。部署フォルダ名 ≠ 成果物フォルダ名（化学の `writing`→`manuscripts/` と同じ流儀）。
+- 反映：`job-hunting-departments.md`（§B-3 部署表＋対応表新設・§B-4 関連部署列・§C テンプレ見出し・§E ディスパッチ、3 系統 byte 一致）、`caw-doctor` §J（就活診断の期待部署・成果物表、plugin+codex）、`engine-validation-map.md`（部署統一の注記、3 系統）。
+- 就活はテストユーザー向けサブ機能のため LP/README 非掲載を継続。
+
+### Note
+
+- 版: plugin 1.10.0 → **1.11.0** / codex 1.9.0 → **1.10.0** / copilot 1.2.0 → **1.3.0** / marketplace 同期
+
+## [1.10.0 / Codex 1.9.0 / copilot 1.2.0] - 2026-06-13
+
+### Added — 就活＝化学の「間接テストハーネス」構造
+
+就活トラックを**化学者向け本機能のテストハーネス**として明示する構造を追加。就活と化学は**同一のドメイン非依存エンジン**（オンボ → 部署 scaffold → 秘書ゲートウェイ/dispatch → スキル3パターン → HTML可視化 → memory → caw-doctor）を共有するため、**就活テストユーザーの利用が、対応する化学機能の間接検証**になる。
+
+- **新リファレンス `skills/caw/references/engine-validation-map.md`**（3系統 byte 一致）：共有エンジン7要素の定義／**検証マップ表**（化学↔就活↔エンジンパス↔就活で検証されること、エンジンパス単位で1対1）／テストユーザー・フィードバック構造（`feedback/` ＋雛形）／著者の照合手順／構造を壊さないルール。
+- **就活 scaffold に `feedback/`（top-level）を追加**：`job-hunting-departments.md` の作業ディレクトリ表に `feedback/` を、§F「テストユーザー・フィードバック（化学機能の間接検証）」を新設。秘書が節目に軽くフィードバックを促し、著者が回収して検証マップで化学側エンジンパスの signal に翻訳する。
+- フィードバックは**ツールの使い勝手のみ**（個人情報・企業の非公開情報は書かせない・ローカル完結）。
+- `check-consistency.sh` の codex↔copilot byte 検査に `engine-validation-map.md` を追加。
+- 就活はテストユーザー向けサブ機能のため LP/README 非掲載を継続。
+
+### Note
+
+- 版: plugin 1.9.0 → **1.10.0** / codex 1.8.0 → **1.9.0** / copilot 1.1.2 → **1.2.0** / marketplace 同期
+
+## [1.9.0 / Codex 1.8.0 / copilot 1.1.2] - 2026-06-13
+
+### Added — caw-events（就活イベント・募集情報カタログ スキル）
+
+就活トラックに、**業界横断で多数企業のインターン・企業説明会・座談会・選考イベント・締切を「詳細に」収集**する新スキル `caw-events` を追加。当初追加した締切特化の caw-deadlines を昇華し、締切だけでなくイベントの中身まで集める上位版に統合（caw-deadlines は本リリースで caw-events に置き換え）。
+
+- 業界 or 企業リストを受け、**インターン/オープンカンパニー/説明会/座談会/本選考**を、各イベントの中身（テーマ・職種別コース・形式・対象・締切・実施日・優遇/早期選考・本選考直結・報酬・選考有無・口コミ/倍率）まで収集 → `recruit/<業界>.md`（1 イベント=1 ブロックのカタログ）と `recruit/<業界>.html`（**①イベントカタログ ②締切カレンダー ③企業×イベント比較表** の 3 ビュー）にまとめ、`secretary/todos/` の選考スケジュールへ連携。
+- **出典方針**：公式採用ページを一次情報に、ナビ/就活サイトは出典併記の補助。**口コミ・倍率などの非公式は複数ソースで裏取り**。**ログイン必須・未公表は捏造せず「要確認」に分離**、締切は**取得日を併記**し「最新は公式で確認」、**カバレッジ（取得イベント数・N/M 社・未取得社一覧）を honest に報告**。
+- HTML は `caw-company` の可視化規約を継承（オフライン SVG / Chart.js 選択・見出し id と canvas id 別名・各カード/行に出典＋取得日・要確認は視覚区別）。
+- 就活トラック専用（LP/README の公開スキル一覧には**非掲載**）。`job-hunting-departments.md` の作業ディレクトリ表・運営ディスパッチに `recruit/`・`caw-events` を登録（3 系統 byte 一致）。
+- 配信：plugin + codex（copilot は caw-events スキル未収載・共有リファレンスのみ同期）。
+
+### Note
+
+- 版: plugin 1.8.1 → **1.9.0** / codex 1.7.1 → **1.8.0** / copilot 1.1.1 → **1.1.2**（参照同期）/ marketplace 同期。1.9.0 は未リリースのため、当初の caw-deadlines は本エントリで caw-events に統合し版番号は据え置き。
+
+## [1.8.1 / Codex 1.7.1] - 2026-06-13
+
+### Changed — caw-company の出典・正確性ルール強化
+
+企業研究の情報の正確性を担保するため、`caw-company` に**出典強度の使い分け**を明文化した。
+
+- **Step 2「出典の取り方」を追加**：情報を公式／非公式で区別。**公式情報（IR・有価証券報告書・採用ページ＝財務指標・初任給・募集要項・平均年収の有報記載値）は単一の一次出典で可**。**非公式情報（年代別年収カーブ・職種別年収・残業・有給取得率・口コミスコア・離職率・採用大学/倍率、競合他社の年収など「他社」の非公式値）は 2 つ以上の独立ソースで突き合わせて裏取り**する。
+- 値が割れたら単一値に丸めず**幅（約 X〜Y）／年度・基準を併記**（出典差に見えて実は年度差のことが多い）。口コミ由来は「**クチコミ集計値**」と明示。独立 2 ソースが取れなければ「**要確認**」。
+- **HTML 可視化の注意も更新**：各セクションに出典リンクを併記し、公式は単一・非公式は複数リンクを `公式 / 非公式（複数で裏取り）` ラベルで区別。冒頭に出典方針ノートを置く。グラフは**見出しアンカー id と `<canvas id>` を別名**にする（衝突でグラフが空になる罠を明記、canvas は `ch` 接頭辞推奨）。
+- plugin + codex 両配信に同一反映（copilot は caw-company 未収載のため据え置き）。
+
+### Note
+
+- 版: plugin 1.8.0 → **1.8.1** / codex 1.7.0 → **1.7.1** / marketplace 同期（copilot 1.1.1 据え置き）
+
 ## [1.8.0 / Codex 1.7.0] - 2026-06-12
 
 ### Added — caw-company に HTML 可視化

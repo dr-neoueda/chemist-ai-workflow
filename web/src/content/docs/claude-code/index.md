@@ -30,7 +30,7 @@ claude
 > /caw
 ```
 
-`.company/` が存在しない場合、対話的オンボーディング（研究プロファイル 4 問 + 部署選択）が起動し、化学者向けにカスタマイズされた部署と作業ディレクトリが一括生成される。
+`office/` が存在しない場合、対話的オンボーディング（研究プロファイル 4 問 + 部署選択）が起動し、化学者向けにカスタマイズされた部署と作業ディレクトリが一括生成される。
 
 ## Codex CLI との関係 — 使い分けの目安
 
@@ -64,13 +64,13 @@ caw プラグインは Claude Code 版と Codex CLI 版の **両方** で並列�
 
 ### 応用
 
-- [.company/ 部署テンプレート](/claude-code/company-template/) — 著者の実働システムを再現可能テンプレート化
+- [office/ 部署テンプレート](/claude-code/company-template/) — 著者の実働システムを再現可能テンプレート化
 - [応用：化学研究での実例](/claude-code/application/) — 文献管理・計算ジョブ・申請書・論文執筆・スライド生成
 - [Claude + Codex 二段レビュー（応用編）](/claude-code/two-stage-review/) — AI エージェント運用に慣れてからの上級パターン
 
 ## 配布物（Phase 2 以降）
 
-- `.company/` テンプレートリポジトリ（git clone で即運用開始）
+- `office/` テンプレートリポジトリ（git clone で即運用開始）
 - Skills 設定サンプル集
 - Hooks レシピ
 - Sub-agent 定義集

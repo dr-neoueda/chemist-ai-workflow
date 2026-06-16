@@ -63,7 +63,7 @@ export default defineConfig({
 						{ label: 'Hooks', slug: 'claude-code/hooks' },
 						{ label: 'Sub-agents', slug: 'claude-code/subagents' },
 						{ label: 'MCP サーバー連携', slug: 'claude-code/mcp' },
-						{ label: '.company/ 部署テンプレート', slug: 'claude-code/company-template' },
+						{ label: 'office/ 部署テンプレート', slug: 'claude-code/company-template' },
 						{ label: '応用：化学研究での実例', slug: 'claude-code/application' },
 						{ label: 'Claude + Codex 二段レビュー', slug: 'claude-code/two-stage-review' },
 					],

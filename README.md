@@ -51,7 +51,7 @@ chemist-ai-workflow/
 │   ├── claude-code/           ← Claude Code 版（premium）
 │   ├── codex-cli/             ← Codex 版（basic）
 │   └── chatgpt-web/           ← ブラウザ版（最小）
-├── templates/                 ← 配布する `.company/` 雛形等
+├── templates/                 ← 配布する `office/` 雛形等
 ├── case-studies/              ← 自身の研究での時短ログ・実績データ
 └── marketing/                 ← LP・告知・販促原稿
 ```

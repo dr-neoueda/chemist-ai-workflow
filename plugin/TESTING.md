@@ -141,7 +141,7 @@ claude
 
 期待される挙動：
 
-1. **検出**: `.company/` が無いと判定 → オンボーディングモードへ
+1. **検出**: `office/` が無いと判定 → オンボーディングモードへ
 2. **AskUserQuestion Call 1（研究プロファイル 4 問）**:
    - 研究分野
    - 主な計算ソフト
@@ -171,13 +171,13 @@ claude
 
 ```bash
 cd ~/caw-test/sample-project-01
-tree .company
+tree office
 ```
 
 期待される構造（最低限）：
 
 ```
-.company/
+office/
 ├── CLAUDE.md                              ← ルート（プレースホルダ置換済み）
 ├── secretary/
 │   ├── CLAUDE.md
@@ -201,13 +201,13 @@ tree .company
 
 | 項目 | 確認方法 |
 |---|---|
-| ルート `.company/CLAUDE.md` のプレースホルダが全て置換されている | `grep -n '{{' .company/CLAUDE.md` が何も出ない |
+| ルート `office/CLAUDE.md` のプレースホルダが全て置換されている | `grep -n '{{' office/CLAUDE.md` が何も出ない |
 | ルート CLAUDE.md に研究分野・計算ソフト・KB・ストレージが反映 | 目視 |
-| 選択した部署のみ存在（未選択は無い） | `ls .company/` |
-| `computation/playbooks/` に gaussian.md と cp2k.md がある | `ls .company/computation/playbooks/` |
+| 選択した部署のみ存在（未選択は無い） | `ls office/` |
+| `computation/playbooks/` に gaussian.md と cp2k.md がある | `ls office/computation/playbooks/` |
 | 選択外の playbook（gromacs.md など）は無い | 同上 |
 | 各部署 CLAUDE.md の `## 役割` `## ルール` が空でない | 目視 |
-| Playbook の YAML frontmatter `tool:` `last_updated:` が正しい | `head -10 .company/computation/playbooks/gaussian.md` |
+| Playbook の YAML frontmatter `tool:` `last_updated:` が正しい | `head -10 office/computation/playbooks/gaussian.md` |
 
 ---
 
@@ -227,7 +227,7 @@ tree .company
 | `/caw` 認識 | ✅ / ❌ | |
 | オンボーディング Call 1 表示 | ✅ / ❌ | |
 | オンボーディング Call 2 表示 | ✅ / ❌ | |
-| `.company/CLAUDE.md` 生成 | ✅ / ❌ | プレースホルダ残: あり/なし |
+| `office/CLAUDE.md` 生成 | ✅ / ❌ | プレースホルダ残: あり/なし |
 | 選択部署のみ生成 | ✅ / ❌ | |
 | Playbook 配置（Gaussian, CP2K） | ✅ / ❌ | |
 | 各部署 CLAUDE.md 内容妥当 | ✅ / ❌ | |

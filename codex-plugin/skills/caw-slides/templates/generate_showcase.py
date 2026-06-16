@@ -27,7 +27,7 @@ placeholder boxes and logo clusters are skipped (so the template runs as-is).
 
 Usage
 -----
-1. Copy to ``.company/presentation/scripts/generate_showcase_<YYYYMMDD>.py``.
+1. Copy to ``office/presentation/scripts/generate_showcase_<YYYYMMDD>.py``.
    Also copy ``pptx_helpers.py`` and ``research_icons.py`` into the same folder
    (or keep the plugin installed so ``../references/`` resolves) — the locator
    below searches script-dir first, then ``../references/``.

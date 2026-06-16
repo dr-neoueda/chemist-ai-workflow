@@ -39,7 +39,7 @@ Claude python-reviewer
   ↓ HIGH/CRITICAL があれば修正
 Codex review（codex exec で起動）
   ↓ HIGH/CRITICAL があれば修正
-記録: ~/lab/.company/review/code-reviews/YYYY-MM-DD-<target>.md
+記録: ~/lab/office/review/code-reviews/YYYY-MM-DD-<target>.md
 ```
 
 著者環境では `~/lab/CLAUDE.md` の「ECC 自動発動プロトコル」で `.py` Edit 直後に PR ループが自動起動するように設定。

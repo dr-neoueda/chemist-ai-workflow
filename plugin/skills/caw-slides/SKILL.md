@@ -41,23 +41,23 @@ description: >
 
 ### Step B: テンプレ + helper をユーザーのプロジェクトにコピー
 
-caw-slides Skill の `references/` と `templates/` から、ユーザーの `.company/presentation/scripts/` に必要ファイルをコピー:
+caw-slides Skill の `references/` と `templates/` から、ユーザーの `office/presentation/scripts/` に必要ファイルをコピー:
 
 ```bash
 # pptx_helpers.py（ヘルパライブラリ）と research_icons.py（概念イラスト）をコピー
-cp "${CAW_SLIDES_DIR}/references/pptx_helpers.py" .company/presentation/scripts/
-cp "${CAW_SLIDES_DIR}/references/research_icons.py" .company/presentation/scripts/
+cp "${CAW_SLIDES_DIR}/references/pptx_helpers.py" office/presentation/scripts/
+cp "${CAW_SLIDES_DIR}/references/research_icons.py" office/presentation/scripts/
 
 # 用途別テンプレートをコピーして日付付き名前に変える
 USE_CASE=conference   # or journal_club / lab_report / lecture
 TODAY=$(date +%Y%m%d)
 cp "${CAW_SLIDES_DIR}/templates/generate_${USE_CASE}.py" \
-   ".company/presentation/scripts/generate_<purpose>_${TODAY}.py"
+   "office/presentation/scripts/generate_<purpose>_${TODAY}.py"
 ```
 
 `${CAW_SLIDES_DIR}` は Skill の install location（Claude Code: `~/.claude/plugins/marketplaces/*/skills/caw-slides/`）。
 
-**`.company/presentation/` が未存在**なら、先に `caw` Skill でスキャフォールドを促す。
+**`office/presentation/` が未存在**なら、先に `caw` Skill でスキャフォールドを促す。
 
 ### Step C: Codex に生成委譲（Codex CLI 利用時）/ または Claude 直接生成
 
@@ -67,7 +67,7 @@ cp "${CAW_SLIDES_DIR}/templates/generate_${USE_CASE}.py" \
 
 ```bash
 cat > /tmp/codex_prompt.txt <<'EOF'
-<project_root>/.company/presentation/AGENTS.md と、caw-slides の
+<project_root>/office/presentation/AGENTS.md と、caw-slides の
 references/style-guide.md のスタイルガイドに厳密に従って、研究発表用
 PowerPoint スライドを生成してください。
 
@@ -88,8 +88,8 @@ PowerPoint スライドを生成してください。
 - 内容の取捨選択・圧縮
 
 ## 必須事項
-- 着手前に `.company/presentation/notes/<YYYY-MM-DD>-plan.md` に計画を書く
-- 生成スクリプト: `.company/presentation/scripts/generate_<purpose>_<YYYYMMDD>.py`
+- 着手前に `office/presentation/notes/<YYYY-MM-DD>-plan.md` に計画を書く
+- 生成スクリプト: `office/presentation/scripts/generate_<purpose>_<YYYYMMDD>.py`
 - .pptx: `presentations/slides/<purpose>_<YYYYMMDD>.pptx`
 - `pptx_helpers.py` を import して再利用
 - 各スライドビルダー末尾で `assert_no_overlap(rects)` を呼ぶ
@@ -132,7 +132,7 @@ soffice --headless --convert-to png --outdir figures/_preview presentations/slid
 
 ### Step E: 完了報告
 
-`.company/secretary/notes/<YYYY-MM-DD>-decisions.md` に記録:
+`office/secretary/notes/<YYYY-MM-DD>-decisions.md` に記録:
 
 - 出力 .pptx パス
 - 採用した枚数 + 根拠
@@ -196,7 +196,7 @@ soffice --headless --convert-to png --outdir figures/_preview presentations/slid
 
 - 既存スライドの修正は **PowerPoint 上の手修正ではなくスクリプトを正とする** — 生成スクリプトを編集して再生成
 - 同名 .pptx を再生成すると上書きされる。バックアップが必要なら日付サフィックスを変える
-- スタイルガイド本体（`references/style-guide.md`）はプラグイン更新で上書きされる。プロジェクト固有のルールは `.company/presentation/CLAUDE.md` (or AGENTS.md) に追加し、本体は触らない
+- スタイルガイド本体（`references/style-guide.md`）はプラグイン更新で上書きされる。プロジェクト固有のルールは `office/presentation/CLAUDE.md` (or AGENTS.md) に追加し、本体は触らない
 - python-pptx の依存（`python-pptx`、`matplotlib`、`Pillow`）はユーザーが事前にインストール:
 
 ```bash
@@ -217,6 +217,6 @@ pip install python-pptx matplotlib Pillow
 
 ## 関連 Skill
 
-- `caw` — `.company/` 部署スキャフォールド（presentation 部含む）
+- `caw` — `office/` 部署スキャフォールド（presentation 部含む）
 - `caw-paper` — 論文 PDF を `papers/` に登録（journal club 用素材の源泉）
 - `caw-playbook` — 計算ソフト Playbook 蓄積（報告会・学会発表の素材）

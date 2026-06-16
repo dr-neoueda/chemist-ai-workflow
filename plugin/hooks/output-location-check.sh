@@ -1,6 +1,6 @@
 #!/bin/bash
 # PostToolUse hook (caw plugin v1.3+)
-# Edit/Write/MultiEdit が .company/<dept>/<旧パス>/ に書き込もうとした時に
+# Edit/Write/MultiEdit が office/<dept>/<旧パス>/ に書き込もうとした時に
 # 「成果物配置の二層原則」違反として警告を出す。
 # Block はしない（exit 0）。警告のみ stdout に出力し Claude が次ターンで読む。
 
@@ -26,40 +26,40 @@ path=$(echo "$input" | jq -r '.tool_input.file_path // ""')
 project_dir="${CLAUDE_PROJECT_DIR:-$PWD}"
 rel_path="${path#"$project_dir/"}"
 
-# 旧構造（成果物が .company/<dept>/X/ に入るパターン）を検出
+# 旧構造（成果物が office/<dept>/X/ に入るパターン）を検出
 case "$rel_path" in
-    .company/research/papers/*)
-        suggest_path="papers/${rel_path##*.company/research/papers/}"
+    office/research/papers/*)
+        suggest_path="papers/${rel_path##*office/research/papers/}"
         ;;
-    .company/research/topics/*)
-        suggest_path="topics/${rel_path##*.company/research/topics/}"
+    office/research/topics/*)
+        suggest_path="topics/${rel_path##*office/research/topics/}"
         ;;
-    .company/research/reports/*)
-        suggest_path="reports/${rel_path##*.company/research/reports/}"
+    office/research/reports/*)
+        suggest_path="reports/${rel_path##*office/research/reports/}"
         ;;
-    .company/writing/manuscripts/*)
-        suggest_path="manuscripts/${rel_path##*.company/writing/manuscripts/}"
+    office/writing/manuscripts/*)
+        suggest_path="manuscripts/${rel_path##*office/writing/manuscripts/}"
         ;;
-    .company/analysis/results/*)
-        suggest_path="analyses/${rel_path##*.company/analysis/results/}"
+    office/analysis/results/*)
+        suggest_path="analyses/${rel_path##*office/analysis/results/}"
         ;;
-    .company/analysis/figures/*)
-        suggest_path="figures/${rel_path##*.company/analysis/figures/}"
+    office/analysis/figures/*)
+        suggest_path="figures/${rel_path##*office/analysis/figures/}"
         ;;
-    .company/analysis/notebooks/*)
-        suggest_path="notebooks/${rel_path##*.company/analysis/notebooks/}"
+    office/analysis/notebooks/*)
+        suggest_path="notebooks/${rel_path##*office/analysis/notebooks/}"
         ;;
-    .company/presentation/slides/*)
-        suggest_path="slides/${rel_path##*.company/presentation/slides/}"
+    office/presentation/slides/*)
+        suggest_path="slides/${rel_path##*office/presentation/slides/}"
         ;;
-    .company/presentation/figures/*)
-        suggest_path="figures/${rel_path##*.company/presentation/figures/}"
+    office/presentation/figures/*)
+        suggest_path="figures/${rel_path##*office/presentation/figures/}"
         ;;
-    .company/engineering/scripts/*)
-        suggest_path="scripts/${rel_path##*.company/engineering/scripts/}"
+    office/engineering/scripts/*)
+        suggest_path="scripts/${rel_path##*office/engineering/scripts/}"
         ;;
-    .company/engineering/tools/*)
-        suggest_path="tools/${rel_path##*.company/engineering/tools/}"
+    office/engineering/tools/*)
+        suggest_path="tools/${rel_path##*office/engineering/tools/}"
         ;;
     *)
         exit 0
@@ -74,8 +74,7 @@ cat <<EOF
 書き込んだパス: $rel_path
 
 caw v1.2 以降では、AI が生成する成果物は project root 直下に置くルールです。
-.company/ は AI 部署の運営情報専用エリア（macOS Finder / Linux では標準で非表示、
-Windows Explorer では表示されるが運営情報と混ざる）。要約 md・スライド・グラフ・
+office/ は AI 部署の運営情報専用エリア（可視フォルダだが運営情報専用）。要約 md・スライド・グラフ・
 ノートをここに置くと、ユーザーが成果物を見つけにくくなります。
 
 推奨パス: $suggest_path

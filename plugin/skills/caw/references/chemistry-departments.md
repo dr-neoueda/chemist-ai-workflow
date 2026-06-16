@@ -93,7 +93,7 @@ type: daily
 
 ## 2. research（文献部）
 
-**`.company/research/` のサブディレクトリ（運営情報のみ）**: `logs/`, `metadata/`
+**`office/research/` のサブディレクトリ（運営情報のみ）**: `logs/`, `metadata/`
 
 **成果物の置き場（top-level、ファイラーで見える）**: `papers/`, `topics/`, `reports/`
 
@@ -115,9 +115,9 @@ type: daily
 - **報告書・調査結果総括**：`{{PROJECT_ROOT}}/reports/<topic>.md`（top-level）
 - **原本 PDF**：`{{PROJECT_ROOT}}/papers/<author-year-keyword>.pdf`（top-level）
 
-❌ `.company/research/papers/<...>.md` のようなパスに書かない（旧 v1.0 / v1.1 設計）
+❌ `office/research/papers/<...>.md` のようなパスに書かない（旧 v1.0 / v1.1 設計）
 
-`.company/research/` 配下は運営情報のみ：
+`office/research/` 配下は運営情報のみ：
 
 - `logs/` — 調査ログ、検索クエリ履歴
 - `metadata/` — Notion 同期状態、DOI 取得ログなど中間データ
@@ -132,7 +132,7 @@ type: daily
 
 ## ナレッジベース連携
 
-`.company/CLAUDE.md` の「ナレッジベース」設定に応じて、要約後の登録先を切り替える：
+`office/CLAUDE.md` の「ナレッジベース」設定に応じて、要約後の登録先を切り替える：
 
 - **Notion** → API / MCP 経由で DB 登録（ローカル `papers/` と並列で同期）
 - **Obsidian / Logseq** → vault フォルダに Markdown を保存（frontmatter にメタデータ）
@@ -143,7 +143,7 @@ type: daily
 
 ## 3. engineering（開発部）
 
-**`.company/engineering/` のサブディレクトリ（運営情報のみ）**: `design/`, `decisions/`
+**`office/engineering/` のサブディレクトリ（運営情報のみ）**: `design/`, `decisions/`
 
 **成果物の置き場（top-level、ファイラーで見える）**: `scripts/`, `tools/`
 
@@ -163,9 +163,9 @@ type: daily
 - **本格的なツール**：`{{PROJECT_ROOT}}/tools/<tool-name>/`（top-level）
 - **単発スクリプト**：`{{PROJECT_ROOT}}/scripts/<purpose>_<target>_<date>.py`（top-level）
 
-❌ `.company/engineering/scripts/` や `.company/engineering/tools/` に置かない（実行時のパスがやや回りくどく）
+❌ `office/engineering/scripts/` や `office/engineering/tools/` に置かない（実行時のパスがやや回りくどく）
 
-`.company/engineering/` 配下は運営情報のみ：
+`office/engineering/` 配下は運営情報のみ：
 
 - `design/` — 設計書、アーキテクチャ図、API スペック
 - `decisions/` — 技術選定の意思決定ログ
@@ -204,7 +204,7 @@ type: daily
 
 ## 対応ソフト
 
-`.company/CLAUDE.md` の「使う計算ソフト」設定に応じて、各ソフトの Playbook が `playbooks/` 配下に配置されています。
+`office/CLAUDE.md` の「使う計算ソフト」設定に応じて、各ソフトの Playbook が `playbooks/` 配下に配置されています。
 
 - 量子化学: Gaussian, ORCA, Psi4, GAMESS, NWChem
 - 古典 MD: GROMACS, AMBER, NAMD, LAMMPS, OpenMM
@@ -248,7 +248,7 @@ type: daily
 
 ## 5. analysis（データ解析部）
 
-**`.company/analysis/` のサブディレクトリ（運営情報のみ）**: `methods/`, `decisions/`
+**`office/analysis/` のサブディレクトリ（運営情報のみ）**: `methods/`, `decisions/`
 
 **成果物の置き場（top-level、ファイラーで見える）**: `analyses/`, `figures/`, `notebooks/`
 
@@ -269,9 +269,9 @@ type: daily
 - **図表**：`{{PROJECT_ROOT}}/figures/fig_<内容>_YYYYMMDD.png` または `.svg`（top-level、presentation と共有）
 - **Jupyter Notebook**：`{{PROJECT_ROOT}}/notebooks/<topic>.ipynb`（top-level）
 
-❌ `.company/analysis/results/` や `.company/analysis/figures/` のような旧パスに書かない（旧設計）
+❌ `office/analysis/results/` や `office/analysis/figures/` のような旧パスに書かない（旧設計）
 
-`.company/analysis/` 配下は運営情報のみ：
+`office/analysis/` 配下は運営情報のみ：
 
 - `methods/` — 解析手法の選定理由、参照論文
 - `decisions/` — モデル選択・前処理方針の意思決定ログ
@@ -295,7 +295,7 @@ type: daily
 
 ## 6. writing（論文執筆部）
 
-**`.company/writing/` のサブディレクトリ（運営情報のみ）**: `style/`, `decisions/`
+**`office/writing/` のサブディレクトリ（運営情報のみ）**: `style/`, `decisions/`
 
 **成果物の置き場（top-level、ファイラーで見える）**: `manuscripts/`
 
@@ -319,9 +319,9 @@ type: daily
   - `reviews/YYYY-MM-DD-<reviewer>.md`（指導教員・共著者の添削記録）
 - **共通スタイル**：`{{PROJECT_ROOT}}/manuscripts/_style/<journal>.md`（投稿先誌のスタイル要点、文体プロファイル）
 
-❌ `.company/writing/manuscripts/<...>/` のようなパスに書かない（旧 v1.0 / v1.1 設計）
+❌ `office/writing/manuscripts/<...>/` のようなパスに書かない（旧 v1.0 / v1.1 設計）
 
-`.company/writing/` 配下は運営情報のみ：
+`office/writing/` 配下は運営情報のみ：
 
 - `style/` — 文体プロファイル（指導教員・共著者）の生データ、抽出パターン
 - `decisions/` — 投稿先選定や論文構成変更の意思決定ログ
@@ -347,7 +347,7 @@ type: daily
 
 ## 共著者対応
 
-- 添削の反映後の差分を `.company/secretary/notes/YYYY-MM-DD-decisions.md` に意思決定として残す
+- 添削の反映後の差分を `office/secretary/notes/YYYY-MM-DD-decisions.md` に意思決定として残す
 ```
 
 ---
@@ -396,7 +396,7 @@ Claude + Codex の二段レビューは応用編。本部署単独で運用し�
 
 ## 8. presentation（プレゼン部）
 
-**`.company/presentation/` のサブディレクトリ（運営情報のみ）**: `design-notes/`, `decisions/`, `notes/`, `references/`, `scripts/`
+**`office/presentation/` のサブディレクトリ（運営情報のみ）**: `design-notes/`, `decisions/`, `notes/`, `references/`, `scripts/`
 
 **成果物の置き場（top-level、ファイラーで見える）**: `presentations/slides/`, `presentations/figures/`
 
@@ -423,12 +423,12 @@ Claude + Codex の二段レビューは応用編。本部署単独で運用し�
 ユーザーが ファイラーから開ける場所に置く：
 
 - **スライド本体**：`{{PROJECT_ROOT}}/presentations/slides/<topic>_YYYYMMDD.pptx`（top-level）
-- **生成スクリプト**：`{{PROJECT_ROOT}}/.company/presentation/scripts/generate_<topic>_YYYYMMDD.py`（運営情報、再生成用）
+- **生成スクリプト**：`{{PROJECT_ROOT}}/office/presentation/scripts/generate_<topic>_YYYYMMDD.py`（運営情報、再生成用）
 - **中間図**：`{{PROJECT_ROOT}}/presentations/figures/fig_<topic>_<n>_YYYYMMDD.png`（top-level、analysis と共有）
 
-❌ `.company/presentation/slides/<...>.pptx` のようなパスに書かない（旧設計）
+❌ `office/presentation/slides/<...>.pptx` のようなパスに書かない（旧設計）
 
-`.company/presentation/` 配下は運営情報のみ：
+`office/presentation/` 配下は運営情報のみ：
 
 - `scripts/` — 生成スクリプト + コピーされた `pptx_helpers.py`（source of truth、再生成用）
 - `notes/<YYYY-MM-DD>-plan.md` — 各スライドの構成・L1 メッセージ計画

@@ -2,7 +2,7 @@
 
 化学研究プロジェクトのための AI 部署システムを 1 コマンドで構築する Codex CLI プラグイン。秘書部から開始し、必要な部署を必要なときに増やす。計算ソフトの Playbook と作業ディレクトリも対話的に整備。
 
-Claude Code 版（`../plugin/`）と内容は基本同一。`.company/<dept>/CLAUDE.md` の代わりに `.company/<dept>/AGENTS.md` を生成する点のみ異なる。
+Claude Code 版（`../plugin/`）と内容は基本同一。`office/<dept>/CLAUDE.md` の代わりに `office/<dept>/AGENTS.md` を生成する点のみ異なる。
 
 ## インストール
 
@@ -21,12 +21,12 @@ codex
 > caw
 ```
 
-`.company/` が存在しない場合、対話的オンボーディングが起動：
+`office/` が存在しない場合、対話的オンボーディングが起動：
 
 1. **研究プロファイル**（4 問）：研究分野、計算ソフト、ナレッジベース、クラウドストレージ
 2. **部署選択**：立ち上げる部署を 7 つから複数選択（秘書部は常設）
 
-選択内容に応じて、`.company/` 部署（AGENTS.md 構成）と作業ディレクトリ（`gaussian/`、`papers/` 等）が一括生成される。
+選択内容に応じて、`office/` 部署（AGENTS.md 構成）と作業ディレクトリ（`gaussian/`、`papers/` 等）が一括生成される。
 
 ## 生成される構造の例
 
@@ -34,7 +34,7 @@ codex
 
 ```
 your-research-project/
-├── .company/
+├── office/
 │   ├── AGENTS.md
 │   ├── secretary/{AGENTS.md, inbox/, todos/, notes/}
 │   ├── research/{AGENTS.md, papers/, topics/}
@@ -68,7 +68,7 @@ your-research-project/
 | スキル本体（プロンプト指示） | 同一 | 同一 |
 | Playbook 雛形 | 同一 | 同一 |
 
-両プラグインは同じリポジトリ（`dr-neoueda/chemist-ai-workflow`）から並列配信。研究室で Claude Code 派と Codex CLI 派が混在しても、同じ `.company/` メソッドを共有できる。
+両プラグインは同じリポジトリ（`dr-neoueda/chemist-ai-workflow`）から並列配信。研究室で Claude Code 派と Codex CLI 派が混在しても、同じ `office/` メソッドを共有できる。
 
 ## ライセンス
 

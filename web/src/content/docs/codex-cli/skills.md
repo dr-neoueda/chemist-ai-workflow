@@ -80,9 +80,9 @@ description: >
 `SKILL.md` の本文はステップバイステップの手順。Codex がスキル発火時にこれを system prompt として読み込み、指示通りに動きます。
 
 caw の場合：
-1. **検出**：カレントディレクトリの `.company/` 有無を判定
+1. **検出**：カレントディレクトリの `office/` 有無を判定
 2. **オンボーディング**：`AskUserQuestion` で研究プロファイル 4 問 + 部署選択
-3. **スキャフォールド**：`.company/` 部署 + 作業ディレクトリ + Playbook を一括生成
+3. **スキャフォールド**：`office/` 部署 + 作業ディレクトリ + Playbook を一括生成
 4. **運営モード**：2 回目以降は秘書を窓口に部署振り分け
 
 詳細は [GitHub の caw SKILL.md](https://github.com/dr-neoueda/chemist-ai-workflow/blob/main/codex-plugin/skills/caw/SKILL.md) を参照。

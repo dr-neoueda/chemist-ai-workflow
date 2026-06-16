@@ -15,13 +15,13 @@ trigger: /caw-playbook
 - 計算ジョブ完了後の振り返り段階
 - 計算が想定外の挙動を示した（収束しない / 異常終了 / 物理的にあり得ない値）とき
 
-`.company/computation/playbooks/` が存在しない場合、`/caw` で computation 部署を追加することを促す。
+`office/computation/playbooks/` が存在しない場合、`/caw` で computation 部署を追加することを促す。
 
 ---
 
 ## はじめてモードを尊重する
 
-このスキルを実行する前に `.company/CLAUDE.md`（Codex CLI / GitHub Copilot CLI では `AGENTS.md`）を読み、冒頭に `> 運用モード: はじめて` があれば、`caw` skill の「はじめてモードの挙動」を全応答に適用する：**平易な日本語**で話し、専門用語（化学・計算手法・書誌の用語）は初出で 1 行説明を添え、各ステップの最後に**「次はこれをしましょう」を 1 つ**だけ提示する。元に戻せない操作（削除・上書き・外部登録・送信）は必ず事前確認する。
+このスキルを実行する前に `office/CLAUDE.md`（Codex CLI / GitHub Copilot CLI では `AGENTS.md`）を読み、冒頭に `> 運用モード: はじめて` があれば、`caw` skill の「はじめてモードの挙動」を全応答に適用する：**平易な日本語**で話し、専門用語（化学・計算手法・書誌の用語）は初出で 1 行説明を添え、各ステップの最後に**「次はこれをしましょう」を 1 つ**だけ提示する。元に戻せない操作（削除・上書き・外部登録・送信）は必ず事前確認する。
 
 ## ワークフロー
 
@@ -34,7 +34,7 @@ trigger: /caw-playbook
 - 失敗ジョブを優先（"Error termination" 等を含むもの）
 
 検出した log の **ソフトウェア**（Gaussian / ORCA / CP2K / GROMACS / VASP / QE）を判定し、対応する Playbook を読み込む：
-- `.company/computation/playbooks/<tool>.md`
+- `office/computation/playbooks/<tool>.md`
 
 ### Step 2: log の解析
 
@@ -116,14 +116,14 @@ log 解析完了：
 - **教訓**: `opt=(ts,calcfc,recalcfc=20,maxstep=6)` をデフォルトに（20 step ごとに Hessian 再評価で陳腐化リセット）
 - **参照**: jobs/2026-05-08-<molecule>-ts.md
 
-これを `.company/computation/playbooks/gaussian.md` の Lessons Learned に追記してよろしいですか？
+これを `office/computation/playbooks/gaussian.md` の Lessons Learned に追記してよろしいですか？
 ```
 
 ### Step 5: Playbook への追記
 
 ユーザーが OK と言ったら、対応する Playbook を **Read → Edit append** で更新：
 
-1. `.company/computation/playbooks/<tool>.md` を Read
+1. `office/computation/playbooks/<tool>.md` を Read
 2. `## Lessons Learned` セクション末尾を特定
 3. 新エントリを末尾に Edit append（既存エントリは絶対に上書きしない）
 4. frontmatter の `last_updated` を今日の日付に Edit 更新
@@ -155,7 +155,7 @@ log 解析完了：
 ```
 追記完了：
 
-- Playbook: .company/computation/playbooks/gaussian.md
+- Playbook: office/computation/playbooks/gaussian.md
 - 追加エントリ: ### 2026-05-13 - TS opt 終盤の Hessian 陳腐化は Lambda0 → 0 で検出可能
 - last_updated: 2026-05-13 に更新
 - memory feedback 昇格: ✅ feedback_gaussian_ts_hessian_staleness.md 新規作成

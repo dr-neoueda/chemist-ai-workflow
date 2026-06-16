@@ -13,7 +13,7 @@ description: >
 - 「caw」と呼びかけられたとき、化学プロジェクトの環境構築を依頼されたとき
 - 化学プロジェクトのディレクトリで「秘書」「TODO」「研究」「文献」「計算」「論文」「申請書」「スライド」などと言われたとき
 - **就活で**「自己分析」「企業研究」「ES」「エントリーシート」「志望動機」「ガクチカ」「面接対策」などと言われたとき
-- `.company/` がカレントディレクトリに存在し、Claude が運営モードに入るべきと判断したとき
+- `office/` がカレントディレクトリに存在し、Claude が運営モードに入るべきと判断したとき
 
 ---
 
@@ -21,10 +21,10 @@ description: >
 
 ### Step 1: 検出とモード判定
 
-カレントディレクトリに `.company/` が存在するか確認する。
+カレントディレクトリに `office/` が存在するか確認する。
 
-- **`.company/` が存在する** → `.company/AGENTS.md` を読み込み → **運営モード**へ
-- **`.company/` が存在しない** → **Step 2: オンボーディング**へ
+- **`office/` が存在する** → `office/AGENTS.md` を読み込み → **運営モード**へ
+- **`office/` が存在しない** → **Step 2: オンボーディング**へ
 
 ### Step 2: オンボーディング
 
@@ -63,12 +63,12 @@ Q0 (モード): 「はじめに 1 つだけ。パソコンのターミナルや 
 
 選択肢のラベルが指す内部モードは「はじめて / Quick / Standard / Advanced」。以後の分岐はこのモード名で記述する。
 
-- **はじめて** → Call 1Q のみ実施（最小） + **はじめてモードを有効化**（`.company/AGENTS.md` に記録）→ Step 3（秘書 + research を既定で scaffold）→ START HERE 文書生成 → **初回ツアー**（Step 3-8）
+- **はじめて** → Call 1Q のみ実施（最小） + **はじめてモードを有効化**（`office/AGENTS.md` に記録）→ Step 3（秘書 + research を既定で scaffold）→ START HERE 文書生成 → **初回ツアー**（Step 3-8）
 - **Quick** → Call 1Q のみ実施 → Step 3（秘書のみ scaffold）
 - **Standard** → Call 1 + Call 2 を実施 → Step 3
 - **Advanced** → Call 1 + Call 2 + Call 3 を実施 → Step 3
 
-**はじめてモードの有効化**：`.company/AGENTS.md` の冒頭付近に `> 運用モード: はじめて（強めに誘導）` の 1 行を必ず書く。運営モードはこの行を見て「はじめてモードの挙動」を適用する。
+**はじめてモードの有効化**：`office/AGENTS.md` の冒頭付近に `> 運用モード: はじめて（強めに誘導）` の 1 行を必ず書く。運営モードはこの行を見て「はじめてモードの挙動」を適用する。
 
 #### Call 1Q: Quick モードの最小ヒアリング（1 問、Quick モードのみ）
 
@@ -81,7 +81,7 @@ Q1 (研究分野): 「主な研究分野を教えてください」
   (multiSelect: false; Other で自由入力可)
 ```
 
-Q2〜Q4 は「未定」扱い、部署は秘書のみ。`.company/AGENTS.md` には研究分野のみ反映し、他は `{{未設定}}` プレースホルダで「caw で後から拡張できます」と注記。
+Q2〜Q4 は「未定」扱い、部署は秘書のみ。`office/AGENTS.md` には研究分野のみ反映し、他は `{{未設定}}` プレースホルダで「caw で後から拡張できます」と注記。
 
 #### Call 1: 研究プロファイル（4 問、Standard / Advanced）
 
@@ -151,7 +151,7 @@ Q6 (計算環境): 「計算ジョブをどこで回しますか？」
 Q7 (研究体制): 「研究の進め方は？」
   - 単独研究（指導教員の添削のみ）
   - 共著者と共同（複数名で執筆・解析を分担）
-  - 研究室全体で .company/ を共有
+  - 研究室全体で office/ を共有
   (multiSelect: false; writing / review 部署の運用ルールに反映)
 
 Q8 (申請書の予定): 「申請書・助成金の予定はありますか？」
@@ -169,21 +169,21 @@ Q9 (論文ステータス): 「論文執筆の状況は？」
   (multiSelect: false; writing 部署の初期テンプレに反映)
 ```
 
-Advanced で得た回答は `.company/AGENTS.md` の「パーソナライズメモ」に箇条書きで保存し、各部署が文脈として参照できるようにする。
+Advanced で得た回答は `office/AGENTS.md` の「パーソナライズメモ」に箇条書きで保存し、各部署が文脈として参照できるようにする。
 
 ### Step 3: 自動スキャフォールド
 
 ヒアリング結果に基づいて、以下を一括生成する。
 
 **モードによる scaffold 範囲**：
-- **Quick** → `.company/` + ルート AGENTS.md + 秘書部のみ。Q2〜Q4 / Q5a / Q5b は未取得なのでテンプレのプレースホルダは `{{未設定}}`。完了メッセージで「caw で部署や設定を後から足せます」と案内
-- **Standard** → `.company/` + 秘書部 + Q5a/Q5b で選択された部署 + 作業ディレクトリ
-- **Advanced** → Standard と同じ + Call 3（Q6〜Q9）の回答を `.company/AGENTS.md` のパーソナライズメモと各部署 AGENTS.md に反映 + Q8 で申請書予定があれば writing 部署に申請書トラッカー雛形を追加
+- **Quick** → `office/` + ルート AGENTS.md + 秘書部のみ。Q2〜Q4 / Q5a / Q5b は未取得なのでテンプレのプレースホルダは `{{未設定}}`。完了メッセージで「caw で部署や設定を後から足せます」と案内
+- **Standard** → `office/` + 秘書部 + Q5a/Q5b で選択された部署 + 作業ディレクトリ
+- **Advanced** → Standard と同じ + Call 3（Q6〜Q9）の回答を `office/AGENTS.md` のパーソナライズメモと各部署 AGENTS.md に反映 + Q8 で申請書予定があれば writing 部署に申請書トラッカー雛形を追加
 
-#### 3-1. ルート `.company/` とルート AGENTS.md
+#### 3-1. ルート `office/` とルート AGENTS.md
 
-1. `.company/` ディレクトリを作成
-2. `references/agents-md-template.md` を読み込み、以下のプレースホルダを置換して `.company/AGENTS.md` を生成：
+1. `office/` ディレクトリを作成
+2. `references/agents-md-template.md` を読み込み、以下のプレースホルダを置換して `office/AGENTS.md` を生成：
    - `{{RESEARCH_FIELD}}` ← Q1
    - `{{COMPUTATION_CATEGORIES}}` ← Q2
    - `{{KNOWLEDGE_BASE}}` ← Q3
@@ -196,9 +196,9 @@ Advanced で得た回答は `.company/AGENTS.md` の「パーソナライズメ�
 
 `references/chemistry-departments.md` の「secretary」セクションから：
 
-1. `.company/secretary/{inbox,todos,notes}` を作成
-2. `.company/secretary/AGENTS.md` を配置（化学研究向けにカスタマイズされた秘書ロール）
-3. `.company/secretary/todos/YYYY-MM-DD.md` を今日の日付で作成（テンプレ付き）
+1. `office/secretary/{inbox,todos,notes}` を作成
+2. `office/secretary/AGENTS.md` を配置（化学研究向けにカスタマイズされた秘書ロール）
+3. `office/secretary/todos/YYYY-MM-DD.md` を今日の日付で作成（テンプレ付き）
 
 #### 3-3. 選択された化学者向け部署
 
@@ -214,7 +214,7 @@ Q5a・Q5b で選択された部署について、`references/chemistry-departmen
 
 #### 3-4. プロジェクトルートの作業ディレクトリ（実研究ファイル用）
 
-`.company/` は AI 部署システムの管理側。実際の研究データを置く作業ディレクトリをプロジェクトルートに同時生成する。各ディレクトリには `README.md` を 1 枚配置して「何を置くか・関連する `.company/` 部署」を明示する。
+`office/` は AI 部署システムの管理側。実際の研究データを置く作業ディレクトリをプロジェクトルートに同時生成する。各ディレクトリには `README.md` を 1 枚配置して「何を置くか・関連する `office/` 部署」を明示する。
 
 **Q2（計算ソフト）で選択されたカテゴリに含まれる各ソフトについて、ルート直下にディレクトリ作成**：
 
@@ -228,7 +228,7 @@ Q5a・Q5b で選択された部署について、`references/chemistry-departmen
 | Quantum ESPRESSO | `quantum-espresso/` | `.in` 入力、`.out` 出力、`*.UPF` 擬ポテンシャル |
 | MACE / MLIP | `mlip/` | 学習データ、`.model` チェックポイント、評価 trajectory |
 
-各 README には対応する Playbook へのリンク（`../.company/computation/playbooks/<tool>.md`）を必ず含める。
+各 README には対応する Playbook へのリンク（`../office/computation/playbooks/<tool>.md`）を必ず含める。
 
 **初心者向けの投入フォルダ（各計算ソフトディレクトリ配下に必ず作る）**：パソコン操作に不慣れでも迷わないよう、各計算ソフトディレクトリ（`gaussian/` 等）に次の 2 つのサブフォルダと README を作成する：
 
@@ -244,16 +244,16 @@ Q5a・Q5b で選択された部署について、`references/chemistry-departmen
 | research | `papers/` | 文献要約 md（`<author-year>.md`）+ 原本 PDF |
 | research | `topics/` | 調査トピックまとめ md（`<topic>.md`） |
 | writing | `manuscripts/` | 論文ドラフト（LaTeX / Word）、図表、参考文献 |
-| presentation | `presentations/slides/` | 発表資料・論文紹介スライド（`.pptx`）。生成スクリプトは `.company/presentation/scripts/`（再生成用） |
+| presentation | `presentations/slides/` | 発表資料・論文紹介スライド（`.pptx`）。生成スクリプトは `office/presentation/scripts/`（再生成用） |
 | analysis | `analyses/` | 解析結果（1 トピック 1 サブフォルダ） |
 | analysis | `notebooks/` | Jupyter Notebook |
 | analysis | `figures/` | 解析・論文・スライド用の図表（presentation と共有） |
 | engineering | `scripts/` | 単発・一時スクリプト |
 | engineering | `tools/` | 再利用される本格的なツール |
 
-**重要**：成果物は **必ず top-level**。`.company/research/papers/` のようなパスは禁止。`.company/<dept>/` 配下には部署の運営ノート（AGENTS.md、計画メモ、内部レビュー記録など、ユーザーが日常的に ファイラーで開かないもの）のみ置く。
+**重要**：成果物は **必ず top-level**。`office/research/papers/` のようなパスは禁止。`office/<dept>/` 配下には部署の運営ノート（AGENTS.md、計画メモ、内部レビュー記録など、ユーザーが日常的に ファイラーで開かないもの）のみ置く。
 
-review 部署は内部品質ゲート記録のみ扱うため、top-level ディレクトリは作らず `.company/review/{code-reviews,validation}/` のみで運用する。
+review 部署は内部品質ゲート記録のみ扱うため、top-level ディレクトリは作らず `office/review/{code-reviews,validation}/` のみで運用する。
 
 **research（papers/）にも投入フォルダ**：research を選択した場合、`papers/inbox/` を作成し、README に「論文 PDF をここに入れて『登録して』と言うと、caw-paper が書誌情報を抽出して `papers/<著者-年>.md` に整理し、ナレッジベース／クラウドストレージにも登録する」と平易に明記する。初心者が「PDF をどこに置けばいいか」で迷わないようにするのが目的。
 
@@ -261,15 +261,15 @@ review 部署は内部品質ゲート記録のみ扱うため、top-level ディ
 
 #### 3-5. MCP セットアップ手順の生成（Standard / Advanced）
 
-Q3（ナレッジベース）/ Q4（クラウドストレージ）の回答に応じて、`.company/.mcp-setup.md` を生成する。
+Q3（ナレッジベース）/ Q4（クラウドストレージ）の回答に応じて、`office/.mcp-setup.md` を生成する。
 
 1. `references/mcp-setup-templates.md` を読み込む
-2. 共通ヘッダを `.company/.mcp-setup.md` に書き出す
+2. 共通ヘッダを `office/.mcp-setup.md` に書き出す
 3. Q3 の回答に該当するナレッジベース MCP セクション（Notion / Obsidian / Logseq / 未設定）を追記
 4. Q4 の回答に該当するクラウドストレージ MCP セクション（Google Drive / Dropbox / OneDrive / 未設定）を追記
 5. 「使わない / 未定」を選んだ項目も、未設定セクションを入れておく（後から再生成しやすい）
 
-**重要**：`.company/.mcp-setup.md` は **手順書**であり、API key そのものは絶対に書かない（環境変数経由で渡す手順のみ記載）。Codex CLI では `codex mcp add ...` または `~/.codex/config.toml` の `[mcp_servers]` セクションで設定する。Quick モードでは Q3/Q4 未取得のため、MCP セットアップは生成せず「caw で後から生成できます」と案内するに留める。
+**重要**：`office/.mcp-setup.md` は **手順書**であり、API key そのものは絶対に書かない（環境変数経由で渡す手順のみ記載）。Codex CLI では `codex mcp add ...` または `~/.codex/config.toml` の `[mcp_servers]` セクションで設定する。Quick モードでは Q3/Q4 未取得のため、MCP セットアップは生成せず「caw で後から生成できます」と案内するに留める。
 
 #### 3-6. START HERE 文書の生成（全モード。はじめてモードでは特に重要）
 
@@ -279,7 +279,7 @@ Q3（ナレッジベース）/ Q4（クラウドストレージ）の回答に�
 1. **これは何** — caw は研究の「研究以外」を手伝う AI 部署システム。秘書に話しかけるだけ
 2. **まず何をするか** — 3 ステップ（① `codex`（または `claude`）を起動 → ② 「今日やることを教えて」等と話しかける → ③ 困ったら「ヘルプ」「〇〇って何?」と言う）
 3. **言い方の早見表**（下表。研究分野・選択部署に合わせて調整）
-4. **フォルダの意味** — `papers/inbox/` に PDF を入れる、`gaussian/_past-data/` に過去データ、成果物は top-level、`.company/` は基本触らなくてよい
+4. **フォルダの意味** — `papers/inbox/` に PDF を入れる、`gaussian/_past-data/` に過去データ、成果物は top-level、`office/` は基本触らなくてよい
 5. **よくある用語のミニ辞典** — ターミナル / IDE / AI エージェント / MCP / Hook を各 1 行で
 6. **困ったとき** — 「わからない言葉は『〇〇って何?』と聞けば説明します」「『健康診断して』で構造チェック、『環境を整えて』で環境チェック」
 
@@ -300,7 +300,7 @@ Q3（ナレッジベース）/ Q4（クラウドストレージ）の回答に�
 セットアップが完了しました！
 
 プロジェクトルート/
-├── .company/                    ← AI 部署システム（管理側・dotfile）
+├── office/                    ← AI 部署システム（管理側・dotfile）
 │   ├── AGENTS.md
 │   ├── secretary/               ← 常設：TODO・意思決定・学び
 │   │   ├── AGENTS.md
@@ -349,7 +349,7 @@ Q3（ナレッジベース）/ Q4（クラウドストレージ）の回答に�
 - 過去データがあれば `gaussian/_past-data/` 等に入れて「過去データを取り込んで」と言うと、
   あなた用に Playbook を最適化します
 - **成果物（要約 md、スライド、グラフ等）は top-level ディレクトリ**に保存されます。
-  ファイラーから普通に開けます。`.company/` は AI の運営情報専用です
+  ファイラーから普通に開けます。`office/` は AI の運営情報専用です
 
 🔧 環境セットアップ（任意）:
 - caw を十分に使うには Python・poppler などの外部ツールが要ります。
@@ -386,12 +386,12 @@ matplotlib で**1 枚のラベル付きサンプル PDF を生成**して `paper
 
 ## 運営モード
 
-`.company/` が存在する場合に自動で切り替わる。まず `.company/AGENTS.md` を読み込んで全体ルールを把握する。
+`office/` が存在する場合に自動で切り替わる。まず `office/AGENTS.md` を読み込んで全体ルールを把握する。
 **冒頭に `> 運用モード: はじめて` の行があれば、以下「はじめてモードの挙動」を全応答に適用する。**
 
 ### はじめてモードの挙動（強めに誘導）
 
-パソコン・ターミナル・AI が初めての人を想定し、最初は強めに手を引く。`.company/AGENTS.md` に
+パソコン・ターミナル・AI が初めての人を想定し、最初は強めに手を引く。`office/AGENTS.md` に
 `> 運用モード: はじめて` がある間、常に次を守る（慣れてきて「もう普通でいい」と言われたらこの行を外す）：
 
 - **平易な日本語**。専門用語（ターミナル / IDE / パス / コミット 等）は初出で必ず 1 行説明を添える
@@ -441,9 +441,9 @@ matplotlib で**1 枚のラベル付きサンプル PDF を生成**して `paper
 ユーザーが明示的に「<部署名> を作って」と言った場合、または同じ領域のタスクが 2 回以上繰り返された場合：
 
 1. `references/chemistry-departments.md` から該当部署のテンプレを取得
-2. `.company/<dept>/` ディレクトリとサブフォルダを作成
+2. `office/<dept>/` ディレクトリとサブフォルダを作成
 3. `<dept>/AGENTS.md` を配置
-4. `.company/AGENTS.md` の組織構成ツリーと部署一覧テーブルを更新
+4. `office/AGENTS.md` の組織構成ツリーと部署一覧テーブルを更新
 5. 完了報告
 
 ### 秘書の口調・キャラクター
@@ -497,9 +497,11 @@ matplotlib で**1 枚のラベル付きサンプル PDF を生成**して `paper
 
 caw のディレクトリ構造は **明確に二層** に分かれる。AI が成果物を生成する際の置き場を間違えないこと。
 
-### 第 1 層：`.company/` 配下 — 運営情報のみ
+### 第 1 層：`office/` 配下 — 運営情報のみ
 
-ユーザーがファイラーで日常的に開くことは想定しない。AI 部署の運営記録を集約する場所（`.company/` はドット始まりの名前なので macOS Finder / Linux では標準で非表示、Windows Explorer では表示されるが、いずれの OS でも運営情報専用エリアという位置づけは同じ）。
+AI 部署の運営記録を集約する場所。**`office/` は先頭ドットを付けない可視フォルダ**にする — macOS Finder / Windows Explorer のどちらでも見えるので、IDE を導入しないユーザーでも中身を確認できる。運営情報専用エリアという位置づけだが、隠さない。
+
+> **【絶対ルール】caw は環境構築でユーザーのプロジェクトに先頭ドット（`.`）始まりの不可視フォルダ（旧バージョンの隠しフォルダ等）を一切作らない。** Finder / Explorer で見えないフォルダは IDE を使わないユーザーに不便だから。運営フォルダは可視の `office/`。
 
 - 秘書の TODO / 意思決定 / 学び / Inbox（`secretary/`）
 - 計算 Playbook と job 記録（`computation/playbooks/`, `computation/jobs/`）
@@ -528,24 +530,24 @@ caw のディレクトリ構造は **明確に二層** に分かれる。AI が�
 
 ### 禁則
 
-- ❌ 成果物（ユーザーが目視したい md / pptx / docx / png / ipynb 等）を `.company/<dept>/` 配下に置かない
-- ❌ `.company/<dept>/manuscripts/` や `.company/<dept>/papers/` のようなパスを生成しない（旧 v1.0 / v1.1 の設計）
-- ✅ 部署の運営ノートやレビュー記録のように「ユーザーが普段読まない管理情報」は `.company/<dept>/` に置く
+- ❌ 成果物（ユーザーが目視したい md / pptx / docx / png / ipynb 等）を `office/<dept>/` 配下に置かない
+- ❌ `office/<dept>/manuscripts/` や `office/<dept>/papers/` のようなパスを生成しない（旧 v1.0 / v1.1 の設計）
+- ✅ 部署の運営ノートやレビュー記録のように「ユーザーが普段読まない管理情報」は `office/<dept>/` に置く
 - ✅ 部署が新しい成果物を生成する時は、まず top-level の対応ディレクトリの存在を確認し、無ければ `<dir>/README.md` 付きで作成する
 
 ### 例：research 部署が新規論文を要約した時
 
 ```
 ✅ 正：./papers/wang-2024-mace.md（top-level）
-❌ 誤：.company/research/papers/wang-2024-mace.md（旧設計）
+❌ 誤：office/research/papers/wang-2024-mace.md（旧設計）
 ```
 
 ### 例：presentation 部署が論文紹介スライドを生成した時
 
 ```
 ✅ 正：./presentations/slides/wang-2024-intro_20260514.pptx（top-level）
-   生成スクリプトは：.company/presentation/scripts/generate_wang2024_20260514.py（運営層・再生成用）
-❌ 誤：.company/presentation/slides/wang-2024-intro_20260514.pptx
+   生成スクリプトは：office/presentation/scripts/generate_wang2024_20260514.py（運営層・再生成用）
+❌ 誤：office/presentation/slides/wang-2024-intro_20260514.pptx
 ```
 
 ---
@@ -555,12 +557,12 @@ caw のディレクトリ構造は **明確に二層** に分かれる。AI が�
 - 秘書が常にエントリーポイント。ユーザーに部署を意識させない
 - インタラクティブなステップでは必ず `AskUserQuestion` を使う
 - **秘書室のみ常設**。他の部署は必要に応じて追加 / Step 3 で一括追加される
-- 運営モードでは必ず最初に `.company/AGENTS.md` を読み込む
+- 運営モードでは必ず最初に `office/AGENTS.md` を読み込む
 - 部署に書き込む際は、該当部署の `AGENTS.md` も読み込んでルールに従う
 - 同じ日付のファイルは追記、新規作成しない
 - ファイル操作前に必ず日付を確認する
 - ファイル名は `kebab-case`、日付ベースは `YYYY-MM-DD`
 - 既存ファイルは上書きしない。追記または新規作成のみ
 - **化学物理・計算手法の用語は正しく扱う**（汎関数名・基底関数・force field・cell parameter など）
-- **成果物は `.company/` 配下に置かない**（上の「成果物配置の二層原則」を参照）
+- **成果物は `office/` 配下に置かない**（上の「成果物配置の二層原則」を参照）
 - 二段レビュー（Claude + Codex）等の高度な品質ゲートは応用編。本 skill 単独では取り入れない（ユーザーが慣れてから手動で追加）

@@ -1,9 +1,9 @@
 ---
 title: 環境構築
-description: Claude Code のインストール、認証、IDE 連携、モデル設定、.company/ 初期化までの一通り
+description: Claude Code のインストール、認証、IDE 連携、モデル設定、office/ 初期化までの一通り
 ---
 
-このページでは、Claude Code をゼロから「化学プロジェクトで動く `.company/` 部署システム」が立ち上がるところまで、一通り通します。**Claude Code 自体に触るのが初めての方も対象**です。
+このページでは、Claude Code をゼロから「化学プロジェクトで動く `office/` 部署システム」が立ち上がるところまで、一通り通します。**Claude Code 自体に触るのが初めての方も対象**です。
 
 ## 動作環境
 
@@ -121,13 +121,13 @@ Claude Code は **モデル**と**思考レベル**の 2 軸で挙動を調整�
 
 タスクの複雑さに応じて使い分けることでコストと品質のバランスが取れます。同じセッション内で何度でも切り替え可能。
 
-## `.company/` 部署システムの構築
+## `office/` 部署システムの構築
 
-研究プロジェクトの中心となる `.company/` 部署システムを構築します。本書では **`caw` プラグイン**による自動構築を推奨します。プラグインを使わない手動セットアップも代替ルートとして利用可能です。
+研究プロジェクトの中心となる `office/` 部署システムを構築します。本書では **`caw` プラグイン**による自動構築を推奨します。プラグインを使わない手動セットアップも代替ルートとして利用可能です。
 
 ### caw プラグインで自動構築（推奨）
 
-`caw`（Chemist's AI Workflow）は本書の中核成果物として配布される Claude Code プラグインです。`/caw` 1 コマンドで研究分野・使用ソフト・ナレッジベース等を対話的にヒアリングし、化学者向けにカスタマイズされた `.company/` 部署と作業ディレクトリを一括で構築します。
+`caw`（Chemist's AI Workflow）は本書の中核成果物として配布される Claude Code プラグインです。`/caw` 1 コマンドで研究分野・使用ソフト・ナレッジベース等を対話的にヒアリングし、化学者向けにカスタマイズされた `office/` 部署と作業ディレクトリを一括で構築します。
 
 #### 配布ステータス
 
@@ -152,7 +152,7 @@ claude
 > /caw
 ```
 
-`.company/` が存在しない場合、`caw` は対話的なオンボーディングモードに入ります。
+`office/` が存在しない場合、`caw` は対話的なオンボーディングモードに入ります。
 
 **研究プロファイル（4 問）**
 
@@ -171,10 +171,10 @@ claude
 
 | 場所 | 内容 |
 |---|---|
-| `.company/CLAUDE.md` | ルート組織図 + 化学者向け運用ルール |
-| `.company/secretary/` | 秘書部（窓口・TODO・意思決定ログ・学び） |
-| `.company/<選択部署>/` | 選択した各部署の CLAUDE.md とサブフォルダ |
-| `.company/computation/playbooks/` | 選択した計算ソフトの Playbook 雛形 |
+| `office/CLAUDE.md` | ルート組織図 + 化学者向け運用ルール |
+| `office/secretary/` | 秘書部（窓口・TODO・意思決定ログ・学び） |
+| `office/<選択部署>/` | 選択した各部署の CLAUDE.md とサブフォルダ |
+| `office/computation/playbooks/` | 選択した計算ソフトの Playbook 雛形 |
 | ルート直下 `gaussian/` `orca/` 等 | 選択した計算ソフトの作業ディレクトリ（README 付き） |
 | ルート直下 `papers/` `manuscripts/` `slides/` | 選択した部署に対応するドメイン作業ディレクトリ |
 
@@ -182,23 +182,23 @@ claude
 
 ### 手動セットアップ（caw を使わない場合）
 
-`caw` プラグインを使わずに `.company/` を手動で構築することも可能です。プラグインの動作をカスタマイズしたい場合や、テンプレートの中身を学びながら段階的に立ち上げたい場合に利用してください。
+`caw` プラグインを使わずに `office/` を手動で構築することも可能です。プラグインの動作をカスタマイズしたい場合や、テンプレートの中身を学びながら段階的に立ち上げたい場合に利用してください。
 
 <details>
 <summary>手動セットアップ手順を展開</summary>
 
-#### Step 1：プロジェクトに `.company/` を作る
+#### Step 1：プロジェクトに `office/` を作る
 
 ```bash
 cd ~/your-research-project
-mkdir -p .company/secretary/{inbox,todos,notes}
+mkdir -p office/secretary/{inbox,todos,notes}
 ```
 
 これで秘書部の最小構成が立ち上がります。
 
 #### Step 2：ルート CLAUDE.md を配置
 
-`.company/CLAUDE.md`：
+`office/CLAUDE.md`：
 
 ```md
 # Company - 仮想組織管理システム
@@ -208,18 +208,18 @@ mkdir -p .company/secretary/{inbox,todos,notes}
 - 目標：研究プロセスの AI 化、論文・計算ジョブの効率化
 
 ## 組織構成
-.company/
+office/
 └── secretary/    ← 窓口・TODO・壁打ち・意思決定
 
 ## 運営ルール
 - ユーザーとの対話はまず秘書が受け取る
-- 部署が必要になったら .company/<部署名>/ を新設、CLAUDE.md を置く
+- 部署が必要になったら office/<部署名>/ を新設、CLAUDE.md を置く
 - 同じ日付のファイルは追記、新規作成しない
 ```
 
 #### Step 3：秘書部の CLAUDE.md
 
-`.company/secretary/CLAUDE.md`：
+`office/secretary/CLAUDE.md`：
 
 ```md
 # 秘書室
@@ -251,7 +251,7 @@ mkdir -p .company/secretary/{inbox,todos,notes}
 | **review** | コード/計算レビュー | コード品質・計算妥当性の確認 |
 | **presentation** | スライド生成 | python-pptx + matplotlib + RDKit |
 
-各部署は `mkdir -p .company/<name>/<sub>` でディレクトリを作り、`<name>/CLAUDE.md` に役割と運用ルールを記述。最初に使う部署すべてを立ち上げると、後から個別追加する手間を抑えられる。
+各部署は `mkdir -p office/<name>/<sub>` でディレクトリを作り、`<name>/CLAUDE.md` に役割と運用ルールを記述。最初に使う部署すべてを立ち上げると、後から個別追加する手間を抑えられる。
 
 #### Step 5：作業ディレクトリ
 
@@ -276,16 +276,16 @@ mkdir -p papers manuscripts slides
 | 入力例 | 動作 |
 |---|---|
 | 「今日の TODO を整理して」 | `secretary/todos/YYYY-MM-DD.md` を表示・編集 |
-| 「Gaussian で benzene の構造最適化の雛形を作って」 | `gaussian/<system>_<purpose>_<YYYYMMDD>/` を作成し `.gjf` 雛形 + `.company/computation/jobs/` にジョブ記録 |
+| 「Gaussian で benzene の構造最適化の雛形を作って」 | `gaussian/<system>_<purpose>_<YYYYMMDD>/` を作成し `.gjf` 雛形 + `office/computation/jobs/` にジョブ記録 |
 | 「読んだ論文を登録して」 | PDF → `papers/<author-year>.md` に書誌情報付き md を生成、`papers/` のステージング PDF と紐付け |
 | 「ここまでの会話で決めたことを記録して」 | `secretary/notes/YYYY-MM-DD-decisions.md` に追記 |
 
-オンボーディング（caw 版）または初期セットアップ（手動版）は初回のみ。2 回目以降の起動は既存の `.company/` を検出し、自動的に運営モードに入ります。
+オンボーディング（caw 版）または初期セットアップ（手動版）は初回のみ。2 回目以降の起動は既存の `office/` を検出し、自動的に運営モードに入ります。
 
-部署設計の詳細は [.company/ 部署テンプレート](/claude-code/company-template/) を参照。
+部署設計の詳細は [office/ 部署テンプレート](/claude-code/company-template/) を参照。
 
 ## 次のステップ
 
 - [設定の階層と基礎](/claude-code/basics/) — `~/.claude/` と `.claude/`、`settings.json` の使い分けを理解
-- [.company/ 部署テンプレート](/claude-code/company-template/) — 部署を増やす判断基準と典型例
+- [office/ 部署テンプレート](/claude-code/company-template/) — 部署を増やす判断基準と典型例
 - [Skills の作り方](/claude-code/skills/) — プロジェクト固有のメソッドを独自スキル化

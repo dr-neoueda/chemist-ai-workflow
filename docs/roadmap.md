@@ -11,12 +11,12 @@
 - [ ] **顧客ヒアリング 3〜5 名**（化学系 D 生・PD・若手 PI）
   - 質問：「研究で AI どう使ってる？」「もし論文 DB と計算管理が AI で回ったらいくら払う？」
 - [ ] **競合調査**（note / Zenn / Udemy / 海外）— `search-first` で実施
-- [ ] **自分の時短ログ取得**：`.company/` 運用で論文整理・計算・スライドが何時間短縮されたか記録
+- [ ] **自分の時短ログ取得**：`office/` 運用で論文整理・計算・スライドが何時間短縮されたか記録
 - [ ] **章立てラフ**を `content/core/outline.md` に起こす
 
 ### Phase 2: 教材ドラフト（2026-06）
 - [ ] **核（core/）**：CLI 中立の方法論を 5〜7 章で執筆
-- [ ] **Claude Code 版（claude-code/）**：`.company/` テンプレート＋ Skills 設定例
+- [ ] **Claude Code 版（claude-code/）**：`office/` テンプレート＋ Skills 設定例
 - [ ] **Codex CLI 版（codex-cli/）**：AGENTS.md ベース簡易版
 - [ ] **ChatGPT/Gemini Web 版（chatgpt-web/）**：Custom Instructions 化した最小版
 - [ ] サニタイズ済み実例を 3 例（論文 DB 構築・Gaussian 計算管理・申請書壁打ち）

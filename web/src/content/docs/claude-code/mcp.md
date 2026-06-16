@@ -65,5 +65,5 @@ MCP（Model Context Protocol）は、Claude Code から外部ツールを呼び�
 
 ## 次のステップ
 
-- [.company/ 部署テンプレート](/claude-code/company-template/)
+- [office/ 部署テンプレート](/claude-code/company-template/)
 - [応用：化学研究での実例](/claude-code/application/)
