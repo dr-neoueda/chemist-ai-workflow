@@ -2,6 +2,21 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.20.0 / Codex 1.19.0 / copilot 1.11.0] - 2026-06-16
+
+### Added — caw-intake（過去書類の取り込み・自己分析ジェネレータ）
+
+過去に書いた ES・志望動機・自己PR・履歴書（`documents/inbox/`）を取り込み、**文体・経験(STAR)・強み/弱み・ガクチカ・志望動機/就活の軸・基本プロフィール・過去回答バンク**（7 種）を抽出して、それぞれ適切なファイルに書き分けて配置する就活モードの新スキル。caw-es / caw-interview がこの出力を参照して「本人の文体・実績」で書けるようになる。
+
+- 新スキル `caw-intake/SKILL.md`（plugin + codex。copilot は PoC 対象外）。発火＝「過去の ES を取り込んで」「inbox の文章から自己分析して」。
+- 抽出 → 配置（7 種）：文体 → `documents/voice-style.md`、経験(STAR) → `self-analysis/experiences.md`、強み・弱み・価値観 → `self-analysis/strengths.md`、ガクチカ候補 → `self-analysis/gakuchika.md`、志望動機・就活の軸 → `self-analysis/motivation.md`（新規）、基本プロフィール → `self-analysis/profile.md`（新規）、過去回答バンク（設問×回答） → `documents/past-answers.md`（新規）。既存ファイルは上書きせず追記マージ、個人情報はローカル保持。caw-es / caw-interview は motivation.md・past-answers.md も参照する。
+- 配線（3 系統 byte 一致）：`job-hunting-departments.md`（§D2 最初の一声・§E ディスパッチ・§B-4 inbox 説明・analysis 部署テンプレ）、`engine-validation-map.md`（4 つ目のエンジンパターン「過去データ取り込み → 個人最適化 seed」を新設、caw-playbook の `_past-data/` 取り込みと対応づけ）。
+- `caw-es` に caw-intake への相互参照を追記（「文体を学習して」は文体のみの軽量版、まとめて抽出は caw-intake）。
+
+### Note — caw-intake
+
+- 版: plugin 1.19.0 → **1.20.0** / codex 1.18.0 → **1.19.0** / copilot 1.10.0 → **1.11.0** / marketplace 同期
+
 ## [1.19.0 / Codex 1.18.0 / copilot 1.10.0] - 2026-06-16
 
 ### Changed — 初期環境構築でモードに応じた全部署を作成＋化学者モードの質問を再設計

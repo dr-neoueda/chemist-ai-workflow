@@ -117,8 +117,8 @@ QJ3b (悩み・進め方/状況): 「進め方やコンディションで当て�
 | `recruit/` | 業界横断のインターン・説明会・選考イベントのカタログ（`<業界>.md`）と HTML（カタログ/締切カレンダー/比較表） | 秘書 + `research` |
 | `feedback/` | テストユーザーの使い心地フィードバック（`<YYYY-MM-DD>.md`・`README.md` 雛形）。**化学機能の間接検証**に使う（→ `references/engine-validation-map.md`） | 秘書 |
 
-**初心者向け投入フォルダ**：`documents/inbox/` を作り、「過去に書いた ES や履歴書をここに入れて『取り込んで』と言うと、
-あなたの書き方の傾向を踏まえて次の書類を作ります」と README に明記する。
+**初心者向け投入フォルダ**：`documents/inbox/` を作り、「過去に書いた ES や履歴書をここに入れて『取り込んで』と言うと（`caw-intake`）、
+文体・経験・強み/弱み・ガクチカ・志望動機/就活の軸・プロフィール・過去回答を抽出して `self-analysis/` と `documents/`（`voice-style.md`・`past-answers.md`）に整理し、以降の ES 作成（`caw-es`）に活かします」と README に明記する。
 
 ---
 
@@ -189,14 +189,17 @@ QJ3b (悩み・進め方/状況): 「進め方やコンディションで当て�
 経験の棚卸しと言語化を支援。ガクチカ（学生時代に力を入れたこと）・自己PR・価値観・強みを、面接や ES で使える素材にする。
 
 ## ワークフロー
+0. 過去に書いた ES・書類が `documents/inbox/` にあれば、まず `caw-intake` で文体・経験・強み・ガクチカ・基本プロフィールを一括抽出（`self-analysis/` と `documents/voice-style.md` に整理）
 1. 経験を時系列・場面で洗い出す（学業・研究・アルバイト・サークル・インターン等）
 2. 各経験を **STAR（状況・課題・行動・結果）** で構造化し `self-analysis/experiences.md` に蓄積
 3. そこから「強み 3 つ」「価値観」「ガクチカ候補」を抽出 → 書類部・面接対策部が再利用
 
 ## 成果物（top-level）
 - `self-analysis/experiences.md` … 経験リスト（STAR）
-- `self-analysis/strengths.md` … 強み・価値観・自己PR素材
+- `self-analysis/strengths.md` … 強み・弱み・価値観・自己PR素材
 - `self-analysis/gakuchika.md` … ガクチカ候補
+- `self-analysis/motivation.md` … 志望動機・就活の軸・キャリアビジョン・原体験（caw-intake が生成）
+- `self-analysis/profile.md` … 基本プロフィール（氏名・連絡先・学歴・専攻/研究・資格・語学・スキル・趣味/特技等。caw-intake が生成）
 
 ## 注意
 - 盛らない。事実ベースで、面接で深掘りされても答えられる範囲に留める
@@ -286,6 +289,7 @@ scaffold と START HERE を作り終えたら、**秘書はいきなり作業を
 ```
 「環境ができました！さっそく、何から始めましょうか？」
   - 自己分析から（強み・ガクチカの棚卸し）      → analysis 部署
+  - 過去の ES を取り込んで自己分析（文体・経験も抽出） → caw-intake
   - 企業・業界を調べる                         → caw-research（companies/<企業>.md）
   - ES・志望動機を書く                         → caw-es
   - 面接対策・模擬面接                         → caw-interview
@@ -294,7 +298,7 @@ scaffold と START HERE を作り終えたら、**秘書はいきなり作業を
   (はじめてモードなので 4 択に絞る。Other で「使い方を知りたい」等も受ける)
 ```
 
-- 選択肢は**ユーザーが選んだ悩み（QJ3a）を優先**して並べる（部署は全て作成済み。例: ES の悩みを選んだ人は「ES・志望動機を書く」を上位に。何も選んでいなければ「自己分析から」を勧める）。
+- 選択肢は**ユーザーが選んだ悩み（QJ3a）を優先**して並べる（部署は全て作成済み。例: ES の悩みを選んだ人は「ES・志望動機を書く」を上位に。何も選んでいなければ「自己分析から」を勧める）。**過去に書いた ES・書類が手元にある人には「過去の ES を取り込んで自己分析（caw-intake）」を上位に勧める**（以降の ES 作成が本人の文体・実績で進む）。
 - 「まず使い方を知りたい」なら `はじめにお読みください.md` の早見表（§D）を一緒に見る。
 - 選ばれたら、対応するスキル／部署にそのまま入る（§E のディスパッチ）。**いきなり成果物を作らず、必ずこの一声を最初に置く。**
 
@@ -309,6 +313,7 @@ scaffold と START HERE を作り終えたら、**秘書はいきなり作業を
 | 締切・選考スケジュール・進捗 | 秘書（`secretary/todos/`） |
 | 企業研究・業界研究・求人票・IR | `research`（企業・業界研究、`companies/`） |
 | 自己分析・ガクチカ・強み・経験の棚卸し | `analysis`（自己分析、`self-analysis/`） |
+| 過去の ES・書類を取り込む・文体/経験/強み/志望動機/プロフィール/過去回答を抽出 | `analysis`＋`writing`（`self-analysis/`・`documents/voice-style.md`・`documents/past-answers.md`、`caw-intake`） |
 | ES・履歴書・職務経歴書・志望動機・自己PR | `writing`（書類、`documents/`） |
 | 面接・想定質問・模擬面接・逆質問・振り返り | `presentation`（面接対策、`interview-prep/`） |
 | 業界の募集・イベント・締切を一括収集（インターン/説明会/座談会/選考）・カタログ/カレンダー/比較 | 秘書＋`research`（`recruit/`、`caw-events`） |

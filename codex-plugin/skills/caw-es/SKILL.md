@@ -35,8 +35,9 @@ description: >
 ### Step 2: 素材を集める
 
 - **企業固有の書類（志望動機・ES・自己PR 等）は、必ず最初に `companies/<企業名>.md`（`caw-research` の出力）を読む。** これが志望動機・「自分との接点」の一次ソース。研究内容（A 事業・C 強み・D 競合・G 求める人物像・H 接点）を志望動機・接点に必ず反映する。**`companies/<企業名>.md` が無ければ「先に `caw-research` で <企業> を調べましょう」と促し**、ユーザーが望めば `caw-research` を実行してから ES を書く（例: 企業 A の ES は `companies/A.md` を踏まえて自動で書く）
-- `self-analysis/experiences.md`（STAR 化された経験）・`self-analysis/strengths.md`（強み・価値観）・`self-analysis/gakuchika.md`（ガクチカ候補）を読む
+- `self-analysis/` 一式を読む：`experiences.md`（経験 STAR）・`strengths.md`（強み・弱み・価値観）・`gakuchika.md`（ガクチカ候補）・`motivation.md`（志望動機・就活の軸＝志望動機設問の核）・`profile.md`（学歴・専攻/研究・資格・語学・スキル）
 - **`documents/voice-style.md`（文体プロファイル）があれば必ず読み、その文体（トーン・言い回し・一文の長さ・構成の癖）で書く。** 無ければ `documents/inbox/` の過去の ES を直接読み、本人の語彙・文体・トーンを踏襲する
+- `documents/past-answers.md`（過去の設問×回答バンク）があれば、似た設問の過去回答を参考に・流用する（ただし応募先に合わせて作り直し、使い回しの痕跡＝他社名等を残さない）
 - 素材が足りなければ、自己分析部（`/caw` で自己分析）を案内するか、最低限その場でヒアリングする
 
 ### Step 3: 設問タイプを判定して型を選ぶ
@@ -69,6 +70,8 @@ description: >
 本人の過去の文章から「書き方の癖」を抜き出し、以後の生成で**本人の文体**を再現する仕組み。**部署や `office/` の設定ファイル（`AGENTS.md` / `CLAUDE.md`）は書き換えず、専用ファイル `documents/voice-style.md` に書き出す**（設定と文体プロファイルを分離する）。
 
 ### 作成・更新（「文体を学習して」「私の文体を覚えて」と言われたとき）
+
+> 文体だけでなく**経験・強み・ガクチカ・基本プロフィールまでまとめて抽出**するなら `caw-intake` を使う（`self-analysis/` も整備される）。ここでは文体プロファイルのみを作る軽量版を説明する。
 
 1. `documents/inbox/` の過去の文章（ES・志望動機・自己PR 等）を読む。無ければ「過去に書いた ES などを `documents/inbox/` に入れてください」と促す。
 2. 次の観点で文体を分析し、`documents/voice-style.md` に書き出す（既存があれば更新）：
