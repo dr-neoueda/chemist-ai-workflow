@@ -43,8 +43,8 @@ VS Code のメニューから **「ターミナル（Terminal）」→「新し�
 画面の下半分に文字を打つ欄が出れば成功です。ここに以降のコマンドを「コピーして貼り付け → Enter」します。
 
 :::note
-Windows では、caw の一部（Hooks）が **Git Bash** という環境を使います。次の手順で Git も入るので、
-ターミナルの種類はあとで「Git Bash」を選べるようになります。
+Windows で **Claude Code 版** の caw を使う場合のみ、一部の機能（Hooks）が **Git Bash** という環境を使います（次の手順で Git も入ります）。
+**Codex CLI / GitHub Copilot CLI 版には Hooks が無い**ため、標準の **PowerShell** だけで動き、Git Bash は不要です。
 :::
 
 ## 3. 必要なツールと caw を入れる

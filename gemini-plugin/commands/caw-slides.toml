@@ -1,0 +1,2 @@
+description = "発表・論文紹介スライドや図を生成する（研究／要 Python）"
+prompt = "GEMINI.md の『caw-slides』手順に従う。図表優先・テキスト最小・shape 重なり禁止でスライド/図を生成し presentations/slides/ に保存。presentations/_style.md（あれば本人の作風）を踏まえる。対象: {{args}}"
