@@ -13,7 +13,7 @@ caw は **化学者向け機能（本機能）** と **就活向け機能（サ�
    - 収集 → 構造化 → HTML 可視化（例: caw-paper / caw-research / caw-events）
    - 生成 → 制約チェック（例: caw-input / caw-es、文字数・書式の厳守）
    - 反復 → ログ蓄積（例: caw-playbook / caw-interview）
-   - 過去データ取り込み → 個人最適化 seed（例: caw-playbook の `_past-data/` / caw-intake の `documents/inbox/`）
+   - 統合 inbox の内容判定 → 振り分け → 個人最適化 seed（例: caw-intake の `inbox/`〔内容で profile/・self-analysis/・caw-paper・caw-playbook へ振り分け〕／ caw-playbook の `_past-data/`）
 5. **HTML 可視化エンジン**：デザイントークン・出典方針（公式は単一/非公式は複数ソース）・見出しアンカー id と canvas id 別名
 6. **memory / 学習ループ**：feedback の抽出・昇格・索引
 7. **caw-doctor 構造診断**＋**はじめてモード**（平易化）
@@ -31,7 +31,7 @@ caw は **化学者向け機能（本機能）** と **就活向け機能（サ�
 | caw-paper（論文 → 構造化 → 登録） | caw-research / caw-events（企業・イベント → 構造化 → HTML） | 収集 → 構造化 → 可視化 | 公開情報の構造化・出典方針・HTML 可視化が機能する |
 | caw-input（計算入力生成） | caw-es（ES 生成） | 生成 → 制約チェック | テンプレ準拠生成・制約（文字数/書式）厳守・推敲ループが機能する |
 | caw-playbook（ノウハウ追記） | caw-interview（面接振り返り） | 反復 → ログ蓄積 | 追記・蓄積・再利用ループが機能する |
-| caw-playbook（`_past-data/` 取り込み → seed） | caw-intake（`inbox/` 取り込み → 自己分析/文体 seed） | 過去データ取り込み → 個人最適化 seed | 過去データの解析・抽出・初期 seed が機能する |
+| caw-intake〔研究: `inbox/` を内容判定→自分資料は profile/・`manuscripts/_style/`、外部論文は caw-paper、計算は caw-playbook〕 | caw-intake〔就活: `inbox/` を内容判定→ES は self-analysis/・voice-style、企業情報は caw-research〕 | 統合 inbox の内容判定→振り分け→個人最適化 seed | 内容分類・振り分け・抽出・seed が機能する（caw-intake は**同一スキルが両トラックの統合 inbox を処理**＝就活利用が研究側を直接検証） |
 | 研究データ HTML 可視化 | 企業 / イベント HTML 可視化 | 可視化エンジン | チャート描画・id 衝突回避・出典併記が機能する |
 | memory feedback（研究知見） | memory feedback（就活運用） | 学習ループ | 学びの抽出・昇格・MEMORY.md 索引が機能する |
 | caw-doctor（研究構造診断） | caw-doctor §J（就活診断） | 構造診断エンジン | 構造健全性チェックが機能する |

@@ -65,7 +65,7 @@ trigger: /caw-doctor
 - `office/engineering/scripts/`
 - `office/engineering/tools/`
 
-これらに該当するファイルがあれば、project root 直下の対応ディレクトリ（`papers/`, `topics/`, `manuscripts/`, `analyses/`, `figures/`, `notebooks/`, `presentations/slides/`, `scripts/`, `tools/`）への移動を提案。
+これらに該当するファイルがあれば、project root 直下の対応ディレクトリ（`papers/`, `topics/`, `manuscripts/`, `analyses/`, `figures/`, `notebooks/`, `presentations/slides/`, `scripts/`, `tools/`, `profile/`）への移動を提案。
 
 ### 5. Playbook の更新状況
 
@@ -92,6 +92,7 @@ trigger: /caw-doctor
 オンボーディングで作られる「投入フォルダ」が消えていないか確認（消えていると初心者が PDF・過去データの置き場で迷う）：
 
 - [ ] research を選択している場合、`papers/inbox/` が存在する
+- [ ] 統合 `inbox/`（caw-intake の投入口：何でも入れて『処理して』）が存在する
 - [ ] 各計算ソフトディレクトリ（`gaussian/` `gromacs/` `cp2k/` 等）に `inbox/` と `_past-data/` が存在する
 - [ ] START HERE 文書 `はじめにお読みください.md` が project root に存在する（はじめてモードで特に重要）
 
@@ -117,7 +118,7 @@ trigger: /caw-doctor
 存在しなければ `README.md` 付きで作成を提案。
 
 #### J-3. 投入フォルダと START HERE
-- [ ] `documents/inbox/`（過去 ES の取り込み用）が存在する
+- [ ] 統合 `inbox/`（過去資料の投入口：何でも入れて『処理して』）が存在する
 - [ ] START HERE 文書 `はじめにお読みください.md` が project root に存在する（はじめてモードで特に重要）
 
 ### 7. 同日ファイル重複

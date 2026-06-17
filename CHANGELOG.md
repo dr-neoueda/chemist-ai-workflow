@@ -2,6 +2,25 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.21.0 / Codex 1.20.0 / copilot 1.12.0] - 2026-06-17
+
+### Added — caw-intake を「統合 inbox の自動仕分け」＋デュアルトラック化
+
+`caw-intake` を、**1 つの `inbox/` に何でも入れれば中身を見て自動で振り分ける**統合プロセッサに刷新。ユーザーは「どの資料をどのフォルダに入れるか」を悩まなくてよい。研究・就活の両トラックに対応（caw-doctor 同様に `> トラック: 就活` の有無で分岐）。
+
+- **統合 inbox**：プロジェクト直下に単一の `inbox/`（両トラック共通）。研究は論文/申請書/スライド/CV/計算入出力/測定データ/外部論文、就活は ES/履歴書/企業情報など**種類を問わず投入**。旧 `documents/inbox/`・`profile/inbox/` は廃止し `inbox/` に一本化。
+- **内容判定 → 振り分け**：`caw-intake/SKILL.md`（plugin + codex）を「分類表に基づく振り分け」中心に再構築。中身（著者・書式・内容）で種類を判定し処理を分岐——
+  - 自分の論文/スライド/CV → 執筆スタイル(`manuscripts/_style/voice-self.md`)・研究プロファイル/知見/業績/引用/手法(`profile/*`)・図表/発表スタイル(`figures/_style.md`・`presentations/_style.md`)・CV(`profile/cv.md`)・用語辞書(`profile/glossary.md`)を抽出
+  - 外部論文 → `caw-paper` で登録、計算入出力 → `caw-playbook` の `_past-data/` 取り込み、企業情報 → `caw-research` の素材、に委譲（二重処理しない）
+  - ES/履歴書 → `self-analysis/*`・`documents/voice-style.md`・`documents/past-answers.md` を抽出
+  - 判定不能はユーザーに確認
+- 新トップレベル `profile/`（就活の `self-analysis/` に対応する研究者の自己プロファイル層）。`caw/SKILL.md` scaffold・`caw-doctor`・`engine-validation-map.md` を統合 inbox 前提に更新（検証マップは「統合 inbox の内容判定→振り分け」を 4 つ目のエンジンパターンに）。
+- copilot は PoC のため caw-intake スキル本体は未収載（reference の記述のみ追従）。
+
+### Note — caw-intake 統合 inbox
+
+- 版: plugin 1.20.0 → **1.21.0** / codex 1.19.0 → **1.20.0** / copilot 1.11.0 → **1.12.0** / marketplace 同期
+
 ## [1.20.0 / Codex 1.19.0 / copilot 1.11.0] - 2026-06-16
 
 ### Added — caw-intake（過去書類の取り込み・自己分析ジェネレータ）
