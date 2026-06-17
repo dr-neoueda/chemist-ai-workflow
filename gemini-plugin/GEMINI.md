@@ -40,12 +40,12 @@
 - **部署は常に全部作成**（ユーザーに「どの部署か」を尋ねない）。
   - 研究＝全 8 部署：`secretary` / `research` / `engineering` / `computation` / `analysis` / `writing` / `review` / `presentation`。
   - 就活＝全 4 部署＋秘書：`secretary` / `research` / `analysis` / `writing` / `presentation`。
-- **二層原則**：運営情報は `office/<部署>/`、**成果物はプロジェクト直下（top-level）の可視フォルダ**に置く（`office/<部署>/papers/` のようなパスは禁止）。
+- **二層原則**：運営情報は `office/<部署>/`、**成果物は `work/` ディレクトリ配下にまとめて置く**（ルート直下に散らかさない。`office/<部署>/papers/` のようなパスは禁止）。プロジェクト直下に `work/` を 1 つ作り、その配下に各成果物ディレクトリを置く。
 - **統合 inbox**：プロジェクト直下に単一の `inbox/` を作り、README に「何でもここに入れて『処理して』と言えば caw が中身を見て振り分けます」と明記。
 
-### 作業ディレクトリ（top-level・成果物）
-- 研究：`papers/`（文献要約）, `topics/`, `manuscripts/`（`_style/voice-<name>.md` 含む）, `presentations/slides/`, `analyses/`, `notebooks/`, `figures/`, `scripts/`, `tools/`, `profile/`（自分のプロファイル層）, 計算ソフト別 `gaussian/` 等（Q2 のカテゴリに応じて。各 `inbox/`・`_past-data/` 付き）。
-- 就活：`companies/`（企業研究）, `documents/`（ES 等＋`voice-style.md`・`past-answers.md`）, `self-analysis/`, `interview-prep/`, `recruit/`, `feedback/`。
+### 作業ディレクトリ（`work/` 配下・成果物）
+- 研究：`work/papers/`（文献要約）, `work/topics/`, `work/manuscripts/`（`_style/voice-<name>.md` 含む）, `work/presentations/slides/`, `work/analyses/`, `work/notebooks/`, `work/figures/`, `work/scripts/`, `work/tools/`, `work/profile/`（自分のプロファイル層）, 計算ソフト別 `work/gaussian/` 等（Q2 のカテゴリに応じて。各 `inbox/`・`_past-data/` 付き）。
+- 就活：`work/companies/`（企業研究）, `work/documents/`（ES 等＋`voice-style.md`・`past-answers.md`）, `work/self-analysis/`, `work/interview-prep/`, `work/recruit/`, `work/feedback/`。
 
 ---
 
@@ -63,30 +63,30 @@
 
 ### caw-intake（統合 inbox の自動仕分け）
 過去資料を単一の `inbox/` に入れて「処理して」と言われたら、各ファイルを**開いて中身で種類を判定**し振り分ける（拡張子だけで決めない）。
-- **研究**：自分の論文/申請書/スライド/CV → 執筆スタイル `manuscripts/_style/voice-self.md`・研究プロファイル/知見/業績/引用/手法 `profile/{research-profile,key-findings,publications,citations,methods}.md`・作図 `figures/_style.md`・発表 `presentations/_style.md`・CV `profile/cv.md`・用語辞書 `profile/glossary.md`。外部論文 → caw-paper で登録。計算入出力 → caw-playbook の `_past-data/` 取り込み。測定データ → `analyses/` 整理＋手法傾向。
-- **就活**：ES/志望動機/自己PR/履歴書 → `self-analysis/*`・`documents/voice-style.md`・`documents/past-answers.md`。企業情報 → caw-research の素材。
+- **研究**：自分の論文/申請書/スライド/CV → 執筆スタイル `work/manuscripts/_style/voice-self.md`・研究プロファイル/知見/業績/引用/手法 `work/profile/{research-profile,key-findings,publications,citations,methods}.md`・作図 `work/figures/_style.md`・発表 `work/presentations/_style.md`・CV `work/profile/cv.md`・用語辞書 `work/profile/glossary.md`。外部論文 → caw-paper で登録。計算入出力 → caw-playbook の `_past-data/` 取り込み。測定データ → `work/analyses/` 整理＋手法傾向。
+- **就活**：ES/志望動機/自己PR/履歴書 → `work/self-analysis/*`・`work/documents/voice-style.md`・`work/documents/past-answers.md`。企業情報 → caw-research の素材。
 - 既存ファイルは上書きせず追記マージ。判定不能はユーザーに確認。原ファイルは `inbox/` に残す。**設定ファイル（GEMINI.md）は書き換えない**。
 
 ### caw-research（企業・業界研究／就活）
-発動したら**必ず**「調査レベル（L1 概要 / L2 標準 / L3 詳細）」と「出力形式（md / HTML / 両方。md 推奨）」をユーザーに尋ねる（省略禁止）。汎用 8 ブロック（A 基本/沿革・B 財務/規模・C 戦略/競争優位・D 業界/競合・E リスク/ガバナンス/ESG・F 働く環境・G 採用/選考・H 接点/想定問答）で `companies/<企業>.md` に整理。公式情報は単一ソース可、年収など非公式は複数ソースで裏取り。
+発動したら**必ず**「調査レベル（L1 概要 / L2 標準 / L3 詳細）」と「出力形式（md / HTML / 両方。md 推奨）」をユーザーに尋ねる（省略禁止）。汎用 8 ブロック（A 基本/沿革・B 財務/規模・C 戦略/競争優位・D 業界/競合・E リスク/ガバナンス/ESG・F 働く環境・G 採用/選考・H 接点/想定問答）で `work/companies/<企業>.md` に整理。公式情報は単一ソース可、年収など非公式は複数ソースで裏取り。
 
 ### caw-es（ES・応募書類／就活）
-企業の設問・文字数を確認 → **必ず `companies/<企業>.md`（caw-research の出力）を読み**、`self-analysis/`（experiences/strengths/gakuchika/motivation/profile）と `documents/voice-style.md`（あれば本人の文体）、`documents/past-answers.md`（あれば過去回答を参考）を踏まえて、**文字数厳守・結論先出し・STAR** でドラフト。`documents/<企業>_<種別>.md` に保存。嘘・誇張を書かない。
+企業の設問・文字数を確認 → **必ず `work/companies/<企業>.md`（caw-research の出力）を読み**、`work/self-analysis/`（experiences/strengths/gakuchika/motivation/profile）と `work/documents/voice-style.md`（あれば本人の文体）、`work/documents/past-answers.md`（あれば過去回答を参考）を踏まえて、**文字数厳守・結論先出し・STAR** でドラフト。`work/documents/<企業>_<種別>.md` に保存。嘘・誇張を書かない。
 
 ### caw-interview（面接対策／就活）
-`companies/<企業>.md` と `self-analysis/`（強み・弱み・ガクチカ・`motivation.md`）から、定番質問（自己紹介/志望動機/ガクチカ/強み弱み/学業/キャリア/逆質問）の骨子を作り `interview-prep/` に保存。
+`work/companies/<企業>.md` と `work/self-analysis/`（強み・弱み・ガクチカ・`motivation.md`）から、定番質問（自己紹介/志望動機/ガクチカ/強み弱み/学業/キャリア/逆質問）の骨子を作り `work/interview-prep/` に保存。
 
 ### caw-events（募集・イベント・締切の一括収集／就活）
-業界横断でインターン・説明会・座談会・選考の情報と締切を集め、`recruit/<業界>.md`（＋カタログ/カレンダー/比較の HTML）に整理。公式＋ナビ横断、未取得は「要確認」と分離。
+業界横断でインターン・説明会・座談会・選考の情報と締切を集め、`work/recruit/<業界>.md`（＋カタログ/カレンダー/比較の HTML）に整理。公式＋ナビ横断、未取得は「要確認」と分離。
 
 ### caw-paper（論文の収集・登録／研究）
-テーマで論文を検索（または PDF を渡された/`inbox/` にある）→ 書誌情報を抽出し `papers/<著者-年>.md`（要約付き）に整理。ナレッジベース／クラウドストレージ（MCP 設定済みなら）にも登録。
+テーマで論文を検索（または PDF を渡された/`inbox/` にある）→ 書誌情報を抽出し `work/papers/<著者-年>.md`（要約付き）に整理。ナレッジベース／クラウドストレージ（MCP 設定済みなら）にも登録。
 
 ### caw-input（計算入力生成／研究）
 目的（最適化/TS/IRC/単点 等）と分子・計算レベル（汎関数/基底）を確認し、テンプレ準拠で入力を生成（Gaussian の gjf 等）。座標は log から抜いて explicit に書く。`computation/playbooks/<tool>.md` の傾向（既定の汎関数/基底/収束）を起点に。
 
 ### caw-slides（スライド・図／研究）
-図表優先・テキスト最小・shape 重なり禁止で発表/論文紹介スライドを生成（Python：python-pptx/matplotlib が必要）。`presentations/slides/` に保存。`presentations/_style.md`（あれば本人の作風）を踏まえる。
+図表優先・テキスト最小・shape 重なり禁止で発表/論文紹介スライドを生成（Python：python-pptx/matplotlib が必要）。`work/presentations/slides/` に保存。`work/presentations/_style.md`（あれば本人の作風）を踏まえる。
 
 ### caw-playbook（計算ノウハウの蓄積／研究）
 計算の試行錯誤で得た知見を `office/computation/playbooks/<tool>.md` の `## Lessons Learned` に `### YYYY-MM-DD - 一行サマリ` で末尾追記。計算ソフトディレクトリの `_past-data/` を「過去データを取り込んで」で解析し、その人の既定傾向を seed。
@@ -105,8 +105,8 @@
 ## 重要な注意事項
 
 - **不可視フォルダを作らない**：運営フォルダは可視名（`office/`）。先頭ドットのフォルダはユーザーが Finder/Explorer で見られず不便。
-- **成果物は top-level**、運営情報は `office/<部署>/`（二層原則）。
-- **設定ファイル（`office/GEMINI.md`・各部署）を勝手に書き換えない**。文体プロファイル等は専用ファイル（`voice-style.md`・`manuscripts/_style/voice-self.md`）へ。
+- **成果物は `work/` 配下**、運営情報は `office/<部署>/`（二層原則）。
+- **設定ファイル（`office/GEMINI.md`・各部署）を勝手に書き換えない**。文体プロファイル等は専用ファイル（`voice-style.md`・`work/manuscripts/_style/voice-self.md`）へ。
 - **個人情報・未公開データはローカルに留め**、外部サービス（MCP 連携先含む）へ送る前に確認。Gemini はクラウドのモデルで動くため、読み取った内容は処理のため送信される点に留意。
 - **情報の正確性**：公式は単一ソース可、非公式（年収等）は複数ソースで裏取り。年度差・出典を併記。
 - 計算の単位（kcal/mol↔kJ/mol↔eV↔Hartree）に注意。物理量には単位を明記。

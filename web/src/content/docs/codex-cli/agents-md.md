@@ -104,7 +104,7 @@ Codex CLI は以下の順で `AGENTS.md` を探索し、コンテキストに注
 ### 書くべきもの
 
 - **過去の失敗からの教訓**：「Gaussian の opt=(ts,...) と stable=opt は同一ジョブ禁止」
-- **暗黙の規約**：「LaTeX 原稿は `manuscripts/_style/` のスタイルファイルを参照」
+- **暗黙の規約**：「LaTeX 原稿は `work/manuscripts/_style/` のスタイルファイルを参照」
 - **ドメイン固有の用語と表記**：「汎関数名は B3LYP、定数を含む基底は def2-SVP のように正確に」
 - **エージェント間の役割分担**：「コード review は Python reviewer → Codex review の二段」
 - **失敗パターンへの対応**：「Bash の non-zero exit が出たら最大 2 回まで仮説修正、それ以上は rescue agent」

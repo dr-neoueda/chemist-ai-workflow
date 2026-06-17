@@ -78,7 +78,7 @@ node -v / git --version / python(3) --version / pdftoppm -v / codex --version
 python -c "import pptx, matplotlib, PIL, numpy; print('python deps OK')"
 ```
 
-導入済み / 今回入れた / 失敗 / 任意で見送り、を表で報告。最後に「`gaussian/_past-data/` 等に
+導入済み / 今回入れた / 失敗 / 任意で見送り、を表で報告。最後に「`work/gaussian/_past-data/` 等に
 過去データを入れて『取り込んで』と言うと Playbook を最適化できます」と次の一歩を添える。
 
 ## 重要な注意事項

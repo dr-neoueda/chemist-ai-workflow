@@ -7,13 +7,13 @@ caw は **化学者向け機能（本機能）** と **就活向け機能（サ�
 就活と化学は「部署・スキル・成果物の中身」が違うだけで、**エンジン（土台のコードパス）は共通**：
 
 1. **オンボーディング**：トラック選択 → 質問 → scaffold
-2. **部署 scaffold**：二層原則（運営情報は `office/<dept>/`、成果物は project 直下の top-level）
+2. **部署 scaffold**：二層原則（運営情報は `office/<dept>/`、成果物は project 直下の `work/` 配下）
 3. **秘書ゲートウェイ＋運営ディスパッチ**：窓口 → キーワードで部署へ振り分け
 4. **スキルの 4 パターン**：
    - 収集 → 構造化 → HTML 可視化（例: caw-paper / caw-research / caw-events）
    - 生成 → 制約チェック（例: caw-input / caw-es、文字数・書式の厳守）
    - 反復 → ログ蓄積（例: caw-playbook / caw-interview）
-   - 統合 inbox の内容判定 → 振り分け → 個人最適化 seed（例: caw-intake の `inbox/`〔内容で profile/・self-analysis/・caw-paper・caw-playbook へ振り分け〕／ caw-playbook の `_past-data/`）
+   - 統合 inbox の内容判定 → 振り分け → 個人最適化 seed（例: caw-intake の `inbox/`〔内容で work/profile/・work/self-analysis/・caw-paper・caw-playbook へ振り分け〕／ caw-playbook の `_past-data/`）
 5. **HTML 可視化エンジン**：デザイントークン・出典方針（公式は単一/非公式は複数ソース）・見出しアンカー id と canvas id 別名
 6. **memory / 学習ループ**：feedback の抽出・昇格・索引
 7. **caw-doctor 構造診断**＋**はじめてモード**（平易化）
@@ -31,24 +31,24 @@ caw は **化学者向け機能（本機能）** と **就活向け機能（サ�
 | caw-paper（論文 → 構造化 → 登録） | caw-research / caw-events（企業・イベント → 構造化 → HTML） | 収集 → 構造化 → 可視化 | 公開情報の構造化・出典方針・HTML 可視化が機能する |
 | caw-input（計算入力生成） | caw-es（ES 生成） | 生成 → 制約チェック | テンプレ準拠生成・制約（文字数/書式）厳守・推敲ループが機能する |
 | caw-playbook（ノウハウ追記） | caw-interview（面接振り返り） | 反復 → ログ蓄積 | 追記・蓄積・再利用ループが機能する |
-| caw-intake〔研究: `inbox/` を内容判定→自分資料は profile/・`manuscripts/_style/`、外部論文は caw-paper、計算は caw-playbook〕 | caw-intake〔就活: `inbox/` を内容判定→ES は self-analysis/・voice-style、企業情報は caw-research〕 | 統合 inbox の内容判定→振り分け→個人最適化 seed | 内容分類・振り分け・抽出・seed が機能する（caw-intake は**同一スキルが両トラックの統合 inbox を処理**＝就活利用が研究側を直接検証） |
+| caw-intake〔研究: `inbox/` を内容判定→自分資料は work/profile/・`work/manuscripts/_style/`、外部論文は caw-paper、計算は caw-playbook〕 | caw-intake〔就活: `inbox/` を内容判定→ES は work/self-analysis/・voice-style、企業情報は caw-research〕 | 統合 inbox の内容判定→振り分け→個人最適化 seed | 内容分類・振り分け・抽出・seed が機能する（caw-intake は**同一スキルが両トラックの統合 inbox を処理**＝就活利用が研究側を直接検証） |
 | 研究データ HTML 可視化 | 企業 / イベント HTML 可視化 | 可視化エンジン | チャート描画・id 衝突回避・出典併記が機能する |
 | memory feedback（研究知見） | memory feedback（就活運用） | 学習ループ | 学びの抽出・昇格・MEMORY.md 索引が機能する |
 | caw-doctor（研究構造診断） | caw-doctor §J（就活診断） | 構造診断エンジン | 構造健全性チェックが機能する |
 
 > 読み方：**右端が「就活テストで OK なら、左端の化学機能も同じエンジンパス上で OK」** という間接検証の主張。就活側で詰まった箇所は、化学側の同じエンジンパスでも詰まる可能性が高い（＝化学リリース前に直すべき箇所）。
 
-## 2. テストユーザー・フィードバック構造（`feedback/`）
+## 2. テストユーザー・フィードバック構造（`work/feedback/`）
 
-就活テストユーザーの project 直下に **`feedback/`** を作り、利用の手応え・詰まり・要望を記録してもらう。著者はこれを回収し、§1 の検証マップで**化学側のどのエンジンパスの signal か**に翻訳する。
+就活テストユーザーの project 直下に **`work/feedback/`** を作り、利用の手応え・詰まり・要望を記録してもらう。著者はこれを回収し、§1 の検証マップで**化学側のどのエンジンパスの signal か**に翻訳する。
 
-> **自動・匿名の補完＝`caw-report`**：`caw-report` スキルが、テストユーザー環境の**構造健全性・利用状況（件数）・エラー種別**を**個人情報・案件内容・ファイル名・本文・絶対パスを一切含めず**に `caw-report/<日付>.md` へ生成する（主観の `feedback/` に対し、客観・匿名の構造シグナル）。研究・就活の両トラックで使え、§1 のエンジンパスの稼働を件数・合否で裏取りできる。テストユーザーがそのまま開発者へ共有する。
+> **自動・匿名の補完＝`caw-report`**：`caw-report` スキルが、テストユーザー環境の**構造健全性・利用状況（件数）・エラー種別**を**個人情報・案件内容・ファイル名・本文・絶対パスを一切含めず**に `caw-report/<日付>.md` へ生成する（主観の `work/feedback/` に対し、客観・匿名の構造シグナル）。研究・就活の両トラックで使え、§1 のエンジンパスの稼働を件数・合否で裏取りできる。テストユーザーがそのまま開発者へ共有する。
 
-- 置き場所：project 直下 `feedback/`（二層原則どおり top-level。`office/` には置かない）
-- ファイル：`feedback/<YYYY-MM-DD>.md`（下の雛形）。秘書が折に触れて回収を促す
+- 置き場所：project 直下 `work/feedback/`（二層原則どおり `work/` 配下。`office/` には置かない）
+- ファイル：`work/feedback/<YYYY-MM-DD>.md`（下の雛形）。秘書が折に触れて回収を促す
 - **ローカル完結・個人情報や企業の非公開情報は書かない**（著者へ渡すのはツールの手応えであって個人データではない）
 
-### フィードバック雛形（就活 scaffold が `feedback/README.md` として配置）
+### フィードバック雛形（就活 scaffold が `work/feedback/README.md` として配置）
 
 ```markdown
 # caw 使い心地フィードバック（テストユーザー用）
@@ -75,7 +75,7 @@ caw は **化学者向け機能（本機能）** と **就活向け機能（サ�
 
 ## 3. 著者の回収・化学検証への照合（手順）
 
-1. テストユーザーから `feedback/` を受け取る（または共有してもらう）
+1. テストユーザーから `work/feedback/` を受け取る（または共有してもらう）
 2. 各項目を §1 の表でエンジンパスに翻訳（例：「セットアップで詰まった」→ オンボ＋scaffold パス → 化学オンボの同パスも要点検）
 3. エンジンパス単位で「化学側でも直すべきか」を判断し、直すなら**両トラックに効く土台**を修正する（就活だけ直して化学への波及を忘れない）
 4. 学びは memory feedback / CLAUDE.md トリガー / playbook へ昇格する

@@ -86,8 +86,8 @@ User と Project に同名ファイルがあれば、Claude Code は両方をマ
 ├── office/            ← 部署システム
 │   ├── CLAUDE.md
 │   └── <部署>/CLAUDE.md
-├── papers/              ← 文献管理パイプライン
-├── manuscripts/         ← 論文ドラフト
+├── work/papers/              ← 文献管理パイプライン
+├── work/manuscripts/         ← 論文ドラフト
 └── qc-calculations/     ← 計算ジョブ
 ```
 

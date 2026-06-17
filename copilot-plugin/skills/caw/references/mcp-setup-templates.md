@@ -76,7 +76,7 @@ claude
 
 ### caw との連携
 
-- research 部署が `papers/<author-year>.md` を生成 → Notion Paper DB に同期
+- research 部署が `work/papers/<author-year>.md` を生成 → Notion Paper DB に同期
 - 秘書部の TODO ⇄ Notion ToDo DB の双方向同期
 - データソース ID は `office/AGENTS.md` の「オーナープロフィール」付近にメモしておくと再利用しやすい
 ````
@@ -102,7 +102,7 @@ claude mcp add filesystem -- npx -y @modelcontextprotocol/server-filesystem /pat
 
 ### caw との連携
 
-- research 部署が生成した `papers/<author-year>.md` を vault にコピー（frontmatter 付き）
+- research 部署が生成した `work/papers/<author-year>.md` を vault にコピー（frontmatter 付き）
 - vault パスは `office/AGENTS.md` にメモしておく
 ````
 
@@ -125,7 +125,7 @@ claude mcp add filesystem -- npx -y @modelcontextprotocol/server-filesystem /pat
 ````markdown
 ## ナレッジベース未設定
 
-現状ナレッジベース連携は無効。`papers/` `topics/` 配下にローカル Markdown として蓄積される。
+現状ナレッジベース連携は無効。`work/papers/` `work/topics/` 配下にローカル Markdown として蓄積される。
 
 後でナレッジベースを決めたら caw で再度この手順を生成できる。
 ````
@@ -164,7 +164,7 @@ claude mcp add google-drive --env GOOGLE_CREDENTIALS_PATH=$GOOGLE_CREDENTIALS_PA
 
 ### caw との連携
 
-- research 部署が `papers/` の PDF を Drive にアップロード → 共有 URL を md の `pdf_url` に書き戻し
+- research 部署が `work/papers/` の PDF を Drive にアップロード → 共有 URL を md の `pdf_url` に書き戻し
 - analysis 部署の大きな結果ファイルを Drive に退避
 ````
 

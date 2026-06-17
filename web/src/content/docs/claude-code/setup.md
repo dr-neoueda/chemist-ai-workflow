@@ -175,8 +175,8 @@ claude
 | `office/secretary/` | 秘書部（窓口・TODO・意思決定ログ・学び） |
 | `office/<選択部署>/` | 選択した各部署の CLAUDE.md とサブフォルダ |
 | `office/computation/playbooks/` | 選択した計算ソフトの Playbook 雛形 |
-| ルート直下 `gaussian/` `orca/` 等 | 選択した計算ソフトの作業ディレクトリ（README 付き） |
-| ルート直下 `papers/` `manuscripts/` `slides/` | 選択した部署に対応するドメイン作業ディレクトリ |
+| ルート直下 `work/gaussian/` `work/orca/` 等 | 選択した計算ソフトの作業ディレクトリ（README 付き） |
+| ルート直下 `work/papers/` `work/manuscripts/` `slides/` | 選択した部署に対応するドメイン作業ディレクトリ |
 
 詳細な部署構成・スキャフォールド内容は [配布プラグイン（caw）](/plugin/) を参照。
 
@@ -276,8 +276,8 @@ mkdir -p papers manuscripts slides
 | 入力例 | 動作 |
 |---|---|
 | 「今日の TODO を整理して」 | `secretary/todos/YYYY-MM-DD.md` を表示・編集 |
-| 「Gaussian で benzene の構造最適化の雛形を作って」 | `gaussian/<system>_<purpose>_<YYYYMMDD>/` を作成し `.gjf` 雛形 + `office/computation/jobs/` にジョブ記録 |
-| 「読んだ論文を登録して」 | PDF → `papers/<author-year>.md` に書誌情報付き md を生成、`papers/` のステージング PDF と紐付け |
+| 「Gaussian で benzene の構造最適化の雛形を作って」 | `work/gaussian/<system>_<purpose>_<YYYYMMDD>/` を作成し `.gjf` 雛形 + `office/computation/jobs/` にジョブ記録 |
+| 「読んだ論文を登録して」 | PDF → `work/papers/<author-year>.md` に書誌情報付き md を生成、`work/papers/` のステージング PDF と紐付け |
 | 「ここまでの会話で決めたことを記録して」 | `secretary/notes/YYYY-MM-DD-decisions.md` に追記 |
 
 オンボーディング（caw 版）または初期セットアップ（手動版）は初回のみ。2 回目以降の起動は既存の `office/` を検出し、自動的に運営モードに入ります。

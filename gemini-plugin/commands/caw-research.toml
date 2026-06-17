@@ -1,2 +1,2 @@
 description = "企業・業界を調べてまとめる（就活）"
-prompt = "GEMINI.md の『caw-research』手順に従う。まず必ず調査レベル（L1/L2/L3）と出力形式（md/HTML/両方、md 推奨）をユーザーに尋ねてから、汎用 8 ブロックで companies/<企業>.md に整理する。非公式情報は複数ソースで裏取り。対象: {{args}}"
+prompt = "GEMINI.md の『caw-research』手順に従う。まず必ず調査レベル（L1/L2/L3）と出力形式（md/HTML/両方、md 推奨）をユーザーに尋ねてから、汎用 8 ブロックで work/companies/<企業>.md に整理する。非公式情報は複数ソースで裏取り。対象: {{args}}"

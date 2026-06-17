@@ -2,7 +2,7 @@
 name: caw-interview
 description: >
   面接対策スキル。想定問答の作成、面接官役による模擬面接（質問→回答→深掘り→改善フィードバック）、
-  逆質問の準備、面接後の振り返り記録までを一貫支援する。self-analysis/ と、caw-research が出力した companies/<企業>.md を必ず素材に使う。
+  逆質問の準備、面接後の振り返り記録までを一貫支援する。work/self-analysis/ と、caw-research が出力した work/companies/<企業>.md を必ず素材に使う。
 ---
 
 # caw-interview — 面接対策・模擬面接
@@ -29,9 +29,9 @@ description: >
 
 ### A. 想定問答を作る
 
-- **必ず `companies/<企業名>.md`（`caw-research` の出力）を読み**、`self-analysis/`（強み・弱み・ガクチカ・`motivation.md` の志望動機/就活の軸）と合わせて定番質問の回答骨子を作る：自己紹介 / 志望動機 / ガクチカ / 強み・弱み / 学業・研究 / キャリアプラン / 逆質問。**`companies/<企業名>.md` が無ければ「先に `caw-research` で <企業> を調べましょう」と促す**（志望動機・企業理解の質が大きく変わるため）
+- **必ず `work/companies/<企業名>.md`（`caw-research` の出力）を読み**、`work/self-analysis/`（強み・弱み・ガクチカ・`motivation.md` の志望動機/就活の軸）と合わせて定番質問の回答骨子を作る：自己紹介 / 志望動機 / ガクチカ / 強み・弱み / 学業・研究 / キャリアプラン / 逆質問。**`work/companies/<企業名>.md` が無ければ「先に `caw-research` で <企業> を調べましょう」と促す**（志望動機・企業理解の質が大きく変わるため）
 - 回答は**棒読み暗記でなく要点を箇条書き**で持たせる（本番で言葉が出る形）
-- `interview-prep/qa.md` に保存
+- `work/interview-prep/qa.md` に保存
 
 ### B. 模擬面接をする
 
@@ -41,12 +41,12 @@ description: >
 
 ### C. 逆質問を準備する
 
-- **必ず `companies/<企業名>.md`（`caw-research` の出力）を踏まえ**、調べれば分かること（事業内容等）を避けた逆質問を 3〜5 個用意する（例: 入社後の成長・現場の働き方・評価のされ方）。無ければ `caw-research` を先に促す
-- `interview-prep/<企業名>.md` に保存
+- **必ず `work/companies/<企業名>.md`（`caw-research` の出力）を踏まえ**、調べれば分かること（事業内容等）を避けた逆質問を 3〜5 個用意する（例: 入社後の成長・現場の働き方・評価のされ方）。無ければ `caw-research` を先に促す
+- `work/interview-prep/<企業名>.md` に保存
 
 ### D. 面接後の振り返りを記録する
 
-- `interview-prep/<企業名>.md` に「聞かれたこと・うまく言えたこと・詰まったこと・次への改善」を記録
+- `work/interview-prep/<企業名>.md` に「聞かれたこと・うまく言えたこと・詰まったこと・次への改善」を記録
 - 詰まった質問は A の想定問答に反映し、次回の準備に引き継ぐ
 
 ## 重要な注意事項
@@ -54,5 +54,5 @@ description: >
 - 棒読み暗記を勧めない。要点保持型で、本番の深掘りに耐えられる準備にする
 - 誇張・虚偽を勧めない。深掘りされて破綻する回答は作らない
 - フィードバックは具体的に（「もっと良く」でなく「結論を最初の 1 文に」等）
-- **企業固有の準備（想定問答・逆質問・志望動機）は `companies/<企業名>.md`（`caw-research` の出力）を必ず参照する**（絶対）。未作成なら `caw-research` を先に実行/提案する
-- 成果物は top-level `interview-prep/` に置く
+- **企業固有の準備（想定問答・逆質問・志望動機）は `work/companies/<企業名>.md`（`caw-research` の出力）を必ず参照する**（絶対）。未作成なら `caw-research` を先に実行/提案する
+- 成果物は `work/interview-prep/` に置く

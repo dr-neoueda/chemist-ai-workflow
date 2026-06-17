@@ -62,9 +62,9 @@ Codex は内部で 2 つの子エージェントを spawn し、それぞれが�
 
 ```
 > 以下 3 本の論文を別々の sub-agent で要約して：
->   - papers/wang-2024.pdf
->   - papers/zhao-2025.pdf
->   - papers/lin-2025.pdf
+>   - work/papers/wang-2024.pdf
+>   - work/papers/zhao-2025.pdf
+>   - work/papers/lin-2025.pdf
 > それぞれ <title / authors / key finding / 自分のテーマとの関連> を md で返す
 ```
 

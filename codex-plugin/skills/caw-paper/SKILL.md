@@ -10,9 +10,9 @@ description: >
 ## いつ使うか
 
 - 論文検索・PDF 登録・書誌整理を依頼されたとき
-- `papers/` に PDF を置いてユーザーが「論文を登録して」「PDF を取り込んで」と言ったとき
+- `work/papers/` に PDF を置いてユーザーが「論文を登録して」「PDF を取り込んで」と言ったとき
 - ユーザーが「○○ について論文を 100 件集めて」「関心テーマの論文を検索して」と言ったとき
-- 既存の `papers/` に書誌情報を追加したいとき
+- 既存の `work/papers/` に書誌情報を追加したいとき
 
 `office/research/` が存在しない場合、ユーザーに caw で research 部署を追加することを促す。
 
@@ -43,7 +43,7 @@ description: >
 
 ### 出力先
 
-`topics/<topic-slug>.md` を生成。フォーマット：
+`work/topics/<topic-slug>.md` を生成。フォーマット：
 
 ```markdown
 ---
@@ -78,22 +78,22 @@ count: <件数>
 
 ### 前提
 
-- `papers/` ディレクトリに対象 PDF が配置されている（caw scaffold で自動生成済）
+- `work/papers/` ディレクトリに対象 PDF が配置されている（caw scaffold で自動生成済）
 - `office/AGENTS.md` の「オーナープロフィール」で **ナレッジベース** と **クラウドストレージ** が指定されている
 
 ### Step 1: PDF の検出
 
 ```bash
-ls papers/*.pdf
+ls work/papers/*.pdf
 ```
 
-新規追加された PDF を検出（既に `papers/` に登録済の md と照合してスキップ）。
+新規追加された PDF を検出（既に `work/papers/` に登録済の md と照合してスキップ）。
 
 ### Step 2: メタデータ抽出
 
 各 PDF について：
 
-1. **`pdftotext` でテキスト変換**：`pdftotext "papers/<file>.pdf" /tmp/<file>.txt`
+1. **`pdftotext` でテキスト変換**：`pdftotext "work/papers/<file>.pdf" /tmp/<file>.txt`
 2. **頭 2 ページから抽出**：
    - title
    - authors（全員）
@@ -105,7 +105,7 @@ ls papers/*.pdf
 
 ### Step 3: ナレッジベース用 md 生成
 
-`papers/<author-year-keyword>.md` に書誌情報付き md を生成。命名規則：
+`work/papers/<author-year-keyword>.md` に書誌情報付き md を生成。命名規則：
 - `<first-author-lastname>-<year>-<keyword>.md`
 - 例: `tanaka-2024-mof-luminescence.md`
 
@@ -123,7 +123,7 @@ volume: ...
 pages: "..."
 doi: "10.1021/..."
 url: "https://doi.org/..."
-pdf_local: "papers/<file>.pdf"
+pdf_local: "work/papers/<file>.pdf"
 pdf_url: "TBD"
 tags:
   - tag1
@@ -190,7 +190,7 @@ status: "to-read"
 
 #### 「使わない / 未定」の場合
 
-- `papers/` 配下のローカル md のみで完結
+- `work/papers/` 配下のローカル md のみで完結
 - 将来的な KB 連携のため frontmatter は維持
 
 ### Step 5: クラウドストレージへのアップロード（オプション）
@@ -232,7 +232,7 @@ status: "to-read"
 
 バッチ処理（複数 PDF 一括登録）を依頼された場合：
 
-- `papers/` 配下の全 PDF を対象に Step 1〜6 を順次実行
+- `work/papers/` 配下の全 PDF を対象に Step 1〜6 を順次実行
 - 1 ファイルあたり 30-60 秒程度を想定（PDF サイズによる）
 - 進捗を逐次表示（"3/10 件処理中..."）
 - 失敗ファイルはスキップして続行、最後にまとめて報告

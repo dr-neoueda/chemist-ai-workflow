@@ -407,7 +407,7 @@ Matsuhashi, C. et al., Bull. Chem Soc. Jpn., 95, 413 (2022).
 | データ集計・比較表 | `matplotlib` テーブル or `pandas` |
 
 ### 図の作成手順（Python スクリプト → PPTX 埋め込み）
-1. `matplotlib` で図を生成して `figures/slide_fig_XX.png`（CWD 相対の `figures/` ディレクトリ）に保存（DPI=150〜200）
+1. `matplotlib` で図を生成して `work/figures/slide_fig_XX.png`（CWD 相対の `work/figures/` ディレクトリ）に保存（DPI=150〜200）
 2. `python-pptx` の `slide.shapes.add_picture()` でスライドに埋め込む
 3. 図のサイズは **スライド幅の 70〜90%** を目安に配置する
 
@@ -509,17 +509,17 @@ log-log マップで解決）。
 fig = ic.hub_diagram("秘書",
     [("計算", "Gaussian·CP2K", ic.icon_gear, ic.BLUE),
      ("実験データ", "命名·配置を自動", ic.icon_flask, ic.GREEN)],
-    "figures/dept.png", center_sub="あなたの窓口")
+    "work/figures/dept.png", center_sub="あなたの窓口")
 
 # ② cycle_diagram — 円環 + 隙間に弧矢印（研究サイクル・反復プロセス）
 fig = ic.cycle_diagram(
     [("実験", "測定", ic.icon_flask, ic.GREEN), ("計算", "MD", ic.icon_molecule, ic.PURPLE)],
-    "figures/loop.png", center_label="研究", center_sub="サイクル")
+    "work/figures/loop.png", center_label="研究", center_sub="サイクル")
 
 # ③ converging_diagram — 周辺要素が中心へ収束（負荷・要求が押し寄せる課題図）
 fig = ic.converging_diagram((ic.icon_researcher, ic.RED),
     [("実験", ic.icon_flask, ic.GREEN), ("計算", ic.icon_gear, ic.BLUE)],
-    "figures/overload.png", center_label="研究者（あなた）")
+    "work/figures/overload.png", center_label="研究者（あなた）")
 
 h.add_picture_fit(slide, fig, left=Inches(0.5), top=Inches(1.45),
                   max_width=Inches(7.7), max_height=Inches(4.1))

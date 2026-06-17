@@ -138,7 +138,7 @@ PDF (inbox)
 ~/lab/papers/
   ├─ inbox/        ← PDF を一旦ここに
   ├─ md/           ← 抽出した Markdown
-  └─ scripts/      ← パイプライン（PDF → md → Drive → Notion）
+  └─ work/scripts/      ← パイプライン（PDF → md → Drive → Notion）
 
 連携先：
   - Google Drive: PDF 本体、共有 URL 管理

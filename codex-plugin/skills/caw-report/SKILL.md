@@ -24,7 +24,7 @@ description: >
 
 - **個人情報**：氏名・連絡先・学籍番号・所属・ORCID 等の ID
 - **案件・プロジェクト内容**：企業名・業界名・研究テーマ・化合物名・論文タイトル・ES や志望動機の本文
-- **ファイル名**：`companies/<企業>.md` や `papers/<著者-年>.md` のような**名前そのもの**（→ 件数だけを出す）
+- **ファイル名**：`work/companies/<企業>.md` や `work/papers/<著者-年>.md` のような**名前そのもの**（→ 件数だけを出す）
 - **ファイルの中身**（一文字も引用しない）
 - **絶対パス**：`/Users/<name>/…`・`/home/<name>/…`・`C:\Users\<name>\…`（→ 出さない。標準フォルダ名のみ）
 - **研究分野・志望業界の具体名**（→ トラックは「研究 / 就活」までに留める）
@@ -90,16 +90,16 @@ description: >
 ## 4. 利用状況と完成度（件数・区分のみ・中身は非掲載）
 | 標準ディレクトリ | 存在 | ファイル数 | 空・極小 | 放置(30日+) |
 |---|---|---|---|---|
-| companies/ | ○/× | N | N | N |
-| documents/ | ○/× | N | N | N |
-| self-analysis/ | ○/× | N | N | N |
-| papers/ | ○/× | N | N | N |
-| profile/ | ○/× | N | N | N |
-| manuscripts/ | ○/× | N | N | N |
-| presentations/slides/ | ○/× | N | N | N |
+| work/companies/ | ○/× | N | N | N |
+| work/documents/ | ○/× | N | N | N |
+| work/self-analysis/ | ○/× | N | N | N |
+| work/papers/ | ○/× | N | N | N |
+| work/profile/ | ○/× | N | N | N |
+| work/manuscripts/ | ○/× | N | N | N |
+| work/presentations/slides/ | ○/× | N | N | N |
 | inbox/（未処理） | ○/× | N | - | - |
 - HTML 出力（caw-research/caw-events）: <有/無>
-- voice-style/voice-self ・ profile/* ・ past-answers: <各 有/無>
+- voice-style/voice-self ・ work/profile/* ・ past-answers: <各 有/無>
 
 ## 5. スキル利用の痕跡（成果物の有無から推定・○/×）
 - caw-research / caw-intake / caw-es / caw-interview / caw-events / caw-paper / caw-input / caw-slides / caw-playbook / caw-doctor

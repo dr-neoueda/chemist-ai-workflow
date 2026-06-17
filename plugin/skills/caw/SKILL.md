@@ -159,54 +159,54 @@ Call 2 で得た回答は `office/CLAUDE.md` の「パーソナライズメモ�
 - `computation/playbooks/` 配下に該当ソフトの Playbook 雛形を配置
 - `references/playbook-starters.md` から該当セクション（gaussian / gromacs / cp2k / orca / vasp 等）を取り出して配置
 
-#### 3-4. プロジェクトルートの作業ディレクトリ（実研究ファイル用）
+#### 3-4. `work/` 配下の作業ディレクトリ（実研究ファイル用）
 
-`office/` は AI 部署システムの管理側。実際の研究データを置く作業ディレクトリをプロジェクトルートに同時生成する。各ディレクトリには `README.md` を 1 枚配置して「何を置くか・関連する `office/` 部署」を明示する。
+`office/` は AI 部署システムの管理側。実際の研究データを置く作業ディレクトリは、プロジェクト直下に **`work/` ディレクトリを 1 つ作り、その配下にまとめて生成**する（ルート直下に多数のフォルダを散らかさない）。各ディレクトリには `README.md` を 1 枚配置して「何を置くか・関連する `office/` 部署」を明示する。
 
-**Q2（計算ソフト）で選択されたカテゴリに含まれる各ソフトについて、ルート直下にディレクトリ作成**：
+**Q2（計算ソフト）で選択されたカテゴリに含まれる各ソフトについて、`work/` 配下にディレクトリ作成**：
 
 | 計算ソフト | 作業ディレクトリ | README で示す中身 |
 |---|---|---|
-| Gaussian | `gaussian/` | `.gjf` 入力、`.log`/`.chk`/`.fchk` 出力、`run_*.sh` ジョブスクリプト |
-| GROMACS | `gromacs/` | `.gro`/`.top`/`.itp`/`.mdp`/`.ndx`/`.tpr`/`.xtc`/`.edr` |
-| CP2K | `cp2k/` | `.inp` 入力、`.out`/`.restart`/`.ener`/`.pos` 出力 |
-| ORCA | `orca/` | `.inp` 入力、`.out`/`.gbw` 出力 |
-| VASP | `vasp/` | `INCAR`/`POSCAR`/`KPOINTS`/`POTCAR`、`OUTCAR`/`CHGCAR`/`WAVECAR`/`vasprun.xml` |
-| Quantum ESPRESSO | `quantum-espresso/` | `.in` 入力、`.out` 出力、`*.UPF` 擬ポテンシャル |
-| MACE / MLIP | `mlip/` | 学習データ、`.model` チェックポイント、評価 trajectory |
+| Gaussian | `work/gaussian/` | `.gjf` 入力、`.log`/`.chk`/`.fchk` 出力、`run_*.sh` ジョブスクリプト |
+| GROMACS | `work/gromacs/` | `.gro`/`.top`/`.itp`/`.mdp`/`.ndx`/`.tpr`/`.xtc`/`.edr` |
+| CP2K | `work/cp2k/` | `.inp` 入力、`.out`/`.restart`/`.ener`/`.pos` 出力 |
+| ORCA | `work/orca/` | `.inp` 入力、`.out`/`.gbw` 出力 |
+| VASP | `work/vasp/` | `INCAR`/`POSCAR`/`KPOINTS`/`POTCAR`、`OUTCAR`/`CHGCAR`/`WAVECAR`/`vasprun.xml` |
+| Quantum ESPRESSO | `work/quantum-espresso/` | `.in` 入力、`.out` 出力、`*.UPF` 擬ポテンシャル |
+| MACE / MLIP | `work/mlip/` | 学習データ、`.model` チェックポイント、評価 trajectory |
 
 各 README には対応する Playbook へのリンク（`../office/computation/playbooks/<tool>.md`）を必ず含める。
 
-**初心者向けの投入フォルダ（各計算ソフトディレクトリ配下に必ず作る）**：パソコン操作に不慣れでも迷わないよう、各計算ソフトディレクトリ（`gaussian/` 等）に次の 2 つのサブフォルダと README を作成する：
+**初心者向けの投入フォルダ（各計算ソフトディレクトリ配下に必ず作る）**：パソコン操作に不慣れでも迷わないよう、各計算ソフトディレクトリ（`work/gaussian/` 等）に次の 2 つのサブフォルダと README を作成する：
 
-- `inbox/` — これから計算したい構造ファイルや下書き入力を一時的に置く場所。「`gaussian/inbox/` の構造で最適化入力を作って」のように指示できる
+- `inbox/` — これから計算したい構造ファイルや下書き入力を一時的に置く場所。「`work/gaussian/inbox/` の構造で最適化入力を作って」のように指示できる
 - `_past-data/` — 過去に自分が回した入力・出力（`.gjf`/`.log`/`.inp`/`.out` 等）を入れる場所。ここにデータを入れて「過去データを取り込んで」と言うと、caw が中身を解析し、その人の汎関数・基底・収束設定などの傾向を該当 Playbook の `## Lessons Learned` に初期 seed する（[caw-playbook] の「過去データ一括取り込み」と連携）。以後の入力生成がその人向けに最適化される
 
 各サブフォルダの README は「ここに何を入れる → 何が起きる」を 1〜2 行の平易な日本語で書く（専門用語を避け、具体例を 1 つ添える）。
 
-**全部署のドメイン作業ディレクトリ（成果物置き場）を必ず top-level に作成**：
+**全部署のドメイン作業ディレクトリ（成果物置き場）を必ず `work/` 配下 に作成**：
 
 | 部署 | 作業ディレクトリ | README で示す中身 |
 |---|---|---|
-| research | `papers/` | 文献要約 md（`<author-year>.md`）+ 原本 PDF |
-| research | `topics/` | 調査トピックまとめ md（`<topic>.md`） |
-| writing | `manuscripts/` | 論文ドラフト（LaTeX / Word）、図表、参考文献 |
-| presentation | `presentations/slides/` | 発表資料・論文紹介スライド（`.pptx`）。生成スクリプトは `office/presentation/scripts/`（再生成用） |
-| analysis | `analyses/` | 解析結果（1 トピック 1 サブフォルダ） |
-| analysis | `notebooks/` | Jupyter Notebook |
-| analysis | `figures/` | 解析・論文・スライド用の図表（presentation と共有） |
-| engineering | `scripts/` | 単発・一時スクリプト |
-| engineering | `tools/` | 再利用される本格的なツール |
+| research | `work/papers/` | 文献要約 md（`<author-year>.md`）+ 原本 PDF |
+| research | `work/topics/` | 調査トピックまとめ md（`<topic>.md`） |
+| writing | `work/manuscripts/` | 論文ドラフト（LaTeX / Word）、図表、参考文献 |
+| presentation | `work/presentations/slides/` | 発表資料・論文紹介スライド（`.pptx`）。生成スクリプトは `office/presentation/scripts/`（再生成用） |
+| analysis | `work/analyses/` | 解析結果（1 トピック 1 サブフォルダ） |
+| analysis | `work/notebooks/` | Jupyter Notebook |
+| analysis | `work/figures/` | 解析・論文・スライド用の図表（presentation と共有） |
+| engineering | `work/scripts/` | 単発・一時スクリプト |
+| engineering | `work/tools/` | 再利用される本格的なツール |
 
-**重要**：成果物は **必ず top-level**。`office/research/papers/` のようなパスは禁止。`office/<dept>/` 配下には部署の運営ノート（CLAUDE.md、計画メモ、内部レビュー記録など、ユーザーが日常的に ファイラーで開かないもの）のみ置く。
+**重要**：成果物は **必ず `work/` 配下**。`office/research/papers/` のようなパスは禁止。`office/<dept>/` 配下には部署の運営ノート（CLAUDE.md、計画メモ、内部レビュー記録など、ユーザーが日常的に ファイラーで開かないもの）のみ置く。
 
-review 部署は内部品質ゲート記録のみ扱うため、top-level ディレクトリは作らず `office/review/{code-reviews,validation}/` のみで運用する。
+review 部署は内部品質ゲート記録のみ扱うため、`work/` 配下 ディレクトリは作らず `office/review/{code-reviews,validation}/` のみで運用する。
 
-**research（papers/）にも投入フォルダ**：research を選択した場合、`papers/inbox/` を作成し、README に「論文 PDF をここに入れて『登録して』と言うと、`/caw-paper` が書誌情報を抽出して `papers/<著者-年>.md` に整理し、ナレッジベース／クラウドストレージにも登録する」と平易に明記する。初心者が「PDF をどこに置けばいいか」で迷わないようにするのが目的。
+**research（work/papers/）にも投入フォルダ**：research を選択した場合、`work/papers/inbox/` を作成し、README に「論文 PDF をここに入れて『登録して』と言うと、`/caw-paper` が書誌情報を抽出して `work/papers/<著者-年>.md` に整理し、ナレッジベース／クラウドストレージにも登録する」と平易に明記する。初心者が「PDF をどこに置けばいいか」で迷わないようにするのが目的。
 
-**統合 inbox（迷ったらここ）**：プロジェクト直下に `inbox/` を作成し、README に「**種類を問わず何でもここに入れて『処理して』と言えば、`caw-intake` が中身を見て判定し適切に処理します**——自分の論文/スライド/CV→プロファイル・文体を抽出（`profile/`・`manuscripts/_style/`）、外部論文→登録（`papers/`）、計算入出力→Playbook 取り込み。どこに入れるか迷ったらここで OK」と明記する。`papers/inbox/`（外部論文の直接登録）や各計算ソフトの `_past-data/` は、置き場が分かっている人向けの直接ルート。
+**統合 inbox（迷ったらここ）**：プロジェクト直下に `inbox/` を作成し、README に「**種類を問わず何でもここに入れて『処理して』と言えば、`caw-intake` が中身を見て判定し適切に処理します**——自分の論文/スライド/CV→プロファイル・文体を抽出（`work/profile/`・`work/manuscripts/_style/`）、外部論文→登録（`work/papers/`）、計算入出力→Playbook 取り込み。どこに入れるか迷ったらここで OK」と明記する。`work/papers/inbox/`（外部論文の直接登録）や各計算ソフトの `_past-data/` は、置き場が分かっている人向けの直接ルート。
 
-**Q2 で「計算ソフトは使わない / 主に実験中心」を選択していた場合**は、計算ソフト用ディレクトリは作成しない。実験記録用に `experiments/` を作るかどうか、その場で `AskUserQuestion` で 1 問追加して確認する（デフォルト Yes）。
+**Q2 で「計算ソフトは使わない / 主に実験中心」を選択していた場合**は、計算ソフト用ディレクトリは作成しない。実験記録用に `work/experiments/` を作るかどうか、その場で `AskUserQuestion` で 1 問追加して確認する（デフォルト Yes）。
 
 #### 3-5. MCP セットアップ手順の生成
 
@@ -228,7 +228,7 @@ Q3（ナレッジベース）/ Q4（クラウドストレージ）の回答に�
 1. **これは何** — caw は研究の「研究以外」を手伝う AI 部署システム。秘書に話しかけるだけ
 2. **まず何をするか** — 3 ステップ（① `claude`（または `codex`）を起動 → ② 「今日やることを教えて」等と話しかける → ③ 困ったら「ヘルプ」「〇〇って何?」と言う）
 3. **言い方の早見表**（下表。研究分野に合わせて調整）
-4. **フォルダの意味** — `papers/inbox/` に PDF を入れる、`gaussian/_past-data/` に過去データ、成果物は top-level、`office/` は基本触らなくてよい
+4. **フォルダの意味** — `work/papers/inbox/` に PDF を入れる、`work/gaussian/_past-data/` に過去データ、成果物は `work/` 配下、`office/` は基本触らなくてよい
 5. **よくある用語のミニ辞典** — ターミナル / IDE / AI エージェント / MCP / Hook を各 1 行で
 6. **困ったとき** — 「わからない言葉は『〇〇って何?』と聞けば説明します」「`/caw-doctor` で健康診断、`/caw-setup` で環境チェック」
 
@@ -237,7 +237,7 @@ Q3（ナレッジベース）/ Q4（クラウドストレージ）の回答に�
 | こう言う | こうなる |
 |---|---|
 | 今日やることを教えて | TODO を整理して表示 |
-| この論文を登録して（先に PDF を `papers/inbox/` に入れる） | 書誌を抽出して `papers/` に整理 |
+| この論文を登録して（先に PDF を `work/papers/inbox/` に入れる） | 書誌を抽出して `work/papers/` に整理 |
 | Gaussian の入力を作って | 計算入力の雛形を生成 |
 | 過去データを取り込んで | `_past-data/` を解析して Playbook を最適化 |
 | 環境を整えて | 不足ツールを検出して順番にインストール |
@@ -249,44 +249,24 @@ Q3（ナレッジベース）/ Q4（クラウドストレージ）の回答に�
 セットアップが完了しました！
 
 プロジェクトルート/
-├── office/                    ← AI 部署システム（管理側・dotfile）
+├── office/                      ← AI 部署システム（管理側・可視フォルダ。基本触らなくて OK）
 │   ├── CLAUDE.md
-│   ├── secretary/               ← 常設：TODO・意思決定・学び
-│   │   ├── CLAUDE.md
-│   │   ├── inbox/
-│   │   ├── todos/
-│   │   │   └── {{TODAY}}.md
-│   │   └── notes/
-│   └── (選択された他の部署 — 運営情報のみ)
+│   ├── secretary/               ← 窓口：TODO・意思決定・学び（CLAUDE.md / inbox/ / notes/）
+│   │   └── todos/{{TODAY}}.md
+│   └── research/ engineering/ computation/ analysis/ writing/ review/ presentation/
+│                                ← 全 8 部署を常に作成（各 CLAUDE.md＋運営情報のみ）
 │
-├── gaussian/                    ← 計算ソフトの入出力（選択時）
-│   ├── README.md
-│   ├── inbox/                   ← これから計算する構造・下書き入力を置く
-│   └── _past-data/              ← 過去の入出力を置く → Playbook に取り込み最適化
-├── gromacs/
-│   ├── README.md
-│   ├── inbox/
-│   └── _past-data/
+├── inbox/                       ← 統合 inbox：何でもここに入れて「処理して」
+│   └── README.md
 │
-├── papers/                      ← research 選択時：文献要約 md + PDF
-│   ├── README.md
-│   └── inbox/                   ← 論文 PDF を置く →「登録して」で自動整理
-├── topics/                      ← research 選択時：調査トピックまとめ
-│   └── README.md
-├── manuscripts/                 ← writing 選択時：論文ドラフト
-│   └── README.md
-├── presentations/slides/        ← presentation 選択時：発表資料（.pptx）
-│   └── README.md
-├── analyses/                    ← analysis 選択時：解析結果
-│   └── README.md
-├── notebooks/                   ← analysis 選択時：Jupyter Notebook
-│   └── README.md
-├── figures/                     ← analysis/presentation 選択時：図表
-│   └── README.md
-├── scripts/                     ← engineering 選択時：単発スクリプト
-│   └── README.md
-└── tools/                       ← engineering 選択時：再利用ツール
-    └── README.md
+├── work/                        ← 成果物・作業ファイルはすべてこの中（使う分だけ増える）
+│   ├── papers/                  ← 文献要約 md + PDF（papers/inbox/ に PDF →「登録して」）
+│   ├── topics/ manuscripts/ analyses/ notebooks/ figures/
+│   ├── presentations/slides/    ← 発表資料（.pptx）
+│   ├── scripts/ tools/
+│   └── gaussian/ gromacs/ …     ← 計算ソフト選択時（各 inbox/・_past-data/ 付き）
+│
+└── はじめにお読みください.md     ← まず最初に開いてください
 
 これからは /caw でいつでも秘書に話しかけられます。
 「今日の TODO を整理して」「論文を登録して」「計算の入力ファイル作って」など、
@@ -295,9 +275,9 @@ Q3（ナレッジベース）/ Q4（クラウドストレージ）の回答に�
 💡 ヒント:
 - 部署を追加したくなったら「<部署名> を作って」と言うだけで OK
 - computation 部署があれば、各 Playbook に新しい知見を追記していけます
-- 過去データがあれば `gaussian/_past-data/` 等に入れて「過去データを取り込んで」と言うと、
+- 過去データがあれば `work/gaussian/_past-data/` 等に入れて「過去データを取り込んで」と言うと、
   あなた用に Playbook を最適化します
-- **成果物（要約 md、スライド、グラフ等）は top-level ディレクトリ**に保存されます。
+- **成果物（要約 md、スライド、グラフ等）は `work/` 配下**に保存されます。
   ファイラーから普通に開けます。`office/` は AI の運営情報専用です
 
 🔧 環境セットアップ（任意）:
@@ -435,43 +415,43 @@ AI 部署の運営記録を集約する場所。**`office/` は先頭ドット�
 - 各部署の運営ルールファイル（`<dept>/CLAUDE.md`）
 - 中間メタデータ（PDF DOI ログ、Notion 同期状況など、ユーザーが直接読まないもの）
 
-### 第 2 層：プロジェクトルート直下 — 成果物そのもの
+### 第 2 層：`work/` 配下 — 成果物そのもの
 
 ユーザーが ファイラーで開いて中身を確認したいファイル。**AI が生成したアウトプット（文献要約 md、スライド .pptx、解析グラフ、論文ドラフト等）は必ずここに置く**。
 
 | ディレクトリ | 中身 | 関連部署 |
 |---|---|---|
-| `papers/` | 文献要約 md（`<author-year>.md`）、PDF | research |
-| `topics/` | 調査トピックまとめ md（`<topic>.md`） | research |
-| `manuscripts/` | 論文ドラフト（`.tex` / `.docx`）、`references.bib`、図 | writing |
-| `analyses/` | 解析結果（1 トピック 1 サブフォルダ） | analysis |
-| `notebooks/` | Jupyter Notebook | analysis |
-| `figures/` | 論文・スライド・解析用の図表 | analysis / presentation |
-| `presentations/slides/` | 発表資料（`.pptx`） | presentation |
-| `scripts/` | 単発・一時スクリプト | engineering |
-| `tools/` | 再利用される本格的なツール | engineering |
-| `reports/` | 報告書、調査結果まとめ | research / analysis |
-| `experiments/` | 実験記録（実験中心の研究で生成） | （実験部・将来追加） |
-| `gaussian/` `gromacs/` `cp2k/` 等 | 計算ソフトの入出力 | computation |
+| `work/papers/` | 文献要約 md（`<author-year>.md`）、PDF | research |
+| `work/topics/` | 調査トピックまとめ md（`<topic>.md`） | research |
+| `work/manuscripts/` | 論文ドラフト（`.tex` / `.docx`）、`references.bib`、図 | writing |
+| `work/analyses/` | 解析結果（1 トピック 1 サブフォルダ） | analysis |
+| `work/notebooks/` | Jupyter Notebook | analysis |
+| `work/figures/` | 論文・スライド・解析用の図表 | analysis / presentation |
+| `work/presentations/slides/` | 発表資料（`.pptx`） | presentation |
+| `work/scripts/` | 単発・一時スクリプト | engineering |
+| `work/tools/` | 再利用される本格的なツール | engineering |
+| `work/reports/` | 報告書、調査結果まとめ | research / analysis |
+| `work/experiments/` | 実験記録（実験中心の研究で生成） | （実験部・将来追加） |
+| `work/gaussian/` `work/gromacs/` `work/cp2k/` 等 | 計算ソフトの入出力 | computation |
 
 ### 禁則
 
 - ❌ 成果物（ユーザーが目視したい md / pptx / docx / png / ipynb 等）を `office/<dept>/` 配下に置かない
 - ❌ `office/<dept>/manuscripts/` や `office/<dept>/papers/` のようなパスを生成しない（旧 v1.0 / v1.1 の設計）
 - ✅ 部署の運営ノートやレビュー記録のように「ユーザーが普段読まない管理情報」は `office/<dept>/` に置く
-- ✅ 部署が新しい成果物を生成する時は、まず top-level の対応ディレクトリの存在を確認し、無ければ `<dir>/README.md` 付きで作成する
+- ✅ 部署が新しい成果物を生成する時は、まず `work/` 配下 の対応ディレクトリの存在を確認し、無ければ `<dir>/README.md` 付きで作成する
 
 ### 例：research 部署が新規論文を要約した時
 
 ```
-✅ 正：./papers/wang-2024-mace.md（top-level）
+✅ 正：./work/papers/wang-2024-mace.md（`work/` 配下）
 ❌ 誤：office/research/papers/wang-2024-mace.md（旧設計）
 ```
 
 ### 例：presentation 部署が論文紹介スライドを生成した時
 
 ```
-✅ 正：./presentations/slides/wang-2024-intro_20260514.pptx（top-level）
+✅ 正：./work/presentations/slides/wang-2024-intro_20260514.pptx（`work/` 配下）
    生成スクリプトは：office/presentation/scripts/generate_wang2024_20260514.py（運営層・再生成用）
 ❌ 誤：office/presentation/slides/wang-2024-intro_20260514.pptx
 ```

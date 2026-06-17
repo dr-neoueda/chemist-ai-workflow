@@ -185,7 +185,7 @@ office/
 │   └── todos/
 ├── research/
 │   ├── CLAUDE.md
-│   └── topics/
+│   └── work/topics/
 ├── computation/
 │   ├── CLAUDE.md
 │   ├── jobs/

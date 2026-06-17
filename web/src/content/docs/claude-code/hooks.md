@@ -49,7 +49,7 @@ Claude が安易にファイルを変更する前に「呼び出し元を grep �
       {
         "matcher": "Edit|Write",
         "hooks": [
-          { "type": "command", "command": "scripts/fact-check.sh" }
+          { "type": "command", "command": "work/scripts/fact-check.sh" }
         ]
       }
     ]
@@ -70,7 +70,7 @@ Claude が安易にファイルを変更する前に「呼び出し元を grep �
       {
         "matcher": "Edit|Write",
         "hooks": [
-          { "type": "command", "command": "scripts/pr-loop.sh '$file_path'" }
+          { "type": "command", "command": "work/scripts/pr-loop.sh '$file_path'" }
         ]
       }
     ]
@@ -86,7 +86,7 @@ Claude が安易にファイルを変更する前に「呼び出し元を grep �
 {
   "hooks": {
     "Stop": [
-      { "type": "command", "command": "scripts/save-session-summary.sh" }
+      { "type": "command", "command": "work/scripts/save-session-summary.sh" }
     ]
   }
 }

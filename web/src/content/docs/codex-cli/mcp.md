@@ -84,9 +84,9 @@ env = { GOOGLE_CREDENTIALS_PATH = "~/.config/google-drive-creds.json" }
 ### パターン 1: 論文 PDF パイプライン
 
 ```
-papers/<file>.pdf
+work/papers/<file>.pdf
      ↓ pdftotext + メタデータ抽出
-papers/<author-year>.md
+work/papers/<author-year>.md
      ↓ Notion MCP
 Notion Paper DB（タグ・要約・引用 ID 付き）
      ↓ Google Drive MCP

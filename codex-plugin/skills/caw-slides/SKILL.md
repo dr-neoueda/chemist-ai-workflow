@@ -32,7 +32,7 @@ Codex は自分で構成・L1 メッセージ・視覚デザインを決定し�
 
 ユーザーの指示から以下を確認:
 
-- **元データ**: パス or 本文（例: `experiments/<...>/REPRODUCTION.md`）
+- **元データ**: パス or 本文（例: `work/experiments/<...>/REPRODUCTION.md`）
 - **発表場面**: 研究室報告会 / 国内学会 / 国際学会 / 研究紹介 / 修論 / 論文紹介 / 講義
 - **言語**: 日本語 / 英語
 - **制約**: 枚数指定、必須図など（あれば）
@@ -49,7 +49,7 @@ Codex は自分で構成・L1 メッセージ・視覚デザインを決定し�
    - 各スライドの L1 メッセージ（1 スライド 1 個、具体的な主張）
    - 視覚要素の方針（テーブル / chart / フロー図 / 原図切り抜き）
 
-### Step 3: テンプレ + ヘルパをユーザーの scripts/ にコピー
+### Step 3: テンプレ + ヘルパをユーザーの work/scripts/ にコピー
 
 ```bash
 # Codex CLI install location は ~/.codex/plugins/cache/*/skills/caw-slides/
@@ -90,7 +90,7 @@ python office/presentation/scripts/generate_<purpose>_<YYYYMMDD>.py
 
 ```python
 from pptx import Presentation
-p = Presentation("presentations/slides/<purpose>_<YYYYMMDD>.pptx")
+p = Presentation("work/presentations/slides/<purpose>_<YYYYMMDD>.pptx")
 print(f"slide count: {len(p.slides)}")
 print(f"aspect: {p.slide_width}x{p.slide_height}")  # 16:9 確認
 ```
@@ -98,7 +98,7 @@ print(f"aspect: {p.slide_width}x{p.slide_height}")  # 16:9 確認
 `soffice` があれば PNG レンダで目視:
 
 ```bash
-soffice --headless --convert-to png --outdir figures/_preview presentations/slides/<...>.pptx
+soffice --headless --convert-to png --outdir work/figures/_preview work/presentations/slides/<...>.pptx
 ```
 
 ### Step 6: 完了報告
@@ -185,5 +185,5 @@ pip install python-pptx matplotlib Pillow
 ## 関連 Skill
 
 - `caw` — `office/` 部署スキャフォールド（presentation 部含む）
-- `caw-paper` — 論文 PDF を `papers/` に登録
+- `caw-paper` — 論文 PDF を `work/papers/` に登録
 - `caw-playbook` — 計算ソフト Playbook 蓄積
