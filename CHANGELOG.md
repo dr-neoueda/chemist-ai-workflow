@@ -2,6 +2,32 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.25.0 / Codex 1.24.0 / copilot 1.16.0 / Gemini 1.4.0] - 2026-06-17
+
+### Changed — 論文検索を caw-research（研究トラック）へ移管、caw-paper は登録専任に
+
+研究の文献ワークフローを「**caw-research で探す → caw-paper で登録**」の 2 段に整理した（discovery と library の責務分離）。
+
+- **caw-research をデュアルトラック化**：従来の就活専用（企業・業界研究）に加え、**研究トラックでは関心テーマの論文検索**（arXiv / Crossref / Semantic Scholar / OpenAlex / PubMed）→ `work/topics/<topic>.md` にリスト化する分岐を追加。`> トラック: 就活` マーカーで自動判定（caw-intake / caw-doctor と同方式）。**探索はリスト化まで**で、入手 PDF の登録は caw-paper に渡す。
+- **caw-paper を登録専任に**：旧「モード A: 論文検索」を削除し、**モード A: PDF 登録 / モード B: バッチ**の 2 モードに。description・トリガー（「論文を集めて」は caw-research へ）・「いつ使うか」を登録系に絞った。
+- **ディスパッチ更新**：`caw/SKILL.md`（3 系統）・`GEMINI.md` の研究振り分けを「文献検索→caw-research / 論文 PDF 登録→caw-paper」に分割。
+- **engine-validation-map 更新**：caw-research が両トラックの「収集」を担う形に（就活利用が研究の探索パスを直接検証する関係が強化）。
+- gemini commands（caw-research / caw-paper の description・prompt）、plugin README・web `plugin.md`（Skills 7→8、caw-research 追記）、配布セミナー HTML のスキル表も更新。
+
+### Added — caw-paper に抽出レベル（L1/L2/L3、毎回必ず選択・推奨なし）
+
+caw-paper の AI 使用量（トークン）は「PDF 本文を context に入れて要約・タグを生成する」Step 2 が主因のため、**発動時に必ず抽出レベルを `AskUserQuestion` で尋ねる**（省略禁止・自動既定なし、`feedback_skill_default_wording_skips_askuser` に準拠）。**どれを推奨とはせず、レベルで AI 使用量が変わる（L1 < L2 < L3）ことを明示**して選ばせる。
+
+- **L1**：書誌情報＋要旨 4 行＋結論の要点（数値・手法・背景なし）。最小消費。
+- **L2**：L1 ＋ One-line summary・背景概要・対象/手法概要・主要な結果（代表テーブル＋数値）。中間。
+- **L3**：背景・動機／対象物質・系／手法詳細／主要な結果（全数値）／考察／本研究の限界／関連研究との比較／引用文脈テンプレート／キーワードの**フル抽出＝paper-register スキルと同等の網羅度**。最大消費。
+- レベルは **Step 2 の抽出**と **Step 3 の md 充実度**の両方を決める（ノブは 1 つ。Step 3 に独立レベルは設けない）。**バッチ（モード B）は最初に 1 回だけ尋ね**全 PDF に同じレベルを適用。
+- 反映：`caw-paper/SKILL.md`（plugin + codex）・`GEMINI.md` の caw-paper 節・`commands/caw-paper.toml`。
+
+### Note
+
+- 版: plugin 1.24.0 → **1.25.0** / codex 1.23.0 → **1.24.0** / copilot 1.15.0 → **1.16.0** / gemini 1.3.0 → **1.4.0** / marketplace 同期
+
 ## [1.24.0 / Codex 1.23.0 / copilot 1.15.0 / Gemini 1.3.0] - 2026-06-17
 
 ### Changed — 成果物・作業フォルダを `work/` 配下に集約（ルート直下の散らかりを解消）＋ 完了メッセージを実態化

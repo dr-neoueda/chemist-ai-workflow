@@ -10,7 +10,7 @@ caw は **化学者向け機能（本機能）** と **就活向け機能（サ�
 2. **部署 scaffold**：二層原則（運営情報は `office/<dept>/`、成果物は project 直下の `work/` 配下）
 3. **秘書ゲートウェイ＋運営ディスパッチ**：窓口 → キーワードで部署へ振り分け
 4. **スキルの 4 パターン**：
-   - 収集 → 構造化 → HTML 可視化（例: caw-paper / caw-research / caw-events）
+   - 収集 → 構造化 → HTML 可視化（例: caw-research / caw-paper / caw-events）
    - 生成 → 制約チェック（例: caw-input / caw-es、文字数・書式の厳守）
    - 反復 → ログ蓄積（例: caw-playbook / caw-interview）
    - 統合 inbox の内容判定 → 振り分け → 個人最適化 seed（例: caw-intake の `inbox/`〔内容で work/profile/・work/self-analysis/・caw-paper・caw-playbook へ振り分け〕／ caw-playbook の `_past-data/`）
@@ -28,7 +28,7 @@ caw は **化学者向け機能（本機能）** と **就活向け機能（サ�
 |---|---|---|---|
 | 研究オンボ → 8 部署 scaffold | 就活オンボ → 就活部署 scaffold | オンボ＋scaffold | トラック分岐・scaffold・二層原則・START HERE 生成が機能する |
 | 秘書（研究 TODO/notes） | 秘書（選考スケジュール） | 秘書ゲートウェイ・dispatch | 窓口・キーワード振り分け・notes 追記が機能する |
-| caw-paper（論文 → 構造化 → 登録） | caw-research / caw-events（企業・イベント → 構造化 → HTML） | 収集 → 構造化 → 可視化 | 公開情報の構造化・出典方針・HTML 可視化が機能する |
+| caw-research（論文検索→`work/topics/`）→ caw-paper（PDF→`work/papers/` 登録） | caw-research（企業研究→`work/companies/`）/ caw-events（イベント収集） | 収集 → 構造化 →（登録 / 可視化） | 収集・構造化・出典方針が機能する。**caw-research は同一スキルが両トラックの「収集」を担う**＝就活利用が研究の探索パスを直接検証 |
 | caw-input（計算入力生成） | caw-es（ES 生成） | 生成 → 制約チェック | テンプレ準拠生成・制約（文字数/書式）厳守・推敲ループが機能する |
 | caw-playbook（ノウハウ追記） | caw-interview（面接振り返り） | 反復 → ログ蓄積 | 追記・蓄積・再利用ループが機能する |
 | caw-intake〔研究: `inbox/` を内容判定→自分資料は work/profile/・`work/manuscripts/_style/`、外部論文は caw-paper、計算は caw-playbook〕 | caw-intake〔就活: `inbox/` を内容判定→ES は work/self-analysis/・voice-style、企業情報は caw-research〕 | 統合 inbox の内容判定→振り分け→個人最適化 seed | 内容分類・振り分け・抽出・seed が機能する（caw-intake は**同一スキルが両トラックの統合 inbox を処理**＝就活利用が研究側を直接検証） |
