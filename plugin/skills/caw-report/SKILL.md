@@ -71,7 +71,7 @@ trigger: /caw-report
 - caw バージョン: <version / 不明>
 - CLI: <Codex CLI / Claude Code / Gemini CLI / GitHub Copilot CLI> <version / 不明>
 - OS: <macOS / Windows / Linux>
-- トラック: <研究 / 就活> ／ 運用モード: <はじめて / 通常 / 詳しく / 不明>
+- トラック: <研究 / 就活> ／ 運用モード: <はじめて（就活は常時）/ 標準（研究）/ 不明>
 - 外部ツール: Node.js <有/無> ／ Python <有/無> ／ poppler <有/無>
 - MCP 連携: 設定ファイル <有/無>・接続サーバ数 <N>
 - 利用期間: 約 <N> 日（最古ファイル〜本日）／ 最終アクティビティ: <YYYY-MM-DD>
