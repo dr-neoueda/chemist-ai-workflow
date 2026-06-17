@@ -2,6 +2,19 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.22.1 / Codex 1.21.1 / Gemini 1.1.1] - 2026-06-17
+
+### Changed — caw-report に提出先 Google フォーム URL を組み込み
+
+caw-report の Step 5 を「**提出先フォームの URL をチャットに表示**」に更新。テストユーザーが `caw-report` を実行すると、生成完了後にチャットへ提出フォームの URL を表示し、「レポートの中身を貼り付けて提出してください（匿名なのでそのまま提出可）」と案内する。caw が自動送信することはなく、提出はユーザーの操作で行う。
+
+- `caw-report/SKILL.md`（plugin + codex）・`gemini-plugin`（GEMINI.md ＋ `commands/caw-report.toml`）に提出フォーム URL を追記。
+- 配布 HTML（セミナー資料・repo 外）の「報」セクションにも提出フォームのボタンリンクを追加。
+
+### Note
+
+- 版: plugin 1.22.0 → **1.22.1** / codex 1.21.0 → **1.21.1** / gemini 1.1.0 → **1.1.1** / copilot 1.13.0 据え置き / marketplace 同期
+
 ## [1.22.0 / Codex 1.21.0 / copilot 1.13.0 / Gemini 1.1.0] - 2026-06-17
 
 ### Added — caw-report（開発者向け匿名動作レポート）
