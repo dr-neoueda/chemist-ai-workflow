@@ -1,0 +1,2 @@
+description = "量子化学・MD などの計算入力を生成する（研究）"
+prompt = "GEMINI.md の『caw-input』手順に従う。目的（最適化/TS/IRC/単点 等）・分子・計算レベル（汎関数/基底）を確認し、テンプレ準拠で入力を生成。座標は log から抜いて explicit に書く。playbook の既定傾向を起点に。対象: {{args}}"

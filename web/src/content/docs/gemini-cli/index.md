@@ -1,5 +1,5 @@
 ---
-title: "Gemini CLI（補助・OSS）"
+title: "Gemini CLI（OSS・caw 対応）"
 description: OSS / Apache 2.0 のターミナル native エージェント。個人 Google アカウント連携で手厚い無料枠
 ---
 
@@ -26,6 +26,18 @@ description: OSS / Apache 2.0 のターミナル native エージェント。個
 
 → 本書では **ターミナル native の Gemini CLI** を主に扱う。
 
+## caw の導入（Gemini CLI 版）
+
+caw は Gemini CLI の **extension** として提供している（`gemini-plugin/`、version 1.0.0）。
+
+```bash
+gemini extensions install https://github.com/dr-neoueda/chemist-ai-workflow
+```
+
+導入後、プロジェクトフォルダで `gemini` を起動し、`/caw` または「環境を作って」と話しかけるとオンボーディングが始まる。Gemini CLI には hooks（bash）が無いため、**Windows でも Git Bash は不要**。
+
+Gemini CLI は「説明文で skill を自動発火」する仕組みを持たないため、caw 本体（秘書・両トラックのオンボーディング・ディスパッチ・統合 inbox の自動仕分け・各スキル手順）を**単一の `GEMINI.md`（常時ロード）に集約**し、`commands/*.toml`（`/caw-*`）も併設している。プロジェクト設定は `office/GEMINI.md`。メソッド・成果物の二層原則・統合 inbox は Claude Code / Codex CLI 版と共通。
+
 ## ステータス
 
-**Phase 2（2026-06）執筆予定**。最新仕様は Phase 2 開始時に再 verify する。
+**caw 対応済み（Gemini extension 1.0.0）**。最新仕様は提供元（Gemini CLI）の更新時に再 verify する。

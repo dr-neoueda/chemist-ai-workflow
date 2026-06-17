@@ -1,0 +1,2 @@
+description = "必要な外部ツール（Node.js/Python/poppler 等）を点検し導入を案内する"
+prompt = "GEMINI.md の『caw-setup』手順に従う。不足ツールを検出し、OS 別のインストール手順を平易に案内する。{{args}}"

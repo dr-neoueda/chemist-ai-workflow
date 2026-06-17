@@ -1,0 +1,2 @@
+description = "計算ノウハウを Playbook に蓄積／過去データを取り込む（研究）"
+prompt = "GEMINI.md の『caw-playbook』手順に従う。計算で得た知見を office/computation/playbooks/<tool>.md の Lessons Learned に末尾追記。計算ソフトの _past-data/ があれば解析して既定傾向を seed。{{args}}"

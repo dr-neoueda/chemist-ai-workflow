@@ -1,0 +1,2 @@
+description = "フォルダ構造を点検し、修復を提案する（研究・就活共通）"
+prompt = "GEMINI.md の『caw-doctor』手順に従う。office/GEMINI.md のトラックを判定し、ルート設定・秘書部・各部署・成果物ディレクトリ・統合 inbox/・START HERE の有無と二層原則を点検し、不足や違反の修復を提案。{{args}}"

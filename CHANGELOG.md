@@ -2,6 +2,22 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [Gemini 1.0.0 追加 / plugin 1.21.0 / Codex 1.20.0 / copilot 1.12.0] - 2026-06-17
+
+### Added — Gemini CLI 版 caw（`gemini-plugin/`、4 つ目の配布ターゲット）
+
+caw を **Gemini CLI の extension** として配布開始。これで caw は **Claude Code / Codex CLI / GitHub Copilot CLI（PoC）/ Gemini CLI** の 4 CLI に対応。
+
+- `gemini-plugin/`：`gemini-extension.json`（manifest, version 1.0.0）＋ `GEMINI.md`（常時ロードの caw 本体）＋ `commands/*.toml`（`/caw` ほか 12 個の明示コマンド）＋ `README.md`。
+- Gemini CLI は「説明文で skill を自動発火」する仕組みを持たないため、caw 本体（秘書・両トラックのオンボーディング・ディスパッチ・統合 inbox 自動仕分け・各スキル手順）を**単一の `GEMINI.md`（常時ロード）に集約**。プロジェクト設定は `office/GEMINI.md`。メソッド・二層原則・統合 inbox は 4 CLI 共通。
+- 導入：`gemini extensions install https://github.com/dr-neoueda/chemist-ai-workflow`。Gemini CLI には hooks（bash）が無いため Windows でも Git Bash 不要。
+- `scripts/check-consistency.sh`：版表示・個人化リーク走査・隠しフォルダ走査に `gemini-plugin/` を追加。
+- web `gemini-cli/index.md` を「Phase 2 執筆予定」→「対応（導入・できること）」に更新。
+
+### Note — Gemini 追加
+
+- 版: **gemini-plugin 1.0.0（新規）** / plugin 1.21.0・codex 1.20.0・copilot 1.12.0 は据え置き（無変更）。
+
 ## [1.21.0 / Codex 1.20.0 / copilot 1.12.0] - 2026-06-17
 
 ### Added — caw-intake を「統合 inbox の自動仕分け」＋デュアルトラック化

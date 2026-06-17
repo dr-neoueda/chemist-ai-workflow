@@ -23,7 +23,7 @@ caw のコア（オンボーディング、部署スキャフォールド、Play
 | Python<br />機能 | Python 3.12 以上 | スライド・図・解析・PDF 処理の基盤 | 十分活用に必須 |
 | Python<br />機能 | python-pptx / matplotlib / pillow / numpy | caw-slides の図・スライド生成 | 同上 |
 | PDF 処理 | poppler（pdftoppm / pdftotext / pdfinfo） | 論文 PDF の図抽出・メタデータ抽出 | PDF を扱うなら必須 |
-| Windows のみ | Git Bash または WSL2 | Hooks（bash スクリプト）の実行 | Windows で必須 |
+| Windows のみ | Git Bash または WSL2 | **Claude Code 版**の Hooks（bash スクリプト）の実行 | Claude Code を Windows で使う場合のみ（Codex CLI / Copilot CLI 版は Hooks 無しで不要） |
 | 任意 | GitHub CLI（gh） | engineering / review 部署の PR ワークフロー | 任意 |
 | 任意 | LibreOffice | 生成した pptx を画像化して目視確認 | 任意 |
 | 任意 | RDKit / ASE / pymatgen / MDAnalysis / cclib | 研究内容に応じた解析・前処理 | 任意 |
@@ -111,7 +111,7 @@ py -m pip install python-pptx matplotlib pillow numpy
 scoop install poppler
 ```
 
-- **bash（Hooks 用）**：caw の Hooks は bash スクリプトです。`Git.Git` に同梱される **Git Bash** で動きます。WSL2 を使う場合は PowerShell で `wsl --install` を実行してください。
+- **bash（Hooks 用・Claude Code 版のみ）**：caw の Hooks（bash スクリプト）は **Claude Code 版にのみ**含まれます。Claude Code を Windows で使う場合は `Git.Git` 同梱の **Git Bash**（または PowerShell で `wsl --install` を実行して WSL2）で動きます。**Codex CLI / GitHub Copilot CLI 版には Hooks が無いため、Git Bash / WSL は不要**で、標準の PowerShell で動作します。
 - **Python の PATH**：インストーラ利用時は「Add python.exe to PATH」を必ず有効にします。`py` ランチャー経由でも実行できます。
 - **日本語フォント**：MS Gothic / Yu Gothic が標準搭載で matplotlib が自動検出します。図に □（豆腐）が出る場合は、フォント名を明示するか日本語フォントパッケージを追加してください。
 
