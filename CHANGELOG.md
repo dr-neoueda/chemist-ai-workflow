@@ -2,6 +2,21 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.22.0 / Codex 1.21.0 / copilot 1.13.0 / Gemini 1.1.0] - 2026-06-17
+
+### Added — caw-report（開発者向け匿名動作レポート）
+
+テストユーザーの caw 環境を点検し、**開発者がレビューするための匿名レポート**を生成する新スキル。テストユーザーが利用 → 生成された `caw-report/<日付>.md` を開発者へ共有 → caw 改善に活かす、という流れ。抽出シグナル（すべて匿名）：**①環境/互換性**（version・CLI・OS・ツール有無・MCP 有無/サーバ数・利用期間/最終活動）**②オンボーディング完遂度**（scaffold 完走・不足数・モード）**③構造の健全性と逸脱**（合否・二層原則違反の種別別件数・規約外フォルダ数・不可視フォルダ検知・設定ファイル肥大）**④利用状況と完成度**（各 dir のファイル数・空/極小数・放置数・HTML/voice/profile/past-answers の有無）**⑤エラー**（スキル別×種別の件数・inbox 未処理・hook 失敗）**⑥運用エンゲージメント**（notes/todos/decisions 件数）**⑦間接検証シグナル**。
+
+- **完全匿名（PII リスクゼロ）**：個人情報・企業名・研究テーマ・ファイル名・本文・絶対パス・研究分野/志望業界の具体名を**一切含めない**。出せるのは標準フォルダ名・件数・合否・エラー種別・version/CLI/トラック/モードのみ。生成後にスキルが**自己点検**して PII が無いことを確認してから保存。caw が自動で外部送信することはしない（共有はユーザーの手で）。
+- `caw-report/SKILL.md`（plugin + codex）、`gemini-plugin`（GEMINI.md にスキル節 ＋ `commands/caw-report.toml`）。copilot は PoC のため未収載。
+- `engine-validation-map.md`（3 系統 byte 一致）：主観の `feedback/` に対する**客観・匿名の構造シグナル**として caw-report を §2 に追記（§1 のエンジンパス稼働を件数・合否で裏取り）。
+- caw-doctor が「ユーザー自身の修復」用なのに対し、caw-report は「開発者へ匿名フィードバック」用。
+
+### Note — caw-report
+
+- 版: plugin 1.21.0 → **1.22.0** / codex 1.20.0 → **1.21.0** / copilot 1.12.0 → **1.13.0** / gemini 1.0.0 → **1.1.0** / marketplace 同期
+
 ## [Gemini 1.0.0 追加 / plugin 1.21.0 / Codex 1.20.0 / copilot 1.12.0] - 2026-06-17
 
 ### Added — Gemini CLI 版 caw（`gemini-plugin/`、4 つ目の配布ターゲット）
