@@ -37,14 +37,14 @@ claude
 
 `office/` が存在しない場合、オンボーディングウィザードが起動：
 
-1. **研究プロファイル**（4 問）：研究分野、計算ソフト、ナレッジベース、クラウドストレージ
-2. **部署選択**：立ち上げる部署を 7 つから複数選択（秘書部は常設）
+1. **研究プロファイル**（全 8 問）：研究分野、計算ソフト、ナレッジベース、クラウドストレージ、計算環境、研究体制、申請書予定、論文ステータス
+2. **全 8 部署を自動作成**（部署の選択は不要）
 
-選択内容に応じて、`office/` 部署と作業ディレクトリ（`gaussian/`、`papers/` 等）が一括生成される。2 回目以降の `/caw` は運営モードで起動し、秘書を窓口にした対話型の研究支援に入る。
+回答に応じて、`office/` 部署と作業ディレクトリ（`gaussian/`、`papers/` 等）が一括生成される。2 回目以降の `/caw` は運営モードで起動し、秘書を窓口にした対話型の研究支援に入る。
 
 ## 生成される構造の例
 
-研究分野：物理化学、計算ソフト：ORCA + LAMMPS、KB：Obsidian、ストレージ：Google Drive、部署：秘書 + research + computation を選択した場合：
+研究分野：物理化学、計算ソフト：ORCA + LAMMPS、KB：Obsidian、ストレージ：Google Drive の場合（全 8 部署を作成。下記は research / computation 周辺の抜粋）：
 
 ```
 your-research-project/
@@ -66,7 +66,7 @@ your-research-project/
 
 ### Skills
 
-- **`/caw`**：オンボーディング（はじめて / 通常 / 詳しく の 3 段階。部署はモード共通で全作成）→ 自動スキャフォールド → 運営モードの一連
+- **`/caw`**：オンボーディング（研究プロファイルを全ユーザーにヒアリング。部署は全 8 作成）→ 自動スキャフォールド → 運営モードの一連
 - **`/caw-paper`**：論文検索（arXiv / Crossref / Semantic Scholar / OpenAlex / PubMed）+ 入手済み PDF のメタデータ抽出 → ナレッジベース（Notion / Obsidian 他）+ クラウドストレージ（Google Drive 他）への自動登録
 - **`/caw-input`**：6 ソフト（Gaussian / ORCA / CP2K / GROMACS / VASP / Quantum ESPRESSO）の入力ファイル雛形生成、Playbook デフォルト起点 + ジョブ記録自動生成
 - **`/caw-playbook`**：計算 log の自動解析 → Lessons Learned エントリ起案 → Playbook 末尾追記、memory feedback 昇格判定。`_past-data/` に置いた過去データの一括取り込み（その人向けに Playbook を初期最適化）にも対応

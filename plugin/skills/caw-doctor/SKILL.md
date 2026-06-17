@@ -94,7 +94,7 @@ trigger: /caw-doctor
 - [ ] research を選択している場合、`papers/inbox/` が存在する
 - [ ] 統合 `inbox/`（caw-intake の投入口：何でも入れて『処理して』）が存在する
 - [ ] 各計算ソフトディレクトリ（`gaussian/` `gromacs/` `cp2k/` 等）に `inbox/` と `_past-data/` が存在する
-- [ ] START HERE 文書 `はじめにお読みください.md` が project root に存在する（はじめてモードで特に重要）
+- [ ] START HERE 文書 `はじめにお読みください.md` が project root に存在する（初心者の入口として重要）
 
 存在しなければ「`/caw` で再生成するか、手動で作成」を提案する。
 
@@ -119,7 +119,7 @@ trigger: /caw-doctor
 
 #### J-3. 投入フォルダと START HERE
 - [ ] 統合 `inbox/`（過去資料の投入口：何でも入れて『処理して』）が存在する
-- [ ] START HERE 文書 `はじめにお読みください.md` が project root に存在する（はじめてモードで特に重要）
+- [ ] START HERE 文書 `はじめにお読みください.md` が project root に存在する（初心者の入口として重要）
 
 ### 7. 同日ファイル重複
 

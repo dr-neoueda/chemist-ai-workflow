@@ -43,7 +43,7 @@ copilot plugin install caw
 
 本 PoC では **2 スキル**を Copilot 形式に翻訳して同梱する：
 
-- **`caw`** — オンボーディング（経験レベル判定 → 研究プロファイル）→ 部署 `office/` 一括 scaffold → 運営モード。scaffold 用テンプレ（`references/`）同梱
+- **`caw`** — オンボーディング（研究プロファイルを全ユーザーにヒアリング）→ 部署 `office/` 一括 scaffold → 運営モード。scaffold 用テンプレ（`references/`）同梱
 - **`caw-setup`** — 前提ツール（Python・poppler・python-pptx 等）の検出と順次インストール
 
 未収載（フルポート時に追加予定）: `caw-slides` / `caw-paper` / `caw-input` / `caw-playbook` / `caw-doctor`、`hooks.json`、`.mcp.json`。
