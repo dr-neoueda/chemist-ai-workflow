@@ -66,7 +66,7 @@ EOF
 - 着手前に `office/presentation/notes/<YYYY-MM-DD>-plan.md` に計画
   （構成・各スライドのタイトル・L1 メッセージ・視覚要素の方針）を必ず書き残してから実装に入る
 - 生成スクリプト: `office/presentation/scripts/generate_<目的>_<YYYYMMDD>.py`
-- .pptx: `presentations/slides/<目的>_<YYYYMMDD>.pptx`
+- .pptx: `work/presentations/slides/<目的>_<YYYYMMDD>.pptx`
 - `pptx_helpers.py` を import して再利用（重複実装しない）
 - 各スライドビルダー末尾で `assert_no_overlap(rects)` を呼ぶ
 - L1 強調は 1 スライド 1 個ルールを厳守
@@ -88,7 +88,7 @@ EOF
 構成・L1 メッセージ・視覚デザインは Codex の裁量で決めてください。
 
 着手前に計画を `office/presentation/notes/<YYYY-MM-DD>-plan.md` に記録してから実装してください。
-出力は `presentations/slides/<目的>_<YYYYMMDD>.pptx`、
+出力は `work/presentations/slides/<目的>_<YYYYMMDD>.pptx`、
 スクリプトは `office/presentation/scripts/generate_<目的>_<YYYYMMDD>.py` に保存してください。
 完了時に枚数の根拠と L1 メッセージ一覧を返してください。
 ```

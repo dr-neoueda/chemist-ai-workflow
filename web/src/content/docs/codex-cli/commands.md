@@ -143,7 +143,7 @@ description: 現在の研究プロジェクト状況を一画面に集約表示
 1. `secretary/todos/<today>.md` の未完了を表示
 2. `secretary/notes/<today>-decisions.md` の昨日からの差分
 3. `computation/jobs/` の最新 5 件
-4. `papers/` の新規 PDF 数
+4. `work/papers/` の新規 PDF 数
 5. KB（Notion / Obsidian）の最近編集（API 経由）
 
 セッション開始時に手早く状況を把握したい時に。

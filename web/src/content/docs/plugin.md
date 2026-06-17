@@ -77,7 +77,7 @@ claude
 > /caw
 ```
 
-`office/` が存在しない場合、対話的オンボーディングが起動し、研究プロファイル（4 問）と立ち上げる部署を選択。選択内容に応じて、`office/` 部署と作業ディレクトリ（`gaussian/`、`papers/` 等）が一括生成されます。
+`office/` が存在しない場合、対話的オンボーディングが起動し、研究プロファイル（4 問）と立ち上げる部署を選択。選択内容に応じて、`office/` 部署と作業ディレクトリ（`work/gaussian/`、`work/papers/` 等）が一括生成されます。
 
 2 回目以降の `/caw` は運営モードで起動し、秘書を窓口にした対話型の研究支援に入ります。
 
@@ -101,7 +101,7 @@ Codex 版はリリース日を Claude Code 版と揃えつつ、別トラック�
 | **Hooks** | SessionStart（`office/secretary/notes` 直近 + Playbook 注入）／ PostToolUse（成果物の `office/` 誤配置を二層原則違反として警告）／ Stop（学びの記録漏れリマインド） |
 | **部署テンプレート** | secretary / research / engineering / computation / analysis / writing / review / presentation の 8 部署テンプレ |
 | **Playbook 雛形** | Gaussian / GROMACS / CP2K / ORCA / VASP / Quantum ESPRESSO + 汎用 |
-| **作業ディレクトリ** | 選択した計算ソフトに応じて `gaussian/` / `orca/` 等、選択した部署に応じて `papers/` / `manuscripts/` / `presentations/slides/` を自動生成 |
+| **作業ディレクトリ** | 選択した計算ソフトに応じて `work/gaussian/` / `work/orca/` 等、選択した部署に応じて `work/papers/` / `work/manuscripts/` / `work/presentations/slides/` を自動生成 |
 
 ## 今後の機能拡張
 

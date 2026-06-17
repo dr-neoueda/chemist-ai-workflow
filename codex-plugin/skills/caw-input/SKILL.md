@@ -131,7 +131,7 @@ Playbook の「デフォルト推奨パラメータ」を基準に提示。ユ�
 mkdir -p <tool>/<system>_<purpose>_<YYYYMMDD>
 ```
 
-例: `gaussian/benzene_opt_20260513/` / `orca/benzene_opt_20260513/` / `cp2k/water-box_aimd_20260513/`
+例: `work/gaussian/benzene_opt_20260513/` / `work/orca/benzene_opt_20260513/` / `work/cp2k/water-box_aimd_20260513/`
 
 このサブディレクトリに **入力ファイル + 実行スクリプト** を配置：
 

@@ -26,26 +26,25 @@ codex
 1. **研究プロファイル**（4 問）：研究分野、計算ソフト、ナレッジベース、クラウドストレージ
 2. **部署選択**：立ち上げる部署を 7 つから複数選択（秘書部は常設）
 
-選択内容に応じて、`office/` 部署（AGENTS.md 構成）と作業ディレクトリ（`gaussian/`、`papers/` 等）が一括生成される。
+選択内容に応じて、`office/` 部署（AGENTS.md 構成）と作業ディレクトリ（`work/gaussian/`、`work/papers/` 等）が一括生成される。
 
 ## 生成される構造の例
 
-研究分野：物理化学、計算ソフト：ORCA + LAMMPS、KB：Obsidian、ストレージ：Google Drive、部署：秘書 + research + computation を選択した場合：
+研究分野：物理化学、計算ソフト：ORCA + GROMACS、KB：Obsidian、ストレージ：Google Drive の場合（全 8 部署を作成。下記は抜粋）：
 
 ```
 your-research-project/
-├── office/
+├── office/                       ← 運営側（全 8 部署。各 AGENTS.md＋運営情報のみ）
 │   ├── AGENTS.md
 │   ├── secretary/{AGENTS.md, inbox/, todos/, notes/}
-│   ├── research/{AGENTS.md, papers/, topics/}
-│   └── computation/
-│       ├── AGENTS.md
-│       ├── jobs/
-│       ├── parameters/
-│       └── playbooks/{orca.md, lammps.md}
-├── orca/README.md          ← 入出力ファイル置き場
-├── lammps/README.md
-└── papers/README.md        ← PDF ステージング
+│   └── computation/{AGENTS.md, jobs/, parameters/, playbooks/{orca.md, gromacs.md}}
+├── inbox/                        ← 統合 inbox（何でも入れて「処理して」）
+├── work/                         ← 成果物・作業ファイルはすべてこの中
+│   ├── orca/    {README.md, inbox/, _past-data/}   ← 入出力ファイル置き場
+│   ├── gromacs/ {README.md, inbox/, _past-data/}
+│   ├── papers/  {README.md, inbox/}                ← 文献要約 + PDF ステージング
+│   └── analyses/ figures/ manuscripts/ presentations/slides/ …
+└── はじめにお読みください.md
 ```
 
 ## 含まれる内容

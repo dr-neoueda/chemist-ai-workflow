@@ -40,26 +40,25 @@ claude
 1. **研究プロファイル**（全 8 問）：研究分野、計算ソフト、ナレッジベース、クラウドストレージ、計算環境、研究体制、申請書予定、論文ステータス
 2. **全 8 部署を自動作成**（部署の選択は不要）
 
-回答に応じて、`office/` 部署と作業ディレクトリ（`gaussian/`、`papers/` 等）が一括生成される。2 回目以降の `/caw` は運営モードで起動し、秘書を窓口にした対話型の研究支援に入る。
+回答に応じて、`office/` 部署と作業ディレクトリ（`work/gaussian/`、`work/papers/` 等）が一括生成される。2 回目以降の `/caw` は運営モードで起動し、秘書を窓口にした対話型の研究支援に入る。
 
 ## 生成される構造の例
 
-研究分野：物理化学、計算ソフト：ORCA + LAMMPS、KB：Obsidian、ストレージ：Google Drive の場合（全 8 部署を作成。下記は research / computation 周辺の抜粋）：
+研究分野：物理化学、計算ソフト：ORCA + GROMACS、KB：Obsidian、ストレージ：Google Drive の場合（全 8 部署を作成。下記は抜粋）：
 
 ```
 your-research-project/
-├── office/
+├── office/                       ← 運営側（全 8 部署。各 CLAUDE.md＋運営情報のみ）
 │   ├── CLAUDE.md
 │   ├── secretary/{CLAUDE.md, inbox/, todos/, notes/}
-│   ├── research/{CLAUDE.md, papers/, topics/}
-│   └── computation/
-│       ├── CLAUDE.md
-│       ├── jobs/
-│       ├── parameters/
-│       └── playbooks/{orca.md, lammps.md}
-├── orca/README.md          ← 入出力ファイル置き場
-├── lammps/README.md
-└── papers/README.md        ← PDF ステージング
+│   └── computation/{CLAUDE.md, jobs/, parameters/, playbooks/{orca.md, gromacs.md}}
+├── inbox/                        ← 統合 inbox（何でも入れて「処理して」）
+├── work/                         ← 成果物・作業ファイルはすべてこの中
+│   ├── orca/    {README.md, inbox/, _past-data/}   ← 入出力ファイル置き場
+│   ├── gromacs/ {README.md, inbox/, _past-data/}
+│   ├── papers/  {README.md, inbox/}                ← 文献要約 + PDF ステージング
+│   └── analyses/ figures/ manuscripts/ presentations/slides/ …
+└── はじめにお読みください.md
 ```
 
 ## 含まれる内容（v1.5.2）
@@ -72,7 +71,7 @@ your-research-project/
 - **`/caw-playbook`**：計算 log の自動解析 → Lessons Learned エントリ起案 → Playbook 末尾追記、memory feedback 昇格判定。`_past-data/` に置いた過去データの一括取り込み（その人向けに Playbook を初期最適化）にも対応
 - **`/caw-doctor`**：`office/` 構造の健全性チェック（部署 CLAUDE.md の存在、旧構造の検出、Playbook 更新滞り等）と修復コマンド提示
 - **`/caw-setup`**：caw を十分に使うための外部ツール（Python・poppler・python-pptx 等）の不足を検出し、計画提示 → 一度の承認 → 順番にインストール（macOS / Windows、冪等）。CLI/Node 自体の導入は `setup/caw-setup.sh`・`setup/caw-setup.ps1` を案内
-- **`/caw-slides`**：研究発表用 PowerPoint スライドを生成（学会発表 / 論文紹介 / 報告会 / 講義の 4 用途バリアント）。`pptx_helpers.py`（1000+ 行のヘルパ）+ スタイルガイド（16:9・フォント階層・図表優先・shape 重なり禁止の品質ゲート）同梱。出力は `presentations/slides/`
+- **`/caw-slides`**：研究発表用 PowerPoint スライドを生成（学会発表 / 論文紹介 / 報告会 / 講義の 4 用途バリアント）。`pptx_helpers.py`（1000+ 行のヘルパ）+ スタイルガイド（16:9・フォント階層・図表優先・shape 重なり禁止の品質ゲート）同梱。出力は `work/presentations/slides/`
 
 ### Hooks
 
@@ -83,7 +82,7 @@ your-research-project/
 ### 部署テンプレート
 
 - 8 部署 CLAUDE.md：secretary / research / engineering / computation / analysis / writing / review / presentation
-- 成果物は project root 直下（`papers/` `slides/` 等）、運営情報は `office/<dept>/` という二層構造
+- 成果物は project root 直下（`work/papers/` `slides/` 等）、運営情報は `office/<dept>/` という二層構造
 
 ### Playbook 雛形
 
@@ -96,16 +95,16 @@ your-research-project/
 
 ### 作業ディレクトリ
 
-- 選択した計算ソフトに応じて `gaussian/` / `orca/` / `cp2k/` / `gromacs/` / `vasp/` / `quantum-espresso/`
-- 化学者モードの全部署に対応して `papers/` / `topics/` / `manuscripts/` / `presentations/slides/` / `analyses/` / `notebooks/` / `figures/` / `scripts/` / `tools/`
+- 選択した計算ソフトに応じて `work/gaussian/` / `work/orca/` / `work/cp2k/` / `work/gromacs/` / `work/vasp/` / `work/quantum-espresso/`
+- 化学者モードの全部署に対応して `work/papers/` / `work/topics/` / `work/manuscripts/` / `work/presentations/slides/` / `work/analyses/` / `work/notebooks/` / `work/figures/` / `work/scripts/` / `work/tools/`
 
 ## 運営モードでできること
 
 | 入力例 | 動作 |
 |---|---|
 | 「今日の TODO を整理して」 | `secretary/todos/YYYY-MM-DD.md` を表示・編集 |
-| 「ORCA で benzene の構造最適化の雛形を作って」 | `orca/<system>_<purpose>_<YYYYMMDD>/` を作成し `.inp` 雛形 + `office/computation/jobs/` にジョブ記録 |
-| 「読んだ論文を登録して」 | PDF → `papers/<author-year>.md`（top-level、ファイラーで見える）に書誌情報付き md を生成 |
+| 「ORCA で benzene の構造最適化の雛形を作って」 | `work/orca/<system>_<purpose>_<YYYYMMDD>/` を作成し `.inp` 雛形 + `office/computation/jobs/` にジョブ記録 |
+| 「読んだ論文を登録して」 | PDF → `work/papers/<author-year>.md`（`work/` 配下、ファイラーで見える）に書誌情報付き md を生成 |
 | 「ここまでの会話で決めたことを記録して」 | `secretary/notes/YYYY-MM-DD-decisions.md` に追記 |
 
 ## プラグイン構造

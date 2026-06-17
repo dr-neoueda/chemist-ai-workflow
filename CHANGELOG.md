@@ -2,6 +2,25 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.24.0 / Codex 1.23.0 / copilot 1.15.0 / Gemini 1.3.0] - 2026-06-17
+
+### Changed — 成果物・作業フォルダを `work/` 配下に集約（ルート直下の散らかりを解消）＋ 完了メッセージを実態化
+
+ユーザーフィードバック「ルート直下に生成されるフォルダが多すぎて面くらう」を受け、両モードで **成果物・作業ディレクトリをすべて単一の `work/` ディレクトリ配下に集約**。プロジェクトルート直下は **`office/`（運営）・`work/`（成果物）・`inbox/`（統合投入口）・`はじめにお読みください.md`** の 4 つに整理。
+
+- **研究**：`work/{papers,topics,manuscripts,analyses,notebooks,figures,presentations/slides,scripts,tools}` ＋ 計算ソフト選択時の `work/{gaussian,gromacs,…}`（各 `inbox/`・`_past-data/` 付き）。
+- **就活**：`work/{companies,documents,self-analysis,interview-prep,recruit,feedback}`。
+- `inbox/`（統合 inbox）は投入口として**ルート直下に維持**。`caw-report/`（開発者向け匿名レポート）も可視性のためルート直下のまま。
+- 全スキル（caw-paper/input/playbook/slides/research/es/interview/events/intake/doctor 等）の出力パス、`chemistry-departments` / `job-hunting-departments` / 各テンプレ、`output-location-check` フックの推奨パス、caw-doctor のチェック対象、README・web ドキュメントの例ツリーを `work/` 配下に統一（4 配布ツリー＋web で約 920 箇所）。`office/<部署>/` への成果物配置禁止ルールは不変。
+
+### Fixed — 研究モード完了メッセージの陳腐化を是正
+
+部署選択廃止（v1.19.0）以降ズレていた完了メッセージのツリー表記を実態化：`office/` を「dotfile」→「可視フォルダ」、「(選択された他の部署)」→「全 8 部署を常に作成」、各成果物の「○○選択時」注記を撤去し `work/` 配下のネスト表示に。
+
+### Note
+
+- 版: plugin 1.23.0 → **1.24.0** / codex 1.22.0 → **1.23.0** / copilot 1.14.0 → **1.15.0** / gemini 1.2.0 → **1.3.0** / marketplace 同期
+
 ## [1.23.0 / Codex 1.22.0 / copilot 1.14.0 / Gemini 1.2.0] - 2026-06-17
 
 ### Changed — 研究オンボーディングのモード（はじめて / 通常 / 詳しく）を廃止し、全ユーザーに全 8 問を質問

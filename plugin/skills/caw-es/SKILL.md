@@ -2,7 +2,7 @@
 name: caw-es
 description: >
   ES（エントリーシート）・履歴書・職務経歴書・志望動機・自己PR を、企業の設問と文字数制約に合わせて生成・推敲するスキル。
-  self-analysis/ の素材と、caw-research が出力した companies/<企業>.md を必ず参照し、documents/voice-style.md（文体プロファイル）があれば本人の文体で、文字数厳守・結論先出し・STAR 構造のドラフトを作る。
+  work/self-analysis/ の素材と、caw-research が出力した work/companies/<企業>.md を必ず参照し、work/documents/voice-style.md（文体プロファイル）があれば本人の文体で、文字数厳守・結論先出し・STAR 構造のドラフトを作る。
 trigger: /caw-es
 ---
 
@@ -35,10 +35,10 @@ trigger: /caw-es
 
 ### Step 2: 素材を集める
 
-- **企業固有の書類（志望動機・ES・自己PR 等）は、必ず最初に `companies/<企業名>.md`（`caw-research` の出力）を読む。** これが志望動機・「自分との接点」の一次ソース。研究内容（A 事業・C 強み・D 競合・G 求める人物像・H 接点）を志望動機・接点に必ず反映する。**`companies/<企業名>.md` が無ければ「先に `caw-research` で <企業> を調べましょう」と促し**、ユーザーが望めば `caw-research` を実行してから ES を書く（例: 企業 A の ES は `companies/A.md` を踏まえて自動で書く）
-- `self-analysis/` 一式を読む：`experiences.md`（経験 STAR）・`strengths.md`（強み・弱み・価値観）・`gakuchika.md`（ガクチカ候補）・`motivation.md`（志望動機・就活の軸＝志望動機設問の核）・`profile.md`（学歴・専攻/研究・資格・語学・スキル）
-- **`documents/voice-style.md`（文体プロファイル）があれば必ず読み、その文体（トーン・言い回し・一文の長さ・構成の癖）で書く。** 無ければ統合 `inbox/` の過去の ES を直接読み、本人の語彙・文体・トーンを踏襲する
-- `documents/past-answers.md`（過去の設問×回答バンク）があれば、似た設問の過去回答を参考に・流用する（ただし応募先に合わせて作り直し、使い回しの痕跡＝他社名等を残さない）
+- **企業固有の書類（志望動機・ES・自己PR 等）は、必ず最初に `work/companies/<企業名>.md`（`caw-research` の出力）を読む。** これが志望動機・「自分との接点」の一次ソース。研究内容（A 事業・C 強み・D 競合・G 求める人物像・H 接点）を志望動機・接点に必ず反映する。**`work/companies/<企業名>.md` が無ければ「先に `caw-research` で <企業> を調べましょう」と促し**、ユーザーが望めば `caw-research` を実行してから ES を書く（例: 企業 A の ES は `work/companies/A.md` を踏まえて自動で書く）
+- `work/self-analysis/` 一式を読む：`experiences.md`（経験 STAR）・`strengths.md`（強み・弱み・価値観）・`gakuchika.md`（ガクチカ候補）・`motivation.md`（志望動機・就活の軸＝志望動機設問の核）・`profile.md`（学歴・専攻/研究・資格・語学・スキル）
+- **`work/documents/voice-style.md`（文体プロファイル）があれば必ず読み、その文体（トーン・言い回し・一文の長さ・構成の癖）で書く。** 無ければ統合 `inbox/` の過去の ES を直接読み、本人の語彙・文体・トーンを踏襲する
+- `work/documents/past-answers.md`（過去の設問×回答バンク）があれば、似た設問の過去回答を参考に・流用する（ただし応募先に合わせて作り直し、使い回しの痕跡＝他社名等を残さない）
 - 素材が足りなければ、自己分析部（`/caw` で自己分析）を案内するか、最低限その場でヒアリングする
 
 ### Step 3: 設問タイプを判定して型を選ぶ
@@ -59,23 +59,23 @@ trigger: /caw-es
 
 ### Step 5: 保存とチェック
 
-- `documents/<企業名>_<種別>.md`（例: `documents/acme_es_gakuchika.md`）に保存
+- `work/documents/<企業名>_<種別>.md`（例: `work/documents/acme_es_gakuchika.md`）に保存
 - チェック: ① 文字数オーバーが無いか ② 設問に答えているか ③ コピペ流用の言い回し（他社名の残り等）が無いか ④ 事実に反する誇張が無いか
 
 ### Step 6: 推敲ループ
 
 ユーザーの修正指示（「もっと具体的に」「結論を強く」「100 字削って」等）を受けて再生成。毎回文字数を再カウントして提示する。
 
-## 文体プロファイル（`documents/voice-style.md`）
+## 文体プロファイル（`work/documents/voice-style.md`）
 
-本人の過去の文章から「書き方の癖」を抜き出し、以後の生成で**本人の文体**を再現する仕組み。**部署や `office/` の設定ファイル（`AGENTS.md` / `CLAUDE.md`）は書き換えず、専用ファイル `documents/voice-style.md` に書き出す**（設定と文体プロファイルを分離する）。
+本人の過去の文章から「書き方の癖」を抜き出し、以後の生成で**本人の文体**を再現する仕組み。**部署や `office/` の設定ファイル（`AGENTS.md` / `CLAUDE.md`）は書き換えず、専用ファイル `work/documents/voice-style.md` に書き出す**（設定と文体プロファイルを分離する）。
 
 ### 作成・更新（「文体を学習して」「私の文体を覚えて」と言われたとき）
 
-> 文体だけでなく**経験・強み・ガクチカ・基本プロフィールまでまとめて抽出**するなら `caw-intake` を使う（`self-analysis/` も整備される）。ここでは文体プロファイルのみを作る軽量版を説明する。
+> 文体だけでなく**経験・強み・ガクチカ・基本プロフィールまでまとめて抽出**するなら `caw-intake` を使う（`work/self-analysis/` も整備される）。ここでは文体プロファイルのみを作る軽量版を説明する。
 
 1. 統合 `inbox/` の過去の文章（ES・志望動機・自己PR 等）を読む。無ければ「過去に書いた ES などを `inbox/` に入れてください」と促す。
-2. 次の観点で文体を分析し、`documents/voice-style.md` に書き出す（既存があれば更新）：
+2. 次の観点で文体を分析し、`work/documents/voice-style.md` に書き出す（既存があれば更新）：
    - 文末・トーン（です・ます／だ・である、硬さ・距離感）
    - 一文の長さ（短文中心／長文中心）
    - 語彙・言い回しの傾向（よく使う語・接続詞）
@@ -86,15 +86,15 @@ trigger: /caw-es
 
 ### 参照（ES 生成時・Step 2）
 
-`documents/voice-style.md` があれば**必ず読み、その文体で**ドラフトを書く。生成後に文体の合致も確認し、ずれていればユーザーに尋ねて `documents/voice-style.md` に反映する。
+`work/documents/voice-style.md` があれば**必ず読み、その文体で**ドラフトを書く。生成後に文体の合致も確認し、ずれていればユーザーに尋ねて `work/documents/voice-style.md` に反映する。
 
 ## 重要な注意事項
 
 - **文字数は絶対**。超過は必ず指摘し、収まるまで削る。テキストの字数の話なので誤魔化さない
-- **嘘・誇張を書かない**。`self-analysis/` の事実と本人の経験の範囲で書く。面接で深掘りされて答えられない内容は入れない
+- **嘘・誇張を書かない**。`work/self-analysis/` の事実と本人の経験の範囲で書く。面接で深掘りされて答えられない内容は入れない
 - **設問の意図に答える**。聞かれていないことを長々書かない
 - **企業ごとにカスタマイズ**。志望動機はその企業の特徴に紐づける。汎用的な使い回しは避ける
-- **企業固有の書類は `companies/<企業名>.md`（`caw-research` の出力）を必ず参照する**（絶対）。未作成なら `caw-research` を先に実行/提案してから書く。研究内容を踏まえて志望動機・接点を具体化する
-- 個人情報（氏名・連絡先・学籍番号等）はローカル（`documents/`）に留め、外部サービスへ送る前に必ず確認
-- **文体プロファイルは `documents/voice-style.md` に書き出す**。部署や `office/` の `AGENTS.md`（`CLAUDE.md`）は**書き換えない**（設定と文体を分離する）
-- 成果物は top-level `documents/` に置く（`office/` 配下に書かない）
+- **企業固有の書類は `work/companies/<企業名>.md`（`caw-research` の出力）を必ず参照する**（絶対）。未作成なら `caw-research` を先に実行/提案してから書く。研究内容を踏まえて志望動機・接点を具体化する
+- 個人情報（氏名・連絡先・学籍番号等）はローカル（`work/documents/`）に留め、外部サービスへ送る前に必ず確認
+- **文体プロファイルは `work/documents/voice-style.md` に書き出す**。部署や `office/` の `AGENTS.md`（`CLAUDE.md`）は**書き換えない**（設定と文体を分離する）
+- 成果物は `work/documents/` に置く（`office/` 配下に書かない）

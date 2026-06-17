@@ -29,7 +29,7 @@ trigger: /caw-playbook
 
 ユーザー指定がない場合、`AskUserQuestion` で対象 log を確認：
 
-- ファイルパス指定（例: `gaussian/benzene_ts_20260513/benzene_ts.log`）
+- ファイルパス指定（例: `work/gaussian/benzene_ts_20260513/benzene_ts.log`）
 - 最新ジョブから自動検出（mtime 上位）
 - 失敗ジョブを優先（"Error termination" 等を含むもの）
 
@@ -103,7 +103,7 @@ trigger: /caw-playbook
 ```
 log 解析完了：
 
-ファイル: gaussian/<molecule>_ts_20260508/<molecule>_ts.log
+ファイル: work/gaussian/<molecule>_ts_20260508/<molecule>_ts.log
 ソフト: Gaussian
 終了状態: walltime exceeded（76 step 経過、未収束）
 
@@ -173,7 +173,7 @@ log 解析完了：
 
 ### 手順
 
-1. 対象ディレクトリ（例 `gaussian/_past-data/`）を走査し、入力・出力ファイルを列挙する
+1. 対象ディレクトリ（例 `work/gaussian/_past-data/`）を走査し、入力・出力ファイルを列挙する
    （`.gjf`/`.com`/`.log`/`.inp`/`.out`/`.mdp` 等。サブフォルダも再帰）
 2. 各入力から**繰り返し使われている設定**を集計する：
    - Gaussian: 汎関数・基底関数・`opt`/`freq`/`scrf` 等のルート、`%mem`/`%nproc`

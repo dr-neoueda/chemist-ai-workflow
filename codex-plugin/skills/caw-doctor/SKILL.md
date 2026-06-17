@@ -3,7 +3,7 @@ name: caw-doctor
 description: >
   `office/` 構造の健全性チェックと修復提案（研究・就活の両トラックに対応）。ルート設定・秘書部・各部署の存在確認、
   旧構造（成果物が `office/<dept>/X/` に入っている）の検出、研究なら Playbook 更新滞り・計算ソフト投入フォルダ、
-  就活なら就活部署と成果物フォルダ（companies/ documents/ 等）を総点検し、修復コマンドを提示する。
+  就活なら就活部署と成果物フォルダ（work/companies/ work/documents/ 等）を総点検し、修復コマンドを提示する。
 ---
 
 # caw-doctor — `office/` 構造健全性チェック
@@ -64,7 +64,7 @@ description: >
 - `office/engineering/scripts/`
 - `office/engineering/tools/`
 
-これらに該当するファイルがあれば、project root 直下の対応ディレクトリ（`papers/`, `topics/`, `manuscripts/`, `analyses/`, `figures/`, `notebooks/`, `presentations/slides/`, `scripts/`, `tools/`, `profile/`）への移動を提案。
+これらに該当するファイルがあれば、project root 直下の対応ディレクトリ（`work/papers/`, `work/topics/`, `work/manuscripts/`, `work/analyses/`, `work/figures/`, `work/notebooks/`, `work/presentations/slides/`, `work/scripts/`, `work/tools/`, `work/profile/`）への移動を提案。
 
 ### 5. Playbook の更新状況
 
@@ -72,17 +72,17 @@ description: >
 - [ ] 更新が 60 日以上滞っているソフトを警告
 - [ ] 各 Playbook に `## Lessons Learned` セクションがあり、最低 1 件のエントリがあるか
 
-### 6. top-level 成果物ディレクトリの確認
+### 6. `work/` 配下 成果物ディレクトリの確認
 
-部署選択に応じて、対応する top-level ディレクトリが存在するか：
+部署選択に応じて、対応する `work/` 配下 ディレクトリが存在するか：
 
-| 部署 | 期待される top-level dir |
+| 部署 | 期待される `work/` 配下 dir |
 |---|---|
-| research | `papers/`, `topics/` |
-| writing | `manuscripts/` |
-| analysis | `analyses/`, `notebooks/`, `figures/` |
-| presentation | `presentations/slides/` |
-| engineering | `scripts/`, `tools/` |
+| research | `work/papers/`, `work/topics/` |
+| writing | `work/manuscripts/` |
+| analysis | `work/analyses/`, `work/notebooks/`, `work/figures/` |
+| presentation | `work/presentations/slides/` |
+| engineering | `work/scripts/`, `work/tools/` |
 
 存在しなければ `README.md` 付きで作成を提案。
 
@@ -90,9 +90,9 @@ description: >
 
 オンボーディングで作られる「投入フォルダ」が消えていないか確認（消えていると初心者が PDF・過去データの置き場で迷う）：
 
-- [ ] research を選択している場合、`papers/inbox/` が存在する
+- [ ] research を選択している場合、`work/papers/inbox/` が存在する
 - [ ] 統合 `inbox/`（caw-intake の投入口：何でも入れて『処理して』）が存在する
-- [ ] 各計算ソフトディレクトリ（`gaussian/` `gromacs/` `cp2k/` 等）に `inbox/` と `_past-data/` が存在する
+- [ ] 各計算ソフトディレクトリ（`work/gaussian/` `work/gromacs/` `work/cp2k/` 等）に `inbox/` と `_past-data/` が存在する
 - [ ] START HERE 文書 `はじめにお読みください.md` が project root に存在する（初心者の入口として重要）
 
 存在しなければ「`caw` で再生成するか、手動で作成」を提案する。
@@ -106,13 +106,13 @@ description: >
 - [ ] `office/<dept>/` に部署設定ファイル（`CLAUDE.md` または `AGENTS.md`）が存在
 - [ ] `office/<dept>/` 配下が運営情報のみ（ES・企業研究まとめ等の成果物が混ざっていない）
 
-#### J-2. 就活の成果物ディレクトリ（top-level）
-| 部署（化学と共通フォルダ） | 期待される top-level dir |
+#### J-2. 就活の成果物ディレクトリ（`work/` 配下）
+| 部署（化学と共通フォルダ） | 期待される `work/` 配下 dir |
 |---|---|
-| `research` | `companies/` `recruit/` |
-| `writing` | `documents/` |
-| `analysis` | `self-analysis/` |
-| `presentation` | `interview-prep/` |
+| `research` | `work/companies/` `work/recruit/` |
+| `writing` | `work/documents/` |
+| `analysis` | `work/self-analysis/` |
+| `presentation` | `work/interview-prep/` |
 
 存在しなければ `README.md` 付きで作成を提案。
 
@@ -161,15 +161,15 @@ done
 ```bash
 # 旧パスにファイルが入っているか
 for old in \
-    "office/research/papers:papers/" \
-    "office/research/topics:topics/" \
-    "office/writing/manuscripts:manuscripts/" \
-    "office/analysis/results:analyses/" \
-    "office/analysis/figures:figures/" \
-    "office/analysis/notebooks:notebooks/" \
-    "office/presentation/slides:presentations/slides/" \
-    "office/engineering/scripts:scripts/" \
-    "office/engineering/tools:tools/"
+    "office/research/papers:work/papers/" \
+    "office/research/topics:work/topics/" \
+    "office/writing/manuscripts:work/manuscripts/" \
+    "office/analysis/results:work/analyses/" \
+    "office/analysis/figures:work/figures/" \
+    "office/analysis/notebooks:work/notebooks/" \
+    "office/presentation/slides:work/presentations/slides/" \
+    "office/engineering/scripts:work/scripts/" \
+    "office/engineering/tools:work/tools/"
 do
     old_dir="${old%%:*}"
     new_dir="${old##*:}"
@@ -207,9 +207,9 @@ if [ -d "$playbooks_dir" ]; then
 fi
 ```
 
-### Step 5: top-level 成果物ディレクトリの確認
+### Step 5: `work/` 配下 成果物ディレクトリの確認
 
-`office/AGENTS.md` の「部署一覧」テーブルの全部署について、対応する top-level dir の存在をチェック。
+`office/AGENTS.md` の「部署一覧」テーブルの全部署について、対応する `work/` 配下 dir の存在をチェック。
 
 ### Step 6: レポート生成
 
@@ -247,10 +247,10 @@ fi
 （検出された旧構造のみ表示）
 
 \`\`\`bash
-mv office/research/papers/* papers/ 2>/dev/null
-mv office/research/topics/* topics/ 2>/dev/null
-mv office/writing/manuscripts/* manuscripts/ 2>/dev/null
-mv office/analysis/results/* analyses/ 2>/dev/null
+mv office/research/papers/* work/papers/ 2>/dev/null
+mv office/research/topics/* work/topics/ 2>/dev/null
+mv office/writing/manuscripts/* work/manuscripts/ 2>/dev/null
+mv office/analysis/results/* work/analyses/ 2>/dev/null
 \`\`\`
 
 ## 次のアクション

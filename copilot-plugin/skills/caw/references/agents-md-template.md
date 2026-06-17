@@ -55,22 +55,22 @@ office/
 
 **第 2 層：プロジェクトルート直下 — 成果物そのもの**
 
-ユーザーが ファイラーで開いて中身を確認するファイルは **必ず top-level** に置く：
+ユーザーが ファイラーで開いて中身を確認するファイルは **必ず `work/` 配下** に置く：
 
 | ディレクトリ | 中身 |
 |---|---|
-| `papers/` | 文献要約 md、原本 PDF |
-| `topics/` | 調査トピックまとめ |
-| `manuscripts/` | 論文ドラフト（.tex / .docx） |
+| `work/papers/` | 文献要約 md、原本 PDF |
+| `work/topics/` | 調査トピックまとめ |
+| `work/manuscripts/` | 論文ドラフト（.tex / .docx） |
 | `slides/` | 発表資料（.pptx）と生成スクリプト |
-| `analyses/` | 解析結果 |
-| `notebooks/` | Jupyter Notebook |
-| `figures/` | 解析・論文・スライド用の図表 |
-| `scripts/` | 単発スクリプト |
-| `tools/` | 再利用ツール |
-| `reports/` | 報告書 |
-| `gaussian/` `gromacs/` `cp2k/` 等 | 計算ソフトの入出力 |
-| `experiments/` | 実験記録 |
+| `work/analyses/` | 解析結果 |
+| `work/notebooks/` | Jupyter Notebook |
+| `work/figures/` | 解析・論文・スライド用の図表 |
+| `work/scripts/` | 単発スクリプト |
+| `work/tools/` | 再利用ツール |
+| `work/reports/` | 報告書 |
+| `work/gaussian/` `work/gromacs/` `work/cp2k/` 等 | 計算ソフトの入出力 |
+| `work/experiments/` | 実験記録 |
 
 ❌ AI 生成成果物（要約 md、スライド、グラフ等）を `office/<dept>/` に置かない
 ✅ 部署運営ノートのみ `office/<dept>/` に置く
@@ -80,7 +80,7 @@ office/
 - ユーザーとの対話は常に秘書が担当する
 - 秘書は丁寧だが親しみやすい口調で話す
 - 壁打ち、相談、雑談、何でも受け付ける
-- 部署の作業が必要な場合、秘書が直接該当部署のフォルダ（運営情報）または top-level の成果物ディレクトリに書き込む
+- 部署の作業が必要な場合、秘書が直接該当部署のフォルダ（運営情報）または `work/` 配下 の成果物ディレクトリに書き込む
 
 ### 自動記録
 

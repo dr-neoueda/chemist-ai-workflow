@@ -129,7 +129,7 @@ codex
 ### ⚠️ 注意
 
 - `office/` には **TODO・意思決定ログ・学び・Playbook** など蓄積した運営情報が入っています。削除すると失われます。残したい場合は事前にバックアップ（`cp -r office office.bak` など）を取ってください
-- **成果物**（`papers/` `slides/` `manuscripts/` など project root 直下のディレクトリ）は `office/` の外にあるため、`rm -rf office/` では削除されません。これは [成果物配置の二層原則](/plugin/) による設計です
+- **成果物**（`work/papers/` `slides/` `work/manuscripts/` など project root 直下のディレクトリ）は `office/` の外にあるため、`rm -rf office/` では削除されません。これは [成果物配置の二層原則](/plugin/) による設計です
 - バックアップを取らずに作り直すのは、テスト用の使い捨てプロジェクトなど「中身が消えてよい」場合に限ってください
 
 ---

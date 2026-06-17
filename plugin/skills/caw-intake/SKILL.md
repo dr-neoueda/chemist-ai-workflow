@@ -2,7 +2,7 @@
 name: caw-intake
 description: >
   プロジェクト直下の単一の inbox/ に入れた「あらゆる過去資料」を、内容ごとに種類を自動判定して適切に処理・振り分けるスキル（研究・就活の両トラック対応）。
-  自分の論文/申請書/スライド/CV → プロファイル・文体を抽出（profile/・manuscripts/_style/・self-analysis/ 等）。外部論文 → caw-paper で登録。計算入出力 → caw-playbook へ。ES/履歴書 → 自己分析・文体を抽出。
+  自分の論文/申請書/スライド/CV → プロファイル・文体を抽出（work/profile/・work/manuscripts/_style/・work/self-analysis/ 等）。外部論文 → caw-paper で登録。計算入出力 → caw-playbook へ。ES/履歴書 → 自己分析・文体を抽出。
   ユーザーは「どのフォルダに何を入れるか」を悩まなくてよい。
 trigger: /caw-intake
 ---
@@ -44,21 +44,21 @@ trigger: /caw-intake
 
 | 種類 | 判定の手がかり | 処理（行き先） |
 |---|---|---|
-| 外部の論文（他者の文献） | 著者が本人でない・DOI・書誌情報 | **caw-paper で登録** → `papers/<著者-年>.md`（書誌付き要約） |
-| 自分の論文・申請書・要旨 | 著者に本人・自分の研究内容 | §研究抽出 → `manuscripts/_style/voice-self.md`・`profile/{research-profile,key-findings,publications}.md` |
-| 自分のスライド・ポスター | `.pptx`・発表資料 | §研究抽出 → `presentations/_style.md`（＋研究プロファイル） |
-| CV・業績リスト | 経歴・publication list・受賞/グラント | §研究抽出 → `profile/cv.md`・`profile/publications.md` |
+| 外部の論文（他者の文献） | 著者が本人でない・DOI・書誌情報 | **caw-paper で登録** → `work/papers/<著者-年>.md`（書誌付き要約） |
+| 自分の論文・申請書・要旨 | 著者に本人・自分の研究内容 | §研究抽出 → `work/manuscripts/_style/voice-self.md`・`work/profile/{research-profile,key-findings,publications}.md` |
+| 自分のスライド・ポスター | `.pptx`・発表資料 | §研究抽出 → `work/presentations/_style.md`（＋研究プロファイル） |
+| CV・業績リスト | 経歴・publication list・受賞/グラント | §研究抽出 → `work/profile/cv.md`・`work/profile/publications.md` |
 | 計算入出力 | `.gjf`/`.log`/`.com`/`.inp`/`.out` 等・計算ソフト書式 | **caw-playbook の `_past-data/` 取り込みへ委譲**（汎関数・基底・収束傾向を Playbook に seed） |
-| 測定データ（NMR/XRD/IR/DSC の raw） | 装置出力形式 | `analyses/` に整理を提案 ＋ 手法傾向を `profile/methods.md` に記録 |
+| 測定データ（NMR/XRD/IR/DSC の raw） | 装置出力形式 | `work/analyses/` に整理を提案 ＋ 手法傾向を `work/profile/methods.md` に記録 |
 | 判定できない | — | ユーザーに「これは何の資料ですか？」と確認 |
 
 #### 就活トラックの分類 → 処理
 
 | 種類 | 判定の手がかり | 処理（行き先） |
 |---|---|---|
-| ES・志望動機・自己PR・ガクチカ | 設問・志望理由・「学生時代に…」 | §就活抽出 → `self-analysis/*`・`documents/voice-style.md`・`documents/past-answers.md` |
-| 履歴書・職務経歴書 | 氏名/学歴/職歴の定型 | §就活抽出 → `self-analysis/profile.md`（＋文体） |
-| 企業情報・求人票・IR | 企業名・募集要項・事業内容 | **caw-research の素材**として案内（`companies/<企業>.md` へ。未取得なら caw-research を促す） |
+| ES・志望動機・自己PR・ガクチカ | 設問・志望理由・「学生時代に…」 | §就活抽出 → `work/self-analysis/*`・`work/documents/voice-style.md`・`work/documents/past-answers.md` |
+| 履歴書・職務経歴書 | 氏名/学歴/職歴の定型 | §就活抽出 → `work/self-analysis/profile.md`（＋文体） |
+| 企業情報・求人票・IR | 企業名・募集要項・事業内容 | **caw-research の素材**として案内（`work/companies/<企業>.md` へ。未取得なら caw-research を促す） |
 | 判定できない | — | ユーザーに確認 |
 
 ### Step 2: 振り分けて処理する
@@ -80,52 +80,52 @@ trigger: /caw-intake
 
 ## §就活抽出（自分の応募書類 → 自己分析・文体）
 
-分類で「自分の ES・履歴書」と判定したものから次を抽出し、**それぞれ適切なファイルに追記マージ**する（既存は上書きせず統合）。`self-analysis/` が無ければ作成する。
+分類で「自分の ES・履歴書」と判定したものから次を抽出し、**それぞれ適切なファイルに追記マージ**する（既存は上書きせず統合）。`work/self-analysis/` が無ければ作成する。
 
 | 抽出するもの | 書き出し先 | 中身 |
 |---|---|---|
-| 文体プロファイル | `documents/voice-style.md` | トーン・一文の長さ・よく使う語彙と言い回し・論理展開・構成の癖・避ける表現 |
-| 経験（STAR 化） | `self-analysis/experiences.md` | 1 経験 1 ブロックで「状況 / 課題 / 行動 / 結果」。数値・固有名詞も拾う |
-| 強み・弱み・価値観 | `self-analysis/strengths.md` | 繰り返し現れる強み、弱み（短所）＋改善努力、価値観・モチベーションの源 |
-| ガクチカ候補 | `self-analysis/gakuchika.md` | 「学生時代に力を入れたこと」の核になる題材 |
-| 志望動機・就活の軸 | `self-analysis/motivation.md` | なぜこの業界/職種か・就活の軸・will/can/must・キャリアビジョン・原体験 |
-| 基本プロフィール | `self-analysis/profile.md` | 氏名・連絡先・学歴・専攻/研究・資格・語学スコア・スキル・趣味/特技・課外活動 |
-| 過去回答バンク | `documents/past-answers.md` | 過去に書いた「設問 × 完成回答」を設問タイプ別にカタログ化（流用・参考用） |
+| 文体プロファイル | `work/documents/voice-style.md` | トーン・一文の長さ・よく使う語彙と言い回し・論理展開・構成の癖・避ける表現 |
+| 経験（STAR 化） | `work/self-analysis/experiences.md` | 1 経験 1 ブロックで「状況 / 課題 / 行動 / 結果」。数値・固有名詞も拾う |
+| 強み・弱み・価値観 | `work/self-analysis/strengths.md` | 繰り返し現れる強み、弱み（短所）＋改善努力、価値観・モチベーションの源 |
+| ガクチカ候補 | `work/self-analysis/gakuchika.md` | 「学生時代に力を入れたこと」の核になる題材 |
+| 志望動機・就活の軸 | `work/self-analysis/motivation.md` | なぜこの業界/職種か・就活の軸・will/can/must・キャリアビジョン・原体験 |
+| 基本プロフィール | `work/self-analysis/profile.md` | 氏名・連絡先・学歴・専攻/研究・資格・語学スコア・スキル・趣味/特技・課外活動 |
+| 過去回答バンク | `work/documents/past-answers.md` | 過去に書いた「設問 × 完成回答」を設問タイプ別にカタログ化（流用・参考用） |
 
 caw-es / caw-interview がこの出力を読んで本人の文体・実績で書く。
 
 ## §研究抽出（自分の論文・申請書・スライド・CV → 執筆スタイル・研究プロファイル）
 
-分類で「自分の資料」と判定したものから次を抽出し、**それぞれ適切なファイルに追記マージ**する。`profile/` が無ければ作成する。
+分類で「自分の資料」と判定したものから次を抽出し、**それぞれ適切なファイルに追記マージ**する。`work/profile/` が無ければ作成する。
 
 | 抽出するもの | 書き出し先 | 中身 |
 |---|---|---|
-| 執筆スタイル（文体） | `manuscripts/_style/voice-self.md` | 英語論文・日本語申請書の voice／hedging の癖／接続表現／定型表現／構成の癖 |
-| 研究プロファイル | `profile/research-profile.md` | 研究テーマ・専門領域・主要な研究対象（化合物系/反応系/手法）＝キーワード辞書・novelty/意義の語り口 |
-| 過去知見・主張 | `profile/key-findings.md` | 過去論文の主要な結論・主張リスト |
-| 自分の業績 | `profile/publications.md` | publication 一覧＋各要点（タイトル・誌・年・一言要約） |
-| よく引用する文献 | `profile/citations.md` | 頻出の文献・著者（self-citation 含む）・分野の重要文献 |
-| 実験・解析手法の傾向 | `profile/methods.md` | よく使う測定手法・標準条件・試料調製/合成の定型・解析手順 |
-| 作図スタイル | `figures/_style.md` | 配色・図のスタイル・キャプションの書き方 |
-| スライド/発表スタイル | `presentations/_style.md` | 配色・フォント階層・レイアウト・発表ストーリーの型 |
-| CV・メタ情報 | `profile/cv.md` | 所属・経歴・受賞・グラント・共著者ネットワーク・ORCID/researchmap 等 ID |
-| 専門用語・略号辞書 | `profile/glossary.md` | よく使う略号・系の略称・装置略称（表記の一貫性確保） |
+| 執筆スタイル（文体） | `work/manuscripts/_style/voice-self.md` | 英語論文・日本語申請書の voice／hedging の癖／接続表現／定型表現／構成の癖 |
+| 研究プロファイル | `work/profile/research-profile.md` | 研究テーマ・専門領域・主要な研究対象（化合物系/反応系/手法）＝キーワード辞書・novelty/意義の語り口 |
+| 過去知見・主張 | `work/profile/key-findings.md` | 過去論文の主要な結論・主張リスト |
+| 自分の業績 | `work/profile/publications.md` | publication 一覧＋各要点（タイトル・誌・年・一言要約） |
+| よく引用する文献 | `work/profile/citations.md` | 頻出の文献・著者（self-citation 含む）・分野の重要文献 |
+| 実験・解析手法の傾向 | `work/profile/methods.md` | よく使う測定手法・標準条件・試料調製/合成の定型・解析手順 |
+| 作図スタイル | `work/figures/_style.md` | 配色・図のスタイル・キャプションの書き方 |
+| スライド/発表スタイル | `work/presentations/_style.md` | 配色・フォント階層・レイアウト・発表ストーリーの型 |
+| CV・メタ情報 | `work/profile/cv.md` | 所属・経歴・受賞・グラント・共著者ネットワーク・ORCID/researchmap 等 ID |
+| 専門用語・略号辞書 | `work/profile/glossary.md` | よく使う略号・系の略称・装置略称（表記の一貫性確保） |
 
-論文執筆・caw-slides・caw-input がこの出力を読んで本人の文体・文脈で書く。文体は既存規約 `manuscripts/_style/voice-<name>.md` に乗せ、本人ぶんを `voice-self.md` とする。
+論文執筆・caw-slides・caw-input がこの出力を読んで本人の文体・文脈で書く。文体は既存規約 `work/manuscripts/_style/voice-<name>.md` に乗せ、本人ぶんを `voice-self.md` とする。
 
 ---
 
 ## 他スキルとの関係
 
 - **caw-intake は統合 inbox の「振り分け役」＋「自分プロファイルの抽出役」**。外部論文は `caw-paper`、計算入出力は `caw-playbook`、企業情報は `caw-research` に渡し、**二重処理しない**。
-- 整備した `profile/`・`self-analysis/`・各 `_style` を、研究は論文執筆・`caw-slides`・`caw-input` が、就活は `caw-es`・`caw-interview` が読む。
-- caw-es の「文体を学習して」は `documents/voice-style.md` だけを作る軽量版。まとめて取り込むなら caw-intake。
+- 整備した `work/profile/`・`work/self-analysis/`・各 `_style` を、研究は論文執筆・`caw-slides`・`caw-input` が、就活は `caw-es`・`caw-interview` が読む。
+- caw-es の「文体を学習して」は `work/documents/voice-style.md` だけを作る軽量版。まとめて取り込むなら caw-intake。
 
 ## 重要な注意事項
 
 - **内容で判定する**。拡張子・ファイル名だけで決めず中身を確認する。曖昧なものは勝手に処理せずユーザーに確認する。
-- **個人情報・未公開情報・他者の未公開データはローカルに留める**。`profile/cv.md`・`self-analysis/profile.md` 等を外部サービスへ送る前に必ず確認する。
+- **個人情報・未公開情報・他者の未公開データはローカルに留める**。`work/profile/cv.md`・`work/self-analysis/profile.md` 等を外部サービスへ送る前に必ず確認する。
 - **既存ファイルは上書きしない**。追記マージし、重複・矛盾は統合またはユーザー確認で解消する。
 - **事実を歪めない**。原資料の記述をそのまま素材化し、誇張・捏造を足さない。
 - **抽出結果は専用ファイルに書き出す**。部署や `office/` の `AGENTS.md`（`CLAUDE.md`）は**書き換えない**。
-- 原ファイルは `inbox/` に残す（削除しない）。成果物（`profile/`・`self-analysis/`・`manuscripts/_style/` 等）は top-level に置く（`office/` 配下に書かない）。
+- 原ファイルは `inbox/` に残す（削除しない）。成果物（`work/profile/`・`work/self-analysis/`・`work/manuscripts/_style/` 等）は `work/` 配下 に置く（`office/` 配下に書かない）。

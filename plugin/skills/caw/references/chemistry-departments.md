@@ -95,7 +95,7 @@ type: daily
 
 **`office/research/` のサブディレクトリ（運営情報のみ）**: `logs/`, `metadata/`
 
-**成果物の置き場（top-level、ファイラーで見える）**: `papers/`, `topics/`, `reports/`
+**成果物の置き場（`work/` 配下、ファイラーで見える）**: `work/papers/`, `work/topics/`, `work/reports/`
 
 ### research/CLAUDE.md
 
@@ -110,10 +110,10 @@ type: daily
 
 ユーザーが ファイラーから開ける場所に置く：
 
-- **個別論文の要約 md**：`{{PROJECT_ROOT}}/papers/<author-year-keyword>.md`（top-level）
-- **調査トピックまとめ**：`{{PROJECT_ROOT}}/topics/<topic>.md`（top-level）
-- **報告書・調査結果総括**：`{{PROJECT_ROOT}}/reports/<topic>.md`（top-level）
-- **原本 PDF**：`{{PROJECT_ROOT}}/papers/<author-year-keyword>.pdf`（top-level）
+- **個別論文の要約 md**：`{{PROJECT_ROOT}}/work/papers/<author-year-keyword>.md`（`work/` 配下）
+- **調査トピックまとめ**：`{{PROJECT_ROOT}}/work/topics/<topic>.md`（`work/` 配下）
+- **報告書・調査結果総括**：`{{PROJECT_ROOT}}/work/reports/<topic>.md`（`work/` 配下）
+- **原本 PDF**：`{{PROJECT_ROOT}}/work/papers/<author-year-keyword>.pdf`（`work/` 配下）
 
 ❌ `office/research/papers/<...>.md` のようなパスに書かない（旧 v1.0 / v1.1 設計）
 
@@ -134,9 +134,9 @@ type: daily
 
 `office/CLAUDE.md` の「ナレッジベース」設定に応じて、要約後の登録先を切り替える：
 
-- **Notion** → API / MCP 経由で DB 登録（ローカル `papers/` と並列で同期）
+- **Notion** → API / MCP 経由で DB 登録（ローカル `work/papers/` と並列で同期）
 - **Obsidian / Logseq** → vault フォルダに Markdown を保存（frontmatter にメタデータ）
-- **使わない** → `papers/` 配下にローカル蓄積のみ
+- **使わない** → `work/papers/` 配下にローカル蓄積のみ
 ```
 
 ---
@@ -145,7 +145,7 @@ type: daily
 
 **`office/engineering/` のサブディレクトリ（運営情報のみ）**: `design/`, `decisions/`
 
-**成果物の置き場（top-level、ファイラーで見える）**: `scripts/`, `tools/`
+**成果物の置き場（`work/` 配下、ファイラーで見える）**: `work/scripts/`, `work/tools/`
 
 ### engineering/CLAUDE.md
 
@@ -160,8 +160,8 @@ type: daily
 
 ユーザーが ファイラーから実行・編集する場所に置く：
 
-- **本格的なツール**：`{{PROJECT_ROOT}}/tools/<tool-name>/`（top-level）
-- **単発スクリプト**：`{{PROJECT_ROOT}}/scripts/<purpose>_<target>_<date>.py`（top-level）
+- **本格的なツール**：`{{PROJECT_ROOT}}/work/tools/<tool-name>/`（`work/` 配下）
+- **単発スクリプト**：`{{PROJECT_ROOT}}/work/scripts/<purpose>_<target>_<date>.py`（`work/` 配下）
 
 ❌ `office/engineering/scripts/` や `office/engineering/tools/` に置かない（実行時のパスがやや回りくどく）
 
@@ -250,7 +250,7 @@ type: daily
 
 **`office/analysis/` のサブディレクトリ（運営情報のみ）**: `methods/`, `decisions/`
 
-**成果物の置き場（top-level、ファイラーで見える）**: `analyses/`, `figures/`, `notebooks/`
+**成果物の置き場（`work/` 配下、ファイラーで見える）**: `work/analyses/`, `work/figures/`, `work/notebooks/`
 
 ### analysis/CLAUDE.md
 
@@ -265,9 +265,9 @@ type: daily
 
 ユーザーが ファイラーから開ける場所に置く：
 
-- **解析結果**：`{{PROJECT_ROOT}}/analyses/<topic>/`（top-level、1 トピック 1 フォルダ）
-- **図表**：`{{PROJECT_ROOT}}/figures/fig_<内容>_YYYYMMDD.png` または `.svg`（top-level、presentation と共有）
-- **Jupyter Notebook**：`{{PROJECT_ROOT}}/notebooks/<topic>.ipynb`（top-level）
+- **解析結果**：`{{PROJECT_ROOT}}/work/analyses/<topic>/`（`work/` 配下、1 トピック 1 フォルダ）
+- **図表**：`{{PROJECT_ROOT}}/work/figures/fig_<内容>_YYYYMMDD.png` または `.svg`（`work/` 配下、presentation と共有）
+- **Jupyter Notebook**：`{{PROJECT_ROOT}}/work/notebooks/<topic>.ipynb`（`work/` 配下）
 
 ❌ `office/analysis/results/` や `office/analysis/figures/` のような旧パスに書かない（旧設計）
 
@@ -297,7 +297,7 @@ type: daily
 
 **`office/writing/` のサブディレクトリ（運営情報のみ）**: `style/`, `decisions/`
 
-**成果物の置き場（top-level、ファイラーで見える）**: `manuscripts/`
+**成果物の置き場（`work/` 配下、ファイラーで見える）**: `work/manuscripts/`
 
 ### writing/CLAUDE.md
 
@@ -312,12 +312,12 @@ type: daily
 
 ユーザーが ファイラーから開ける場所に置く：
 
-- **各論文**：`{{PROJECT_ROOT}}/manuscripts/<paper-name>/`（top-level、1 論文 1 フォルダ）
+- **各論文**：`{{PROJECT_ROOT}}/work/manuscripts/<paper-name>/`（`work/` 配下、1 論文 1 フォルダ）
   - `<paper-name>.tex` または `<paper-name>.docx`
   - `references.bib`（BibTeX）または引用管理ツール出力
-  - `figures/`（論文用の図、`{{PROJECT_ROOT}}/figures/` からコピー）
+  - `work/figures/`（論文用の図、`{{PROJECT_ROOT}}/work/figures/` からコピー）
   - `reviews/YYYY-MM-DD-<reviewer>.md`（指導教員・共著者の添削記録）
-- **共通スタイル**：`{{PROJECT_ROOT}}/manuscripts/_style/<journal>.md`（投稿先誌のスタイル要点、文体プロファイル）
+- **共通スタイル**：`{{PROJECT_ROOT}}/work/manuscripts/_style/<journal>.md`（投稿先誌のスタイル要点、文体プロファイル）
 
 ❌ `office/writing/manuscripts/<...>/` のようなパスに書かない（旧 v1.0 / v1.1 設計）
 
@@ -328,14 +328,14 @@ type: daily
 
 ## ルール
 
-- 文体は指導教員・共著者の文体プロファイル（あれば `{{PROJECT_ROOT}}/manuscripts/_style/voice-<name>.md`）に従う
+- 文体は指導教員・共著者の文体プロファイル（あれば `{{PROJECT_ROOT}}/work/manuscripts/_style/voice-<name>.md`）に従う
 - 引用は文中言及形式が基本（番号引用は投稿時のスタイルガイドに従って後変換）
 
 ## LaTeX 派の運用
 
 - `.tex` / `.bib` を直接編集
 - git で diff / merge / blame
-- ターゲット誌の class file（.cls / .sty）を `manuscripts/<paper-name>/style/` に配置
+- ターゲット誌の class file（.cls / .sty）を `work/manuscripts/<paper-name>/style/` に配置
 
 ## Word 派の運用
 
@@ -396,9 +396,9 @@ Claude + Codex の二段レビューは応用編。本部署単独で運用し�
 
 ## 8. presentation（プレゼン部）
 
-**`office/presentation/` のサブディレクトリ（運営情報のみ）**: `design-notes/`, `decisions/`, `notes/`, `references/`, `scripts/`
+**`office/presentation/` のサブディレクトリ（運営情報のみ）**: `design-notes/`, `decisions/`, `notes/`, `references/`, `work/scripts/`
 
-**成果物の置き場（top-level、ファイラーで見える）**: `presentations/slides/`, `presentations/figures/`
+**成果物の置き場（`work/` 配下、ファイラーで見える）**: `work/presentations/slides/`, `work/presentations/figures/`
 
 ### caw-slides skill との連携（強く推奨）
 
@@ -422,15 +422,15 @@ Claude + Codex の二段レビューは応用編。本部署単独で運用し�
 
 ユーザーが ファイラーから開ける場所に置く：
 
-- **スライド本体**：`{{PROJECT_ROOT}}/presentations/slides/<topic>_YYYYMMDD.pptx`（top-level）
+- **スライド本体**：`{{PROJECT_ROOT}}/work/presentations/slides/<topic>_YYYYMMDD.pptx`（`work/` 配下）
 - **生成スクリプト**：`{{PROJECT_ROOT}}/office/presentation/scripts/generate_<topic>_YYYYMMDD.py`（運営情報、再生成用）
-- **中間図**：`{{PROJECT_ROOT}}/presentations/figures/fig_<topic>_<n>_YYYYMMDD.png`（top-level、analysis と共有）
+- **中間図**：`{{PROJECT_ROOT}}/work/presentations/figures/fig_<topic>_<n>_YYYYMMDD.png`（`work/` 配下、analysis と共有）
 
 ❌ `office/presentation/slides/<...>.pptx` のようなパスに書かない（旧設計）
 
 `office/presentation/` 配下は運営情報のみ：
 
-- `scripts/` — 生成スクリプト + コピーされた `pptx_helpers.py`（source of truth、再生成用）
+- `work/scripts/` — 生成スクリプト + コピーされた `pptx_helpers.py`（source of truth、再生成用）
 - `notes/<YYYY-MM-DD>-plan.md` — 各スライドの構成・L1 メッセージ計画
 - `design-notes/<topic>_source.md` — 視覚要素の設計ノート
 - `decisions/` — トピック選定や figure 取捨選択の意思決定ログ

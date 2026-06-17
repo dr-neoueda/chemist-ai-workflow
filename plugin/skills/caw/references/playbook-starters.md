@@ -807,6 +807,6 @@ last_updated: "{{TODAY}}"
 | 部署 | Skill | Playbook 相当の知見の場所 |
 |---|---|---|
 | presentation | `caw-slides` | `references/style-guide.md`（14 セクション + canonical 実装パターン）+ `references/pptx_helpers.py`（1000+ 行ヘルパ）+ 4 用途バリアントテンプレート |
-| writing | （Phase 2 で追加予定） | `manuscripts/_style/` 配下の文体プロファイル |
+| writing | （Phase 2 で追加予定） | `work/manuscripts/_style/` 配下の文体プロファイル |
 
 `caw-slides` の場合、新しい失敗パターン（フォント豆腐・shape 重なり・L1 違反など）を見つけたら `office/presentation/CLAUDE.md` (or AGENTS.md) の Lessons Learned セクションに追記する。スタイルガイド本体（plugin 同梱の `references/style-guide.md`）は plugin 更新で上書きされるため触らない。

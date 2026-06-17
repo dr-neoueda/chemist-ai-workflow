@@ -32,7 +32,7 @@ description: >
 
 | 必須項目 | 例 |
 |---------|---|
-| 元データのパス（または貼り付け本文） | `experiments/cp2k/foo/REPRODUCTION.md` |
+| 元データのパス（または貼り付け本文） | `work/experiments/cp2k/foo/REPRODUCTION.md` |
 | 発表場面 | 研究室報告会 / 国内学会 / 国際学会 / 研究紹介 / 修論 / 論文紹介 / 講義 |
 | 言語 | 日本語 / 英語 |
 | 制約（あれば） | 「枚数最大 20」「特定の図を必ず含める」など |
@@ -90,7 +90,7 @@ PowerPoint スライドを生成してください。
 ## 必須事項
 - 着手前に `office/presentation/notes/<YYYY-MM-DD>-plan.md` に計画を書く
 - 生成スクリプト: `office/presentation/scripts/generate_<purpose>_<YYYYMMDD>.py`
-- .pptx: `presentations/slides/<purpose>_<YYYYMMDD>.pptx`
+- .pptx: `work/presentations/slides/<purpose>_<YYYYMMDD>.pptx`
 - `pptx_helpers.py` を import して再利用
 - 各スライドビルダー末尾で `assert_no_overlap(rects)` を呼ぶ
 - L1 強調は 1 スライド 1 個ルール厳守
@@ -109,7 +109,7 @@ Step B でコピーしたテンプレを `Read` → `Edit` で `<...>` プレー
 ```python
 # python-pptx で構造検証
 from pptx import Presentation
-p = Presentation("presentations/slides/<...>.pptx")
+p = Presentation("work/presentations/slides/<...>.pptx")
 print(f"slide count: {len(p.slides)}")
 # 16:9 確認
 print(f"aspect: {p.slide_width}x{p.slide_height}")
@@ -118,7 +118,7 @@ print(f"aspect: {p.slide_width}x{p.slide_height}")
 `soffice` があれば PNG レンダで目視も:
 
 ```bash
-soffice --headless --convert-to png --outdir figures/_preview presentations/slides/<...>.pptx
+soffice --headless --convert-to png --outdir work/figures/_preview work/presentations/slides/<...>.pptx
 ```
 
 **検証項目**:
@@ -218,5 +218,5 @@ pip install python-pptx matplotlib Pillow
 ## 関連 Skill
 
 - `caw` — `office/` 部署スキャフォールド（presentation 部含む）
-- `caw-paper` — 論文 PDF を `papers/` に登録（journal club 用素材の源泉）
+- `caw-paper` — 論文 PDF を `work/papers/` に登録（journal club 用素材の源泉）
 - `caw-playbook` — 計算ソフト Playbook 蓄積（報告会・学会発表の素材）

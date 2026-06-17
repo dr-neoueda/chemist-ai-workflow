@@ -93,31 +93,31 @@ QJ3b (悩み・進め方/状況): 「進め方やコンディションで当て�
 
 **部署フォルダ名は化学トラックと統一する**（中身〔CLAUDE.md / AGENTS.md〕は就活向けで化学と別物でよい）。これにより就活の scaffold が化学と**同じ部署パス**を通り、間接検証（→ `references/engine-validation-map.md`）がより厳密に効く。対応：
 
-| 部署フォルダ（化学と共通） | 就活での役割 | 化学での役割 | 就活の成果物（top-level） |
+| 部署フォルダ（化学と共通） | 就活での役割 | 化学での役割 | 就活の成果物（`work/` 配下） |
 |---|---|---|---|
 | `secretary` | 窓口・選考スケジュール | 窓口・TODO・notes | （運営のみ） |
-| `research` | 企業・業界研究 | 文献・手法・技術調査 | `companies/` `recruit/` |
-| `analysis` | 自己分析（棚卸し・強み・ガクチカ） | データ解析・可視化 | `self-analysis/` |
-| `writing` | 応募書類（ES・履歴書・志望動機） | 論文・原稿 | `documents/` |
-| `presentation` | 面接対策（自己提示・模擬面接） | スライド・発表 | `interview-prep/` |
+| `research` | 企業・業界研究 | 文献・手法・技術調査 | `work/companies/` `work/recruit/` |
+| `analysis` | 自己分析（棚卸し・強み・ガクチカ） | データ解析・可視化 | `work/self-analysis/` |
+| `writing` | 応募書類（ES・履歴書・志望動機） | 論文・原稿 | `work/documents/` |
+| `presentation` | 面接対策（自己提示・模擬面接） | スライド・発表 | `work/interview-prep/` |
 
 `engineering` / `computation` / `review` は化学専用で就活では立ち上げない。部署は §C テンプレから配置する。
 
-### B-4. 就活の作業ディレクトリ（成果物・top-level）
+### B-4. 就活の作業ディレクトリ（成果物・`work/` 配下）
 
-`office/` は運営情報のみ。ユーザーがファイラーで開く成果物は project root 直下に作る（二層原則）。
+`office/` は運営情報のみ。ユーザーがファイラーで開く成果物は **`work/` ディレクトリ配下にまとめて作る**（二層原則。ルート直下に散らかさない）。
 各ディレクトリに README.md を 1 枚置き「何を入れる・何が起きる」を平易に書く。
 
 | ディレクトリ | 中身 | 関連部署 |
 |---|---|---|
-| `companies/` | 企業研究まとめ（`<企業名>.md`）・求人票・選考フロー記録 | `research` |
-| `documents/` | ES・履歴書・職務経歴書・自己PR・志望動機のドラフト（`<企業名>_<書類>.md`）・文体プロファイル `voice-style.md` | `writing` |
-| `self-analysis/` | 自己分析（経験の棚卸し・強み・ガクチカ素材・価値観） | `analysis` |
-| `interview-prep/` | 想定問答・逆質問・面接後の振り返り（`<企業名>.md`） | `presentation` |
-| `recruit/` | 業界横断のインターン・説明会・選考イベントのカタログ（`<業界>.md`）と HTML（カタログ/締切カレンダー/比較表） | 秘書 + `research` |
-| `feedback/` | テストユーザーの使い心地フィードバック（`<YYYY-MM-DD>.md`・`README.md` 雛形）。**化学機能の間接検証**に使う（→ `references/engine-validation-map.md`） | 秘書 |
+| `work/companies/` | 企業研究まとめ（`<企業名>.md`）・求人票・選考フロー記録 | `research` |
+| `work/documents/` | ES・履歴書・職務経歴書・自己PR・志望動機のドラフト（`<企業名>_<書類>.md`）・文体プロファイル `voice-style.md` | `writing` |
+| `work/self-analysis/` | 自己分析（経験の棚卸し・強み・ガクチカ素材・価値観） | `analysis` |
+| `work/interview-prep/` | 想定問答・逆質問・面接後の振り返り（`<企業名>.md`） | `presentation` |
+| `work/recruit/` | 業界横断のインターン・説明会・選考イベントのカタログ（`<業界>.md`）と HTML（カタログ/締切カレンダー/比較表） | 秘書 + `research` |
+| `work/feedback/` | テストユーザーの使い心地フィードバック（`<YYYY-MM-DD>.md`・`README.md` 雛形）。**化学機能の間接検証**に使う（→ `references/engine-validation-map.md`） | 秘書 |
 
-**統合 inbox（迷ったらここ）**：プロジェクト直下に `inbox/` を作り、「**過去に書いた ES・履歴書・自己PR や企業情報など、何でもここに入れて『処理して』と言えば（`caw-intake`）、中身を見て自動で振り分けます**——ES 類は文体・経験・強み/弱み・ガクチカ・志望動機・プロフィール・過去回答を抽出して `self-analysis/` と `documents/`（`voice-style.md`・`past-answers.md`）に整理、企業情報は企業研究（`caw-research`）の素材に。以降の ES 作成（`caw-es`）に活かします」と README に明記する。
+**統合 inbox（迷ったらここ）**：プロジェクト直下に `inbox/` を作り、「**過去に書いた ES・履歴書・自己PR や企業情報など、何でもここに入れて『処理して』と言えば（`caw-intake`）、中身を見て自動で振り分けます**——ES 類は文体・経験・強み/弱み・ガクチカ・志望動機・プロフィール・過去回答を抽出して `work/self-analysis/` と `work/documents/`（`voice-style.md`・`past-answers.md`）に整理、企業情報は企業研究（`caw-research`）の素材に。以降の ES 作成（`caw-es`）に活かします」と README に明記する。
 
 ---
 
@@ -141,7 +141,7 @@ QJ3b (悩み・進め方/状況): 「進め方やコンディションで当て�
 |---|---|
 | 「○○社の締切いつだっけ」「今週の予定」 | `secretary/todos/` の選考カレンダーを表示 |
 | 「ES が通らない」「志望動機が書けない」 | 壁打ち → 結論を `secretary/notes/` に保存、書類部へ橋渡し |
-| 「○○社を受けることにした」 | 選考フローを `secretary/notes/<today>-decisions.md` に記録、`companies/` に企業ファイル作成を提案 |
+| 「○○社を受けることにした」 | 選考フローを `secretary/notes/<today>-decisions.md` に記録、`work/companies/` に企業ファイル作成を提案 |
 
 ## 選考スケジュール管理（中心業務）
 - `secretary/todos/YYYY-MM-DD.md` に「企業 / 選考段階 / 締切 / ステータス」を 1 行で管理
@@ -165,19 +165,19 @@ QJ3b (悩み・進め方/状況): 「進め方やコンディションで当て�
 
 ## ワークフロー
 1. ユーザーが企業名 / 業界を挙げる
-2. 公開情報（採用ページ・IR・ニュース）を調べ、`companies/<企業名>.md` に構造化して保存：
+2. 公開情報（採用ページ・IR・ニュース）を調べ、`work/companies/<企業名>.md` に構造化して保存：
    - 事業内容・主力製品 / 強み・弱み / 競合 / 求める人物像 / 募集職種・条件 / 選考フローと締切
 3. 志望動機の素材（「自分の経験のどこが刺さるか」）を抽出し、書類部・自己分析部に渡す
 
-## 成果物（top-level）
-- `companies/<企業名>.md` … 企業研究まとめ
-- `companies/_industry/<業界名>.md` … 業界比較
+## 成果物（`work/` 配下）
+- `work/companies/<企業名>.md` … 企業研究まとめ
+- `work/companies/_industry/<業界名>.md` … 業界比較
 
 ## 注意
 - 口コミ・噂は出典を併記し断定しない。一次情報（採用ページ・IR）を優先
 ```
 
-サブディレクトリ（成果物は top-level `companies/`）: 運営メモのみ `office/research/notes/`
+サブディレクトリ（成果物は `work/companies/`）: 運営メモのみ `office/research/notes/`
 
 ### analysis/CLAUDE.md（自己分析）
 
@@ -188,23 +188,23 @@ QJ3b (悩み・進め方/状況): 「進め方やコンディションで当て�
 経験の棚卸しと言語化を支援。ガクチカ（学生時代に力を入れたこと）・自己PR・価値観・強みを、面接や ES で使える素材にする。
 
 ## ワークフロー
-0. 過去に書いた ES・書類が統合 `inbox/` にあれば、まず `caw-intake` で（中身を判定して）文体・経験・強み・ガクチカ・志望動機・プロフィールを一括抽出（`self-analysis/` と `documents/voice-style.md` に整理）
+0. 過去に書いた ES・書類が統合 `inbox/` にあれば、まず `caw-intake` で（中身を判定して）文体・経験・強み・ガクチカ・志望動機・プロフィールを一括抽出（`work/self-analysis/` と `work/documents/voice-style.md` に整理）
 1. 経験を時系列・場面で洗い出す（学業・研究・アルバイト・サークル・インターン等）
-2. 各経験を **STAR（状況・課題・行動・結果）** で構造化し `self-analysis/experiences.md` に蓄積
+2. 各経験を **STAR（状況・課題・行動・結果）** で構造化し `work/self-analysis/experiences.md` に蓄積
 3. そこから「強み 3 つ」「価値観」「ガクチカ候補」を抽出 → 書類部・面接対策部が再利用
 
-## 成果物（top-level）
-- `self-analysis/experiences.md` … 経験リスト（STAR）
-- `self-analysis/strengths.md` … 強み・弱み・価値観・自己PR素材
-- `self-analysis/gakuchika.md` … ガクチカ候補
-- `self-analysis/motivation.md` … 志望動機・就活の軸・キャリアビジョン・原体験（caw-intake が生成）
-- `self-analysis/profile.md` … 基本プロフィール（氏名・連絡先・学歴・専攻/研究・資格・語学・スキル・趣味/特技等。caw-intake が生成）
+## 成果物（`work/` 配下）
+- `work/self-analysis/experiences.md` … 経験リスト（STAR）
+- `work/self-analysis/strengths.md` … 強み・弱み・価値観・自己PR素材
+- `work/self-analysis/gakuchika.md` … ガクチカ候補
+- `work/self-analysis/motivation.md` … 志望動機・就活の軸・キャリアビジョン・原体験（caw-intake が生成）
+- `work/self-analysis/profile.md` … 基本プロフィール（氏名・連絡先・学歴・専攻/研究・資格・語学・スキル・趣味/特技等。caw-intake が生成）
 
 ## 注意
 - 盛らない。事実ベースで、面接で深掘りされても答えられる範囲に留める
 ```
 
-サブディレクトリ: 成果物は top-level `self-analysis/`
+サブディレクトリ: 成果物は `work/self-analysis/`
 
 ### writing/CLAUDE.md（応募書類）
 
@@ -216,21 +216,21 @@ ES（エントリーシート）・履歴書・職務経歴書・志望動機・
 
 ## ワークフロー
 1. 企業の設問と文字数を確認（例: 「学生時代に力を入れたこと（400字）」）
-2. `self-analysis/` の素材と `companies/<企業名>.md` の志望理由を組み合わせて初稿を作成
+2. `work/self-analysis/` の素材と `work/companies/<企業名>.md` の志望理由を組み合わせて初稿を作成
 3. **文字数を厳守**し、結論先出し → 具体（STAR）→ 学び/再現性 の型で推敲
-4. `documents/<企業名>_<書類種別>.md` に保存
+4. `work/documents/<企業名>_<書類種別>.md` に保存
 
-## 成果物（top-level）
-- `documents/<企業名>_es.md` / `documents/<企業名>_rirekisho.md` 等
-- 過去資料の投入は統合 `inbox/`（top-level）へ → `caw-intake` が中身を判定して取り込み（`documents/inbox/` は使わない）
-- `documents/voice-style.md` … 文体プロファイル（「文体を学習して」で inbox から生成。**この部署の設定ファイル（AGENTS.md/CLAUDE.md）は書き換えない**）
+## 成果物（`work/` 配下）
+- `work/documents/<企業名>_es.md` / `work/documents/<企業名>_rirekisho.md` 等
+- 過去資料の投入は統合 `inbox/`（`work/` 配下）へ → `caw-intake` が中身を判定して取り込み（`work/documents/inbox/` は使わない）
+- `work/documents/voice-style.md` … 文体プロファイル（「文体を学習して」で inbox から生成。**この部署の設定ファイル（AGENTS.md/CLAUDE.md）は書き換えない**）
 
 ## 注意
 - 文字数オーバー・コピペ流用の言い回し残りを必ずチェック
 - 嘘・誇張を書かない。事実と自己分析の範囲で
 ```
 
-サブディレクトリ: 成果物は top-level `documents/`（`inbox/` 含む）
+サブディレクトリ: 成果物は `work/documents/`（`inbox/` 含む）
 
 ### presentation/CLAUDE.md（面接対策）
 
@@ -241,20 +241,20 @@ ES（エントリーシート）・履歴書・職務経歴書・志望動機・
 想定問答の準備、模擬面接（壁打ち形式）、逆質問の準備、面接後の振り返りを支援。
 
 ## ワークフロー
-1. 定番質問（自己紹介・志望動機・ガクチカ・強み弱み・逆質問）の回答を `self-analysis/` から組み立て
+1. 定番質問（自己紹介・志望動機・ガクチカ・強み弱み・逆質問）の回答を `work/self-analysis/` から組み立て
 2. **模擬面接**: 秘書/面接官役が質問 → ユーザーが回答 → 深掘り・改善点を即フィードバック
-3. 面接後は `interview-prep/<企業名>.md` に「聞かれたこと・手応え・次への改善」を記録
+3. 面接後は `work/interview-prep/<企業名>.md` に「聞かれたこと・手応え・次への改善」を記録
 
-## 成果物（top-level）
-- `interview-prep/qa.md` … 想定問答集
-- `interview-prep/<企業名>.md` … 企業別の準備と振り返り
+## 成果物（`work/` 配下）
+- `work/interview-prep/qa.md` … 想定問答集
+- `work/interview-prep/<企業名>.md` … 企業別の準備と振り返り
 
 ## 注意
 - 暗記の棒読みを避け、要点を箇条書きで持つ形にする
 - 逆質問は「調べれば分かること」を避け、企業研究を踏まえた内容にする
 ```
 
-サブディレクトリ: 成果物は top-level `interview-prep/`
+サブディレクトリ: 成果物は `work/interview-prep/`
 
 ---
 
@@ -265,7 +265,7 @@ project root に `はじめにお読みください.md` を生成。平易な日
 1. **これは何** — caw は就活の「書類・企業研究・自己分析・面接準備・スケジュール管理」を手伝う AI 部署。秘書に話しかけるだけ
 2. **まず何をするか** — ① `claude`（または `codex` / `copilot`）を起動 → ② 「今日やること教えて」「○○社の ES を書きたい」等と話す
 3. **言い方の早見表**（下表）
-4. **フォルダの意味** — `companies/` 企業研究、`documents/` 書類、`self-analysis/` 自己分析、`interview-prep/` 面接、`office/` は触らなくてよい
+4. **フォルダの意味** — `work/companies/` 企業研究、`work/documents/` 書類、`work/self-analysis/` 自己分析、`work/interview-prep/` 面接、`office/` は触らなくてよい
 5. **困ったとき** — 「○○って何?」で用語説明、「健康診断して」で構造チェック
 
 言い方早見表（テンプレ）：
@@ -289,7 +289,7 @@ scaffold と START HERE を作り終えたら、**秘書はいきなり作業を
 「環境ができました！さっそく、何から始めましょうか？」
   - 自己分析から（強み・ガクチカの棚卸し）      → analysis 部署
   - 過去の ES を取り込んで自己分析（文体・経験も抽出） → caw-intake
-  - 企業・業界を調べる                         → caw-research（companies/<企業>.md）
+  - 企業・業界を調べる                         → caw-research（work/companies/<企業>.md）
   - ES・志望動機を書く                         → caw-es
   - 面接対策・模擬面接                         → caw-interview
   - 募集・締切を集める（業界横断）             → caw-events
@@ -310,12 +310,12 @@ scaffold と START HERE を作り終えたら、**秘書はいきなり作業を
 | 文脈・キーワード | 振り分け先 |
 |---|---|
 | 締切・選考スケジュール・進捗 | 秘書（`secretary/todos/`） |
-| 企業研究・業界研究・求人票・IR | `research`（企業・業界研究、`companies/`） |
-| 自己分析・ガクチカ・強み・経験の棚卸し | `analysis`（自己分析、`self-analysis/`） |
-| 過去の ES・書類を取り込む・文体/経験/強み/志望動機/プロフィール/過去回答を抽出 | `analysis`＋`writing`（`self-analysis/`・`documents/voice-style.md`・`documents/past-answers.md`、`caw-intake`） |
-| ES・履歴書・職務経歴書・志望動機・自己PR | `writing`（書類、`documents/`） |
-| 面接・想定質問・模擬面接・逆質問・振り返り | `presentation`（面接対策、`interview-prep/`） |
-| 業界の募集・イベント・締切を一括収集（インターン/説明会/座談会/選考）・カタログ/カレンダー/比較 | 秘書＋`research`（`recruit/`、`caw-events`） |
+| 企業研究・業界研究・求人票・IR | `research`（企業・業界研究、`work/companies/`） |
+| 自己分析・ガクチカ・強み・経験の棚卸し | `analysis`（自己分析、`work/self-analysis/`） |
+| 過去の ES・書類を取り込む・文体/経験/強み/志望動機/プロフィール/過去回答を抽出 | `analysis`＋`writing`（`work/self-analysis/`・`work/documents/voice-style.md`・`work/documents/past-answers.md`、`caw-intake`） |
+| ES・履歴書・職務経歴書・志望動機・自己PR | `writing`（書類、`work/documents/`） |
+| 面接・想定質問・模擬面接・逆質問・振り返り | `presentation`（面接対策、`work/interview-prep/`） |
+| 業界の募集・イベント・締切を一括収集（インターン/説明会/座談会/選考）・カタログ/カレンダー/比較 | 秘書＋`research`（`work/recruit/`、`caw-events`） |
 
 ### 就活モードで特に守ること
 - **文字数制約を厳守**（ES の設問字数）。超過は必ず指摘して縮める
@@ -330,10 +330,10 @@ scaffold と START HERE を作り終えたら、**秘書はいきなり作業を
 就活トラックは**化学者向け本機能のテストハーネス**でもある。就活と化学は**同一のドメイン非依存エンジン**（オンボ → 部署 scaffold → 秘書ゲートウェイ/dispatch → スキル 3 パターン → HTML 可視化 → memory → caw-doctor）の上で動くため、**就活テストユーザーの利用が、対応する化学機能の間接検証**になる。対応関係と運用は `references/engine-validation-map.md` を参照（検証マップ・フィードバック雛形・著者の照合手順・構造を壊さないルール）。
 
 ### scaffold 時にやること
-- project 直下に **`feedback/`** を作り、`feedback/README.md` に `engine-validation-map.md` のフィードバック雛形を配置する（二層原則どおり top-level）
-- 秘書の設定に「セットアップ後・スキル利用後・詰まった時に `feedback/` への一言を促す」を含める
+- project 直下に **`work/feedback/`** を作り、`work/feedback/README.md` に `engine-validation-map.md` のフィードバック雛形を配置する（二層原則どおり `work/` 配下）
+- 秘書の設定に「セットアップ後・スキル利用後・詰まった時に `work/feedback/` への一言を促す」を含める
 
 ### 秘書の振る舞い
-- 節目（初回 scaffold 完了 / スキルを使い終えた / エラーで詰まった）で「使ってみてどうでしたか？ `feedback/` に一言いただけると助かります」と**軽く**促す（しつこくしない）
+- 節目（初回 scaffold 完了 / スキルを使い終えた / エラーで詰まった）で「使ってみてどうでしたか？ `work/feedback/` に一言いただけると助かります」と**軽く**促す（しつこくしない）
 - フィードバックは**ツールの使い勝手のみ**。個人情報・企業の非公開情報は書かせない
 - フィードバックは著者が回収し、検証マップで化学側のどのエンジンパスの signal かに翻訳する（→ `engine-validation-map.md` §3）
