@@ -117,8 +117,7 @@ QJ3b (悩み・進め方/状況): 「進め方やコンディションで当て�
 | `recruit/` | 業界横断のインターン・説明会・選考イベントのカタログ（`<業界>.md`）と HTML（カタログ/締切カレンダー/比較表） | 秘書 + `research` |
 | `feedback/` | テストユーザーの使い心地フィードバック（`<YYYY-MM-DD>.md`・`README.md` 雛形）。**化学機能の間接検証**に使う（→ `references/engine-validation-map.md`） | 秘書 |
 
-**初心者向け投入フォルダ**：`documents/inbox/` を作り、「過去に書いた ES や履歴書をここに入れて『取り込んで』と言うと（`caw-intake`）、
-文体・経験・強み/弱み・ガクチカ・志望動機/就活の軸・プロフィール・過去回答を抽出して `self-analysis/` と `documents/`（`voice-style.md`・`past-answers.md`）に整理し、以降の ES 作成（`caw-es`）に活かします」と README に明記する。
+**統合 inbox（迷ったらここ）**：プロジェクト直下に `inbox/` を作り、「**過去に書いた ES・履歴書・自己PR や企業情報など、何でもここに入れて『処理して』と言えば（`caw-intake`）、中身を見て自動で振り分けます**——ES 類は文体・経験・強み/弱み・ガクチカ・志望動機・プロフィール・過去回答を抽出して `self-analysis/` と `documents/`（`voice-style.md`・`past-answers.md`）に整理、企業情報は企業研究（`caw-research`）の素材に。以降の ES 作成（`caw-es`）に活かします」と README に明記する。
 
 ---
 
@@ -189,7 +188,7 @@ QJ3b (悩み・進め方/状況): 「進め方やコンディションで当て�
 経験の棚卸しと言語化を支援。ガクチカ（学生時代に力を入れたこと）・自己PR・価値観・強みを、面接や ES で使える素材にする。
 
 ## ワークフロー
-0. 過去に書いた ES・書類が `documents/inbox/` にあれば、まず `caw-intake` で文体・経験・強み・ガクチカ・基本プロフィールを一括抽出（`self-analysis/` と `documents/voice-style.md` に整理）
+0. 過去に書いた ES・書類が統合 `inbox/` にあれば、まず `caw-intake` で（中身を判定して）文体・経験・強み・ガクチカ・志望動機・プロフィールを一括抽出（`self-analysis/` と `documents/voice-style.md` に整理）
 1. 経験を時系列・場面で洗い出す（学業・研究・アルバイト・サークル・インターン等）
 2. 各経験を **STAR（状況・課題・行動・結果）** で構造化し `self-analysis/experiences.md` に蓄積
 3. そこから「強み 3 つ」「価値観」「ガクチカ候補」を抽出 → 書類部・面接対策部が再利用
@@ -223,7 +222,7 @@ ES（エントリーシート）・履歴書・職務経歴書・志望動機・
 
 ## 成果物（top-level）
 - `documents/<企業名>_es.md` / `documents/<企業名>_rirekisho.md` 等
-- `documents/inbox/` … 過去に書いた書類を入れる → 書き方の傾向を取り込み
+- 過去資料の投入は統合 `inbox/`（top-level）へ → `caw-intake` が中身を判定して取り込み（`documents/inbox/` は使わない）
 - `documents/voice-style.md` … 文体プロファイル（「文体を学習して」で inbox から生成。**この部署の設定ファイル（AGENTS.md/CLAUDE.md）は書き換えない**）
 
 ## 注意
