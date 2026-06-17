@@ -331,7 +331,8 @@ scaffold 完了後、不足ツールがありそうなら（例: スライドや
 
 | 文脈・キーワード | 振り分け先 |
 |---|---|
-| 論文紹介、文献検索、要約、引用 | research |
+| 論文の検索・文献調査（探す/集める） | research（caw-research） |
+| 論文 PDF の登録・要約・書誌・引用整理 | research（caw-paper） |
 | Python スクリプト作成、CLI 化、解析ツール | engineering |
 | Gaussian / GROMACS / CP2K / ORCA / VASP / 計算ジョブ・log 解析 | computation |
 | データ可視化、グラフ、統計、機械学習 | analysis |

@@ -53,7 +53,7 @@
 
 `office/` がある状態では、秘書が窓口になりキーワードで担当部署／スキルに振り分ける。該当部署が未作成なら作成を提案。
 
-**研究**：締切/TODO→秘書、文献・論文→`research`（caw-paper）、計算入力→`computation`（caw-input）、データ解析・可視化→`analysis`、論文・申請書→`writing`、スライド→`presentation`（caw-slides）、計算ノウハウ→`computation`（caw-playbook）、過去資料の取り込み→caw-intake、構造点検→caw-doctor。
+**研究**：締切/TODO→秘書、文献検索・論文を探す→`research`（caw-research）、論文 PDF 登録→`research`（caw-paper）、計算入力→`computation`（caw-input）、データ解析・可視化→`analysis`、論文・申請書→`writing`、スライド→`presentation`（caw-slides）、計算ノウハウ→`computation`（caw-playbook）、過去資料の取り込み→caw-intake、構造点検→caw-doctor。
 
 **就活**：締切・選考スケジュール→秘書、企業・業界研究→`research`（caw-research）、自己分析→`analysis`、ES・書類→`writing`（caw-es）、面接→`presentation`（caw-interview）、募集・イベント・締切の一括収集→秘書＋`research`（caw-events）、過去 ES の取り込み→caw-intake、構造点検→caw-doctor。
 
@@ -67,8 +67,10 @@
 - **就活**：ES/志望動機/自己PR/履歴書 → `work/self-analysis/*`・`work/documents/voice-style.md`・`work/documents/past-answers.md`。企業情報 → caw-research の素材。
 - 既存ファイルは上書きせず追記マージ。判定不能はユーザーに確認。原ファイルは `inbox/` に残す。**設定ファイル（GEMINI.md）は書き換えない**。
 
-### caw-research（企業・業界研究／就活）
-発動したら**必ず**「調査レベル（L1 概要 / L2 標準 / L3 詳細）」と「出力形式（md / HTML / 両方。md 推奨）」をユーザーに尋ねる（省略禁止）。汎用 8 ブロック（A 基本/沿革・B 財務/規模・C 戦略/競争優位・D 業界/競合・E リスク/ガバナンス/ESG・F 働く環境・G 採用/選考・H 接点/想定問答）で `work/companies/<企業>.md` に整理。公式情報は単一ソース可、年収など非公式は複数ソースで裏取り。
+### caw-research（調べる：研究＝論文検索 / 就活＝企業・業界研究）
+`office/GEMINI.md` 冒頭の `> トラック:` で分岐する。
+- **研究**：関心テーマの論文を検索（arXiv / Crossref / Semantic Scholar / OpenAlex / PubMed、件数・期間を確認）→ `work/topics/<topic>.md` に論文リスト（Title/Authors/Year/Journal/ID/1–2 文要約）。**探索はリスト化まで**で、入手 PDF の登録は caw-paper に渡す（DOI/arXiv ID を残す）。
+- **就活**：発動したら**必ず**「調査レベル（L1 概要 / L2 標準 / L3 詳細）」と「出力形式（md / HTML / 両方。md 推奨）」を尋ねる（省略禁止）。汎用 8 ブロック（A 基本/沿革・B 財務/規模・C 戦略/競争優位・D 業界/競合・E リスク/ガバナンス/ESG・F 働く環境・G 採用/選考・H 接点/想定問答）で `work/companies/<企業>.md` に整理。公式情報は単一ソース可、年収など非公式は複数ソースで裏取り。
 
 ### caw-es（ES・応募書類／就活）
 企業の設問・文字数を確認 → **必ず `work/companies/<企業>.md`（caw-research の出力）を読み**、`work/self-analysis/`（experiences/strengths/gakuchika/motivation/profile）と `work/documents/voice-style.md`（あれば本人の文体）、`work/documents/past-answers.md`（あれば過去回答を参考）を踏まえて、**文字数厳守・結論先出し・STAR** でドラフト。`work/documents/<企業>_<種別>.md` に保存。嘘・誇張を書かない。
@@ -79,8 +81,8 @@
 ### caw-events（募集・イベント・締切の一括収集／就活）
 業界横断でインターン・説明会・座談会・選考の情報と締切を集め、`work/recruit/<業界>.md`（＋カタログ/カレンダー/比較の HTML）に整理。公式＋ナビ横断、未取得は「要確認」と分離。
 
-### caw-paper（論文の収集・登録／研究）
-テーマで論文を検索（または PDF を渡された/`inbox/` にある）→ 書誌情報を抽出し `work/papers/<著者-年>.md`（要約付き）に整理。ナレッジベース／クラウドストレージ（MCP 設定済みなら）にも登録。
+### caw-paper（論文の登録・管理／研究）
+発動したら**必ず**抽出レベルを尋ねる（**推奨は設けず**、深いほど AI 使用量〔トークン〕が増えることを明示：**L1**＝書誌＋要旨 4 行＋結論の要点／**L2**＝＋背景概要・対象/手法概要・主要な結果（代表テーブル＋数値）／**L3**＝背景・対象・手法詳細・全数値・考察・限界・関連研究・引用文脈テンプレ・キーワードの**フル抽出＝paper-register 相当**。バッチは最初に 1 回だけ）。`work/papers/` に置かれた PDF（または統合 `inbox/` から渡されたもの）から、選ばれたレベルの深さで書誌情報・要約・タグを抽出し `work/papers/<著者-年>.md` に整理（md の充実度もレベル連動）。ナレッジベース／クラウドストレージ（MCP 設定済みなら）にも登録。**論文の検索・探索は caw-research（研究トラック）が担当**し、その `work/topics/` リストから取得した PDF を本スキルが登録する。
 
 ### caw-input（計算入力生成／研究）
 目的（最適化/TS/IRC/単点 等）と分子・計算レベル（汎関数/基底）を確認し、テンプレ準拠で入力を生成（Gaussian の gjf 等）。座標は log から抜いて explicit に書く。`computation/playbooks/<tool>.md` の傾向（既定の汎関数/基底/収束）を起点に。
