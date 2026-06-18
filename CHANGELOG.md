@@ -2,6 +2,15 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.36.1 / Codex 1.35.1] - 2026-06-18
+
+### Changed — key-message band（L1）を角丸・黒枠なしに
+
+スライド下部のキーメッセージ帯（一番伝えたい 1 行）の見た目をユーザー要望に合わせて調整。`add_key_message_band` を **黒い外枠なし＋角丸（rounded rectangle）** に変更（`border` 既定 `RGBColor(0x22,0x22,0x22)`→`None`、shape `RECTANGLE`→`ROUNDED_RECTANGLE`）。塗り（淡ティール）＋shadow だけで浮かせる。`style-guide.md` §14-1/§14-2 も「角丸・黒枠なし」に更新。
+
+- PR ループ（python-reviewer = CLEAN／Codex）。記録 `review/code-reviews/2026-06-18-caw-slides-pptx-helpers.md`。
+- 版: plugin 1.36.0 → **1.36.1** / codex 1.35.0 → **1.35.1** / marketplace 同期（gemini・copilot 据え置き）
+
 ## [1.36.0 / Codex 1.35.0] - 2026-06-18
 
 ### Changed — caw-slides の視覚アイデンティティ刷新（参考デザイン採用）

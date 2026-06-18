@@ -814,17 +814,19 @@ def add_key_message_band(
     paragraphs: list[Paragraph],
     *,
     fill: RGBColor = COLOR_KEY_MSG_FILL,
-    border: RGBColor | None = RGBColor(0x22, 0x22, 0x22),
+    border: RGBColor | None = None,
     shadow: bool = True,
 ):
     """Full-width key-message band at the Codex fixed position (y=6.28).
 
-    Shadow defaults to ON because this band is the slide's headline
-    takeaway — the one place where drop-shadow emphasis is always welcome.
+    Drawn as a **rounded rectangle with no outline** (border defaults to None):
+    the淡ティール塗り＋shadow だけで浮かせる。Shadow defaults to ON because this
+    band is the slide's headline takeaway — the one place where drop-shadow
+    emphasis is always welcome.
     """
     left, top, width, height = CODEX_KEY_MSG_RECT
     shape = slide.shapes.add_shape(
-        MSO_SHAPE.RECTANGLE, left, top, width, height
+        MSO_SHAPE.ROUNDED_RECTANGLE, left, top, width, height
     )
     _style_shape_fill(shape, fill, border)
     _set_shape_shadow(shape, shadow)

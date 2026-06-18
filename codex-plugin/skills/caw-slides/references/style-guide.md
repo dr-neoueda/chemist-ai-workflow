@@ -689,7 +689,7 @@ plt.rcParams['font.family'] = _FN   # MS Gothic を再アサート
 |-------------:|------|--------|
 | 0 – 0.78 | **塗りタイトルバー（暗ティール `#1E4E63`）＋白タイトル＋ページ番号 `N / total`**（参考デザイン: スライドマスター相当の統一見出し） | `add_slide_chrome(slide, title, slide_number, total=N)` |
 | 1.18 – 6.13 | 本文ゾーン（body card / chart / table / flow diagram）。多パネルなら各図の上に**小見出しバー**（淡ティール） | 各種 `add_*` helper / `add_subheading_bar(slide, text, left=…, top=…, width=…)` |
-| 6.28 – 6.86 | Key-message band（**L1 強調**: 淡ティール fill + 黒枠 + shadow） | `add_key_message_band` or `loud_key_message` |
+| 6.28 – 6.86 | Key-message band（**L1 強調**: 淡ティール fill・**角丸・黒枠なし** + shadow） | `add_key_message_band` or `loud_key_message` |
 
 > **参考デザイン由来の要素（2026-06-18 採用）**: ①塗りタイトルバー＋白文字でスライドマスター相当の統一見出し ②ページ番号は **`N / total` 形式**（`add_slide_chrome` に `total` を渡す）③1スライドに複数図を並べるときは各図に**小見出しバー**（`add_subheading_bar`、淡ティール）④**図中テキスト（軸ラベル・目盛・式）は太字**＝`configure_matplotlib_japanese()` が `axes.labelweight/font.weight='bold'` を既定設定（「全て太字」）。⑤**図は大きく**（本文ゾーンの高さを十分使う）。
 
@@ -701,7 +701,7 @@ plt.rcParams['font.family'] = _FN   # MS Gothic を再アサート
 
 | Level | shadow | border | fill | 使用場面 |
 |-------|:------:|:------:|:----:|---------|
-| **L1 LOUD** | ✓ | ✓ | ✓ | 各スライドで **一番伝えたい 1 要素**。通常は key-message band（**文字は常に 24pt Bold**）、表紙のみ focus pill |
+| **L1 LOUD** | ✓ | ✗ | ✓ | 各スライドで **一番伝えたい 1 要素**。通常は key-message band（**塗り角丸＋shadow・黒枠なし**、文字は常に 24pt Bold）、表紙のみ focus pill |
 | **L2 STRONG** | ✗ | ✓ | ✗ | 枠線だけで目を引きたい透明箱。稀 |
 | **L4 QUIET** | ✗ | ✗ | ✗ | 本文・callout など装飾なしで置くテキスト |
 
