@@ -1,2 +1,2 @@
 description = "面接の想定問答・逆質問・振り返り（就活）"
-prompt = "GEMINI.md の『caw-interview』手順に従う。work/companies/<企業>.md と work/self-analysis/（強み・弱み・ガクチカ・motivation）から定番質問の回答骨子と逆質問を作り work/interview-prep/ に保存。対象: {{args}}"
+prompt = "GEMINI.md の『caw-interview』手順に従う。work/companies/<企業>.md と work/self-analysis/（強み・弱み・ガクチカ・motivation）から定番質問の回答骨子と逆質問を作り work/interview-prep/ に保存。模擬面接の繰り返す弱点・効いた言い回しは自分から確認のうえ work/interview-prep/_notes.md に蓄積し次の準備で先回り適用（その場限りの指摘は記録しない）。対象: {{args}}"

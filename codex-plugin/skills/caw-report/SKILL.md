@@ -96,13 +96,15 @@ description: >
 | work/papers/ | ○/× | N | N | N |
 | work/profile/ | ○/× | N | N | N |
 | work/manuscripts/ | ○/× | N | N | N |
+| work/recruit/ | ○/× | N | N | N |
+| work/topics/ | ○/× | N | N | N |
 | work/presentations/slides/ | ○/× | N | N | N |
 | inbox/（未処理） | ○/× | N | - | - |
 - HTML 出力（caw-research/caw-events）: <有/無>
-- voice-style/voice-self ・ work/profile/* ・ past-answers: <各 有/無>
+- voice-style/voice-self ・ writing-preferences ・ work/profile/* ・ past-answers: <各 有/無>
 
 ## 5. スキル利用の痕跡（成果物の有無から推定・○/×）
-- caw-research / caw-intake / caw-es / caw-interview / caw-events / caw-register / caw-input / caw-slides / caw-playbook / caw-doctor
+- caw-research / caw-intake / caw-es / caw-interview / caw-events / caw-register / caw-write / caw-input / caw-slides / caw-playbook / caw-doctor
 
 ## 6. エラー・詰まり（種別のみ・メッセージ全文/パスは伏字）
 - スキル別 × 種別の件数: <例: caw-es×外部API: N>（種別＝権限/not found/タイムアウト/外部API/構文/その他）
