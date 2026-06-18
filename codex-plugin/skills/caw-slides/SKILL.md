@@ -37,6 +37,8 @@ Codex は自分で構成・L1 メッセージ・視覚デザインを決定し�
 - **言語**: 日本語 / 英語
 - **制約**: 枚数指定、必須図など（あれば）
 
+**元データの候補（発表場面別）**：学会発表/修論/研究紹介/報告会は `work/manuscripts/`（caw-write で書いた自分の論文・要旨）・`work/profile/key-findings.md`・解析結果（`work/analyses/`）、論文紹介は caw-register の `work/papers/<著者-年>.md`（他者論文）、講義はユーザー指定教材。ユーザーが元データ path を指定しなければこれらを候補提示する。
+
 ユーザーが構成や枚数を指定していなければ、スタイルガイドの場面別目安に従い Codex が自ら決める。
 
 ### Step 2: スタイルガイド読込 + 計画メモ
@@ -186,4 +188,5 @@ pip install python-pptx matplotlib Pillow
 
 - `caw` — `office/` 部署スキャフォールド（presentation 部含む）
 - `caw-register` — 論文 PDF を `work/papers/` に登録
+- `caw-write` — 自分の論文・要旨を `work/manuscripts/` に執筆（学会発表/修論/報告会スライドの元データの源泉）
 - `caw-playbook` — 計算ソフト Playbook 蓄積
