@@ -189,7 +189,7 @@ Call 2 で得た回答は `office/AGENTS.md` の「パーソナライズメモ�
 |---|---|---|
 | research | `work/papers/` | 文献要約 md（`<author-year>.md`）+ 原本 PDF |
 | research | `work/topics/` | 調査トピック・文献リスト（caw-research の HTML、`<topic>.html`） |
-| writing | `work/manuscripts/` | 論文ドラフト（LaTeX / Word）、図表、参考文献 |
+| writing | `work/manuscripts/` | 論文・申請書ドラフト（`caw-write`、md / LaTeX / Word）、図表、参考文献 |
 | presentation | `work/presentations/slides/` | 発表資料・論文紹介スライド（`.pptx`）。生成スクリプトは `office/presentation/scripts/`（再生成用） |
 | analysis | `work/analyses/` | 解析結果（1 トピック 1 サブフォルダ） |
 | analysis | `work/notebooks/` | Jupyter Notebook |
@@ -336,7 +336,7 @@ scaffold 完了後、不足ツールがありそうなら（例: スライドや
 | Python スクリプト作成、CLI 化、解析ツール | engineering |
 | Gaussian / GROMACS / CP2K / ORCA / VASP / 計算ジョブ・log 解析 | computation |
 | データ可視化、グラフ、統計、機械学習 | analysis |
-| 論文ドラフト、LaTeX、Word、参考文献整理 | writing |
+| 論文・申請書・要旨の執筆（書く） | writing（caw-write） |
 | コードレビュー、計算妥当性、validation | review |
 | スライド作成、発表資料、図表作成 | presentation |
 
@@ -423,7 +423,7 @@ AI 部署の運営記録を集約する場所。**`office/` は先頭ドット�
 |---|---|---|
 | `work/papers/` | 文献要約 md（`<author-year>.md`）、PDF | research |
 | `work/topics/` | 調査トピック・文献リスト（caw-research の HTML、`<topic>.html`） | research |
-| `work/manuscripts/` | 論文ドラフト（`.tex` / `.docx`）、`references.bib`、図 | writing |
+| `work/manuscripts/` | 論文・申請書ドラフト（`caw-write`：`.md` / `.tex` / `.docx`）、`references.bib`、図 | writing |
 | `work/analyses/` | 解析結果（1 トピック 1 サブフォルダ） | analysis |
 | `work/notebooks/` | Jupyter Notebook | analysis |
 | `work/figures/` | 論文・スライド・解析用の図表 | analysis / presentation |

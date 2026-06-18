@@ -2,6 +2,23 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.29.0 / Codex 1.28.0 / Gemini 1.8.0] - 2026-06-18
+
+### Added — caw-write（論文・申請書の執筆スキル）
+
+研究側の「書く」担当 `caw-write` を新設。就活の書類スキル `caw-es` の研究側の対応物で、セミナー／募集で謳う**「論文執筆 AI」を実体化**するスキル（素材＝`work/manuscripts/_style/`〔文体〕・`work/profile/`・`work/papers/`〔引用源〕は既存だったが、それを消費して書く担当が欠けていた）。
+
+- **1 スキル＋文書種別パラメータ**（論文／申請書／学会要旨／その他）。種別が言語（論文＝英語既定/申請書＝日本語既定）・テンプレ・チェックを切り替える（caw-es が ES/志望動機/自己PR を 1 スキルで扱うのと同型）。
+- **ワークフロー**：要件確認（種別・投稿先/申請区分・字数）→ 素材収集（文体・プロフィール・**`work/papers/` 登録文献＝引用源**・`work/topics/`）→ アウトライン合意 → セクション→全体ドラフト → 保存（`work/manuscripts/<doc-slug>/`、md 既定／.tex・.docx 要望時）→ 推敲＋`codex:review`。
+- **引用は `work/papers/` から本文引用＋文献リストを生成し、裏付けの無いものは「要出典」と明示して捏造しない**。
+- **申請書ガード**（メモリ feedback の一般則化）：平易な日本語（他分野審査員）・未検証仮説を断定しない・数値は一次資料で確認・文中言及形式の引用。
+- **3 段パイプライン完成**：caw-research（探す）→ caw-paper（登録）→ **caw-write（書く）**。就活（caw-research→caw-es）と対称化し、`engine-validation-map`（間接テストハーネス）に caw-es↔caw-write の生成パスペアを追加。
+- 反映：`plugin/skills/caw-write/SKILL.md` 新規（＋ `codex-plugin`）／`GEMINI.md`・`commands/caw-write.toml`／`caw` ディスパッチ＋二層テーブル（plugin/codex/copilot）／`engine-validation-map`（plugin/codex/copilot byte-identical）／web `plugin.md`（Skills 8→9）／配布セミナー HTML §5。**copilot は未収載**（dispatch/engine-map のみ反映、caw-research/caw-paper と同方針）。
+
+### Note
+
+- 版: plugin 1.28.0 → **1.29.0** / codex 1.27.0 → **1.28.0** / gemini 1.7.0 → **1.8.0** / copilot 1.17.0 据え置き（caw-write 未収載）/ marketplace 同期
+
 ## [1.28.0 / Codex 1.27.0 / Gemini 1.7.0] - 2026-06-18
 
 ### Changed — caw-input / caw-playbook の改良（学習ループを閉じる・HPC 設定・移植性）
