@@ -2,6 +2,22 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.28.0 / Codex 1.27.0 / Gemini 1.7.0] - 2026-06-18
+
+### Changed — caw-input / caw-playbook の改良（学習ループを閉じる・HPC 設定・移植性）
+
+計算系スキルの相関（Playbook を挟んだ input↔playbook ループ）を強化し、移植性・利便を改善。
+
+- **A. 学習ループを閉じる**：caw-playbook が「既定の推奨値を変えるべき教訓」を得たら、Lessons Learned への追記だけでなく Playbook の**「デフォルト推奨パラメータ」ブロックも更新**（旧値→新値の理由つき）。caw-input は Step 4 で**「デフォルト＋以降の Lessons Learned で上書き」を明示的に reconcile**（食い違いは後発を優先）。→ 教訓が次回入力に確実に反映。
+- **B. caw-input が HPC 設定を参照**：オンボ Q6 で `office/computation/CLAUDE.md`（AGENTS/GEMINI）に記録された **submission 既定（queue/walltime/並列/module/account）を読む**。無ければ Playbook 事例→確認。local 設定ならジョブスクリプトでなく直接実行コマンド。
+- **C. 移植性**：caw-playbook の汎用知見の保存先を環境別に（**Claude Code=auto-memory `~/.claude/.../memory/`、Codex/Gemini=`office/computation/<CLAUDE/AGENTS/GEMINI>.md` の「共通知見」or 秘書 notes**）。従来は Claude 専用パスを全 CLI に記載していた。
+- **D. 細部**：caw-playbook の解析サマリ・Lessons は**日本語で**明記／caw-input は `jobs/...md` の同名衝突回避（`-2`）／caw-input に**バッチ・スキャン生成**（複数系・汎関数スキャンを 1 計算 1 ディレクトリで一括、多いときは一覧確認）。
+- 反映：`caw-input/SKILL.md`・`caw-playbook/SKILL.md`（plugin + codex）／`GEMINI.md`・`commands/caw-input.toml`・`commands/caw-playbook.toml`。
+
+### Note
+
+- 版: plugin 1.27.0 → **1.28.0** / codex 1.26.0 → **1.27.0** / gemini 1.6.0 → **1.7.0** / copilot 1.17.0 据え置き（caw-input/playbook 未収載）/ marketplace 同期
+
 ## [1.27.0 / Codex 1.26.0 / Gemini 1.6.0] - 2026-06-18
 
 ### Added — caw-research（研究）が登録済み論文を文献リストから除外
