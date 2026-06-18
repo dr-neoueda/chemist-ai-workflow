@@ -6,8 +6,8 @@ Encodes the caw-slides style guide (see ``references/style-guide.md``) so indivi
 All public functions return the created object so callers can further
 tweak it when the style guide does not cover an edge case.
 
-Layout: 16:9 (13.33" x 7.5"). Bilingual font split: 和文 = MS Gothic,
-英数字 = Arial (auto-detected per character by ``mixed_runs`` / ``Run.font=None``).
+Layout: 16:9 (13.33" x 7.5"). Bilingual font split: 和文 = Noto Sans JP (fallback: MS Gothic),
+英数字 = Segoe UI (fallback: Arial; auto-detected per character by ``mixed_runs`` / ``Run.font=None``).
 Drop-in to any chemistry project — no project-specific names or paths.
 """
 from __future__ import annotations
@@ -30,8 +30,16 @@ from pptx.util import Emu, Inches, Pt
 # Fonts
 # ---------------------------------------------------------------------------
 
-FONT_JA = "MS Gothic"
-FONT_EN = "Arial"
+# Preferred fonts (参考デザイン: 日本語 = Noto Sans JP / 英数字 = Segoe UI).
+# python-pptx merely *names* these in the .pptx; PowerPoint substitutes the
+# installed face if the preferred one is absent. The *_FALLBACK names document
+# the guaranteed-available faces (Windows / bundled with MS Office) that should
+# stand in. matplotlib resolves its own font *file* via ``JP_FONT_PATH`` below
+# (Noto Sans JP → MS Gothic), independent of these name constants.
+FONT_JA = "Noto Sans JP"
+FONT_EN = "Segoe UI"
+FONT_JA_FALLBACK = "MS Gothic"
+FONT_EN_FALLBACK = "Arial"
 
 # Cross-platform MS Gothic candidates. First-existing path wins.
 # Override with the ``CAW_SLIDES_MSGOTHIC`` environment variable if needed.
@@ -71,9 +79,46 @@ def _find_msgothic_path() -> Path | None:
 # install MS Gothic or fall back to a CJK-capable system font.
 MSGOTHIC_PATH = _find_msgothic_path()
 
+# Noto Sans JP candidates (preferred 日本語 face). Override with the
+# ``CAW_SLIDES_JPFONT`` environment variable.
+_NOTO_JP_CANDIDATES: tuple[Path, ...] = (
+    Path.home() / "Library/Fonts/NotoSansJP-Regular.otf",
+    Path.home() / "Library/Fonts/NotoSansJP-Regular.ttf",
+    Path("/Library/Fonts/NotoSansJP-Regular.otf"),
+    Path("/Library/Fonts/NotoSansCJKjp-Regular.otf"),
+    Path("/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc"),
+    Path("/usr/share/fonts/truetype/noto/NotoSansJP-Regular.otf"),
+    Path("/usr/share/fonts/google-noto-cjk/NotoSansCJK-Regular.ttc"),
+    Path("C:/Windows/Fonts/NotoSansJP-Regular.otf"),
+)
+
+
+def _find_jp_font_path() -> Path | None:
+    """Locate a Japanese-capable font file, preferring Noto Sans JP, then MS Gothic.
+
+    Honors ``CAW_SLIDES_JPFONT`` then ``CAW_SLIDES_MSGOTHIC`` env overrides so a
+    user can point at a non-standard install. Returns ``None`` if neither face is
+    available (callers fall back to ASCII-only output / raise).
+    """
+    for env_var in ("CAW_SLIDES_JPFONT", "CAW_SLIDES_MSGOTHIC"):
+        override = os.environ.get(env_var)
+        if override and Path(override).is_file():
+            return Path(override)
+    for candidate in (*_NOTO_JP_CANDIDATES, *_MSGOTHIC_CANDIDATES):
+        if candidate.is_file():
+            return candidate
+    return None
+
+
+# Preferred JP font file for matplotlib (Noto Sans JP → MS Gothic fallback).
+JP_FONT_PATH = _find_jp_font_path()
+
 
 def configure_matplotlib_japanese() -> str:
-    """Register MS Gothic with matplotlib and set it as the default family.
+    """Register the preferred JP font (Noto Sans JP → MS Gothic) with matplotlib.
+
+    Also sets the §0「全て太字」defaults: bold tick labels, axis labels and
+    titles so figure text reads on a projector.
 
     Returns
     -------
@@ -83,23 +128,27 @@ def configure_matplotlib_japanese() -> str:
     Raises
     ------
     FileNotFoundError
-        If MS Gothic is not found on any of the platform-default paths and
-        ``CAW_SLIDES_MSGOTHIC`` is not set.
+        If neither Noto Sans JP nor MS Gothic is found on any default path and
+        neither ``CAW_SLIDES_JPFONT`` nor ``CAW_SLIDES_MSGOTHIC`` is set.
 
     Notes
     -----
     Must be called before any matplotlib rendering that includes Japanese
     text. Without this, characters render as tofu (縦長の □).
     """
-    if MSGOTHIC_PATH is None:
+    if JP_FONT_PATH is None:
         raise FileNotFoundError(
-            "MS Gothic not found on any candidate path. Install Microsoft "
-            "PowerPoint (macOS/Windows) or set CAW_SLIDES_MSGOTHIC to a "
-            ".ttc/.ttf path."
+            "No Japanese font found. Install Noto Sans JP, or Microsoft "
+            "PowerPoint (bundles MS Gothic), or set CAW_SLIDES_JPFONT / "
+            "CAW_SLIDES_MSGOTHIC to a .ttc/.otf/.ttf path."
         )
-    fm.fontManager.addfont(str(MSGOTHIC_PATH))
-    family = fm.FontProperties(fname=str(MSGOTHIC_PATH)).get_name()
+    fm.fontManager.addfont(str(JP_FONT_PATH))
+    family = fm.FontProperties(fname=str(JP_FONT_PATH)).get_name()
     plt.rcParams["font.family"] = family
+    # §0「全て太字」: figure text (labels, ticks, titles) bold for projector legibility
+    plt.rcParams["font.weight"] = "bold"
+    plt.rcParams["axes.labelweight"] = "bold"
+    plt.rcParams["axes.titleweight"] = "bold"
     plt.rcParams["axes.spines.top"] = False
     plt.rcParams["axes.spines.right"] = False
     return family
@@ -109,23 +158,35 @@ def configure_matplotlib_japanese() -> str:
 # Palette (see CLAUDE.md §3)
 # ---------------------------------------------------------------------------
 
-COLOR_TEXT_BODY = RGBColor(0x22, 0x22, 0x22)
-COLOR_EMPH_BLUE = RGBColor(0x00, 0x70, 0xC0)
-COLOR_EMPH_NAVY = RGBColor(0x00, 0x33, 0xCC)
-COLOR_EMPH_RED = RGBColor(0xFF, 0x00, 0x00)
-COLOR_SUB_CYAN = RGBColor(0x00, 0xB0, 0xF0)
-COLOR_SUB_GREEN = RGBColor(0x00, 0xAC, 0x48)
+# --- Base color (参考デザイン: teal #3686A6 = RGB 54,134,166) + モノクロ階調 ---
+COLOR_BASE = RGBColor(0x36, 0x86, 0xA6)            # base teal
+COLOR_BASE_DARK = RGBColor(0x1E, 0x4E, 0x63)       # 暗: タイトルバー
+COLOR_BASE_DARKER = RGBColor(0x14, 0x35, 0x44)     # 最暗
+COLOR_BASE_LIGHT = RGBColor(0xA9, 0xD0, 0xE0)      # 明: 小見出しバー
+COLOR_BASE_LIGHTER = RGBColor(0xDC, 0xEC, 0xF2)    # 最明: key-message 箱
+# --- Accents (参考デザイン) ---
+COLOR_ACCENT_TERRACOTTA = RGBColor(0xBA, 0x59, 0x36)  # 186,89,54  暖色強調・データ
+COLOR_ACCENT_GREEN = RGBColor(0x45, 0x9B, 0x2D)       # 69,155,45  第2強調
+COLOR_WHITE = RGBColor(0xFF, 0xFF, 0xFF)
 
-COLOR_ACCENT_BLUE = RGBColor(0x44, 0x72, 0xC4)
-COLOR_ACCENT_LIGHTBLUE = RGBColor(0x00, 0xAA, 0xFF)
-COLOR_ACCENT_CYAN = RGBColor(0x2B, 0xBC, 0xE3)
-COLOR_ACCENT_RED = RGBColor(0xFF, 0x50, 0x50)
+COLOR_TEXT_BODY = RGBColor(0x22, 0x22, 0x22)
+# Role colors — 参考デザイン体系に再編（名前は据え置き＝既存テンプレ互換）
+COLOR_TITLE = COLOR_BASE_DARK                    # 見出し・構造（白地のタイトル文字/▸見出し）
+COLOR_EMPH_BLUE = COLOR_BASE                     # 要点（base teal）
+COLOR_EMPH_NAVY = COLOR_BASE_DARK
+COLOR_EMPH_RED = COLOR_ACCENT_TERRACOTTA         # 注意・暖色強調（純赤 → テラコッタ）
+COLOR_SUB_CYAN = COLOR_BASE_LIGHT
+COLOR_SUB_GREEN = COLOR_ACCENT_GREEN             # 第2強調（緑 #459B2D）
+
+COLOR_ACCENT_BLUE = COLOR_BASE                   # 構造色（テーブルヘッダ・バー等）
+COLOR_ACCENT_LIGHTBLUE = COLOR_BASE_LIGHT
+COLOR_ACCENT_CYAN = COLOR_BASE_LIGHT
+COLOR_ACCENT_RED = COLOR_ACCENT_TERRACOTTA
 COLOR_HIGHLIGHT_YELLOW = RGBColor(0xFF, 0xFF, 0x00)
 COLOR_HIGHLIGHT_AMBER = RGBColor(0xFF, 0xC0, 0x00)
 
-# 7原則のタイトル・強調色 (§12)
-COLOR_TITLE = RGBColor(0x1A, 0x56, 0xA0)
-COLOR_EMPH_7PRINCIPLES_RED = RGBColor(0xC0, 0x39, 0x3A)
+# 7原則の強調色 (§12)
+COLOR_EMPH_7PRINCIPLES_RED = COLOR_ACCENT_TERRACOTTA
 
 # ---------------------------------------------------------------------------
 # Categorical palette — 図表・グラフ・多系列で青一色を避け、識別しやすい配色に
@@ -133,13 +194,13 @@ COLOR_EMPH_7PRINCIPLES_RED = RGBColor(0xC0, 0x39, 0x3A)
 # ---------------------------------------------------------------------------
 # matplotlib 用（hex 文字列）
 CATEGORICAL_HEX: tuple[str, ...] = (
-    "#4472C4",  # 青
-    "#E8743B",  # オレンジ
-    "#00AC48",  # 緑
-    "#C0393A",  # 赤
-    "#2BBCE3",  # シアン
-    "#8E5BA6",  # 紫
-    "#FFC000",  # アンバー
+    "#3686A6",  # base teal（参考デザイン）
+    "#BA5936",  # テラコッタ
+    "#459B2D",  # 緑
+    "#1E4E63",  # 暗 teal
+    "#D9A441",  # アンバー
+    "#7A5BA6",  # 紫
+    "#A0A0A0",  # グレー
 )
 # native chart 用（RGBColor）
 CATEGORICAL_RGB: tuple[RGBColor, ...] = tuple(
@@ -504,11 +565,11 @@ def assert_no_overlap(rects: list[Rect]) -> None:
 
 COLOR_CARD_WHITE = RGBColor(0xFF, 0xFF, 0xFF)
 COLOR_CARD_BORDER = RGBColor(0xDD, 0xDD, 0xDD)
-COLOR_PILL_BLUE_FILL = RGBColor(0xEA, 0xF2, 0xFC)
-COLOR_PILL_RED_FILL = RGBColor(0xFB, 0xEA, 0xE8)
-COLOR_PILL_GREEN_FILL = RGBColor(0xE8, 0xF6, 0xEE)
+COLOR_PILL_BLUE_FILL = RGBColor(0xDC, 0xEC, 0xF2)   # 淡 teal（参考デザイン）
+COLOR_PILL_RED_FILL = RGBColor(0xF4, 0xE3, 0xDC)    # 淡テラコッタ
+COLOR_PILL_GREEN_FILL = RGBColor(0xE4, 0xF1, 0xDD)  # 淡グリーン
 COLOR_PILL_GREY_FILL = RGBColor(0xF4, 0xF6, 0xF8)
-COLOR_KEY_MSG_FILL = RGBColor(0xEA, 0xF2, 0xFC)
+COLOR_KEY_MSG_FILL = RGBColor(0xDC, 0xEC, 0xF2)     # key-message 箱 = 最明 teal
 # Source-line colour is now quite light and the font is small — the source
 # line must read as marginalia, not content.
 COLOR_SOURCE_GREY = RGBColor(0xB0, 0xB0, 0xB0)
@@ -523,7 +584,7 @@ SIZE_PILL_CAPTION = Pt(12)
 # Fixed reference positions (copied from Codex reference decks)
 CODEX_TITLE_RECT = (Inches(0.4), Inches(0.12), Inches(11.7), Inches(0.45))
 CODEX_SLIDE_NUM_RECT = (Inches(12.18), Inches(0.12), Inches(0.62), Inches(0.4))
-CODEX_SEP_RECT = (Inches(0.4), Inches(0.82), Inches(12.53), Inches(0.03))
+CODEX_SEP_RECT = (Inches(0.4), Inches(0.82), Inches(12.53), Inches(0.03))  # deprecated: 新 add_slide_chrome は塗りバーで separator 線を描かない（互換用に残置・overlap rects に足さない）
 CODEX_KEY_MSG_RECT = (Inches(0.52), Inches(6.28), Inches(12.25), Inches(0.58))
 CODEX_SOURCE_RECT = (Inches(0.52), Inches(7.02), Inches(12.2), Inches(0.35))
 
@@ -1118,41 +1179,77 @@ def add_scatter_line_chart(
     return frame
 
 
-def add_slide_chrome(slide, title: str, slide_number: int) -> list[Rect]:
-    """Add Codex slide chrome: title text, slide number, blue separator bar.
+def add_slide_chrome(
+    slide, title: str, slide_number: int, total: int | None = None
+) -> list[Rect]:
+    """Add slide chrome: filled dark-teal title bar, white title, page number.
 
-    Returns a list of non-overlapping rects (title, slide number, separator)
-    that callers should include in their ``assert_no_overlap`` check.
+    参考デザイン: スライドマスター相当の統一見出し。全幅の濃ティールバーに白い
+    タイトルとページ番号を載せる。``total`` を渡すと ``N / total`` 形式で表示する。
+
+    Returns the title and page-number rects for ``assert_no_overlap``. The bar
+    itself is background chrome and is intentionally excluded from the overlap
+    check (the title and number sit on it by design).
     """
-    # Title text
-    t_left, t_top, t_w, t_h = CODEX_TITLE_RECT
+    # Filled title bar (background, dark teal, full width)
+    bar = slide.shapes.add_shape(
+        MSO_SHAPE.RECTANGLE, Inches(0), Inches(0), Inches(13.33), Inches(0.78)
+    )
+    _style_shape_fill(bar, COLOR_BASE_DARK, None)
+    # Title text (white, on the bar)
+    t_rect = (Inches(0.4), Inches(0.14), Inches(11.0), Inches(0.5))
     add_rich_text_box(
         slide,
-        [Paragraph([Run(title, size=Pt(28), bold=True, color=COLOR_TITLE)])],
-        left=t_left, top=t_top, width=t_w, height=t_h,
+        [Paragraph([Run(title, size=Pt(28), bold=True, color=COLOR_WHITE)])],
+        left=t_rect[0], top=t_rect[1], width=t_rect[2], height=t_rect[3],
     )
-    # Slide number
-    n_left, n_top, n_w, n_h = CODEX_SLIDE_NUM_RECT
+    # Page number "N / total" (white), right-aligned
+    num_text = f"{slide_number} / {total}" if total else str(slide_number)
+    n_rect = (Inches(11.55), Inches(0.18), Inches(1.35), Inches(0.42))
     add_rich_text_box(
         slide,
         [Paragraph(
-            [Run(str(slide_number), size=Pt(12), bold=True,
-                 color=COLOR_SOURCE_GREY, font=FONT_EN)],
+            [Run(num_text, size=Pt(14), bold=True, color=COLOR_WHITE, font=FONT_EN)],
             alignment=PP_ALIGN.RIGHT,
         )],
-        left=n_left, top=n_top, width=n_w, height=n_h,
+        left=n_rect[0], top=n_rect[1], width=n_rect[2], height=n_rect[3],
     )
-    # Blue separator bar (AUTO_SHAPE so it's visible as a filled strip)
-    s_left, s_top, s_w, s_h = CODEX_SEP_RECT
-    bar = slide.shapes.add_shape(
-        MSO_SHAPE.RECTANGLE, s_left, s_top, s_w, s_h
-    )
-    _style_shape_fill(bar, COLOR_ACCENT_BLUE, None)
     return [
-        (t_left, t_top, t_w, t_h, "<title>"),
-        (n_left, n_top, n_w, n_h, "<slide-number>"),
-        (s_left, s_top, s_w, s_h, "<separator>"),
+        (*t_rect, "<title>"),
+        (*n_rect, "<slide-number>"),
     ]
+
+
+def add_subheading_bar(
+    slide,
+    text: str,
+    *,
+    left: Emu,
+    top: Emu,
+    width: Emu,
+    height: Emu = Inches(0.36),
+) -> Rect:
+    """Light-teal filled sub-heading bar (多パネルスライドの各図の見出し).
+
+    参考デザイン: 1 スライドに複数の図を並べるとき、各図の上に淡ティールの小見出し
+    バーを置いて何の図かを示す。返り値の rect を ``assert_no_overlap`` に渡す
+    (テキストはバー内に収まる前提なので、バー 1 個ぶんの rect だけ返す)。
+    """
+    bar = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, left, top, width, height)
+    _style_shape_fill(bar, COLOR_BASE_LIGHT, None)
+    # Label lives in the bar's own text frame (one shape only) so the returned
+    # rect fully covers the visible content — same pattern as add_flow_box.
+    tf = bar.text_frame
+    tf.word_wrap = False
+    tf.vertical_anchor = MSO_ANCHOR.MIDDLE
+    tf.margin_left = Inches(0.15)
+    tf.margin_right = Inches(0.15)
+    tf.margin_top = Inches(0.02)
+    tf.margin_bottom = Inches(0.02)
+    _write_paragraphs(
+        tf, [Paragraph(mixed_runs(text, size=Pt(20), bold=True, color=COLOR_TITLE))]
+    )
+    return (left, top, width, height, f"<subheading:{text[:10]}>")
 
 
 # ---------------------------------------------------------------------------
@@ -1395,7 +1492,7 @@ def _ensure_matplotlib_japanese() -> None:
         configure_matplotlib_japanese()
     except (FileNotFoundError, OSError) as exc:
         warnings.warn(
-            f"MS Gothic not configured ({exc}). Japanese text in matplotlib "
+            f"No Japanese font configured ({exc}). Japanese text in matplotlib "
             f"diagrams will render as tofu (□). Set CAW_SLIDES_MSGOTHIC "
             f"env var to your msgothic.ttc path to fix.",
             RuntimeWarning,
@@ -1586,14 +1683,14 @@ def add_energy_diagram(
     def _seg_width(idx: int) -> float:
         return 0.6 if idx in (0, n - 1) else 0.15
 
-    # State role colors: 始状態=青 / 終状態=緑 / 中間(TS・中間体)=赤
-    # （役割が色で読めると初学者にも障壁/安定性が直感的）
+    # State role colors: 始状態=teal / 終状態=緑 / 中間(TS・中間体)=テラコッタ
+    # （参考デザインのパレット。役割が色で読めると初学者にも障壁/安定性が直感的）
     def _state_color(idx: int) -> str:
         if idx == 0:
-            return "#4472C4"   # reactant 青
+            return "#3686A6"   # reactant base teal
         if idx == n - 1:
-            return "#00AC48"   # product 緑
-        return "#C0393A"       # TS / intermediate 赤
+            return "#459B2D"   # product 緑
+        return "#BA5936"       # TS / intermediate テラコッタ
 
     for i, (e, label) in enumerate(zip(levels, labels)):
         sw = _seg_width(i)
@@ -1732,7 +1829,7 @@ def add_timeline(
     fig_w = max(4.0, float(width) / 914400.0)
     fig_h = max(1.2, float(height) / 914400.0)
     fig, ax = plt.subplots(figsize=(fig_w, fig_h), dpi=150)
-    line_rgb = "#1A56A0"
+    line_rgb = "#1E4E63"  # 参考デザイン: 暗ティール（タイムライン軸）
 
     ax.plot([0.05, 0.95], [0, 0], color=line_rgb, lw=3)
     for i, (date, event) in enumerate(milestones):

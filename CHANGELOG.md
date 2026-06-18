@@ -2,6 +2,22 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.36.0 / Codex 1.35.0] - 2026-06-18
+
+### Changed — caw-slides の視覚アイデンティティ刷新（参考デザイン採用）
+
+X で見かけたスライドデザイン仕様（ティール base ＋ テラコッタ/グリーン、Noto Sans JP / Segoe UI）を参考に、`style-guide.md` の規則と `pptx_helpers.py` の実装を更新。構造ルール（図表優先・assert_no_overlap・3-tier 強調）は不変で、視覚レイヤーのみ刷新。
+
+- **フォント**: 和文 **Noto Sans JP** / 英数字 **Segoe UI**（未導入環境は MS Gothic / Arial に自動フォールバック。matplotlib は `JP_FONT_PATH` が Noto→MS Gothic でファイル探索、`CAW_SLIDES_JPFONT` で上書き可）。
+- **カラーパレット**: ベース teal `#3686A6` ＋モノクロ階調 ＋ アクセント **terracotta `#BA5936` / green `#459B2D`**。役割＝構造はティール、強調はテラコッタ/グリーン。純赤 `#FF0000` をテラコッタに置換。`pptx_helpers` の色定数は名前を据え置き revalue（テンプレ後方互換）、`CATEGORICAL_HEX`・energy diagram・timeline も新パレットに。
+- **要素追加**: ①塗りタイトルバー（暗ティール＋白文字＝スライドマスター相当）②ページ番号 **`N / total`**（`add_slide_chrome(..., total=N)`）③多パネル用 **`add_subheading_bar`**（淡ティール小見出し）④図中テキスト**太字**（`configure_matplotlib_japanese` が bold rcParams 既定）。
+- 反映：`caw-slides/references/style-guide.md`（§1 フォント・§3 パレット・§14-1 chrome）＋ `pptx_helpers.py`（plugin + codex byte-identical）。
+- **PR ループ**: python-reviewer（HIGH×3 = phantom-shape/dead-const/誤誘導コメント → 修正）＋ Codex（CRITICAL/HIGH=0、LOW chemistry hex → 修正）。記録 `review/code-reviews/2026-06-18-caw-slides-pptx-helpers.md`。
+
+### Note
+
+- 版: plugin 1.35.0 → **1.36.0** / codex 1.34.0 → **1.35.0** / gemini 1.14.0 据え置き・copilot 1.17.1 据え置き（caw-slides assets 非収載）/ marketplace 同期
+
 ## [1.35.0 / Codex 1.34.0 / Gemini 1.14.0] - 2026-06-18
 
 ### Changed — caw-events の出力を HTML 既定（出典クリックリンク付き）に
