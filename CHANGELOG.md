@@ -2,6 +2,21 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.35.0 / Codex 1.34.0 / Gemini 1.14.0] - 2026-06-18
+
+### Changed — caw-events の出力を HTML 既定（出典クリックリンク付き）に
+
+caw-events の標準成果物を **md → HTML** に変更（caw-research と同方針）。理由＝**出典にワンクリックで飛べる**ようにするため。
+
+- **HTML を既定で生成**：`work/recruit/<企業slug>_<YYYYMMDD>.html`（日付つきで再実行ごとに履歴が残る）。AskUserQuestion でのビュー選択は廃止し、3 ビュー（カタログ / 年間スケジュール・予測カレンダー / 過去×今年度対照表）を 1 ファイルに同梱。
+- **すべてのイベント・過去実績・予測に出典 URL のクリック可能なリンク（`<a target="_blank">`）＋取得日**を付与。URL の無い項目は「要確認」と明示（リンクは捏造しない）。確定/募集中/予測/要確認をバッジ区別。
+- **md は任意**（「md も」と言われたときのみ `<企業slug>_<YYYYMMDD>.md` も生成）。
+- 反映：`caw-events/SKILL.md`（plugin + codex）の frontmatter・Step 5（旧 md カタログ＋AskUserQuestion HTML を HTML 既定に統合）・横断モード・注意事項／`GEMINI.md`・`commands/caw-events.toml`／`job-hunting-departments.md`（plugin/codex/copilot）の `work/recruit/` 行。
+
+### Note
+
+- 版: plugin 1.34.0 → **1.35.0** / codex 1.33.0 → **1.34.0** / gemini 1.13.0 → **1.14.0** / copilot 1.17.1 据え置き / marketplace 同期
+
 ## [1.34.0 / Codex 1.33.0 / Gemini 1.13.0] - 2026-06-18
 
 ### Changed — スキル間連携の配線（caw-slides ← 自分の論文 / caw-report の追跡補完）

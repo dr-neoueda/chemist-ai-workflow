@@ -114,7 +114,7 @@ QJ3b (悩み・進め方/状況): 「進め方やコンディションで当て�
 | `work/documents/` | ES・履歴書・職務経歴書・自己PR・志望動機のドラフト（`<企業名>_<書類>.md`）・文体プロファイル `voice-style.md` | `writing` |
 | `work/self-analysis/` | 自己分析（経験の棚卸し・強み・ガクチカ素材・価値観） | `analysis` |
 | `work/interview-prep/` | 想定問答・逆質問・面接後の振り返り（`<企業名>.md`） | `presentation` |
-| `work/recruit/` | **ある企業**の就活イベント深掘り＋今年度予測（`<企業>.md`）と HTML（カタログ/年間予測カレンダー/過去×今年度対照表）。複数社横断は明示時のみ `<業界>.md`＋企業比較表 | 秘書 + `research` |
+| `work/recruit/` | **ある企業**の就活イベント深掘り＋今年度予測。**出典リンク付き HTML `<企業>_<日付>.html` が既定の成果物**（カタログ/年間予測カレンダー/過去×今年度対照表、md は任意）。複数社横断は明示時のみ `<業界>_<日付>.html`＋企業比較表 | 秘書 + `research` |
 | `work/feedback/` | テストユーザーの使い心地フィードバック（`<YYYY-MM-DD>.md`・`README.md` 雛形）。**化学機能の間接検証**に使う（→ `references/engine-validation-map.md`） | 秘書 |
 
 **統合 inbox（迷ったらここ）**：プロジェクト直下に `inbox/` を作り、「**過去に書いた ES・履歴書・自己PR や企業情報など、何でもここに入れて『処理して』と言えば（`caw-intake`）、中身を見て自動で振り分けます**——ES 類は文体・経験・強み/弱み・ガクチカ・志望動機・プロフィール・過去回答を抽出して `work/self-analysis/` と `work/documents/`（`voice-style.md`・`past-answers.md`）に整理、企業情報は企業研究（`caw-research`）の素材に。以降の ES 作成（`caw-es`）に活かします」と README に明記する。
