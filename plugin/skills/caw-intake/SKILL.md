@@ -74,7 +74,7 @@ trigger: /caw-intake
 - **何を・どう判定し・どこに処理したか**をファイルごとに一覧で報告する（種類／行き先／要点）。
 - `inbox/` の原ファイルは**残す**（削除しない）。処理済みが分かるよう、必要なら一覧で「処理済み」を明示。
 - 判定に迷った分はまとめて確認する。
-- 次の一歩を 1 つ提示（研究例「これで論文執筆が本人の文体・文脈で書けます」／就活例「caw-es が本人の文体・実績で ES を書けます」）。
+- 次の一歩を 1 つ提示（研究例「これで caw-write が本人の文体・文脈で論文・申請書を書けます」／就活例「caw-es が本人の文体・実績で ES を書けます」）。
 
 ---
 
@@ -111,14 +111,14 @@ caw-es / caw-interview がこの出力を読んで本人の文体・実績で書
 | CV・メタ情報 | `work/profile/cv.md` | 所属・経歴・受賞・グラント・共著者ネットワーク・ORCID/researchmap 等 ID |
 | 専門用語・略号辞書 | `work/profile/glossary.md` | よく使う略号・系の略称・装置略称（表記の一貫性確保） |
 
-論文執筆・caw-slides・caw-input がこの出力を読んで本人の文体・文脈で書く。文体は既存規約 `work/manuscripts/_style/voice-<name>.md` に乗せ、本人ぶんを `voice-self.md` とする。
+caw-write・caw-slides・caw-input がこの出力を読んで本人の文体・文脈で書く。文体は既存規約 `work/manuscripts/_style/voice-<name>.md` に乗せ、本人ぶんを `voice-self.md` とする。
 
 ---
 
 ## 他スキルとの関係
 
 - **caw-intake は統合 inbox の「振り分け役」＋「自分プロファイルの抽出役」**。外部論文は `caw-register`、計算入出力は `caw-playbook`、企業情報は `caw-research` に渡し、**二重処理しない**。
-- 整備した `work/profile/`・`work/self-analysis/`・各 `_style` を、研究は論文執筆・`caw-slides`・`caw-input` が、就活は `caw-es`・`caw-interview` が読む。
+- 整備した `work/profile/`・`work/self-analysis/`・各 `_style` を、研究は `caw-write`・`caw-slides`・`caw-input` が、就活は `caw-es`・`caw-interview` が読む。
 - caw-es の「文体を学習して」は `work/documents/voice-style.md` だけを作る軽量版。まとめて取り込むなら caw-intake。
 
 ## 重要な注意事項

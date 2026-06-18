@@ -76,7 +76,7 @@
 企業の設問・文字数を確認 → **必ず `work/companies/<企業>.md`（caw-research の出力）を読み**、`work/self-analysis/`（experiences/strengths/gakuchika/motivation/profile）と `work/documents/voice-style.md`（あれば本人の文体）、`work/documents/past-answers.md`（あれば過去回答を参考）・`work/documents/writing-preferences.md`（あれば推敲で学んだ好み）を踏まえて、**文字数厳守・結論先出し・STAR** でドラフト。`work/documents/<企業>_<種別>.md` に保存。嘘・誇張を書かない。推敲で修正を受けるたびに、その直しが汎用的な好みかを評価し、汎用的なら**自分から**「次回以降も既定にしますか？」と確認のうえ `work/documents/writing-preferences.md` に 1 行ルールで蓄積し（「覚えて」待ちにしない・一度きりの直しは記録しない）、次の ES から先回り適用する。
 
 ### caw-interview（面接対策／就活）
-`work/companies/<企業>.md` と `work/self-analysis/`（強み・弱み・ガクチカ・`motivation.md`）から、定番質問（自己紹介/志望動機/ガクチカ/強み弱み/学業/キャリア/逆質問）の骨子を作り `work/interview-prep/` に保存。
+`work/companies/<企業>.md` と `work/self-analysis/`（強み・弱み・ガクチカ・`motivation.md`）から、まず `work/interview-prep/_notes.md`（蓄積した面接の傾向ノート）があれば読み、定番質問（自己紹介/志望動機/ガクチカ/強み弱み/学業/キャリア/逆質問）の骨子を作り `work/interview-prep/` に保存。模擬面接・振り返りで繰り返す弱点・効いた言い回し・よく出た質問は、自分から確認のうえ `work/interview-prep/_notes.md` に蓄積し次の準備で先回り適用（その場限りの指摘は記録しない・全 CLI 共通）。
 
 ### caw-events（企業の就活イベント深掘り＆今年度予測／就活）
 **既定で 1 社**の就活イベント（インターン・説明会・座談会・選考）と締切を深掘り収集し、**過去 2〜3 年の実績から今年度の開催時期・内容を予測**（「予測（昨年実績ベース）」と根拠の実日付を明示）。公式採用ページを最優先に、就活サイト（マイナビ/リクナビ/ワンキャリア 等）も積極併用。`work/recruit/<企業>.md`＋HTML（イベントカタログ/年間スケジュール・予測カレンダー/過去×今年度 対照表）に整理し、確定/予測をバッジで区別、未取得は「要確認」。秘書の選考スケジュールへ連携。**複数社・業界横断はユーザーが明示指示したときだけ**（`work/recruit/<業界>.md`＋企業比較表）。

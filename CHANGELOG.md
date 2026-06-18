@@ -2,6 +2,27 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.33.0 / Codex 1.32.0 / Gemini 1.12.0] - 2026-06-18
+
+### Added — caw-interview に面接の学習ループ（傾向ノート）
+
+全スキル監査で見つかった改善点を反映。`caw-interview` は振り返り（Step D）が**その企業限り**で、セッションを跨ぐ学習蓄積が無く、engine-validation-map の「反復→ログ蓄積→再利用」ペア（caw-playbook の相方）として片肺だった。**caw-write/caw-es で導入した学習ループの面接版**を追加。
+
+- **新ファイル `work/interview-prep/_notes.md`（面接の傾向ノート）**：模擬面接・振り返りから繰り返し見える傾向（繰り返す弱点・よく聞かれる質問・効いた言い回し）を蓄積。
+- **適用（Step A）**：想定問答づくりの前に `_notes.md` を読み、既知の弱点を踏まえて準備。
+- **記録（Step B/D・confirm-first）**：汎用的な傾向だけを「次回以降の準備にも反映しますか？」と**自分から確認**して 1 行追記（その場限りの指摘は記録しない）。**Claude Code / Codex CLI / Gemini CLI で共通**。
+- 使うほど面接準備が自分に最適化される（caw-playbook の Lessons Learned、caw-write/caw-es の writing-preferences と同じ思想）。
+
+### Fixed — スキル一覧ドキュメントの取りこぼし（caw-write 追加・学習ループの反映漏れ）
+
+- **caw-report**：利用痕跡のスキル一覧に **caw-write** を追加、成果物一覧に **writing-preferences** を追加、利用状況テーブルに `work/recruit/`・`work/topics/` 行を追加（動作レポートが新スキル・新成果物を正しく反映）。
+- **caw-intake**：出力の読み手の総称「論文執筆」を **caw-write** と明記（他スキル同様に名前で参照）。
+- `engine-validation-map`：反復→ログ行を caw-interview の `_notes.md` 横断蓄積つきに更新（plugin/codex/copilot byte-identical）。
+
+### Note
+
+- 版: plugin 1.32.0 → **1.33.0** / codex 1.31.0 → **1.32.0** / gemini 1.11.0 → **1.12.0** / copilot 1.17.1 据え置き（対象スキル未収載・engine-map 参照のみ）/ marketplace 同期
+
 ## [1.32.0 / Codex 1.31.0 / Gemini 1.11.0] - 2026-06-18
 
 ### Changed — caw-events を「1 社深掘り＋今年度予測」に再設計（就活）
