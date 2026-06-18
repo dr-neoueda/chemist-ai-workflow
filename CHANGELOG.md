@@ -2,6 +2,22 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.26.0 / Codex 1.25.0 / copilot 1.17.0 / Gemini 1.5.0] - 2026-06-18
+
+### Changed — 研究モード caw-research の出力を Markdown 表 → クリック可能な HTML リストに
+
+研究トラックの caw-research（論文検索）の成果物を、`work/topics/<topic>.md`（書誌の md テーブル）から **`work/topics/<topic>.html`（オフライン自己完結の HTML）** に変更。**md は作らない**。
+
+- **タイトルがハイパーリンク**：DOI → `https://doi.org/<doi>`、arXiv → `https://arxiv.org/abs/<id>`、無ければ Google Scholar 検索にフォールバック。クリックで論文ページへ直接飛べる。
+- **デザイン**：1 論文 1 ブロックの**静的な縦リスト**（並べ替えなし・JS なし）。タイトル（リンク）＋メタ行（著者・年・誌名）＋要約 1〜2 文＋DOI/arXiv 補助リンク。製品配色・インライン CSS・装飾最小。フッタに「PDF を `work/papers/` に置いて『登録して』で caw-paper が登録」の導線。
+- **要約は日本語（ユーザーの言語）で出力**（原文が英語でも日本語に要約）。OpenAlex 等の abstract が出版社ボイラープレートで壊れ／欠落の場合はタイトルから 1 行＋「※要約データなし」（知見は捏造しない）。同じ「日本語で要約」原則を caw-paper にも明記。
+- **ファイル名規則**：`<topic-slug>_<YYYYMMDD>_n<件数>.html`（例 `mof_20260618_n10.html`）。トピック・取得日・件数を含め、同テーマの再検索は上書きせず日付で別ファイルとして残す（同一 topic+日付は `-2`,`-3`）。caw の既存出力（`..._YYYYMMDD`）と整合。
+- 反映：`caw-research/SKILL.md`（plugin + codex）の R-Step 3・description・intro／`GEMINI.md`・`commands/caw-research.toml`／`caw/SKILL.md` 二層原則の `work/topics/` 説明（3 系統）・`chemistry-departments`・`mcp-setup-templates`／plugin README・web `plugin.md`／配布セミナー HTML のスキル説明。就活モードの caw-research（企業研究の md/HTML 選択）は変更なし。
+
+### Note
+
+- 版: plugin 1.25.0 → **1.26.0** / codex 1.24.0 → **1.25.0** / copilot 1.16.0 → **1.17.0** / gemini 1.4.0 → **1.5.0** / marketplace 同期
+
 ## [1.25.0 / Codex 1.24.0 / copilot 1.16.0 / Gemini 1.4.0] - 2026-06-17
 
 ### Changed — 論文検索を caw-research（研究トラック）へ移管、caw-paper は登録専任に

@@ -123,7 +123,7 @@ claude mcp add filesystem -- npx -y @modelcontextprotocol/server-filesystem /pat
 ````markdown
 ## ナレッジベース未設定
 
-現状ナレッジベース連携は無効。`work/papers/` `work/topics/` 配下にローカル Markdown として蓄積される。
+現状ナレッジベース連携は無効。`work/papers/`（md）・`work/topics/`（HTML）にローカル蓄積される。
 
 後でナレッジベースを決めたら `/caw` で再度この手順を生成できる。
 ````

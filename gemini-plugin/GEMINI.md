@@ -69,7 +69,7 @@
 
 ### caw-research（調べる：研究＝論文検索 / 就活＝企業・業界研究）
 `office/GEMINI.md` 冒頭の `> トラック:` で分岐する。
-- **研究**：関心テーマの論文を検索（arXiv / Crossref / Semantic Scholar / OpenAlex / PubMed、件数・期間を確認）→ `work/topics/<topic>.md` に論文リスト（Title/Authors/Year/Journal/ID/1–2 文要約）。**探索はリスト化まで**で、入手 PDF の登録は caw-paper に渡す（DOI/arXiv ID を残す）。
+- **研究**：関心テーマの論文を検索（arXiv / Crossref / Semantic Scholar / OpenAlex / PubMed、件数・期間を確認）→ クリックで論文ページに飛べる **HTML リスト** `work/topics/<topic>_<YYYYMMDD>_n<件数>.html`（タイトルがリンク・縦リスト・並べ替えなし・要約は日本語）に書き出す。**探索はリスト化まで**で、入手 PDF の登録は caw-paper に渡す（DOI/arXiv ID を残す）。
 - **就活**：発動したら**必ず**「調査レベル（L1 概要 / L2 標準 / L3 詳細）」と「出力形式（md / HTML / 両方。md 推奨）」を尋ねる（省略禁止）。汎用 8 ブロック（A 基本/沿革・B 財務/規模・C 戦略/競争優位・D 業界/競合・E リスク/ガバナンス/ESG・F 働く環境・G 採用/選考・H 接点/想定問答）で `work/companies/<企業>.md` に整理。公式情報は単一ソース可、年収など非公式は複数ソースで裏取り。
 
 ### caw-es（ES・応募書類／就活）
