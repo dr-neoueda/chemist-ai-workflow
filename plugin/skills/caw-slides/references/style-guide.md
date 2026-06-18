@@ -163,8 +163,8 @@
 | ベース（teal） | `#3686A6`（RGB 54,134,166） | 構造の基調・▸見出し・テーブルヘッダ |
 | 暗（dark） | `#1E4E63` | **タイトルバー**（白文字を載せる） |
 | 最暗 | `#14353F` | 強い構造アクセント |
-| 明（light） | `#A9D0E0` | **小見出しバー**の地 |
-| 最明 | `#DCECF2` | **キーメッセージ箱**の地・淡カード |
+| 明（light） | `#A9D0E0` | 淡色アクセント（必要時） |
+| 最明 | `#DCECF2` | **キーメッセージ箱**・**小見出しバー**の地・淡カード |
 
 ### アクセントカラー（2色）
 
@@ -688,10 +688,10 @@ plt.rcParams['font.family'] = _FN   # MS Gothic を再アサート
 | y 座標 (inch) | 要素 | helper |
 |-------------:|------|--------|
 | 0 – 0.78 | **塗りタイトルバー（暗ティール `#1E4E63`）＋白タイトル＋ページ番号 `N / total`**（参考デザイン: スライドマスター相当の統一見出し） | `add_slide_chrome(slide, title, slide_number, total=N)` |
-| 1.18 – 6.13 | 本文ゾーン（body card / chart / table / flow diagram）。多パネルなら各図の上に**小見出しバー**（淡ティール） | 各種 `add_*` helper / `add_subheading_bar(slide, text, left=…, top=…, width=…)` |
+| 1.18 – 6.13 | 本文ゾーン（body card / chart / table / flow diagram）。多パネルなら各図の上に**小見出しバー**（淡ティール） | 各種 `add_*` helper / `add_subheading_bar(slide, text, left=…, top=…)`（幅は文字数に自動フィット・最明ティール） |
 | 6.28 – 6.86 | Key-message band（**L1 強調**: 淡ティール fill・**角丸・黒枠なし・影なし**） | `add_key_message_band` or `loud_key_message` |
 
-> **参考デザイン由来の要素（2026-06-18 採用）**: ①塗りタイトルバー＋白文字でスライドマスター相当の統一見出し ②ページ番号は **`N / total` 形式**（`add_slide_chrome` に `total` を渡す）③1スライドに複数図を並べるときは各図に**小見出しバー**（`add_subheading_bar`、淡ティール）④**図中テキスト（軸ラベル・目盛・式）は太字**＝`configure_matplotlib_japanese()` が `axes.labelweight/font.weight='bold'` を既定設定（「全て太字」）。⑤**図は大きく**（本文ゾーンの高さを十分使う）。
+> **参考デザイン由来の要素（2026-06-18 採用）**: ①塗りタイトルバー＋白文字でスライドマスター相当の統一見出し ②ページ番号は **`N / total` 形式**（`add_slide_chrome` に `total` を渡す）③1スライドに複数図を並べるときは各図に**小見出しバー**（`add_subheading_bar`、最明ティール `#DCECF2`、**幅は文字数に自動フィット**＝width 省略時）④**図中テキスト（軸ラベル・目盛・式）は太字**＝`configure_matplotlib_japanese()` が `axes.labelweight/font.weight='bold'` を既定設定（「全て太字」）。⑤**図は大きく**（本文ゾーンの高さを十分使う）。
 
 表紙スライドは例外：category pill / 大見出し / hero chart or figure / focus pill (L1)。
 

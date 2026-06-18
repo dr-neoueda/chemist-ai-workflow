@@ -2,6 +2,15 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.36.4 / Codex 1.35.4] - 2026-06-18
+
+### Changed — 小見出しバーを文字数に自動フィット＋淡色化
+
+`add_subheading_bar` の塗りが短い見出しテキストに対して長すぎた（全幅）問題を修正。`width` を省略すると**文字数からバー幅を自動見積もり**（全角≈1em/半角≈0.6em＋余白）して**塗りが文字に密着**するように。固定幅にしたいときは従来どおり `width` を渡す。塗り色も `#A9D0E0`→**`#DCECF2`（より薄いティール）**に。`font_size` 引数を追加。
+
+- PR ループ（python-reviewer：CRITICAL/HIGH=0、MEDIUM2件〔clearance→padding 0.48in・font_size 単位コメント〕修正／Codex：ASCII 幅見積もりの限界を MEDIUM 記録・短い JA 主体ラベルでは実用上問題なし）。
+- 版: plugin 1.36.3 → **1.36.4** / codex 1.35.3 → **1.35.4** / marketplace 同期。
+
 ## [1.36.3 / Codex 1.35.3] - 2026-06-18
 
 ### Fixed — タイトルバー・小見出しバーの残存テーマ影を除去
