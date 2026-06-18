@@ -666,14 +666,13 @@ def _style_shape_fill(shape, fill: RGBColor | None, border: RGBColor | None) -> 
         shape.line.width = Pt(0.75)
 
 
-def _set_shape_shadow(shape, on: bool) -> None:
-    """Inject drop-shadow XML or suppress the theme-default shadow.
+def _set_shape_shadow(shape, on: bool = False) -> None:
+    """Render the shape **flat** — drop-shadow は使わない（スタイルガイド §12）.
 
-    PowerPoint themes apply a subtle drop-shadow to rectangles by default.
-    Codex-style slides want a **flat** look everywhere except for a handful
-    of emphasis shapes. Inject an empty ``<a:effectLst/>`` to override the
-    theme shadow with "no effect", or an explicit ``<a:outerShdw>`` for an
-    emphasis shape.
+    影はスライド全体で不使用の方針。PowerPoint テーマは矩形に既定で淡い
+    drop-shadow を付けるため、空の ``<a:effectLst/>`` を注入してテーマ既定の
+    影を必ず無効化する。``on`` 引数は呼び出し後方互換のために残すが**無視**する
+    （常にフラット）。
     """
     from lxml import etree
     from pptx.oxml.ns import qn
@@ -682,20 +681,7 @@ def _set_shape_shadow(shape, on: bool) -> None:
     existing = spPr.find(qn("a:effectLst"))
     if existing is not None:
         spPr.remove(existing)
-    effectLst = etree.SubElement(spPr, qn("a:effectLst"))
-    if on:
-        shdw = etree.SubElement(
-            effectLst, qn("a:outerShdw"),
-            attrib={
-                "blurRad": "38100",  # 0.1 cm
-                "dist": "25400",     # 0.07 cm
-                "dir": "2700000",    # 45 deg
-                "algn": "tl",
-                "rotWithShape": "0",
-            },
-        )
-        col = etree.SubElement(shdw, qn("a:srgbClr"), attrib={"val": "000000"})
-        etree.SubElement(col, qn("a:alpha"), attrib={"val": "30000"})
+    etree.SubElement(spPr, qn("a:effectLst"))  # 空 = エフェクトなし（フラット）
 
 
 def mixed_runs(
@@ -789,9 +775,9 @@ def add_pill(
 ):
     """Small colored callout pill (AUTO_SHAPE). Text is centered by default.
 
-    Set ``shadow=True`` only for the one or two pills you want to emphasize
-    on a slide (e.g. the headline number). Default is a flat Codex-style
-    pill with no drop-shadow.
+    Always rendered **flat** (no drop-shadow): 影はスライド全体で不使用のため、
+    ``shadow`` 引数は無視される（後方互換のためにのみ残置）。強調は塗り・枠・
+    フォントサイズ／色で付ける。
     """
     shape = slide.shapes.add_shape(
         MSO_SHAPE.RECTANGLE, left, top, width, height
@@ -815,14 +801,13 @@ def add_key_message_band(
     *,
     fill: RGBColor = COLOR_KEY_MSG_FILL,
     border: RGBColor | None = None,
-    shadow: bool = True,
+    shadow: bool = False,
 ):
     """Full-width key-message band at the Codex fixed position (y=6.28).
 
-    Drawn as a **rounded rectangle with no outline** (border defaults to None):
-    the淡ティール塗り＋shadow だけで浮かせる。Shadow defaults to ON because this
-    band is the slide's headline takeaway — the one place where drop-shadow
-    emphasis is always welcome.
+    Drawn as a **rounded rectangle with no outline and no shadow** (flat):
+    淡ティールの塗りと角丸だけで主張を示す。影はスライド全体で不使用のため
+    ``shadow`` 引数は無視される（後方互換のためにのみ残置）。
     """
     left, top, width, height = CODEX_KEY_MSG_RECT
     shape = slide.shapes.add_shape(

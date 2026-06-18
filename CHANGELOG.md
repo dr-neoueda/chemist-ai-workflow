@@ -2,6 +2,15 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.36.2 / Codex 1.35.2] - 2026-06-18
+
+### Changed — drop-shadow をスライド全体で不使用（フラット）に
+
+ユーザー要望「影はスライド全体で使わない」に対応。`_set_shape_shadow` を**常にフラット**化（テーマ既定の影も空 `<a:effectLst/>` で必ず無効化、影注入ブランチを削除）。`add_key_message_band` の shadow 既定 True→False（無視）、`add_pill`/`add_key_message_band` の docstring を修正。`style-guide.md` の §12 原則2・§14-1・§14-2（L1 を shadow ✗・全 tier フラット）・§14-6 を更新。L1 は影でなく **塗り＋角丸＋24pt Bold** で差を付ける。
+
+- PR ループ（python-reviewer CLEAN〔add_pill docstring の MEDIUM 修正〕／Codex CLEAN）。デモ再生成で 33 shapes 中 drop-shadow=0 を確認。
+- 版: plugin 1.36.1 → **1.36.2** / codex 1.35.1 → **1.35.2** / marketplace 同期（gemini・copilot 据え置き）
+
 ## [1.36.1 / Codex 1.35.1] - 2026-06-18
 
 ### Changed — key-message band（L1）を角丸・黒枠なしに

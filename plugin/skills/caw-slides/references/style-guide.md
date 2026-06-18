@@ -560,7 +560,7 @@ h.add_picture_fit(slide, fig, left=Inches(0.5), top=Inches(1.45),
 | # | 原則 | 具体的ルール |
 |---|------|------------|
 | 1 | **1スライド1メッセージ** | タイトル＋要点＋視覚要素（図・グラフ）で完結。情報を詰め込まない |
-| 2 | **派手なアニメ・背景画像なし** | アニメーション禁止。プロジェクター映え優先 |
+| 2 | **派手なアニメ・背景画像・影なし** | アニメーション禁止。**影（drop-shadow）も使わずフラットに**。プロジェクター映え優先 |
 | 3 | **白背景** | スライド背景は常に白（`#FFFFFF`）。見やすさ最優先 |
 | 4 | **強調は太字・色文字** | キーワードは **bold** ＋ 色（青 `#1A56A0` または赤 `#C0392B`）で強調 |
 | 5 | **黒文字＋白背景でコントラスト** | 本文テキストは `#222222`（ほぼ黒）。淡色文字を使わない |
@@ -689,7 +689,7 @@ plt.rcParams['font.family'] = _FN   # MS Gothic を再アサート
 |-------------:|------|--------|
 | 0 – 0.78 | **塗りタイトルバー（暗ティール `#1E4E63`）＋白タイトル＋ページ番号 `N / total`**（参考デザイン: スライドマスター相当の統一見出し） | `add_slide_chrome(slide, title, slide_number, total=N)` |
 | 1.18 – 6.13 | 本文ゾーン（body card / chart / table / flow diagram）。多パネルなら各図の上に**小見出しバー**（淡ティール） | 各種 `add_*` helper / `add_subheading_bar(slide, text, left=…, top=…, width=…)` |
-| 6.28 – 6.86 | Key-message band（**L1 強調**: 淡ティール fill・**角丸・黒枠なし** + shadow） | `add_key_message_band` or `loud_key_message` |
+| 6.28 – 6.86 | Key-message band（**L1 強調**: 淡ティール fill・**角丸・黒枠なし・影なし**） | `add_key_message_band` or `loud_key_message` |
 
 > **参考デザイン由来の要素（2026-06-18 採用）**: ①塗りタイトルバー＋白文字でスライドマスター相当の統一見出し ②ページ番号は **`N / total` 形式**（`add_slide_chrome` に `total` を渡す）③1スライドに複数図を並べるときは各図に**小見出しバー**（`add_subheading_bar`、淡ティール）④**図中テキスト（軸ラベル・目盛・式）は太字**＝`configure_matplotlib_japanese()` が `axes.labelweight/font.weight='bold'` を既定設定（「全て太字」）。⑤**図は大きく**（本文ゾーンの高さを十分使う）。
 
@@ -699,9 +699,11 @@ plt.rcParams['font.family'] = _FN   # MS Gothic を再アサート
 
 ### 14-2. 強調の 3 tier（L1 / L2 / L4。L3 は廃止）
 
+> **影（drop-shadow）はスライド全体で不使用＝全 tier フラット**。`_set_shape_shadow` がテーマ既定の影も必ず無効化する。L1 は影でなく**塗り＋角丸＋24pt Bold**で他と差を付ける。
+
 | Level | shadow | border | fill | 使用場面 |
 |-------|:------:|:------:|:----:|---------|
-| **L1 LOUD** | ✓ | ✗ | ✓ | 各スライドで **一番伝えたい 1 要素**。通常は key-message band（**塗り角丸＋shadow・黒枠なし**、文字は常に 24pt Bold）、表紙のみ focus pill |
+| **L1 LOUD** | ✗ | ✗ | ✓ | 各スライドで **一番伝えたい 1 要素**。通常は key-message band（**塗り角丸・黒枠なし・影なし**、文字は常に 24pt Bold）、表紙のみ focus pill |
 | **L2 STRONG** | ✗ | ✓ | ✗ | 枠線だけで目を引きたい透明箱。稀 |
 | **L4 QUIET** | ✗ | ✗ | ✗ | 本文・callout など装飾なしで置くテキスト |
 
@@ -766,7 +768,7 @@ Helper:
 | `add_slide_chrome(slide, title, slide_number)` | title + slide# + 青バー | — |
 | `add_shape_card(..., fill=None, border=None, shadow=False)` | 本文カード | **L4**（引数で昇格可） |
 | `add_rich_text_box(slide, paragraphs, ...)` | マルチ段落テキスト | L4 |
-| `add_key_message_band(slide, paragraphs, shadow=True, border=...)` | 下部 takeaway 帯 | **L1** |
+| `add_key_message_band(slide, paragraphs)` | 下部 takeaway 帯（角丸・黒枠なし・影なし） | **L1** |
 | `add_pill(slide, paragraphs, ..., fill=, border=, shadow=)` | 色付き pill（低レベル） | 引数次第 |
 | `add_category_pill(slide, text, ...)` | 表紙の category 帯 | 引数次第 |
 | `add_flow_box(slide, text, ..., fill=, shadow=False)` | フロー / タイムライン矩形 | colored rect |
