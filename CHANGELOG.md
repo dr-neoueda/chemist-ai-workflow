@@ -2,6 +2,21 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.27.0 / Codex 1.26.0 / Gemini 1.6.0] - 2026-06-18
+
+### Added — caw-research（研究）が登録済み論文を文献リストから除外
+
+研究モード caw-research の論文検索で、**`work/papers/` に登録済み（md がある）論文を既定で一覧から除外**する（目的＝「まだ持っていない論文を見つける」）。
+
+- 新 **R-Step 2b**：HTML 書き出し前に `work/papers/*.md` の frontmatter `doi`（あれば arXiv ID）＋ファイル名で「登録済みセット」を作り、検索結果から **DOI/arXiv 一致**を除外（DOI 無しはタイトル＋筆頭著者の近似一致で厳しめ判定＝誤除外回避）。
+- HTML ヘッダの検索条件行に「**（登録済み N 件を除外）**」を明記。掲載件数は除外後の数。
+- `work/papers/` が空／無ければ除外なし。**ユーザーが「登録済みも含めて」と言えば全件**を載せる。
+- 反映：`caw-research/SKILL.md`（plugin + codex）R-Step 1・新 R-Step 2b・R-Step 3 ヘッダ／`GEMINI.md`・`commands/caw-research.toml`。
+
+### Note
+
+- 版: plugin 1.26.0 → **1.27.0** / codex 1.25.0 → **1.26.0** / gemini 1.5.0 → **1.6.0** / copilot 1.17.0 据え置き（caw-research 未収載）/ marketplace 同期
+
 ## [1.26.0 / Codex 1.25.0 / copilot 1.17.0 / Gemini 1.5.0] - 2026-06-18
 
 ### Changed — 研究モード caw-research の出力を Markdown 表 → クリック可能な HTML リストに

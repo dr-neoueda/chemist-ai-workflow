@@ -1,2 +1,2 @@
 description = "調べる：論文検索（研究）／企業・業界研究（就活）"
-prompt = "GEMINI.md の『caw-research』手順に従う。office/GEMINI.md 冒頭の > トラック: で分岐。研究＝関心テーマの論文を検索し work/topics/<topic>_<YYYYMMDD>_n<件数>.html にクリック可能な HTML リスト化（入手 PDF の登録は caw-paper）。就活＝まず必ず調査レベル（L1/L2/L3）と出力形式（md/HTML/両方、md 推奨）を尋ねてから汎用 8 ブロックで work/companies/<企業>.md に整理（非公式情報は複数ソースで裏取り）。対象: {{args}}"
+prompt = "GEMINI.md の『caw-research』手順に従う。office/GEMINI.md 冒頭の > トラック: で分岐。研究＝関心テーマの論文を検索し work/topics/<topic>_<YYYYMMDD>_n<件数>.html にクリック可能な HTML リスト化（登録済み work/papers/ は既定で除外、入手 PDF の登録は caw-paper）。就活＝まず必ず調査レベル（L1/L2/L3）と出力形式（md/HTML/両方、md 推奨）を尋ねてから汎用 8 ブロックで work/companies/<企業>.md に整理（非公式情報は複数ソースで裏取り）。対象: {{args}}"
