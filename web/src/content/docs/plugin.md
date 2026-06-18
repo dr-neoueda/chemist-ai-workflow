@@ -97,7 +97,7 @@ Codex 版はリリース日を Claude Code 版と揃えつつ、別トラック�
 
 | カテゴリ | 内容 |
 |---|---|
-| **Skills**（9） | `/caw`（オンボーディング → 自動スキャフォールド → 運営モード）<br>`/caw-research`（関心テーマの論文検索 → `work/topics/` に HTML リスト化・タイトルがリンク）<br>`/caw-paper`（入手 PDF のメタデータ抽出 + 書誌付き要約 + ナレッジベース・クラウドストレージ自動登録）<br>`/caw-write`（論文・申請書・要旨を本人の文体で執筆 + `work/papers/` から引用挿入）<br>`/caw-input`（6 ソフトの入力ファイル雛形生成 + ジョブ記録）<br>`/caw-playbook`（計算 log 解析 → Lessons Learned 自動追記）<br>`/caw-doctor`（`office/` 構造の健全性チェック + 修復提示）<br>`/caw-setup`（前提ツール検出 → 計画提示 → 順次インストール）<br>`/caw-slides`（発表用 PowerPoint 生成・4 用途バリアント + スタイルガイド） |
+| **Skills**（9） | `/caw`（オンボーディング → 自動スキャフォールド → 運営モード）<br>`/caw-research`（関心テーマの論文検索 → `work/topics/` に HTML リスト化・タイトルがリンク）<br>`/caw-register`（入手 PDF のメタデータ抽出 + 書誌付き要約 + ナレッジベース・クラウドストレージ自動登録）<br>`/caw-write`（論文・申請書・要旨を本人の文体で執筆 + `work/papers/` から引用挿入）<br>`/caw-input`（6 ソフトの入力ファイル雛形生成 + ジョブ記録）<br>`/caw-playbook`（計算 log 解析 → Lessons Learned 自動追記）<br>`/caw-doctor`（`office/` 構造の健全性チェック + 修復提示）<br>`/caw-setup`（前提ツール検出 → 計画提示 → 順次インストール）<br>`/caw-slides`（発表用 PowerPoint 生成・4 用途バリアント + スタイルガイド） |
 | **Hooks** | SessionStart（`office/secretary/notes` 直近 + Playbook 注入）／ PostToolUse（成果物の `office/` 誤配置を二層原則違反として警告）／ Stop（学びの記録漏れリマインド） |
 | **部署テンプレート** | secretary / research / engineering / computation / analysis / writing / review / presentation の 8 部署テンプレ |
 | **Playbook 雛形** | Gaussian / GROMACS / CP2K / ORCA / VASP / Quantum ESPRESSO + 汎用 |
@@ -116,7 +116,7 @@ Codex 版はリリース日を Claude Code 版と揃えつつ、別トラック�
 |---|---|---|
 | Phase 1 | 2026-05 | スケルトン構築、`/caw` スキル設計、ローカル実機テスト ✅ |
 | Phase 2 | 2026-05-13 | マーケットプレイス公開（v1.0.0）✅ |
-| Phase 3 | 2026-05-13〜05-29 | 追加スキル（caw-paper / caw-input / caw-playbook / caw-doctor / caw-setup / caw-slides）+ Hooks + Web + 整合性チェックを段階的に追加（v1.1.0 → 1.5.2）✅ |
+| Phase 3 | 2026-05-13〜05-29 | 追加スキル（caw-register / caw-input / caw-playbook / caw-doctor / caw-setup / caw-slides）+ Hooks + Web + 整合性チェックを段階的に追加（v1.1.0 → 1.5.2）✅ |
 | Phase 3.5 | 2026-06-04 | GitHub Copilot CLI 対応の PoC + Web ティア（copilot-plugin 1.0.0）✅ |
 | Phase 4 | 2026-06〜 | ベータユーザー試用、フィードバック反映、`caw-apply` 等の応用スキル追加 |
 | Phase 5 | 2026-07〜 | 商品配布物として組み込み |
@@ -154,4 +154,4 @@ MIT License。商用・私用問わず自由に利用・改変・再配布可能
 
 ## ステータス
 
-**v1.5.2（2026-05-29）公開**：マーケットプレイス経由で導入可能。`/caw` の基本フローに加え、`/caw-paper` / `/caw-input` / `/caw-playbook` / `/caw-doctor` / `/caw-setup` / `/caw-slides` の 6 追加スキルと Hooks（SessionStart / PostToolUse / Stop）が同梱。GitHub Copilot CLI 版は PoC（copilot-plugin 1.0.0、2026-06-04）。
+**v1.5.2（2026-05-29）公開**：マーケットプレイス経由で導入可能。`/caw` の基本フローに加え、`/caw-register` / `/caw-input` / `/caw-playbook` / `/caw-doctor` / `/caw-setup` / `/caw-slides` の 6 追加スキルと Hooks（SessionStart / PostToolUse / Stop）が同梱。GitHub Copilot CLI 版は PoC（copilot-plugin 1.0.0、2026-06-04）。

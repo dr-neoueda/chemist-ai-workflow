@@ -47,9 +47,9 @@ trigger: /caw-write
 
 - **`work/manuscripts/_style/`（文体プロファイル。`caw-intake` が自分の論文から抽出）があれば必ず読み、その文体（トーン・一文の長さ・hedging・構成の癖）で書く。** 無ければ統合 `inbox/` の自分の過去論文を直接読む。それも無ければ中立な学術文体で書き、「過去の自分の文章を `inbox/` に入れると文体を学べます」と一言添える。
 - **`work/profile/`（`research-profile` / `key-findings` / `publications` / `methods` 等）があれば読む。** 申請書の「自己評価・研究遂行能力」や論文の自己引用・手法記述に使う。
-- **引用は `work/papers/`（`caw-paper` が登録した文献要約 md）を一次ソースにする。** 各 md の frontmatter（著者・年・誌名・DOI）から本文引用＋文献リストを組み立てる。登録が無いテーマなら「先に `caw-research` で探して `caw-paper` で登録すると、その文献をそのまま引用できます」と促す（**実在しない引用を勝手に作らない**）。
+- **引用は `work/papers/`（`caw-register` が登録した文献要約 md）を一次ソースにする。** 各 md の frontmatter（著者・年・誌名・DOI）から本文引用＋文献リストを組み立てる。登録が無いテーマなら「先に `caw-research` で探して `caw-register` で登録すると、その文献をそのまま引用できます」と促す（**実在しない引用を勝手に作らない**）。
 - `work/topics/`（`caw-research` の文献リスト HTML）があれば背景のスコープ把握に使う。
-- 素材が足りなければ `caw-intake`（自分資料の取り込み）や `caw-paper`（引用元の登録）を案内するか、最低限その場でヒアリングする。
+- 素材が足りなければ `caw-intake`（自分資料の取り込み）や `caw-register`（引用元の登録）を案内するか、最低限その場でヒアリングする。
 
 ### Step 3: 構成テンプレを選んでアウトライン
 
@@ -85,13 +85,13 @@ trigger: /caw-write
 ## 他スキルとの関係
 
 - **`caw-intake` →（上流）** `work/manuscripts/_style/`（文体）・`work/profile/`（プロフィール）を供給。caw-write が消費する。
-- **`caw-research` → `caw-paper` → `caw-write`**：探す → 登録 → 引用して書く。caw-write は `work/papers/` の登録文献を引用源にする。
+- **`caw-research` → `caw-register` → `caw-write`**：探す → 登録 → 引用して書く。caw-write は `work/papers/` の登録文献を引用源にする。
 - **`caw-slides` は兄弟（下流）**：成果を発表に。要旨を caw-write が書き、論文紹介・発表スライドを caw-slides が作る。
-- **`caw-paper` と分離**：caw-paper＝他者の論文を読む / 登録、caw-write＝自分の論文を書く（就活の `caw-research`＝調べる / `caw-es`＝書く と同じ分け方）。
+- **`caw-register` と分離**：caw-register＝他者の論文を読む / 登録、caw-write＝自分の論文を書く（就活の `caw-research`＝調べる / `caw-es`＝書く と同じ分け方）。
 
 ## 重要な注意事項
 
-- **引用を捏造しない**。本文の引用は `work/papers/` 登録文献に裏付けのあるものだけにする。無ければ「要出典」と明示し、`caw-paper` での登録を促す
+- **引用を捏造しない**。本文の引用は `work/papers/` 登録文献に裏付けのあるものだけにする。無ければ「要出典」と明示し、`caw-register` での登録を促す
 - **字数は絶対**。超過は必ず指摘し、収まるまで削る（テキストの字数の話なので誤魔化さない）
 - **嘘・誇張・未検証仮説の断定を書かない**。データと文献の範囲で書く（特に申請書）
 - **本人の文体を踏襲する**。`work/manuscripts/_style/` があれば必ず読む。生成後に文体の合致も確認する

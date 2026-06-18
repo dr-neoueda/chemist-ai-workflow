@@ -1,2 +1,2 @@
 description = "統合 inbox の資料を内容判定して取り込み・振り分け（研究・就活共通）"
-prompt = "GEMINI.md の『caw-intake』手順に従う。inbox/ の各ファイルを開いて中身で種類を判定し、自分の文章は文体/プロファイル抽出、外部論文は caw-paper、計算入出力は caw-playbook、企業情報は caw-research に振り分ける。既存は上書きせず追記マージ、判定不能はユーザーに確認。{{args}}"
+prompt = "GEMINI.md の『caw-intake』手順に従う。inbox/ の各ファイルを開いて中身で種類を判定し、自分の文章は文体/プロファイル抽出、外部論文は caw-register、計算入出力は caw-playbook、企業情報は caw-research に振り分ける。既存は上書きせず追記マージ、判定不能はユーザーに確認。{{args}}"

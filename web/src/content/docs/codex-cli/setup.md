@@ -91,7 +91,7 @@ model_reasoning_effort = "high"
 
 #### 配布ステータス
 
-- **Codex 1.2.1 公開済み（2026-05-14）**: 公式 marketplace（`dr-neoueda/chemist-ai-workflow`、MIT ライセンス）から導入可能。Claude Code 版と同じ 5 Skills（caw / caw-paper / caw-input / caw-playbook / caw-doctor）
+- **Codex 1.2.1 公開済み（2026-05-14）**: 公式 marketplace（`dr-neoueda/chemist-ai-workflow`、MIT ライセンス）から導入可能。Claude Code 版と同じ 5 Skills（caw / caw-register / caw-input / caw-playbook / caw-doctor）
 
 #### Step 1: プラグインのインストール
 

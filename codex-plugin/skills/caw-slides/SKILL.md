@@ -185,5 +185,5 @@ pip install python-pptx matplotlib Pillow
 ## 関連 Skill
 
 - `caw` — `office/` 部署スキャフォールド（presentation 部含む）
-- `caw-paper` — 論文 PDF を `work/papers/` に登録
+- `caw-register` — 論文 PDF を `work/papers/` に登録
 - `caw-playbook` — 計算ソフト Playbook 蓄積

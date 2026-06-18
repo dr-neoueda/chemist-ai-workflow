@@ -2,7 +2,7 @@
 name: caw-intake
 description: >
   プロジェクト直下の単一の inbox/ に入れた「あらゆる過去資料」を、内容ごとに種類を自動判定して適切に処理・振り分けるスキル（研究・就活の両トラック対応）。
-  自分の論文/申請書/スライド/CV → プロファイル・文体を抽出（work/profile/・work/manuscripts/_style/・work/self-analysis/ 等）。外部論文 → caw-paper で登録。計算入出力 → caw-playbook へ。ES/履歴書 → 自己分析・文体を抽出。
+  自分の論文/申請書/スライド/CV → プロファイル・文体を抽出（work/profile/・work/manuscripts/_style/・work/self-analysis/ 等）。外部論文 → caw-register で登録。計算入出力 → caw-playbook へ。ES/履歴書 → 自己分析・文体を抽出。
   ユーザーは「どのフォルダに何を入れるか」を悩まなくてよい。
 trigger: /caw-intake
 ---
@@ -44,7 +44,7 @@ trigger: /caw-intake
 
 | 種類 | 判定の手がかり | 処理（行き先） |
 |---|---|---|
-| 外部の論文（他者の文献） | 著者が本人でない・DOI・書誌情報 | **caw-paper で登録** → `work/papers/<著者-年>.md`（書誌付き要約） |
+| 外部の論文（他者の文献） | 著者が本人でない・DOI・書誌情報 | **caw-register で登録** → `work/papers/<著者-年>.md`（書誌付き要約） |
 | 自分の論文・申請書・要旨 | 著者に本人・自分の研究内容 | §研究抽出 → `work/manuscripts/_style/voice-self.md`・`work/profile/{research-profile,key-findings,publications}.md` |
 | 自分のスライド・ポスター | `.pptx`・発表資料 | §研究抽出 → `work/presentations/_style.md`（＋研究プロファイル） |
 | CV・業績リスト | 経歴・publication list・受賞/グラント | §研究抽出 → `work/profile/cv.md`・`work/profile/publications.md` |
@@ -66,7 +66,7 @@ trigger: /caw-intake
 分類に従って処理する：
 
 - **自分で抽出する分**（自分の論文/スライド/CV → 研究抽出、ES/履歴書 → 就活抽出）は、§研究抽出 / §就活抽出 の書き分け表に従ってその場で実行する。
-- **専門スキルに渡す分**は、そのスキルの処理に回す：外部論文 → `caw-paper`、計算入出力 → `caw-playbook`、企業情報 → `caw-research`。はじめてモードでは、ユーザーに「外部論文は登録、計算は Playbook 取り込みに回します」と平易に伝えてから実行/提案する。
+- **専門スキルに渡す分**は、そのスキルの処理に回す：外部論文 → `caw-register`、計算入出力 → `caw-playbook`、企業情報 → `caw-research`。はじめてモードでは、ユーザーに「外部論文は登録、計算は Playbook 取り込みに回します」と平易に伝えてから実行/提案する。
 - 1 つのファイルが複数に該当する場合（例: 自分の論文＝文体素材かつ業績）、**両方に反映**する。
 
 ### Step 3: 報告と次の一歩
@@ -117,7 +117,7 @@ caw-es / caw-interview がこの出力を読んで本人の文体・実績で書
 
 ## 他スキルとの関係
 
-- **caw-intake は統合 inbox の「振り分け役」＋「自分プロファイルの抽出役」**。外部論文は `caw-paper`、計算入出力は `caw-playbook`、企業情報は `caw-research` に渡し、**二重処理しない**。
+- **caw-intake は統合 inbox の「振り分け役」＋「自分プロファイルの抽出役」**。外部論文は `caw-register`、計算入出力は `caw-playbook`、企業情報は `caw-research` に渡し、**二重処理しない**。
 - 整備した `work/profile/`・`work/self-analysis/`・各 `_style` を、研究は論文執筆・`caw-slides`・`caw-input` が、就活は `caw-es`・`caw-interview` が読む。
 - caw-es の「文体を学習して」は `work/documents/voice-style.md` だけを作る軽量版。まとめて取り込むなら caw-intake。
 

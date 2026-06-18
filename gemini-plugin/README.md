@@ -25,7 +25,7 @@ gemini extensions install https://github.com/dr-neoueda/chemist-ai-workflow
 
 ## できること
 
-研究：文献収集（`/caw-paper`）・計算入力（`/caw-input`）・スライド/図（`/caw-slides`）・計算ノウハウ蓄積（`/caw-playbook`）・解析。
+研究：文献収集（`/caw-register`）・計算入力（`/caw-input`）・スライド/図（`/caw-slides`）・計算ノウハウ蓄積（`/caw-playbook`）・解析。
 就活：企業/業界研究（`/caw-research`）・ES（`/caw-es`）・面接対策（`/caw-interview`）・募集/締切収集（`/caw-events`）。
 共通：過去資料の取り込み・自動仕分け（`/caw-intake`、統合 `inbox/`）・構造点検（`/caw-doctor`）。
 
