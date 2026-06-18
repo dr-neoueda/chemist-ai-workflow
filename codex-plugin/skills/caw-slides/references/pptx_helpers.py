@@ -1183,6 +1183,7 @@ def add_slide_chrome(
         MSO_SHAPE.RECTANGLE, Inches(0), Inches(0), Inches(13.33), Inches(0.78)
     )
     _style_shape_fill(bar, COLOR_BASE_DARK, None)
+    _set_shape_shadow(bar, False)  # テーマ既定の影を無効化（フラット）
     # Title text (white, on the bar)
     t_rect = (Inches(0.4), Inches(0.14), Inches(11.0), Inches(0.5))
     add_rich_text_box(
@@ -1224,6 +1225,7 @@ def add_subheading_bar(
     """
     bar = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, left, top, width, height)
     _style_shape_fill(bar, COLOR_BASE_LIGHT, None)
+    _set_shape_shadow(bar, False)  # テーマ既定の影を無効化（フラット）
     # Label lives in the bar's own text frame (one shape only) so the returned
     # rect fully covers the visible content — same pattern as add_flow_box.
     tf = bar.text_frame

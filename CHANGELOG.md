@@ -2,6 +2,15 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.36.3 / Codex 1.35.3] - 2026-06-18
+
+### Fixed — タイトルバー・小見出しバーの残存テーマ影を除去
+
+1.36.2 で影を全体オフにしたが、`add_slide_chrome`（タイトルバー）と `add_subheading_bar`（小見出しバー）の塗りシェイプは `_set_shape_shadow` を呼んでおらず PowerPoint テーマ既定の drop-shadow を継承していた（ユーザー報告「タイトル/サブタイトルに影が残る」）。両者の `_style_shape_fill` 直後に `_set_shape_shadow(bar, False)` を追加してフラット化。
+
+- PR ループ（python-reviewer CLEAN／Codex CLEAN）。デモ再生成で title bar×4・subheading bar×4 すべて空 effectLst・deck の drop-shadow=0 を確認。
+- 版: plugin 1.36.2 → **1.36.3** / codex 1.35.2 → **1.35.3** / marketplace 同期。
+
 ## [1.36.2 / Codex 1.35.2] - 2026-06-18
 
 ### Changed — drop-shadow をスライド全体で不使用（フラット）に
