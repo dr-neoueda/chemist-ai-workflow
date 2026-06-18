@@ -1,2 +1,2 @@
 description = "ES・志望動機・自己PR を企業の設問・文字数に合わせて書く（就活）"
-prompt = "GEMINI.md の『caw-es』手順に従う。必ず work/companies/<企業>.md を読み、work/self-analysis/ と work/documents/voice-style.md（あれば本人の文体）を踏まえ、文字数厳守・結論先出し・STAR でドラフトを作り work/documents/ に保存。推敲で繰り返す汎用的な好みは確認のうえ work/documents/writing-preferences.md に蓄積し次の ES に先回り適用（一度きりの直しは記録しない）。嘘・誇張を書かない。対象（企業・設問・文字数）: {{args}}"
+prompt = "GEMINI.md の『caw-es』手順に従う。必ず work/companies/<企業>.md を読み、work/self-analysis/ と work/documents/voice-style.md（あれば本人の文体）を踏まえ、文字数厳守・結論先出し・STAR でドラフトを作り work/documents/ に保存。推敲のたびに汎用的な好みかを評価し、汎用的なら自分から確認のうえ work/documents/writing-preferences.md に蓄積し次の ES に先回り適用（言われる前に確認・一度きりの直しは記録しない）。嘘・誇張を書かない。対象（企業・設問・文字数）: {{args}}"
