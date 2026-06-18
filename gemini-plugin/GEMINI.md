@@ -55,7 +55,7 @@
 
 **研究**：締切/TODO→秘書、文献検索・論文を探す→`research`（caw-research）、論文 PDF 登録→`research`（caw-register）、計算入力→`computation`（caw-input）、データ解析・可視化→`analysis`、論文・申請書・要旨の執筆→`writing`（caw-write）、スライド→`presentation`（caw-slides）、計算ノウハウ→`computation`（caw-playbook）、過去資料の取り込み→caw-intake、構造点検→caw-doctor。
 
-**就活**：締切・選考スケジュール→秘書、企業・業界研究→`research`（caw-research）、自己分析→`analysis`、ES・書類→`writing`（caw-es）、面接→`presentation`（caw-interview）、募集・イベント・締切の一括収集→秘書＋`research`（caw-events）、過去 ES の取り込み→caw-intake、構造点検→caw-doctor。
+**就活**：締切・選考スケジュール→秘書、企業・業界研究→`research`（caw-research）、自己分析→`analysis`、ES・書類→`writing`（caw-es）、面接→`presentation`（caw-interview）、ある企業の就活イベント深掘り・締切＋今年度予測（複数社横断は明示時）→秘書＋`research`（caw-events）、過去 ES の取り込み→caw-intake、構造点検→caw-doctor。
 
 ---
 
@@ -78,8 +78,8 @@
 ### caw-interview（面接対策／就活）
 `work/companies/<企業>.md` と `work/self-analysis/`（強み・弱み・ガクチカ・`motivation.md`）から、定番質問（自己紹介/志望動機/ガクチカ/強み弱み/学業/キャリア/逆質問）の骨子を作り `work/interview-prep/` に保存。
 
-### caw-events（募集・イベント・締切の一括収集／就活）
-業界横断でインターン・説明会・座談会・選考の情報と締切を集め、`work/recruit/<業界>.md`（＋カタログ/カレンダー/比較の HTML）に整理。公式＋ナビ横断、未取得は「要確認」と分離。
+### caw-events（企業の就活イベント深掘り＆今年度予測／就活）
+**既定で 1 社**の就活イベント（インターン・説明会・座談会・選考）と締切を深掘り収集し、**過去 2〜3 年の実績から今年度の開催時期・内容を予測**（「予測（昨年実績ベース）」と根拠の実日付を明示）。公式採用ページを最優先に、就活サイト（マイナビ/リクナビ/ワンキャリア 等）も積極併用。`work/recruit/<企業>.md`＋HTML（イベントカタログ/年間スケジュール・予測カレンダー/過去×今年度 対照表）に整理し、確定/予測をバッジで区別、未取得は「要確認」。秘書の選考スケジュールへ連携。**複数社・業界横断はユーザーが明示指示したときだけ**（`work/recruit/<業界>.md`＋企業比較表）。
 
 ### caw-register（論文の登録・管理／研究）
 発動したら**必ず**抽出レベルを尋ねる（**推奨は設けず**、深いほど AI 使用量〔トークン〕が増えることを明示：**L1**＝書誌＋要旨 4 行＋結論の要点／**L2**＝＋背景概要・対象/手法概要・主要な結果（代表テーブル＋数値）／**L3**＝背景・対象・手法詳細・全数値・考察・限界・関連研究・引用文脈テンプレ・キーワードの**フル抽出＝paper-register 相当**。バッチは最初に 1 回だけ）。`work/papers/` に置かれた PDF（または統合 `inbox/` から渡されたもの）から、選ばれたレベルの深さで書誌情報・要約・タグを抽出し `work/papers/<著者-年>.md` に整理（md の充実度もレベル連動）。ナレッジベース／クラウドストレージ（MCP 設定済みなら）にも登録。**論文の検索・探索は caw-research（研究トラック）が担当**し、その `work/topics/` リストから取得した PDF を本スキルが登録する。

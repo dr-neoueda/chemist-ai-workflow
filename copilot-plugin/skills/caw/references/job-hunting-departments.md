@@ -114,7 +114,7 @@ QJ3b (悩み・進め方/状況): 「進め方やコンディションで当て�
 | `work/documents/` | ES・履歴書・職務経歴書・自己PR・志望動機のドラフト（`<企業名>_<書類>.md`）・文体プロファイル `voice-style.md` | `writing` |
 | `work/self-analysis/` | 自己分析（経験の棚卸し・強み・ガクチカ素材・価値観） | `analysis` |
 | `work/interview-prep/` | 想定問答・逆質問・面接後の振り返り（`<企業名>.md`） | `presentation` |
-| `work/recruit/` | 業界横断のインターン・説明会・選考イベントのカタログ（`<業界>.md`）と HTML（カタログ/締切カレンダー/比較表） | 秘書 + `research` |
+| `work/recruit/` | **ある企業**の就活イベント深掘り＋今年度予測（`<企業>.md`）と HTML（カタログ/年間予測カレンダー/過去×今年度対照表）。複数社横断は明示時のみ `<業界>.md`＋企業比較表 | 秘書 + `research` |
 | `work/feedback/` | テストユーザーの使い心地フィードバック（`<YYYY-MM-DD>.md`・`README.md` 雛形）。**化学機能の間接検証**に使う（→ `references/engine-validation-map.md`） | 秘書 |
 
 **統合 inbox（迷ったらここ）**：プロジェクト直下に `inbox/` を作り、「**過去に書いた ES・履歴書・自己PR や企業情報など、何でもここに入れて『処理して』と言えば（`caw-intake`）、中身を見て自動で振り分けます**——ES 類は文体・経験・強み/弱み・ガクチカ・志望動機・プロフィール・過去回答を抽出して `work/self-analysis/` と `work/documents/`（`voice-style.md`・`past-answers.md`）に整理、企業情報は企業研究（`caw-research`）の素材に。以降の ES 作成（`caw-es`）に活かします」と README に明記する。
@@ -292,7 +292,7 @@ scaffold と START HERE を作り終えたら、**秘書はいきなり作業を
   - 企業・業界を調べる                         → caw-research（work/companies/<企業>.md）
   - ES・志望動機を書く                         → caw-es
   - 面接対策・模擬面接                         → caw-interview
-  - 募集・締切を集める（業界横断）             → caw-events
+  - 就活イベント・締切を深掘り（1 社・横断は明示時）             → caw-events
   - 今日の予定・締切を見る                     → 秘書（secretary/todos/）
   (はじめてモードなので 4 択に絞る。Other で「使い方を知りたい」等も受ける)
 ```
@@ -315,7 +315,7 @@ scaffold と START HERE を作り終えたら、**秘書はいきなり作業を
 | 過去の ES・書類を取り込む・文体/経験/強み/志望動機/プロフィール/過去回答を抽出 | `analysis`＋`writing`（`work/self-analysis/`・`work/documents/voice-style.md`・`work/documents/past-answers.md`、`caw-intake`） |
 | ES・履歴書・職務経歴書・志望動機・自己PR | `writing`（書類、`work/documents/`） |
 | 面接・想定質問・模擬面接・逆質問・振り返り | `presentation`（面接対策、`work/interview-prep/`） |
-| 業界の募集・イベント・締切を一括収集（インターン/説明会/座談会/選考）・カタログ/カレンダー/比較 | 秘書＋`research`（`work/recruit/`、`caw-events`） |
+| ある企業の就活イベント・締切を深掘り＋過去実績から今年度を予測（複数社横断は明示時）・カタログ/年間予測カレンダー/対照表 | 秘書＋`research`（`work/recruit/`、`caw-events`） |
 
 ### 就活モードで特に守ること
 - **文字数制約を厳守**（ES の設問字数）。超過は必ず指摘して縮める
