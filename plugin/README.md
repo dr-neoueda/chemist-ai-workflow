@@ -21,7 +21,7 @@ claude
 | macOS | ✅ | ✅ |
 | Windows | ✅ | ✅（Git Bash または WSL2 を併用。`hooks.json` が `bash` を呼ぶため） |
 
-- **コア（オンボーディング・部署スキャフォールド・5 Skills）** は OS 非依存。SKILL.md は markdown のワークフロー指示で、Claude Code / Codex CLI のファイルツールがパスをクロスプラットフォーム処理する
+- **コア（オンボーディング・部署スキャフォールド・9 Skills）** は OS 非依存。SKILL.md は markdown のワークフロー指示で、Claude Code / Codex CLI のファイルツールがパスをクロスプラットフォーム処理する
 - **Hooks**（SessionStart / PostToolUse / Stop）は bash スクリプト。macOS はそのまま、Windows は Git Bash または WSL2 で動作する
 - hook スクリプトは POSIX 準拠で記述（`stat -f` などの BSD 専用構文、`date -j` などの macOS 専用構文は使わない）。Windows の Git Bash / WSL2 でも macOS の環境でも動作する
 - `office/` は**可視フォルダ**（先頭ドットなし）で macOS Finder / Windows Explorer のどちらでも見える。「運営情報専用エリア」で成果物とは分ける。**caw は不可視の先頭ドット始まりフォルダをユーザーのプロジェクトに作らない（絶対）**
@@ -61,13 +61,14 @@ your-research-project/
 └── はじめにお読みください.md
 ```
 
-## 含まれる内容（v1.5.2）
+## 含まれる内容（v1.30.0）
 
 ### Skills
 
 - **`/caw`**：オンボーディング（研究プロファイルを全ユーザーにヒアリング。部署は全 8 作成）→ 自動スキャフォールド → 運営モードの一連
 - **`/caw-research`**：関心テーマの論文検索（arXiv / Crossref / Semantic Scholar / OpenAlex / PubMed）→ クリックで論文ページに飛べる HTML リスト（`work/topics/`）を生成（入手 PDF の登録は `/caw-register`）
 - **`/caw-register`**：入手済み PDF のメタデータ抽出 → 書誌付き要約 md → ナレッジベース（Notion / Obsidian 他）+ クラウドストレージ（Google Drive 他）への自動登録
+- **`/caw-write`**：登録済み文献（`work/papers/`）を引用源に、論文・申請書・学会要旨を本人の文体で執筆。文書種別ごとにテンプレ・言語・字数チェックを切替、引用は本文＋文献リストを自動生成（裏付け無しは「要出典」明示）。出力は `work/manuscripts/`
 - **`/caw-input`**：6 ソフト（Gaussian / ORCA / CP2K / GROMACS / VASP / Quantum ESPRESSO）の入力ファイル雛形生成、Playbook デフォルト起点 + ジョブ記録自動生成
 - **`/caw-playbook`**：計算 log の自動解析 → Lessons Learned エントリ起案 → Playbook 末尾追記、memory feedback 昇格判定。`_past-data/` に置いた過去データの一括取り込み（その人向けに Playbook を初期最適化）にも対応
 - **`/caw-doctor`**：`office/` 構造の健全性チェック（部署 CLAUDE.md の存在、旧構造の検出、Playbook 更新滞り等）と修復コマンド提示
@@ -128,6 +129,7 @@ plugin/
     │       ├── playbook-starters.md
     │       └── mcp-setup-templates.md
     ├── caw-register/SKILL.md
+    ├── caw-write/SKILL.md
     ├── caw-input/SKILL.md
     ├── caw-playbook/SKILL.md
     ├── caw-doctor/SKILL.md

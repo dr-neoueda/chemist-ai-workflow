@@ -2,6 +2,21 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.30.1 / Gemini 1.9.1 / Copilot 1.17.1] - 2026-06-18
+
+### Fixed — README のスキル一覧に `caw-write` を反映
+
+`caw-write`（1.29.0 で追加）が web `plugin.md` には反映済みだったが各 README に未反映だったため補完（スキル一覧のドキュメント整合）。
+
+- `plugin/README.md`：`### Skills` に `/caw-write` を追加、ディレクトリツリーに `caw-write/SKILL.md`、コア説明の「5 Skills」→「9 Skills」、見出しの版「v1.5.2」→「v1.30.0」。
+- `gemini-plugin/README.md`：研究の振り分け行を **文献検索（caw-research）→ 登録（caw-register）→ 執筆（caw-write）** の 3 段に補強。
+- `copilot-plugin/README.md`：未収載（フルポート予定）一覧に `caw-write` を追加、「残りの 5 スキル」→「6 スキル」。
+- セミナー HTML（Desktop・リポジトリ外）のスキル節は既に最新のため変更なし。
+
+### Note
+
+- 版: plugin 1.30.0 → **1.30.1** / gemini 1.9.0 → **1.9.1** / copilot 1.17.0 → **1.17.1**（各 README 更新）/ codex 1.29.0 据え置き（codex README はスキル列挙なし）/ marketplace 同期。ドキュメントのみ・スキル挙動の変更なし。
+
 ## [1.30.0 / Codex 1.29.0 / Gemini 1.9.0] - 2026-06-18
 
 ### Changed — `caw-paper` を `caw-register` にリネーム
