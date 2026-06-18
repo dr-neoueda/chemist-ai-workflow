@@ -2,6 +2,22 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.37.0 / Codex 1.36.0 / Copilot 1.18.0 / Gemini 1.15.0] - 2026-06-18
+
+### Added — 研究モードの対応計算ソフトに ChimeraX を追加
+
+UCSF ChimeraX（構造可視化・**密度マップへのタンパク質フィッティング**・解析）を caw 研究モードの対応計算ソフトに追加。既存 6 ソフト（Gaussian/ORCA/CP2K/GROMACS/VASP/Quantum ESPRESSO）と同じ扱いで全配布に配線。
+
+- **オンボ Q2** に新カテゴリ「構造可視化・密度マップフィッティング（ChimeraX 等）」、**work/ scaffold** に `work/chimerax/`（`.cxc`/`.py` スクリプト・PDB/mmCIF 構造・`.mrc`/`.map`/`.ccp4` 密度マップ・`.cxs` セッション・フィット結果/レンダ画像）、**秘書ディスパッチ**に ChimeraX。
+- **caw-input**：ChimeraX 用途（`fitmap`/Fit in Map・`molmap`・`measure correlation`・`matchmaker`・`morph`・ISOLDE 連携）と生成物（`.cxc` コマンドスクリプト＋ヘッドレス実行 `chimerax --nogui --script x.cxc --exit`／サーバは `--offscreen`）を追加。
+- **caw-playbook**：ChimeraX log 解析パターン（fitmap correlation/overlap・ISOLDE clashes/rotamer・OSMesa）を追加。
+- **playbook 雛形**に `chimerax.md` スターター（fitmap/molmap/ヘッドレス）、**chemistry-departments** の対応ソフト表、**GEMINI.md**・`commands/caw-input.toml`、各 README・web docs（6→7 ソフト）。
+- Web から ChimeraX の用途・ファイル形式（.cxc/.cxs/.mrc）・ヘッドレス実行（`--nogui`/`--offscreen`/`--script`）・fitmap を調査して反映。
+
+### Note
+
+- 版: plugin 1.36.4 → **1.37.0** / codex 1.35.4 → **1.36.0** / copilot 1.17.1 → **1.18.0** / gemini 1.14.0 → **1.15.0** / marketplace 同期（全配布で対応ソフト追加）
+
 ## [1.36.4 / Codex 1.35.4] - 2026-06-18
 
 ### Changed — 小見出しバーを文字数に自動フィット＋淡色化

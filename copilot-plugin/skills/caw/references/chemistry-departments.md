@@ -209,6 +209,7 @@ type: daily
 - 量子化学: Gaussian, ORCA, Psi4, GAMESS, NWChem
 - 古典 MD: GROMACS, AMBER, NAMD, LAMMPS, OpenMM
 - 周期系 DFT: CP2K, VASP, Quantum ESPRESSO, CASTEP, SIESTA
+- 構造可視化・密度マップフィッティング: ChimeraX, PyMOL, Coot
 
 ## ルール
 

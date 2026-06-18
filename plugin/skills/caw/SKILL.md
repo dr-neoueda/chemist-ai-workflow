@@ -61,6 +61,7 @@ Q2 (計算ソフト): 「研究で使う計算ソフトのカテゴリを教え�
   - 量子化学計算（Gaussian, ORCA, Psi4 等）
   - 古典 MD（GROMACS, AMBER, NAMD, LAMMPS, OpenMM 等）
   - 周期系 DFT（CP2K, VASP, Quantum ESPRESSO 等）
+  - 構造可視化・密度マップフィッティング（ChimeraX 等：タンパク質・cryo-EM 密度へのモデルフィット／可視化・解析）
   - 計算ソフトは使わない / 主に実験中心
   (multiSelect: true; Other で具体的なソフト名を自由入力可)
 
@@ -174,6 +175,7 @@ Call 2 で得た回答は `office/CLAUDE.md` の「パーソナライズメモ�
 | VASP | `work/vasp/` | `INCAR`/`POSCAR`/`KPOINTS`/`POTCAR`、`OUTCAR`/`CHGCAR`/`WAVECAR`/`vasprun.xml` |
 | Quantum ESPRESSO | `work/quantum-espresso/` | `.in` 入力、`.out` 出力、`*.UPF` 擬ポテンシャル |
 | MACE / MLIP | `work/mlip/` | 学習データ、`.model` チェックポイント、評価 trajectory |
+| ChimeraX | `work/chimerax/` | `.cxc`/`.py` スクリプト、PDB/mmCIF 構造、`.mrc`/`.map`/`.ccp4` 密度マップ、`.cxs` セッション、フィット結果・レンダ画像 |
 
 各 README には対応する Playbook へのリンク（`../office/computation/playbooks/<tool>.md`）を必ず含める。
 
@@ -335,7 +337,7 @@ scaffold 完了後、不足ツールがありそうなら（例: スライドや
 | 論文の検索・文献調査（探す/集める） | research（caw-research） |
 | 論文 PDF の登録・要約・書誌・引用整理 | research（caw-register） |
 | Python スクリプト作成、CLI 化、解析ツール | engineering |
-| Gaussian / GROMACS / CP2K / ORCA / VASP / 計算ジョブ・log 解析 | computation |
+| Gaussian / GROMACS / CP2K / ORCA / VASP / ChimeraX / 計算ジョブ・log 解析 | computation |
 | データ可視化、グラフ、統計、機械学習 | analysis |
 | 論文・申請書・要旨の執筆（書く） | writing（caw-write） |
 | コードレビュー、計算妥当性、validation | review |

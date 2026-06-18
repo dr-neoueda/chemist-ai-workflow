@@ -26,7 +26,7 @@
 
 ### 研究オンボーディング
 モードによる質問の出し分けは無い。**全ユーザーに次の全 8 問を尋ね**、回答をすべて scaffold に反映する（作成部署は常に全 8 部署）。
-1. **研究プロファイル（全 8 問）**：研究分野（有機/物理/材料/計算 等）／計算ソフトのカテゴリ（量子化学・古典 MD・周期系 DFT・使わない、複数可）／ナレッジベース（Notion/Obsidian/Logseq）／クラウドストレージ（Google Drive/Dropbox/OneDrive）／計算環境（HPC SLURM・PBS・ローカル・クラウド）／研究体制（単独・共著・研究室共有）／申請書予定（学振・科研費・民間財団・なし）／論文ステータス（執筆中・査読中・これから・予定なし）。
+1. **研究プロファイル（全 8 問）**：研究分野（有機/物理/材料/計算 等）／計算ソフトのカテゴリ（量子化学・古典 MD・周期系 DFT・構造可視化/フィッティング〔ChimeraX〕・使わない、複数可）／ナレッジベース（Notion/Obsidian/Logseq）／クラウドストレージ（Google Drive/Dropbox/OneDrive）／計算環境（HPC SLURM・PBS・ローカル・クラウド）／研究体制（単独・共著・研究室共有）／申請書予定（学振・科研費・民間財団・なし）／論文ステータス（執筆中・査読中・これから・予定なし）。
 2. **scaffold**（下記）→ `office/GEMINI.md` 生成（冒頭に `> トラック: 研究`）→ START HERE 文書 → 「何をしますか？」
 
 ### 就活オンボーディング
@@ -88,7 +88,7 @@
 研究側の「書く」担当（就活 caw-es の対応物）。文書種別（論文／申請書／学会要旨／その他）・言語（論文＝英語既定/申請書＝日本語既定）・対象（投稿先・申請区分）・範囲・字数を確認 → **`work/manuscripts/_style/`（あれば本人の文体）**・`work/profile/`（研究プロフィール）・**`work/papers/`（caw-register 登録文献＝引用源）**・`work/topics/`・`work/manuscripts/_style/writing-preferences.md`（あれば推敲で学んだ好み）を踏まえ、アウトライン → セクション → 全体の順でドラフト。**引用は work/papers/ 登録文献から本文引用＋文献リストを作り、無いものは「要出典」と明示して捏造しない**。字数厳守・結論先出し。`work/manuscripts/<doc-slug>/` に保存（md 既定、.tex/.docx は要望時）。**申請書は平易な日本語・未検証仮説を断定しない・数値は一次資料で確認・文中言及形式の引用**。文体プロファイルが無ければ caw-intake を、引用元が無ければ caw-research→caw-register を促す。推敲で修正を受けるたびに、その直しが汎用的な好みかを評価し、汎用的なら**自分から**「次回以降も既定にしますか？」と確認のうえ `work/manuscripts/_style/writing-preferences.md` に蓄積し（「覚えて」待ちにしない・一度きりの直しは記録しない）、次の作文から先回り適用する。
 
 ### caw-input（計算入力生成／研究）
-目的（最適化/TS/IRC/単点 等）と分子・計算レベル（汎関数/基底）を確認し、テンプレ準拠で入力を生成（Gaussian の gjf 等）。座標は log から抜いて explicit に書く。`computation/playbooks/<tool>.md` の既定（汎関数/基底/収束）を起点に、**`## Lessons Learned` の新しい教訓で上書き**（食い違いは後発の Lessons を優先）。**HPC の submission 既定（queue/walltime/並列/module/account）は `office/computation/GEMINI.md`〔オンボ Q6〕を読む**、local なら直接実行コマンド。複数系/手法は 1 計算 1 ディレクトリでバッチ生成（多いときは一覧確認）。
+目的（最適化/TS/IRC/単点 等）と分子・計算レベル（汎関数/基底）を確認し、テンプレ準拠で入力を生成（Gaussian の gjf、**ChimeraX** は構造/密度マップのフィッティング用 `.cxc` コマンドスクリプト＋`chimerax --nogui --script x.cxc --exit` のヘッドレス実行 等）。座標は log から抜いて explicit に書く。`computation/playbooks/<tool>.md` の既定（汎関数/基底/収束）を起点に、**`## Lessons Learned` の新しい教訓で上書き**（食い違いは後発の Lessons を優先）。**HPC の submission 既定（queue/walltime/並列/module/account）は `office/computation/GEMINI.md`〔オンボ Q6〕を読む**、local なら直接実行コマンド。複数系/手法は 1 計算 1 ディレクトリでバッチ生成（多いときは一覧確認）。
 
 ### caw-slides（スライド・図／研究）
 図表優先・テキスト最小・shape 重なり禁止で発表/論文紹介スライドを生成（Python：python-pptx/matplotlib が必要）。`work/presentations/slides/` に保存。`work/presentations/_style.md`（あれば本人の作風）を踏まえる。学会発表/修論/報告会は `work/manuscripts/`（caw-write の自分の論文・要旨）・`work/profile/key-findings.md` を、論文紹介は caw-register の `work/papers/` を元データ候補として提示・利用する。

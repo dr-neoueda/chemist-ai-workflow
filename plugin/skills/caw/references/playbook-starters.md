@@ -521,6 +521,50 @@ simulation.step(500000)
 
 ---
 
+## ChimeraX
+
+### computation/playbooks/chimerax.md
+
+---
+tool: ChimeraX
+last_updated: 2026-06-18
+---
+
+# ChimeraX Playbook
+
+## 概要
+
+UCSF ChimeraX の構造可視化・密度マップフィッティング・解析でのノウハウ集積。`fitmap`（モデルの density map へのフィット）・`molmap`・`measure correlation`・`matchmaker`・`morph`・ISOLDE 連携（cryo-EM モデル構築）・ヘッドレス実行をカバー。
+
+## 基本ルール
+
+- コマンドスクリプトは `.cxc`、複雑なロジックは `.py`（`runscript`）。セッションは `.cxs`
+- バッチ/ヘッドレスは `chimerax --nogui --script x.cxc --exit`。サーバで画像レンダが要るなら `--offscreen`（Linux/OSMesa・GPU 不使用）
+- `fitmap` は局所最適化。フィット前にモデルをマップ付近へ初期配置する（ずれていると収束しない）
+- 密度マップは閾値（level）と解像度を明示。`molmap` で計算マップを作るときは解像度を実験値に合わせる
+
+## デフォルト推奨パラメータ
+
+- フィット: `fit #1 inMap #2`（複数開始点を試すなら `search N`）。剛体フィットが基本、柔軟化は ISOLDE
+- 相関の確認: `measure correlation #1 #2`、`fitmap` 出力の correlation / overlap / average map value
+- 画像: `save image.png width 2000 height 1500 supersample 3`
+
+## Lessons Learned
+
+<!-- 計算を重ねるごとに知見を追記。最新のものを上に。 -->
+
+### YYYY-MM-DD - <一行サマリ>
+
+- **状況**:
+- **原因**:
+- **教訓**:
+- **参照**: jobs/YYYY-MM-DD-<system>-fit.md
+
+## 参考リンク
+
+- UCSF ChimeraX User Guide（`fitmap` / `molmap` / `measure correlation` コマンド）
+- ISOLDE（cryo-EM モデル rebuilding プラグイン）
+
 ## Python ライブラリ Playbook
 
 化学計算ソフトの入出力だけでなく、Python ライブラリの API quirks・version 依存挙動・よくある罠も Playbook 化しておく。AI が新しいスクリプトを書く際に必ず最新の Playbook を読み、過去の失敗を再発させない。
