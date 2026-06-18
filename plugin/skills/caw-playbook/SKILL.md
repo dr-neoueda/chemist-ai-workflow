@@ -127,6 +127,7 @@ log 解析完了：
 2. `## Lessons Learned` セクション末尾を特定
 3. 新エントリを末尾に Edit append（既存エントリは絶対に上書きしない）
 4. frontmatter の `last_updated` を今日の日付に Edit 更新
+5. **その教訓が「既定の推奨値を変えるべき」内容なら**（例: `recalcfc=20` を既定化、cutoff を上げる等）、Playbook の「**デフォルト推奨パラメータ**」ブロックの該当箇所も Edit で更新し、変更理由を 1 行添える（旧値 → 新値）。これで次回 `caw-input` の既定起点が最新になる（**Lessons Learned への追記だけで終わらせない**＝学習ループを閉じる）。
 
 エントリフォーマット：
 
@@ -139,16 +140,19 @@ log 解析完了：
 - **参照**: jobs/YYYY-MM-DD-<system>-<purpose>.md
 ```
 
-### Step 6: memory 昇格判定（オプション）
+### Step 6: 汎用知見の昇格判定（オプション）
 
-知見が **特定の計算ソフトを超えた一般則** だった場合、memory feedback への昇格を提案：
+知見が **特定の計算ソフトを超えた一般則** だった場合、汎用知見として保存を提案する。**保存先は使っている環境による**：
+
+- **Claude Code で auto-memory を使っている場合**：`~/.claude/projects/<project>/memory/` に feedback memory を新規作成。
+- **それ以外（Codex / Gemini、または memory 機能を使っていない）**：`office/computation/CLAUDE.md`（Codex/Copilot は `AGENTS.md`、Gemini は `GEMINI.md`）の「共通知見」節、または秘書の `secretary/notes/` に 1 行で記録。
 
 ```
 この教訓は Gaussian だけでなく一般則として「PBC supercell の connectivity-based 分子抽出は必ず unwrap を伴う」に拡張できそうです。
-~/.claude/projects/<project>/memory/ に新規 feedback memory を作成しますか？
+（Claude Code なら memory に、そうでなければ computation の共通知見に）記録しますか？
 ```
 
-ユーザーが OK なら、memory ファイルを生成。
+ユーザーが OK なら、環境に応じた場所へ保存する。
 
 ### Step 7: 完了報告
 
@@ -198,6 +202,7 @@ log 解析完了：
 ## 重要な注意事項
 
 - **既存 Lessons Learned エントリは絶対に上書きしない**。末尾追記のみ
+- **解析サマリ・Lessons Learned エントリは日本語（ユーザーの言語）で書く**（log は英語でも、抽出した知見は日本語に）
 - **frontmatter の `last_updated` を必ず更新**（playbook の鮮度管理）
 - **化学物理の用語は正確に**：汎関数名・基底関数・force field・cell parameter の表記揺れを起こさない
 - **数値には単位を明記**：エネルギー (Hartree / eV / kcal/mol)、長さ (Å / bohr)、時間 (fs / ps / ns)、温度 (K)

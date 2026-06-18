@@ -85,13 +85,13 @@
 発動したら**必ず**抽出レベルを尋ねる（**推奨は設けず**、深いほど AI 使用量〔トークン〕が増えることを明示：**L1**＝書誌＋要旨 4 行＋結論の要点／**L2**＝＋背景概要・対象/手法概要・主要な結果（代表テーブル＋数値）／**L3**＝背景・対象・手法詳細・全数値・考察・限界・関連研究・引用文脈テンプレ・キーワードの**フル抽出＝paper-register 相当**。バッチは最初に 1 回だけ）。`work/papers/` に置かれた PDF（または統合 `inbox/` から渡されたもの）から、選ばれたレベルの深さで書誌情報・要約・タグを抽出し `work/papers/<著者-年>.md` に整理（md の充実度もレベル連動）。ナレッジベース／クラウドストレージ（MCP 設定済みなら）にも登録。**論文の検索・探索は caw-research（研究トラック）が担当**し、その `work/topics/` リストから取得した PDF を本スキルが登録する。
 
 ### caw-input（計算入力生成／研究）
-目的（最適化/TS/IRC/単点 等）と分子・計算レベル（汎関数/基底）を確認し、テンプレ準拠で入力を生成（Gaussian の gjf 等）。座標は log から抜いて explicit に書く。`computation/playbooks/<tool>.md` の傾向（既定の汎関数/基底/収束）を起点に。
+目的（最適化/TS/IRC/単点 等）と分子・計算レベル（汎関数/基底）を確認し、テンプレ準拠で入力を生成（Gaussian の gjf 等）。座標は log から抜いて explicit に書く。`computation/playbooks/<tool>.md` の既定（汎関数/基底/収束）を起点に、**`## Lessons Learned` の新しい教訓で上書き**（食い違いは後発の Lessons を優先）。**HPC の submission 既定（queue/walltime/並列/module/account）は `office/computation/GEMINI.md`〔オンボ Q6〕を読む**、local なら直接実行コマンド。複数系/手法は 1 計算 1 ディレクトリでバッチ生成（多いときは一覧確認）。
 
 ### caw-slides（スライド・図／研究）
 図表優先・テキスト最小・shape 重なり禁止で発表/論文紹介スライドを生成（Python：python-pptx/matplotlib が必要）。`work/presentations/slides/` に保存。`work/presentations/_style.md`（あれば本人の作風）を踏まえる。
 
 ### caw-playbook（計算ノウハウの蓄積／研究）
-計算の試行錯誤で得た知見を `office/computation/playbooks/<tool>.md` の `## Lessons Learned` に `### YYYY-MM-DD - 一行サマリ` で末尾追記。計算ソフトディレクトリの `_past-data/` を「過去データを取り込んで」で解析し、その人の既定傾向を seed。
+計算の試行錯誤で得た知見を `office/computation/playbooks/<tool>.md` の `## Lessons Learned` に `### YYYY-MM-DD - 一行サマリ` で末尾追記（**知見は日本語で**）。**既定の推奨値を変えるべき教訓なら「デフォルト推奨パラメータ」ブロックも更新**（次の caw-input の起点を最新に＝ループを閉じる）。計算ソフトディレクトリの `_past-data/` を「過去データを取り込んで」で解析し既定傾向を seed。ソフトを超えた一般則は、Gemini では `office/computation/GEMINI.md` の「共通知見」節か秘書 notes に記録（Claude Code の memory 機能がある場合はそちらへ）。
 
 ### caw-doctor（構造点検）
 `office/GEMINI.md` のトラックを判定し、ルート設定・秘書部・各部署・成果物ディレクトリ・統合 `inbox/`・START HERE の有無を点検し、不足は作成を提案。二層原則違反（`office/<部署>/` に成果物）も検出。
