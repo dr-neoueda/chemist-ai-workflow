@@ -1,6 +1,6 @@
 {
   "name": "caw",
-  "version": "1.28.0",
+  "version": "1.29.0",
   "description": "化学研究プロジェクトのための AI 部署システム（Codex CLI 版）。秘書から始めて、必要な部署を必要なときに増やす。化学者特有の業務（実験・計算・論文・申請書・発表）に最適化されたテンプレートと Playbook を内蔵。",
   "author": {
     "name": "Shinno Ueda (UEC SPRING)",

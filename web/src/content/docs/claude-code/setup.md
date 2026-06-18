@@ -132,7 +132,7 @@ Claude Code は **モデル**と**思考レベル**の 2 軸で挙動を調整�
 #### 配布ステータス
 
 - **v1.0.0 公開済み（2026-05-13）**: 公式 marketplace（`dr-neoueda/chemist-ai-workflow`、MIT ライセンス）から導入可能
-- **今後の機能拡張**: 追加スキル（`caw-paper` / `caw-playbook` / `caw-input` / `caw-apply`）と Hooks を順次追加予定（詳細は [配布プラグイン（caw）](/plugin/) 参照）
+- **今後の機能拡張**: 追加スキル（`caw-register` / `caw-playbook` / `caw-input` / `caw-apply`）と Hooks を順次追加予定（詳細は [配布プラグイン（caw）](/plugin/) 参照）
 
 #### Step 1：プラグインのインストール
 

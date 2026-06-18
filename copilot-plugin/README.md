@@ -46,7 +46,7 @@ copilot plugin install caw
 - **`caw`** — オンボーディング（研究プロファイルを全ユーザーにヒアリング）→ 部署 `office/` 一括 scaffold → 運営モード。scaffold 用テンプレ（`references/`）同梱
 - **`caw-setup`** — 前提ツール（Python・poppler・python-pptx 等）の検出と順次インストール
 
-未収載（フルポート時に追加予定）: `caw-slides` / `caw-paper` / `caw-input` / `caw-playbook` / `caw-doctor`、`hooks.json`、`.mcp.json`。
+未収載（フルポート時に追加予定）: `caw-slides` / `caw-register` / `caw-input` / `caw-playbook` / `caw-doctor`、`hooks.json`、`.mcp.json`。
 
 ## 既知の PoC 簡略化
 
@@ -54,7 +54,7 @@ copilot plugin install caw
   （Copilot は `AGENTS.md`/`CLAUDE.md` を両方読むが、primary の `AGENTS.md` で揃えた）。
 - MCP 設定は Claude 形式コマンド例を残しつつ、Copilot 用 `.mcp.json`（標準 `mcpServers` 形式）を併記
   （`skills/caw/references/mcp-setup-templates.md`）。
-- 同梱スキルは `caw` / `caw-setup` の 2 つ（PoC）。残りの 5 スキル（caw-doctor / caw-input / caw-paper /
+- 同梱スキルは `caw` / `caw-setup` の 2 つ（PoC）。残りの 5 スキル（caw-doctor / caw-input / caw-register /
   caw-playbook / caw-slides）と hooks のフルポートは Phase 2 検討。
 
 ## ライセンス

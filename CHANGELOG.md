@@ -2,6 +2,21 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.30.0 / Codex 1.29.0 / Gemini 1.9.0] - 2026-06-18
+
+### Changed — `caw-paper` を `caw-register` にリネーム
+
+論文登録スキルの名前 `caw-paper` が「論文を扱うスキル」一般（探す `caw-research`／書く `caw-write`）と紛らわしいため、役割（**登録＝ライブラリ管理**）が明確な `caw-register` に改称。
+
+- **スキル名・ディレクトリ・コマンドを改称**：`plugin/skills/caw-paper/` → `caw-register/`（＋ `codex-plugin` ミラー）、`gemini-plugin/commands/caw-paper.toml` → `caw-register.toml`、SKILL.md frontmatter `name`/`trigger` も更新。
+- **全参照を一括置換**：`caw` ディスパッチ（論文 PDF の登録→`caw-register`）・二層テーブル・`engine-validation-map`（plugin/codex/copilot byte-identical）・各スキル相互参照（caw-research / caw-write / caw-intake / caw-report / caw-slides）・`GEMINI.md`・各 README・web docs・配布セミナー HTML。
+- 役割分担は不変：**探す `caw-research` → 登録 `caw-register` → 書く `caw-write`**。L1/L2/L3 抽出レベル等の機能はそのまま（`caw-register` は L3 でユーザーの `paper-register` スキル相当のフル抽出。`paper-register` は別物なので改称しない）。
+- 過去の CHANGELOG エントリの `caw-paper` 表記は履歴として保持。
+
+### Note
+
+- 版: plugin 1.29.0 → **1.30.0** / codex 1.28.0 → **1.29.0** / gemini 1.8.0 → **1.9.0** / copilot 1.17.0 据え置き（caw-register は未収載・参照のみ更新）/ marketplace 同期
+
 ## [1.29.0 / Codex 1.28.0 / Gemini 1.8.0] - 2026-06-18
 
 ### Added — caw-write（論文・申請書の執筆スキル）

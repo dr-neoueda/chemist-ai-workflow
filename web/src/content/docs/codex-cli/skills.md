@@ -199,7 +199,7 @@ codex plugin add caw@chemist-ai-workflow
 
 ### 単一責任の原則
 
-1 スキル = 1 目的に絞る。caw が肥大化したので Phase 3 で `caw-paper`、`caw-input`、`caw-playbook` に分割した、というように。
+1 スキル = 1 目的に絞る。caw が肥大化したので Phase 3 で `caw-register`、`caw-input`、`caw-playbook` に分割した、というように。
 
 ### Description は具体的に
 

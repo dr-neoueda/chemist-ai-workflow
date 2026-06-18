@@ -70,7 +70,7 @@ SKILL.md・custom agents・hooks・MCP・plugin+marketplace 配布）を **同�
 
 ## 次の一手（フルポート時）
 
-1. 残りスキル（caw-slides / caw-paper / caw-input / caw-playbook / caw-doctor）を Copilot 形式に
+1. 残りスキル（caw-slides / caw-register / caw-input / caw-playbook / caw-doctor）を Copilot 形式に
 2. `hooks.json`（SessionStart コンテキスト注入・Stop レビュー）を同名イベントで移植
 3. `.mcp.json` サンプル同梱
 4. `check-consistency.sh` に copilot-plugin の mirror/leak チェックを追加

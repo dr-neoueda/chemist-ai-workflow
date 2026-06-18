@@ -49,5 +49,5 @@ copilot plugin install caw
 
 ## ステータス
 
-**PoC 実証済（2026-06）／フルポートは Phase 2 検討**。残りスキル（caw-slides / caw-paper 等）・hooks・
+**PoC 実証済（2026-06）／フルポートは Phase 2 検討**。残りスキル（caw-slides / caw-register 等）・hooks・
 `.mcp.json` の移植と実機動作確認が残課題。最新仕様は実装時に再 verify する。

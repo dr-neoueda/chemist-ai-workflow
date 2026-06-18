@@ -202,7 +202,7 @@ Call 2 で得た回答は `office/CLAUDE.md` の「パーソナライズメモ�
 
 review 部署は内部品質ゲート記録のみ扱うため、`work/` 配下 ディレクトリは作らず `office/review/{code-reviews,validation}/` のみで運用する。
 
-**research（work/papers/）にも投入フォルダ**：research を選択した場合、`work/papers/inbox/` を作成し、README に「論文 PDF をここに入れて『登録して』と言うと、`/caw-paper` が書誌情報を抽出して `work/papers/<著者-年>.md` に整理し、ナレッジベース／クラウドストレージにも登録する」と平易に明記する。初心者が「PDF をどこに置けばいいか」で迷わないようにするのが目的。
+**research（work/papers/）にも投入フォルダ**：research を選択した場合、`work/papers/inbox/` を作成し、README に「論文 PDF をここに入れて『登録して』と言うと、`/caw-register` が書誌情報を抽出して `work/papers/<著者-年>.md` に整理し、ナレッジベース／クラウドストレージにも登録する」と平易に明記する。初心者が「PDF をどこに置けばいいか」で迷わないようにするのが目的。
 
 **統合 inbox（迷ったらここ）**：プロジェクト直下に `inbox/` を作成し、README に「**種類を問わず何でもここに入れて『処理して』と言えば、`caw-intake` が中身を見て判定し適切に処理します**——自分の論文/スライド/CV→プロファイル・文体を抽出（`work/profile/`・`work/manuscripts/_style/`）、外部論文→登録（`work/papers/`）、計算入出力→Playbook 取り込み。どこに入れるか迷ったらここで OK」と明記する。`work/papers/inbox/`（外部論文の直接登録）や各計算ソフトの `_past-data/` は、置き場が分かっている人向けの直接ルート。
 
@@ -333,7 +333,7 @@ scaffold 完了後、不足ツールがありそうなら（例: スライドや
 | 文脈・キーワード | 振り分け先 |
 |---|---|
 | 論文の検索・文献調査（探す/集める） | research（caw-research） |
-| 論文 PDF の登録・要約・書誌・引用整理 | research（caw-paper） |
+| 論文 PDF の登録・要約・書誌・引用整理 | research（caw-register） |
 | Python スクリプト作成、CLI 化、解析ツール | engineering |
 | Gaussian / GROMACS / CP2K / ORCA / VASP / 計算ジョブ・log 解析 | computation |
 | データ可視化、グラフ、統計、機械学習 | analysis |

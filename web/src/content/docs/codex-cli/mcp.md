@@ -93,7 +93,7 @@ Notion Paper DB（タグ・要約・引用 ID 付き）
 Google Drive にアップロード、URL を Notion ページの pdf_url に書き戻し
 ```
 
-caw プラグインの `/caw-paper` スキル（Claude Code 版 v1.1.0）がこのパイプラインを実装。Codex 版でも同じワークフローを Skills として書けます。
+caw プラグインの `/caw-register` スキル（Claude Code 版 v1.1.0）がこのパイプラインを実装。Codex 版でも同じワークフローを Skills として書けます。
 
 ### パターン 2: TODO の双方向同期
 
@@ -193,4 +193,4 @@ API key が古い、権限スコープが足りない等。サービス側の管
 
 - [Skills](/codex-cli/skills/) — MCP を使う Skills の書き方
 - [Commands](/codex-cli/commands/) — MCP 連携を伴う Commands の作り方
-- [配布プラグイン（caw）](/plugin/) — caw の `/caw-paper` で実装される MCP 統合パイプライン
+- [配布プラグイン（caw）](/plugin/) — caw の `/caw-register` で実装される MCP 統合パイプライン
