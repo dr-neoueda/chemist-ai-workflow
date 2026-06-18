@@ -1,0 +1,2 @@
+description = "論文・申請書・学会要旨を本人の文体で書く（研究）"
+prompt = "GEMINI.md の『caw-write』手順に従う。文書種別（論文/申請書/要旨/その他）・言語・対象・字数を確認し、work/manuscripts/_style/（あれば本人の文体）・work/profile/・work/papers/（引用源）を踏まえてアウトライン→セクション→全体の順でドラフト。引用は work/papers/ 登録文献から作り、無いものは『要出典』と明示して捏造しない。字数厳守・結論先出し。申請書は平易な日本語・未検証仮説を断定しない・数値は一次資料で確認。work/manuscripts/<doc-slug>/ に保存（md 既定）。対象（種別・投稿先/申請区分・字数）: {{args}}"

@@ -7,7 +7,7 @@
 ## 使い方（発火）
 
 - 自然言語でそのまま頼む：「環境を作って」「企業研究して」「inbox を処理して」「ES を書いて」「論文を集めて」「健康診断して」。
-- 明示コマンドも用意（`commands/`）：`/caw`（オンボーディング）, `/caw-research`, `/caw-intake`, `/caw-es`, `/caw-interview`, `/caw-events`, `/caw-paper`, `/caw-input`, `/caw-slides`, `/caw-playbook`, `/caw-doctor`。
+- 明示コマンドも用意（`commands/`）：`/caw`（オンボーディング）, `/caw-research`, `/caw-intake`, `/caw-es`, `/caw-interview`, `/caw-events`, `/caw-paper`, `/caw-write`, `/caw-input`, `/caw-slides`, `/caw-playbook`, `/caw-doctor`。
 - `office/` が無ければ、まず「環境を作りましょうか？」とオンボーディングを促す。
 
 ## はじめてモード
@@ -53,7 +53,7 @@
 
 `office/` がある状態では、秘書が窓口になりキーワードで担当部署／スキルに振り分ける。該当部署が未作成なら作成を提案。
 
-**研究**：締切/TODO→秘書、文献検索・論文を探す→`research`（caw-research）、論文 PDF 登録→`research`（caw-paper）、計算入力→`computation`（caw-input）、データ解析・可視化→`analysis`、論文・申請書→`writing`、スライド→`presentation`（caw-slides）、計算ノウハウ→`computation`（caw-playbook）、過去資料の取り込み→caw-intake、構造点検→caw-doctor。
+**研究**：締切/TODO→秘書、文献検索・論文を探す→`research`（caw-research）、論文 PDF 登録→`research`（caw-paper）、計算入力→`computation`（caw-input）、データ解析・可視化→`analysis`、論文・申請書・要旨の執筆→`writing`（caw-write）、スライド→`presentation`（caw-slides）、計算ノウハウ→`computation`（caw-playbook）、過去資料の取り込み→caw-intake、構造点検→caw-doctor。
 
 **就活**：締切・選考スケジュール→秘書、企業・業界研究→`research`（caw-research）、自己分析→`analysis`、ES・書類→`writing`（caw-es）、面接→`presentation`（caw-interview）、募集・イベント・締切の一括収集→秘書＋`research`（caw-events）、過去 ES の取り込み→caw-intake、構造点検→caw-doctor。
 
@@ -83,6 +83,9 @@
 
 ### caw-paper（論文の登録・管理／研究）
 発動したら**必ず**抽出レベルを尋ねる（**推奨は設けず**、深いほど AI 使用量〔トークン〕が増えることを明示：**L1**＝書誌＋要旨 4 行＋結論の要点／**L2**＝＋背景概要・対象/手法概要・主要な結果（代表テーブル＋数値）／**L3**＝背景・対象・手法詳細・全数値・考察・限界・関連研究・引用文脈テンプレ・キーワードの**フル抽出＝paper-register 相当**。バッチは最初に 1 回だけ）。`work/papers/` に置かれた PDF（または統合 `inbox/` から渡されたもの）から、選ばれたレベルの深さで書誌情報・要約・タグを抽出し `work/papers/<著者-年>.md` に整理（md の充実度もレベル連動）。ナレッジベース／クラウドストレージ（MCP 設定済みなら）にも登録。**論文の検索・探索は caw-research（研究トラック）が担当**し、その `work/topics/` リストから取得した PDF を本スキルが登録する。
+
+### caw-write（論文・申請書の執筆／研究）
+研究側の「書く」担当（就活 caw-es の対応物）。文書種別（論文／申請書／学会要旨／その他）・言語（論文＝英語既定/申請書＝日本語既定）・対象（投稿先・申請区分）・範囲・字数を確認 → **`work/manuscripts/_style/`（あれば本人の文体）**・`work/profile/`（研究プロフィール）・**`work/papers/`（caw-paper 登録文献＝引用源）**・`work/topics/` を踏まえ、アウトライン → セクション → 全体の順でドラフト。**引用は work/papers/ 登録文献から本文引用＋文献リストを作り、無いものは「要出典」と明示して捏造しない**。字数厳守・結論先出し。`work/manuscripts/<doc-slug>/` に保存（md 既定、.tex/.docx は要望時）。**申請書は平易な日本語・未検証仮説を断定しない・数値は一次資料で確認・文中言及形式の引用**。文体プロファイルが無ければ caw-intake を、引用元が無ければ caw-research→caw-paper を促す。
 
 ### caw-input（計算入力生成／研究）
 目的（最適化/TS/IRC/単点 等）と分子・計算レベル（汎関数/基底）を確認し、テンプレ準拠で入力を生成（Gaussian の gjf 等）。座標は log から抜いて explicit に書く。`computation/playbooks/<tool>.md` の既定（汎関数/基底/収束）を起点に、**`## Lessons Learned` の新しい教訓で上書き**（食い違いは後発の Lessons を優先）。**HPC の submission 既定（queue/walltime/並列/module/account）は `office/computation/GEMINI.md`〔オンボ Q6〕を読む**、local なら直接実行コマンド。複数系/手法は 1 計算 1 ディレクトリでバッチ生成（多いときは一覧確認）。
