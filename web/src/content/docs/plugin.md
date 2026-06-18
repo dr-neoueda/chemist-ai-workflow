@@ -9,7 +9,7 @@ description: Chemist's AI Workflow プラグイン — 部署システム・Play
 
 化学研究には、汎用 AI エージェント運用がカバーしない領域があります：
 
-- **計算ソフト Playbook**：Gaussian / GROMACS / CP2K / VASP / ORCA / Quantum ESPRESSO など、CLI ベースの計算ソフト全般の「既知の罠と処方」
+- **計算ソフト Playbook**：Gaussian / GROMACS / CP2K / VASP / ORCA / Quantum ESPRESSO / ChimeraX など、CLI ベースの計算ソフト全般の「既知の罠と処方」
 - **論文管理パイプライン**：PDF → ナレッジベース + クラウドストレージ（[対応ツール一覧](/tools/) のマトリクスに準拠）
 - **申請書ワークフロー**：学振 DC2 / 科研費 等の文体プロファイル + 字数制約
 - **LaTeX / Word 両対応**：[論文執筆](/tools/) で示した実装パスをスキル化
@@ -97,10 +97,10 @@ Codex 版はリリース日を Claude Code 版と揃えつつ、別トラック�
 
 | カテゴリ | 内容 |
 |---|---|
-| **Skills**（9） | `/caw`（オンボーディング → 自動スキャフォールド → 運営モード）<br>`/caw-research`（関心テーマの論文検索 → `work/topics/` に HTML リスト化・タイトルがリンク）<br>`/caw-register`（入手 PDF のメタデータ抽出 + 書誌付き要約 + ナレッジベース・クラウドストレージ自動登録）<br>`/caw-write`（論文・申請書・要旨を本人の文体で執筆 + `work/papers/` から引用挿入）<br>`/caw-input`（6 ソフトの入力ファイル雛形生成 + ジョブ記録）<br>`/caw-playbook`（計算 log 解析 → Lessons Learned 自動追記）<br>`/caw-doctor`（`office/` 構造の健全性チェック + 修復提示）<br>`/caw-setup`（前提ツール検出 → 計画提示 → 順次インストール）<br>`/caw-slides`（発表用 PowerPoint 生成・4 用途バリアント + スタイルガイド） |
+| **Skills**（9） | `/caw`（オンボーディング → 自動スキャフォールド → 運営モード）<br>`/caw-research`（関心テーマの論文検索 → `work/topics/` に HTML リスト化・タイトルがリンク）<br>`/caw-register`（入手 PDF のメタデータ抽出 + 書誌付き要約 + ナレッジベース・クラウドストレージ自動登録）<br>`/caw-write`（論文・申請書・要旨を本人の文体で執筆 + `work/papers/` から引用挿入）<br>`/caw-input`（7 ソフトの入力ファイル雛形生成 + ジョブ記録）<br>`/caw-playbook`（計算 log 解析 → Lessons Learned 自動追記）<br>`/caw-doctor`（`office/` 構造の健全性チェック + 修復提示）<br>`/caw-setup`（前提ツール検出 → 計画提示 → 順次インストール）<br>`/caw-slides`（発表用 PowerPoint 生成・4 用途バリアント + スタイルガイド） |
 | **Hooks** | SessionStart（`office/secretary/notes` 直近 + Playbook 注入）／ PostToolUse（成果物の `office/` 誤配置を二層原則違反として警告）／ Stop（学びの記録漏れリマインド） |
 | **部署テンプレート** | secretary / research / engineering / computation / analysis / writing / review / presentation の 8 部署テンプレ |
-| **Playbook 雛形** | Gaussian / GROMACS / CP2K / ORCA / VASP / Quantum ESPRESSO + 汎用 |
+| **Playbook 雛形** | Gaussian / GROMACS / CP2K / ORCA / VASP / Quantum ESPRESSO / ChimeraX + 汎用 |
 | **作業ディレクトリ** | 選択した計算ソフトに応じて `work/gaussian/` / `work/orca/` 等、選択した部署に応じて `work/papers/` / `work/manuscripts/` / `work/presentations/slides/` を自動生成 |
 
 ## 今後の機能拡張
@@ -131,7 +131,7 @@ Codex 版はリリース日を Claude Code 版と揃えつつ、別トラック�
 - `plugin/skills/caw/SKILL.md` ─ メインスキル（trigger: `/caw`）
 - `plugin/skills/caw/references/claude-md-template.md` ─ ルート CLAUDE.md 生成テンプレ
 - `plugin/skills/caw/references/chemistry-departments.md` ─ 8 部署 CLAUDE.md テンプレ集
-- `plugin/skills/caw/references/playbook-starters.md` ─ 計算ソフト Playbook 雛形（Gaussian / GROMACS / CP2K / ORCA / VASP / Quantum ESPRESSO + 汎用）
+- `plugin/skills/caw/references/playbook-starters.md` ─ 計算ソフト Playbook 雛形（Gaussian / GROMACS / CP2K / ORCA / VASP / Quantum ESPRESSO / ChimeraX + 汎用）
 
 **Codex CLI 版（`codex-plugin/`）**:
 - `.agents/plugins/marketplace.json` ─ Codex 用マーケットプレイス manifest

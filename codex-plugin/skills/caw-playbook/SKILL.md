@@ -32,7 +32,7 @@ description: >
 - 最新ジョブから自動検出（mtime 上位）
 - 失敗ジョブを優先（"Error termination" 等を含むもの）
 
-検出した log の **ソフトウェア**（Gaussian / ORCA / CP2K / GROMACS / VASP / QE）を判定し、対応する Playbook を読み込む：
+検出した log の **ソフトウェア**（Gaussian / ORCA / CP2K / GROMACS / VASP / QE / ChimeraX）を判定し、対応する Playbook を読み込む：
 - `office/computation/playbooks/<tool>.md`
 
 ### Step 2: log の解析
@@ -82,6 +82,14 @@ description: >
 - 終了: `JOB DONE.` / `Error in routine`
 - SCF: `convergence has been achieved` / `convergence NOT achieved`
 - 構造: `bfgs converged`
+
+#### ChimeraX
+
+- 終了・エラー: log の `Error` / Python traceback
+- フィット品質: `fitmap` の correlation / overlap・average map value、`measure correlation`
+- マップ設定: 閾値（level）・解像度、`molmap` の resolution
+- cryo-EM 構築: ISOLDE の clashes / rotamer / Ramachandran outliers
+- ヘッドレス: `--nogui` / `--offscreen`（OSMesa）の描画・ライブラリ関連メッセージ
 
 ### Step 3: 知見の抽出と分類
 

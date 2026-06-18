@@ -69,7 +69,7 @@ your-research-project/
 - **`/caw-research`**：関心テーマの論文検索（arXiv / Crossref / Semantic Scholar / OpenAlex / PubMed）→ クリックで論文ページに飛べる HTML リスト（`work/topics/`）を生成（入手 PDF の登録は `/caw-register`）
 - **`/caw-register`**：入手済み PDF のメタデータ抽出 → 書誌付き要約 md → ナレッジベース（Notion / Obsidian 他）+ クラウドストレージ（Google Drive 他）への自動登録
 - **`/caw-write`**：登録済み文献（`work/papers/`）を引用源に、論文・申請書・学会要旨を本人の文体で執筆。文書種別ごとにテンプレ・言語・字数チェックを切替、引用は本文＋文献リストを自動生成（裏付け無しは「要出典」明示）。出力は `work/manuscripts/`
-- **`/caw-input`**：6 ソフト（Gaussian / ORCA / CP2K / GROMACS / VASP / Quantum ESPRESSO）の入力ファイル雛形生成、Playbook デフォルト起点 + ジョブ記録自動生成
+- **`/caw-input`**：7 ソフト（Gaussian / ORCA / CP2K / GROMACS / VASP / Quantum ESPRESSO / ChimeraX）の入力ファイル雛形生成、Playbook デフォルト起点 + ジョブ記録自動生成
 - **`/caw-playbook`**：計算 log の自動解析 → Lessons Learned エントリ起案 → Playbook 末尾追記、memory feedback 昇格判定。`_past-data/` に置いた過去データの一括取り込み（その人向けに Playbook を初期最適化）にも対応
 - **`/caw-doctor`**：`office/` 構造の健全性チェック（部署 CLAUDE.md の存在、旧構造の検出、Playbook 更新滞り等）と修復コマンド提示
 - **`/caw-setup`**：caw を十分に使うための外部ツール（Python・poppler・python-pptx 等）の不足を検出し、計画提示 → 一度の承認 → 順番にインストール（macOS / Windows、冪等）。CLI/Node 自体の導入は `setup/caw-setup.sh`・`setup/caw-setup.ps1` を案内
@@ -88,7 +88,7 @@ your-research-project/
 
 ### Playbook 雛形
 
-- 計算ソフト：Gaussian / GROMACS / CP2K / ORCA / VASP / Quantum ESPRESSO / Psi4 / NAMD / LAMMPS / OpenMM + 汎用
+- 計算ソフト：Gaussian / GROMACS / CP2K / ORCA / VASP / Quantum ESPRESSO / Psi4 / NAMD / LAMMPS / OpenMM / ChimeraX + 汎用
 - Python ライブラリ：RDKit / ASE / MDAnalysis / pymatgen（API quirks・よくある罠を体系化）
 
 ### MCP セットアップ

@@ -2,7 +2,7 @@
 name: caw-input
 description: >
   計算ソフト別の入力ファイル雛形を対話的に生成するスキル。
-  Gaussian / ORCA / CP2K / GROMACS / VASP / Quantum ESPRESSO に対応。
+  Gaussian / ORCA / CP2K / GROMACS / VASP / Quantum ESPRESSO / ChimeraX に対応。
   Playbook のデフォルト推奨値を起点に、ユーザーの系と目的に合わせて入力ファイルとジョブ記録を 1 計算 1 サブディレクトリ単位で配置する。
 ---
 
@@ -36,6 +36,7 @@ Q1: どの計算ソフトの入力ファイルを生成しますか？
   - GROMACS
   - VASP
   - Quantum ESPRESSO
+  - ChimeraX（構造/密度マップのフィッティング・可視化）
 ```
 
 選択されたソフトに対応する Playbook を最初に読む：
@@ -83,6 +84,13 @@ Q1: どの計算ソフトの入力ファイルを生成しますか？
 - 構造最適化（vc-relax）
 - フォノン（ph.x）
 - バンド構造
+
+#### ChimeraX
+
+- 構造/密度マップへのフィッティング（`fitmap` / Fit in Map）
+- 可視化・高品質レンダリング（画像・ムービー）
+- 解析（`measure correlation`・`molmap` でマップ生成・`matchmaker` で重ね合わせ・`morph`）
+- cryo-EM モデル構築（ISOLDE 連携）
 
 ### Step 3: 系（system）情報の取得
 
@@ -167,6 +175,11 @@ mkdir -p <tool>/<system>_<purpose>_<YYYYMMDD>
 
 - `<system>.in` — namelist 形式
 - `run_<system>.sh`
+
+#### ChimeraX
+
+- `<system>.cxc` — コマンドスクリプト（`open` 構造 + `open` 密度マップ → `fitmap` → `measure correlation` → `save` セッション/画像）。複雑なら `<system>.py`（`runscript`）
+- `run_<system>.sh` — ヘッドレス実行：`chimerax --nogui --script <system>.cxc --exit`（サーバ/HPC でレンダが要るなら `--offscreen`＝Linux/OSMesa）
 
 ### Step 6: ジョブ記録の作成
 
