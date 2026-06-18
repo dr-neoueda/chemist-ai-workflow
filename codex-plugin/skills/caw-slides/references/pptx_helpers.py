@@ -1214,17 +1214,25 @@ def add_subheading_bar(
     *,
     left: Emu,
     top: Emu,
-    width: Emu,
+    width: Emu | None = None,
     height: Emu = Inches(0.36),
+    fill: RGBColor = COLOR_BASE_LIGHTER,
+    font_size: Pt = Pt(20),  # unit: Pt — pass Pt(n), not a bare int
 ) -> Rect:
-    """Light-teal filled sub-heading bar (多パネルスライドの各図の見出し).
+    """Light-teal sub-heading bar **sized to its text** (多パネルの各図の見出し).
 
     参考デザイン: 1 スライドに複数の図を並べるとき、各図の上に淡ティールの小見出し
-    バーを置いて何の図かを示す。返り値の rect を ``assert_no_overlap`` に渡す
-    (テキストはバー内に収まる前提なので、バー 1 個ぶんの rect だけ返す)。
+    バーを置いて何の図かを示す。``width=None``（既定）のときは文字数からバー幅を
+    見積もり、**塗りつぶしが文字に密着**する（余計な塗りを残さない）。固定幅にしたい
+    ときだけ ``width`` を渡す。返り値の rect を ``assert_no_overlap`` に渡す。
     """
+    if width is None:
+        # 文字幅の概算: 全角 ≈ 1em / 半角 ≈ 0.6em + 左右パディング。
+        # padding 0.48in − text-frame margins 0.30in ≈ 0.18in の余裕（clip 防止）。
+        units = sum(1.0 if _is_japanese(ch) else 0.6 for ch in text)
+        width = Emu(int(int(font_size) * units) + int(Inches(0.48)))
     bar = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, left, top, width, height)
-    _style_shape_fill(bar, COLOR_BASE_LIGHT, None)
+    _style_shape_fill(bar, fill, None)
     _set_shape_shadow(bar, False)  # テーマ既定の影を無効化（フラット）
     # Label lives in the bar's own text frame (one shape only) so the returned
     # rect fully covers the visible content — same pattern as add_flow_box.
@@ -1236,7 +1244,7 @@ def add_subheading_bar(
     tf.margin_top = Inches(0.02)
     tf.margin_bottom = Inches(0.02)
     _write_paragraphs(
-        tf, [Paragraph(mixed_runs(text, size=Pt(20), bold=True, color=COLOR_TITLE))]
+        tf, [Paragraph(mixed_runs(text, size=font_size, bold=True, color=COLOR_TITLE))]
     )
     return (left, top, width, height, f"<subheading:{text[:10]}>")
 
