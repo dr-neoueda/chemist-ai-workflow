@@ -2,6 +2,20 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.31.1 / Codex 1.30.1 / Gemini 1.10.1] - 2026-06-18
+
+### Changed — 好み学習の確認を「毎回・自分から」に強化（全 CLI 共通）
+
+1.31.0 の好み学習ループは「汎用的だと判断したら確認」という条件付き・任意トーンで、エージェントが聞き逃す余地があった。ユーザー要望（推敲のたびに自動でルール化を確認してほしい・CLI 不問）に合わせ、**プロンプト指示を「推敲で修正を受けるたびに必ず評価し、汎用的なら言われる前に自分から確認」へ強化**。
+
+- `caw-write` / `caw-es` の Step 6 を「**毎回・自分から確認**」に改訂（**Claude Code / Codex CLI / Gemini CLI で共通**の挙動と明記）。注意事項にも「『覚えて』と言われるのを待たない」を追加。
+- `GEMINI.md`・`commands/caw-write.toml`・`commands/caw-es.toml` の捕捉文も「推敲のたびに評価→自分から確認」に統一。
+- hook ではなくプロンプト指示で統一する設計（Gemini に hook が無く、Claude だけ hook を足すと CLI 間で挙動が割れるため、全 CLI で同一に効くプロンプトで揃える）。`一度きりの言い回し直しは記録しない`（聞きすぎない）は維持。
+
+### Note
+
+- 版: plugin 1.31.0 → **1.31.1** / codex 1.30.0 → **1.30.1** / gemini 1.10.0 → **1.10.1** / copilot 1.17.1 据え置き / marketplace 同期。挙動の信頼性強化のみ（新ファイル・新パスの追加なし）。
+
 ## [1.31.0 / Codex 1.30.0 / Gemini 1.10.0] - 2026-06-18
 
 ### Added — 作文の好み学習ループ（`caw-write` / `caw-es` が推敲から学ぶ）
