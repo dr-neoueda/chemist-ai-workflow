@@ -2,6 +2,22 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.31.0 / Codex 1.30.0 / Gemini 1.10.0] - 2026-06-18
+
+### Added — 作文の好み学習ループ（`caw-write` / `caw-es` が推敲から学ぶ）
+
+推敲での修正が「その文書限り」で終わり次の作文に持ち越されなかった問題に対し、計算側の **caw-input ↔ caw-playbook 学習ループの作文版**を `caw-write`（研究）と `caw-es`（就活）に対称に追加。使うほどユーザーの作文の好みに最適化される。
+
+- **新ファイル**：`work/manuscripts/_style/writing-preferences.md`（caw-write）／`work/documents/writing-preferences.md`（caw-es）。`caw-intake` の初期文体（過去文書からの一括抽出）に対し、**会話中の推敲からの逐次学習**を蓄積。
+- **適用（Step 2）**：作文前に preferences を読み、文体プロファイルの上に重ねて**先回り適用**（同じ直しを繰り返させない）。
+- **記録（Step 6・確認してから記録）**：修正が**汎用的な好み**（態・語調・hedging・構成・避ける語など）のときだけ、「次回以降も既定にしますか？」と**確認のうえ** 1 行ルールで追記。**その文書固有の言い回し直しは記録しない**（誤ルールは全作文を劣化させるため confirm-first）。
+- 役割分担：`caw-intake`＝初期文体（バッチ抽出）／本ループ＝逐次学習（オンライン）。`office/` 設定ファイルは書き換えない（設定と好みを分離）。
+- 反映：`caw-write` / `caw-es` SKILL.md（plugin + codex）・`GEMINI.md`・`commands/caw-write.toml`・`commands/caw-es.toml`・`engine-validation-map`（生成→制約チェックの行に好み学習サブループを明記、plugin/codex/copilot byte-identical）。
+
+### Note
+
+- 版: plugin 1.30.1 → **1.31.0** / codex 1.29.0 → **1.30.0** / gemini 1.9.1 → **1.10.0** / copilot 1.17.1 据え置き（caw-write/caw-es は未収載・engine-map 参照のみ更新）/ marketplace 同期
+
 ## [1.30.1 / Gemini 1.9.1 / Copilot 1.17.1] - 2026-06-18
 
 ### Fixed — README のスキル一覧に `caw-write` を反映
