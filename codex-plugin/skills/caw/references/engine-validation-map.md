@@ -29,8 +29,8 @@ caw は **化学者向け機能（本機能）** と **就活向け機能（サ�
 | 研究オンボ → 8 部署 scaffold | 就活オンボ → 就活部署 scaffold | オンボ＋scaffold | トラック分岐・scaffold・二層原則・START HERE 生成が機能する |
 | 秘書（研究 TODO/notes） | 秘書（選考スケジュール） | 秘書ゲートウェイ・dispatch | 窓口・キーワード振り分け・notes 追記が機能する |
 | caw-research（論文検索→`work/topics/`）→ caw-register（PDF→`work/papers/` 登録） | caw-research（企業研究→`work/companies/`）/ caw-events（イベント収集） | 収集 → 構造化 →（登録 / 可視化） | 収集・構造化・出典方針が機能する。**caw-research は同一スキルが両トラックの「収集」を担う**＝就活利用が研究の探索パスを直接検証 |
-| caw-input（計算入力生成） | caw-es（ES 生成） | 生成 → 制約チェック | テンプレ準拠生成・制約（文字数/書式）厳守・推敲ループが機能する |
-| caw-write（論文・申請書執筆→`work/manuscripts/`、本人文体＋`work/papers/` 引用） | caw-es（ES 執筆→`work/documents/`、本人文体） | 生成 → 制約チェック | 本人文体の踏襲・制約（字数/引用整合）厳守・推敲ループが機能する。**caw-es が研究側 caw-write / caw-input 両方の生成パスを検証** |
+| caw-input（計算入力生成） | caw-es（ES 生成） | 生成 → 制約チェック | テンプレ準拠生成・制約（文字数/書式）厳守・推敲ループ＋好み学習（writing-preferences）蓄積→次回適用が機能する |
+| caw-write（論文・申請書執筆→`work/manuscripts/`、本人文体＋`work/papers/` 引用） | caw-es（ES 執筆→`work/documents/`、本人文体） | 生成 → 制約チェック | 本人文体の踏襲・制約（字数/引用整合）厳守・推敲ループ＋好み学習（writing-preferences）蓄積→次回先回り適用が機能する。**caw-es が研究側 caw-write / caw-input 両方の生成パスを検証** |
 | caw-playbook（ノウハウ追記） | caw-interview（面接振り返り） | 反復 → ログ蓄積 | 追記・蓄積・再利用ループが機能する |
 | caw-intake〔研究: `inbox/` を内容判定→自分資料は work/profile/・`work/manuscripts/_style/`、外部論文は caw-register、計算は caw-playbook〕 | caw-intake〔就活: `inbox/` を内容判定→ES は work/self-analysis/・voice-style、企業情報は caw-research〕 | 統合 inbox の内容判定→振り分け→個人最適化 seed | 内容分類・振り分け・抽出・seed が機能する（caw-intake は**同一スキルが両トラックの統合 inbox を処理**＝就活利用が研究側を直接検証） |
 | 研究データ HTML 可視化 | 企業 / イベント HTML 可視化 | 可視化エンジン | チャート描画・id 衝突回避・出典併記が機能する |
