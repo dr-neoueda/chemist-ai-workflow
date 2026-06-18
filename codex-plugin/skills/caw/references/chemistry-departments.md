@@ -111,7 +111,7 @@ type: daily
 ユーザーが ファイラーから開ける場所に置く：
 
 - **個別論文の要約 md**：`{{PROJECT_ROOT}}/work/papers/<author-year-keyword>.md`（`work/` 配下）
-- **調査トピックまとめ**：`{{PROJECT_ROOT}}/work/topics/<topic>.md`（`work/` 配下）
+- **調査トピック・文献リスト**：`{{PROJECT_ROOT}}/work/topics/<topic>.html`（caw-research の検索結果。`work/` 配下）
 - **報告書・調査結果総括**：`{{PROJECT_ROOT}}/work/reports/<topic>.md`（`work/` 配下）
 - **原本 PDF**：`{{PROJECT_ROOT}}/work/papers/<author-year-keyword>.pdf`（`work/` 配下）
 

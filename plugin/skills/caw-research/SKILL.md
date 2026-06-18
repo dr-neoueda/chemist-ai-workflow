@@ -1,14 +1,14 @@
 ---
 name: caw-research
 description: >
-  「調べる（discovery）」スキル（研究・就活の両トラック対応）。研究トラックでは関心テーマの論文を検索して work/topics/ にリスト化する（入手 PDF の登録・要約は caw-paper が担当）。
+  「調べる（discovery）」スキル（研究・就活の両トラック対応）。研究トラックでは関心テーマの論文を検索し、クリックで論文ページに飛べる HTML リスト（work/topics/<topic>_<日付>_n<件数>.html）に書き出す（入手 PDF の登録・要約は caw-paper が担当）。
   就活トラックでは企業・業界を採用ページ・IR・ニュース等の公開情報から調べ、調査レベルと出力形式を選ばせて work/companies/ に汎用 8 ブロックで構造化し、必要なら HTML 可視化する。
 trigger: /caw-research
 ---
 
 # caw-research — 調べる（研究＝論文検索 / 就活＝企業・業界研究）
 
-「調べる（discovery）」を担当する両トラック対応スキル。**研究トラックでは関心テーマの論文を検索して `work/topics/` にリスト化**し、**就活トラックでは企業・業界を公開情報から汎用 8 ブロックで構造化**する。トラックはプロジェクト設定で自動判定する。
+「調べる（discovery）」を担当する両トラック対応スキル。**研究トラックでは関心テーマの論文を検索して `work/topics/` に HTML リスト化**（タイトルをクリックで論文ページへ）し、**就活トラックでは企業・業界を公開情報から汎用 8 ブロックで構造化**する。トラックはプロジェクト設定で自動判定する。
 
 ## いつ使うか
 
@@ -49,33 +49,56 @@ trigger: /caw-research
 
 web 検索 / MCP が使えない場合は、ユーザーに検索結果・キーワード・控えの貼り付けを依頼してフォールバックする。
 
-### R-Step 3: リスト化（成果物）
+### R-Step 3: HTML リストに書き出す（成果物）
 
-`work/topics/<topic-slug>.md` を生成する。フォーマット：
+`work/topics/<topic-slug>_<YYYYMMDD>_n<件数>.html` を生成する（**md は作らない**）。**1 ファイルで完結するオフライン HTML**（インライン CSS・CDN/JS なし）。ダブルクリックで開け、ネット接続なしで表示できる（論文リンクを押したときだけ通信）。**並べ替えのない静的な縦リスト**。
 
-```markdown
----
-topic: <topic name>
-created: YYYY-MM-DD
-sources: [arxiv, crossref, semantic-scholar, ...]
-count: <件数>
----
+**ファイル名規則**：`<topic-slug>_<YYYYMMDD>_n<件数>.html`（例 `mof_20260618_n10.html`＝MOF・2026-06-18 取得・10 件）。`<topic-slug>` は検索テーマを小文字 ASCII の kebab-case に（日本語テーマは英語キーワードかローマ字、~40 字以内）。`<YYYYMMDD>` は取得日、`n<件数>` は掲載論文数。**同じテーマを再検索しても上書きせず日付で別ファイルとして残す**（同一 topic+日付が既にあれば末尾に `-2`, `-3`）。
 
-# <Topic Name>
+**構成**
+- **ヘッダ**：トピック名（`<h1>`）／検索条件（キーワード・期間・ジャーナル絞り込み）／件数／取得日／使用ソース。
+- **本文＝縦リスト**（`<ol>`、1 論文 1 ブロック、薄い罫線区切り）。各ブロック：
+  - **タイトル（必ずハイパーリンク）**：飛び先は DOI があれば `https://doi.org/<doi>`、arXiv なら `https://arxiv.org/abs/<id>`、どちらも無ければ Google Scholar 検索（`https://scholar.google.com/scholar?q=<タイトルを URL エンコード>`）。`target="_blank" rel="noopener"`。
+  - **メタ行**（グレー小）：著者（多ければ「First 他」）・年・誌名。
+  - **要約 1〜2 文**。
+  - **補助リンク**：`DOI 10.1021/… ↗` または `arXiv:… ↗`（タイトルと同じ飛び先）。
+- **フッタ**：「読みたい論文は PDF を `work/papers/` に置いて『登録して』と言うと `caw-paper` が要約・登録します」。
 
-## 検索条件
+**デザイン**（装飾は最小・製品配色に合わせる）。`<style>` に：
+`:root{--ink:#181d26;--body:#333840;--accent:#aa2d00;--line:#e2e2e2;--muted:#8a8a8a}` ／
+`body{font-family:Inter,-apple-system,'Segoe UI','Hiragino Sans',sans-serif;color:var(--body);max-width:820px;margin:28px auto;padding:0 18px;line-height:1.7}` ／
+`h1{font-size:20px;color:var(--ink);margin:0 0 4px}` ／ `.cond{color:var(--muted);font-size:13px;margin:0 0 18px}` ／
+`ol.papers{list-style:none;padding:0;margin:0}` ／ `ol.papers>li{padding:14px 0;border-bottom:1px solid var(--line)}` ／
+`a.ttl{color:var(--accent);font-weight:600;text-decoration:none;font-size:15.5px}` ＋ `a.ttl:hover{text-decoration:underline}` ／
+`.meta{color:var(--muted);font-size:13px;margin:3px 0}` ／ `.sum{font-size:14px;margin:3px 0}` ／ `.id a{color:var(--muted);font-size:12.5px;text-decoration:none}` ／
+`footer{color:var(--muted);font-size:12.5px;margin-top:20px;border-top:1px solid var(--line);padding-top:12px}`。
+**影・色面・アイコン画像・背景色は使わない**（罫線区切りのみ）。
 
-- キーワード: ...
-- 期間: ...
-- ジャーナル絞り込み: ...
+**雛形**
 
-## 論文リスト
-
-| # | Title | Authors | Year | Journal | ID | 要約（1-2 文） |
-|---|---|---|---|---|---|---|
-| 1 | ... | ... | 2024 | J. Am. Chem. Soc. | DOI: 10.1021/... | ... |
-| 2 | ... | ... | 2023 | arXiv | arXiv:2304.12345 | ... |
+```html
+<!doctype html><html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><topic> — 文献リスト</title>
+<style>/* 上記 */</style></head><body>
+<header>
+  <h1><topic></h1>
+  <p class="cond">キーワード: … ／ 期間: … ／ 全 N 件 ／ 取得 YYYY-MM-DD ／ ソース: arXiv, Crossref …</p>
+</header>
+<ol class="papers">
+  <li>
+    <a class="ttl" href="https://doi.org/10.1021/…" target="_blank" rel="noopener">Tunable luminescence in coordination polymers</a>
+    <div class="meta">Tanaka, Sato 他 · 2024 · J. Am. Chem. Soc.</div>
+    <div class="sum">配位子置換で MOF の発光を可逆制御……（1〜2 文）</div>
+    <div class="id"><a href="https://doi.org/10.1021/…" target="_blank" rel="noopener">DOI 10.1021/… ↗</a></div>
+  </li>
+  <!-- 件数分くり返し -->
+</ol>
+<footer>読みたい論文は PDF を <code>work/papers/</code> に置いて「登録して」と言うと caw-paper が要約・登録します。</footer>
+</body></html>
 ```
+
+**注意**：リンクは必ず実在の飛び先にする（DOI/arXiv が取れない論文は Google Scholar 検索リンクにフォールバック）。**要約はユーザーの言語（既定で日本語）で書く**（原文が英語でも日本語に要約する）。abstract が取得できない・出版社のボイラープレートで壊れている場合は、タイトルから内容を 1 行で示し「※要約データなし」を添える（具体的な知見は捏造しない）。HTML 生成のために書誌・要約を捏造しない。
 
 ### R-Step 4: 次の一歩（`caw-paper` へ橋渡し）
 

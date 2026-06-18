@@ -189,7 +189,7 @@ Call 2 で得た回答は `office/CLAUDE.md` の「パーソナライズメモ�
 | 部署 | 作業ディレクトリ | README で示す中身 |
 |---|---|---|
 | research | `work/papers/` | 文献要約 md（`<author-year>.md`）+ 原本 PDF |
-| research | `work/topics/` | 調査トピックまとめ md（`<topic>.md`） |
+| research | `work/topics/` | 調査トピック・文献リスト（caw-research の HTML、`<topic>.html`） |
 | writing | `work/manuscripts/` | 論文ドラフト（LaTeX / Word）、図表、参考文献 |
 | presentation | `work/presentations/slides/` | 発表資料・論文紹介スライド（`.pptx`）。生成スクリプトは `office/presentation/scripts/`（再生成用） |
 | analysis | `work/analyses/` | 解析結果（1 トピック 1 サブフォルダ） |
@@ -423,7 +423,7 @@ AI 部署の運営記録を集約する場所。**`office/` は先頭ドット�
 | ディレクトリ | 中身 | 関連部署 |
 |---|---|---|
 | `work/papers/` | 文献要約 md（`<author-year>.md`）、PDF | research |
-| `work/topics/` | 調査トピックまとめ md（`<topic>.md`） | research |
+| `work/topics/` | 調査トピック・文献リスト（caw-research の HTML、`<topic>.html`） | research |
 | `work/manuscripts/` | 論文ドラフト（`.tex` / `.docx`）、`references.bib`、図 | writing |
 | `work/analyses/` | 解析結果（1 トピック 1 サブフォルダ） | analysis |
 | `work/notebooks/` | Jupyter Notebook | analysis |
