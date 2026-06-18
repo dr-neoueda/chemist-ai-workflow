@@ -37,6 +37,11 @@ description: >
 | 言語 | 日本語 / 英語 |
 | 制約（あれば） | 「枚数最大 20」「特定の図を必ず含める」など |
 
+**元データの候補（発表場面別に提示・利用できる）**：
+- **学会発表 / 修論 / 研究紹介 / 報告会**：`work/manuscripts/`（caw-write で書いた自分の論文・要旨）・`work/profile/key-findings.md`（主要な結論）・解析結果（`work/analyses/`）。ユーザーが元データ path を指定しなければ、これらを候補として提示する。
+- **論文紹介（journal club）**：caw-register が登録した `work/papers/<著者-年>.md`（他者論文）。原論文 PDF を主図の源泉に。
+- **講義**：ユーザー指定の教材・トピック。
+
 ユーザーが枚数・構成を指定していなければ Codex の裁量に任せる。
 
 ### Step B: テンプレ + helper をユーザーのプロジェクトにコピー
@@ -219,4 +224,5 @@ pip install python-pptx matplotlib Pillow
 
 - `caw` — `office/` 部署スキャフォールド（presentation 部含む）
 - `caw-register` — 論文 PDF を `work/papers/` に登録（journal club 用素材の源泉）
+- `caw-write` — 自分の論文・要旨を `work/manuscripts/` に執筆（学会発表/修論/報告会スライドの元データの源泉）。`caw-intake` が `work/profile/key-findings.md` も供給
 - `caw-playbook` — 計算ソフト Playbook 蓄積（報告会・学会発表の素材）

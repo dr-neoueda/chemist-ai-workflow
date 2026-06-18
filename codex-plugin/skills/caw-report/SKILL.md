@@ -98,10 +98,11 @@ description: >
 | work/manuscripts/ | ○/× | N | N | N |
 | work/recruit/ | ○/× | N | N | N |
 | work/topics/ | ○/× | N | N | N |
+| work/interview-prep/ | ○/× | N | N | N |
 | work/presentations/slides/ | ○/× | N | N | N |
 | inbox/（未処理） | ○/× | N | - | - |
 - HTML 出力（caw-research/caw-events）: <有/無>
-- voice-style/voice-self ・ writing-preferences ・ work/profile/* ・ past-answers: <各 有/無>
+- voice-style/voice-self ・ writing-preferences ・ interview-prep/_notes.md ・ work/profile/* ・ past-answers: <各 有/無>
 
 ## 5. スキル利用の痕跡（成果物の有無から推定・○/×）
 - caw-research / caw-intake / caw-es / caw-interview / caw-events / caw-register / caw-write / caw-input / caw-slides / caw-playbook / caw-doctor

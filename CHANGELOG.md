@@ -2,6 +2,20 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.34.0 / Codex 1.33.0 / Gemini 1.13.0] - 2026-06-18
+
+### Changed — スキル間連携の配線（caw-slides ← 自分の論文 / caw-report の追跡補完）
+
+スキル連携の監査で見つかった 2 点。研究パイプライン「探す→登録→書く→発表」の後半 2 辺を補強。
+
+- **B. caw-slides が自分の論文を元データに使えるよう配線**：従来 caw-slides は元データ path をユーザーに毎回要求し、journal club（他者論文＝caw-register の `work/papers/`）だけが配線済みだった。**学会発表/修論/研究紹介/報告会では `work/manuscripts/`（caw-write で書いた自分の論文・要旨）・`work/profile/key-findings.md`・解析結果を元データ候補として提示・利用**するよう Step A に明記。関連 Skill にも `caw-write` を追加（**書く→発表の連携**が成立）。
+- **A. caw-report の追跡補完**：直前の PR で追加した `work/interview-prep/_notes.md`（面接の傾向ノート）を caw-report が追跡していなかったため、利用状況テーブルに `work/interview-prep/` 行を、personalization ファイル一覧に `interview-prep/_notes.md` を追加。
+- 反映：`caw-slides`（plugin の Claude 委譲版 + codex の直接生成版、それぞれの構造に合わせて）・`caw-report`（plugin + codex）・`GEMINI.md`・`commands/caw-slides.toml`。
+
+### Note
+
+- 版: plugin 1.33.0 → **1.34.0** / codex 1.32.0 → **1.33.0** / gemini 1.12.0 → **1.13.0** / copilot 1.17.1 据え置き / marketplace 同期
+
 ## [1.33.0 / Codex 1.32.0 / Gemini 1.12.0] - 2026-06-18
 
 ### Added — caw-interview に面接の学習ループ（傾向ノート）
