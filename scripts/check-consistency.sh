@@ -56,6 +56,21 @@ for d in "${mirror_dirs[@]}"; do
   fi
 done
 
+# --- 2a. plugin <-> codex single shared files (byte-identical) ---
+# HTML design contract: all HTML-producing skills follow it, so plugin and codex
+# must carry the exact same file (Gemini inlines it in GEMINI.md separately).
+for f in skills/caw/references/html-style.md; do
+  pf="plugin/$f"; cf="codex-plugin/$f"
+  if [ ! -f "$pf" ] || [ ! -f "$cf" ]; then
+    printf '%s    skip mirror %s (missing)%s\n' "$dim" "$f" "$off"; continue
+  fi
+  if diff -q "$pf" "$cf" >/dev/null 2>&1; then
+    ok "mirror identical: $f"
+  else
+    bad "mirror DRIFT: $f (plugin vs codex-plugin differ)"
+  fi
+done
+
 # --- 2b. codex <-> copilot shared reference files (PoC) ---
 # copilot-plugin reuses codex's CLI-agnostic templates verbatim for these two.
 # (SKILL.md and mcp-setup-templates.md intentionally differ per CLI; chemistry-

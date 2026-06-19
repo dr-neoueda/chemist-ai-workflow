@@ -61,6 +61,35 @@
 
 ## スキルの手順
 
+### caw の HTML デザイン（全 HTML 出力で共通・必ず従う）
+
+caw が HTML を出力するスキル（caw-research〔論文リスト/企業〕・caw-events 等）は、**下の共通 `<style>` と部品をそのまま使う**（自己流 CSS を作らない）。Claude Code / Codex CLI と同一デザインに統一するため。**オフライン自己完結**（インライン CSS のみ・外部依存なし）、**白基調・コーラル `#aa2d00`・ヘアライン罫線**、**影・色面・アイコン画像・背景色は使わない**。見出し id と `<svg>`/`<canvas id>` は別名（`ch` 接頭辞）。
+
+```html
+<style>
+:root{--ink:#181d26;--body:#333840;--accent:#aa2d00;--line:#e2e2e2;--muted:#8a8a8a;--bg:#fff}
+*{box-sizing:border-box}
+body{font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',sans-serif;color:var(--body);background:var(--bg);max-width:900px;margin:28px auto;padding:0 18px;line-height:1.7}
+h1{font-size:21px;color:var(--ink);margin:0 0 4px}
+h2{font-size:16px;color:var(--ink);margin:26px 0 8px;border-bottom:2px solid var(--line);padding-bottom:5px}
+.cond,.muted{color:var(--muted);font-size:13px}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+ol.list{list-style:none;padding:0;margin:0}
+ol.list>li{padding:14px 0;border-bottom:1px solid var(--line)}
+.ttl{color:var(--accent);font-weight:600;font-size:15.5px}
+.meta{color:var(--muted);font-size:13px;margin:3px 0}.sum{font-size:14px;margin:3px 0}
+.card{border:1px solid var(--line);border-radius:10px;padding:15px 16px;margin:11px 0}
+.card h3{font-size:15.5px;color:var(--ink);margin:0 0 6px}
+table{width:100%;border-collapse:collapse;font-size:14px;margin:10px 0}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--ink);font-weight:600;white-space:nowrap}
+.badge{display:inline-block;border:1px solid var(--line);color:var(--accent);border-radius:4px;padding:2px 8px;font-size:12px;font-weight:600}
+footer{color:var(--muted);font-size:12.5px;margin-top:22px;border-top:1px solid var(--line);padding-top:12px}
+</style>
+```
+
+部品: リスト=`ol.list>li`＋`.ttl/.meta/.sum`、カード=`.card`、表=`table`、状態=`.badge`、グラフ=インライン `<svg>`（`--accent` と `#888888` の2色）。
+
 ### caw-intake（統合 inbox の自動仕分け）
 過去資料を単一の `inbox/` に入れて「処理して」と言われたら、各ファイルを**開いて中身で種類を判定**し振り分ける（拡張子だけで決めない）。
 - **研究**：自分の論文/申請書/スライド/CV → 執筆スタイル `work/manuscripts/_style/voice-self.md`・研究プロファイル/知見/業績/引用/手法 `work/profile/{research-profile,key-findings,publications,citations,methods}.md`・作図 `work/figures/_style.md`・発表 `work/presentations/_style.md`・CV `work/profile/cv.md`・用語辞書 `work/profile/glossary.md`。外部論文 → caw-register で登録。計算入出力 → caw-playbook の `_past-data/` 取り込み。測定データ → `work/analyses/` 整理＋手法傾向。
@@ -69,7 +98,7 @@
 
 ### caw-research（調べる：研究＝論文検索 / 就活＝企業・業界研究）
 `office/GEMINI.md` 冒頭の `> トラック:` で分岐する。
-- **研究**：関心テーマの論文を検索（arXiv / Crossref / Semantic Scholar / OpenAlex / PubMed、件数・期間を確認）→ クリックで論文ページに飛べる **HTML リスト** `work/topics/<topic>_<YYYYMMDD>_n<件数>.html`（タイトルがリンク・縦リスト・並べ替えなし・要約は日本語・登録済み〔work/papers/〕は既定で除外）に書き出す。**探索はリスト化まで**で、入手 PDF の登録は caw-register に渡す（DOI/arXiv ID を残す）。
+- **研究**：関心テーマの論文を検索（arXiv / Crossref / Semantic Scholar / OpenAlex / PubMed、件数・期間を確認）→ クリックで論文ページに飛べる **HTML リスト** `work/topics/<topic>_<YYYYMMDD>_n<件数>.html`（タイトルがリンク・縦リスト・並べ替えなし・要約は日本語・登録済み〔work/papers/〕は既定で除外）に書き出す。**HTML は上の「caw の HTML デザイン」の `<style>`・`ol.list` をそのまま使う**。**探索はリスト化まで**で、入手 PDF の登録は caw-register に渡す（DOI/arXiv ID を残す）。
 - **就活**：発動したら**必ず**「調査レベル（L1 概要 / L2 標準 / L3 詳細）」と「出力形式（md / HTML / 両方。md 推奨）」を尋ねる（省略禁止）。汎用 8 ブロック（A 基本/沿革・B 財務/規模・C 戦略/競争優位・D 業界/競合・E リスク/ガバナンス/ESG・F 働く環境・G 採用/選考・H 接点/想定問答）で `work/companies/<企業>.md` に整理。公式情報は単一ソース可、年収など非公式は複数ソースで裏取り。**L3 では有報・決算説明会資料・統合報告書・中計・サステナビリティ報告書などの公式開示文書を IR から自分で取得して読む**（PDF は `curl`→`pdftotext` で必要箇所だけ抽出＝有報全文は丸読みしない、Gemini は PDF 直読み可）。値は〔文書名＋PDF URL＋取得日〕を出典に。取れなければユーザーに URL/PDF の貼り付けを依頼、捏造しない。L1/L2 は Web ページ中心で深掘りしない。
 
 ### caw-es（ES・応募書類／就活）
@@ -79,7 +108,7 @@
 `work/companies/<企業>.md` と `work/self-analysis/`（強み・弱み・ガクチカ・`motivation.md`）から、まず `work/interview-prep/_notes.md`（蓄積した面接の傾向ノート）があれば読み、定番質問（自己紹介/志望動機/ガクチカ/強み弱み/学業/キャリア/逆質問）の骨子を作り `work/interview-prep/` に保存。模擬面接・振り返りで繰り返す弱点・効いた言い回し・よく出た質問は、自分から確認のうえ `work/interview-prep/_notes.md` に蓄積し次の準備で先回り適用（その場限りの指摘は記録しない・全 CLI 共通）。
 
 ### caw-events（企業の就活イベント深掘り＆今年度予測／就活）
-**既定で 1 社**の就活イベント（インターン・説明会・座談会・選考）と締切を深掘り収集し、**過去 2〜3 年の実績から今年度の開催時期・内容を予測**（「予測（昨年実績ベース）」と根拠の実日付を明示）。公式採用ページを最優先に、就活サイト（マイナビ/リクナビ/ワンキャリア 等）も積極併用。**出典をクリックで開ける HTML** `work/recruit/<企業>_<日付>.html`（イベントカタログ/年間スケジュール・予測カレンダー/過去×今年度 対照表、**全項目に出典リンク＋取得日**）を既定の成果物に（md は任意）、確定/予測をバッジで区別、未取得は「要確認」。秘書の選考スケジュールへ連携。**複数社・業界横断はユーザーが明示指示したときだけ**（`work/recruit/<業界>_<日付>.html`＋企業比較表）。
+**既定で 1 社**の就活イベント（インターン・説明会・座談会・選考）と締切を深掘り収集し、**過去 2〜3 年の実績から今年度の開催時期・内容を予測**（「予測（昨年実績ベース）」と根拠の実日付を明示）。公式採用ページを最優先に、就活サイト（マイナビ/リクナビ/ワンキャリア 等）も積極併用。**出典をクリックで開ける HTML**（**上の「caw の HTML デザイン」の `<style>`・`.card`/`table`/SVG をそのまま使う**）`work/recruit/<企業>_<日付>.html`（イベントカタログ/年間スケジュール・予測カレンダー/過去×今年度 対照表、**全項目に出典リンク＋取得日**）を既定の成果物に（md は任意）、確定/予測をバッジで区別、未取得は「要確認」。秘書の選考スケジュールへ連携。**複数社・業界横断はユーザーが明示指示したときだけ**（`work/recruit/<業界>_<日付>.html`＋企業比較表）。
 
 ### caw-register（論文の登録・管理／研究）
 発動したら**必ず**抽出レベルを尋ねる（**推奨は設けず**、深いほど AI 使用量〔トークン〕が増えることを明示：**L1**＝書誌＋要旨 4 行＋結論の要点／**L2**＝＋背景概要・対象/手法概要・主要な結果（代表テーブル＋数値）／**L3**＝背景・対象・手法詳細・全数値・考察・限界・関連研究・引用文脈テンプレ・キーワードの**フル抽出＝paper-register 相当**。バッチは最初に 1 回だけ）。`work/papers/` に置かれた PDF（または統合 `inbox/` から渡されたもの）から、選ばれたレベルの深さで書誌情報・要約・タグを抽出し `work/papers/<著者-年>.md` に整理（md の充実度もレベル連動）。ナレッジベース／クラウドストレージ（MCP 設定済みなら）にも登録。**論文の検索・探索は caw-research（研究トラック）が担当**し、その `work/topics/` リストから取得した PDF を本スキルが登録する。

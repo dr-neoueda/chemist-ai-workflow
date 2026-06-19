@@ -2,6 +2,21 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.39.0 / Codex 1.38.0 / Gemini 1.17.0] - 2026-06-19
+
+### Changed — 出力 HTML のデザインを 3 CLI で統一（Claude Code のデザインに揃える）
+
+caw が出力する HTML（文献リスト・企業プロファイル・イベントカタログ）のデザインが **Claude Code / Codex / Gemini で異なる**問題を解消。原因は「HTML デザインがスキルの指示文依存で、配布ごとに精度がバラバラ」だったこと（特に **GEMINI.md は CSS が 0** で Gemini が毎回自己流生成、**caw-events は「caw-research の規約を踏襲」と曖昧参照**でドリフト）。caw-slides を `pptx_helpers.py` でコード化して統一したのと同じ発想を HTML にも適用。
+
+- **共有 HTML デザイン契約 `skills/caw/references/html-style.md` を新設**（plugin + codex、byte-identical）。Claude Code の現行デザインを正典化：`:root{--ink:#181d26;--body:#333840;--accent:#aa2d00;…}`＋部品（`ol.list`/`.card`/`table`/`.badge`/オフライン SVG）＋スケルトン。**白基調・コーラルアクセント・ヘアライン罫線・影/色面/アイコンなし**。
+- **caw-research（研究＝文献リスト／就活＝企業）** と **caw-events** の HTML 生成手順を、この契約に**必ず従う**よう明示（自己流 CSS 禁止）。caw-events は「踏襲」→ 契約への明示参照に変更。
+- **GEMINI.md に同一の `<style>` をインライン追加**（Gemini は references を読まないため）。caw-research/caw-events の出力指示から参照。← Gemini の乖離の主因を解消。
+- **consistency check** に `html-style.md` の plugin↔codex byte-identity ガードを追加。
+
+### Note
+
+- 版: plugin 1.38.0 → **1.39.0** / codex 1.37.0 → **1.38.0** / gemini 1.16.0 → **1.17.0** / copilot 1.18.0 据え置き（HTML 出力スキル非収載）/ marketplace 同期
+
 ## [1.38.0 / Codex 1.37.0 / Gemini 1.16.0] - 2026-06-19
 
 ### Added — caw-research（就活）L3 で公式開示文書を能動的に読みにいく

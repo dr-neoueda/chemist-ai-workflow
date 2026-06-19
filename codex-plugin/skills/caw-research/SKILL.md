@@ -73,7 +73,7 @@ HTML に書き出す前に、`work/papers/` の登録済み md と照合し、**
   - **補助リンク**：`DOI 10.1021/… ↗` または `arXiv:… ↗`（タイトルと同じ飛び先）。
 - **フッタ**：「読みたい論文は PDF を `work/papers/` に置いて『登録して』と言うと `caw-register` が要約・登録します」。
 
-**デザイン**（装飾は最小・製品配色に合わせる）。`<style>` に：
+**デザイン**：`references/html-style.md` の共通 `<style>`・部品（文献は `ol.list`）に**必ず従う**（CLI ごとに自己流 CSS を作らない）。以下は html-style.md の抜粋＝`<style>` に：
 `:root{--ink:#181d26;--body:#333840;--accent:#aa2d00;--line:#e2e2e2;--muted:#8a8a8a}` ／
 `body{font-family:Inter,-apple-system,'Segoe UI','Hiragino Sans',sans-serif;color:var(--body);max-width:820px;margin:28px auto;padding:0 18px;line-height:1.7}` ／
 `h1{font-size:20px;color:var(--ink);margin:0 0 4px}` ／ `.cond{color:var(--muted);font-size:13px;margin:0 0 18px}` ／
@@ -221,9 +221,9 @@ HTML に書き出す前に、`work/papers/` の登録済み md と照合し、**
 - **オフライン自己完結** → チャートはインライン `<svg>`（棒=`<rect>`、レーダー=`<polygon>`、散布=`<circle>`）。外部リソース 0
 - **Chart.js** → `<head>` に `<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>`、`<canvas>` + JS でレーダー/棒/散布を描く
 
-#### 共通デザイン（インライン CSS、製品 Web と統一）
+#### 共通デザイン（`references/html-style.md` に従う）
 
-白基調 + インク文字 + コーラルのアクセント、ハネ線カード、システム/Inter フォント。`<style>` に次を入れる：
+**`references/html-style.md` の共通 `<style>`・部品（`.card`/`table`/SVG）に必ず従う**（CLI ごとに自己流 CSS を作らない）。白基調 + インク文字 + コーラルのアクセント、ハネ線カード、システム/Inter フォント。以下は html-style.md の抜粋＝`<style>` に次を入れる：
 `:root{--ink:#181d26;--body:#333840;--accent:#aa2d00;--line:#ddd;--bg:#fff}` ／
 `body{font-family:Inter,-apple-system,'Segoe UI',sans-serif;color:var(--body);background:var(--bg);max-width:960px;margin:24px auto;padding:0 16px;line-height:1.6}` ／
 カード=`border:1px solid var(--line);border-radius:10px;padding:16px`。見出しは `--ink`、強調・バッジは `--accent`。
