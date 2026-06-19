@@ -110,10 +110,10 @@ type: daily
 
 ユーザーが ファイラーから開ける場所に置く：
 
-- **個別論文の要約 md**：`{{PROJECT_ROOT}}/work/papers/<author-year-keyword>.md`（`work/` 配下）
+- **個別論文の要約 md**：`{{PROJECT_ROOT}}/work/papers/md/<author-year-keyword>.md`（`work/` 配下）
 - **調査トピック・文献リスト**：`{{PROJECT_ROOT}}/work/topics/<topic>.html`（caw-research の検索結果。`work/` 配下）
 - **報告書・調査結果総括**：`{{PROJECT_ROOT}}/work/reports/<topic>.md`（`work/` 配下）
-- **原本 PDF**：`{{PROJECT_ROOT}}/work/papers/<author-year-keyword>.pdf`（`work/` 配下）
+- **原本 PDF**：`{{PROJECT_ROOT}}/work/papers/pdf/<author-year-keyword>.pdf`（`work/` 配下）
 
 ❌ `office/research/papers/<...>.md` のようなパスに書かない（旧 v1.0 / v1.1 設計）
 
@@ -134,7 +134,7 @@ type: daily
 
 `office/CLAUDE.md` の「ナレッジベース」設定に応じて、要約後の登録先を切り替える：
 
-- **Notion** → API / MCP 経由で DB 登録（ローカル `work/papers/` と並列で同期）
+- **Notion** → API / MCP 経由で DB 登録（ローカル `work/papers/md/` と並列で同期）
 - **Obsidian / Logseq** → vault フォルダに Markdown を保存（frontmatter にメタデータ）
 - **使わない** → `work/papers/` 配下にローカル蓄積のみ
 ```

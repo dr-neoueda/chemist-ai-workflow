@@ -61,7 +61,7 @@ office/
 
 | ディレクトリ | 中身 |
 |---|---|
-| `work/papers/` | 文献要約 md、原本 PDF |
+| `work/papers/` | `pdf/`＝原本 PDF ／ `md/`＝文献要約 |
 | `work/topics/` | 調査トピックまとめ |
 | `work/manuscripts/` | 論文ドラフト（.tex / .docx） |
 | `slides/` | 発表資料（.pptx）と生成スクリプト |

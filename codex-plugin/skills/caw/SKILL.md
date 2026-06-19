@@ -201,7 +201,7 @@ Call 2 で得た回答は `office/AGENTS.md` の「パーソナライズメモ�
 
 | 部署 | 作業ディレクトリ | README で示す中身 |
 |---|---|---|
-| research | `work/papers/` | 文献要約 md（`<author-year>.md`）+ 原本 PDF |
+| research | `work/papers/` | `pdf/`＝原本 PDF ／ `md/`＝文献要約（`<author-year>.md`） |
 | research | `work/topics/` | 調査トピック・文献リスト（caw-research の HTML、`<topic>.html`） |
 | writing | `work/manuscripts/` | 論文・申請書ドラフト（`caw-write`、md / LaTeX / Word）、図表、参考文献 |
 | presentation | `work/presentations/slides/` | 発表資料・論文紹介スライド（`.pptx`）。生成スクリプトは `office/presentation/scripts/`（再生成用） |
@@ -215,9 +215,9 @@ Call 2 で得た回答は `office/AGENTS.md` の「パーソナライズメモ�
 
 review 部署は内部品質ゲート記録のみ扱うため、`work/` 配下 ディレクトリは作らず `office/review/{code-reviews,validation}/` のみで運用する。
 
-**research（work/papers/）にも投入フォルダ**：research を選択した場合、`work/papers/inbox/` を作成し、README に「論文 PDF をここに入れて『登録して』と言うと、caw-register が書誌情報を抽出して `work/papers/<著者-年>.md` に整理し、ナレッジベース／クラウドストレージにも登録する」と平易に明記する。初心者が「PDF をどこに置けばいいか」で迷わないようにするのが目的。
+**research（work/papers/）にも投入フォルダ**：research を選択した場合、`work/papers/pdf/`（PDF 置き場）と `work/papers/md/`（書誌付き要約）を作成し、README に「論文 PDF を `work/papers/pdf/` に入れて『登録して』と言うと、caw-register が書誌情報を抽出して `work/papers/md/<著者-年>.md` に整理し、ナレッジベース／クラウドストレージにも登録する」と平易に明記する。初心者が「PDF をどこに置けばいいか」で迷わないようにするのが目的。
 
-**統合 inbox（迷ったらここ）**：プロジェクト直下に `inbox/` を作成し、README に「**種類を問わず何でもここに入れて『処理して』と言えば、`caw-intake` が中身を見て判定し適切に処理します**——自分の論文/スライド/CV→プロファイル・文体を抽出（`work/profile/`・`work/manuscripts/_style/`）、外部論文→登録（`work/papers/`）、計算入出力→Playbook 取り込み。どこに入れるか迷ったらここで OK」と明記する。`work/papers/inbox/`（外部論文の直接登録）や各計算ソフトの `_past-data/` は、置き場が分かっている人向けの直接ルート。
+**統合 inbox（迷ったらここ）**：プロジェクト直下に `inbox/` を作成し、README に「**種類を問わず何でもここに入れて『処理して』と言えば、`caw-intake` が中身を見て判定し適切に処理します**——自分の論文/スライド/CV→プロファイル・文体を抽出（`work/profile/`・`work/manuscripts/_style/`）、外部論文→登録（`work/papers/`）、計算入出力→Playbook 取り込み。どこに入れるか迷ったらここで OK」と明記する。`work/papers/pdf/`（外部論文の直接登録）や各計算ソフトの `_past-data/` は、置き場が分かっている人向けの直接ルート。
 
 **Q2 で「計算ソフトは使わない / 主に実験中心」を選択していた場合**は、計算ソフト用ディレクトリは作成しない。実験記録用に `work/experiments/` を作るかどうか、その場で `AskUserQuestion` で 1 問追加して確認する（デフォルト Yes）。
 
@@ -250,7 +250,7 @@ Q3（ナレッジベース）/ Q4（クラウドストレージ）の回答に�
 │   └── README.md
 │
 └── work/                        ← 成果物・作業ファイルはすべてこの中（使う分だけ増える）
-    ├── papers/                  ← 文献要約 md + PDF（papers/inbox/ に PDF →「登録して」）
+    ├── papers/                  ← pdf/ に PDF を入れて「登録して」→ md/ に書誌付き要約
     ├── topics/ manuscripts/ analyses/ notebooks/ figures/
     ├── presentations/slides/    ← 発表資料（.pptx）
     ├── scripts/ tools/
@@ -410,7 +410,7 @@ AI 部署の運営記録を集約する場所。**`office/` は先頭ドット�
 
 | ディレクトリ | 中身 | 関連部署 |
 |---|---|---|
-| `work/papers/` | 文献要約 md（`<author-year>.md`）、PDF | research |
+| `work/papers/` | `md/`＝要約（`<author-year>.md`）、`pdf/`＝PDF | research |
 | `work/topics/` | 調査トピック・文献リスト（caw-research の HTML、`<topic>.html`） | research |
 | `work/manuscripts/` | 論文・申請書ドラフト（`caw-write`：`.md` / `.tex` / `.docx`）、`references.bib`、図 | writing |
 | `work/analyses/` | 解析結果（1 トピック 1 サブフォルダ） | analysis |
@@ -433,7 +433,7 @@ AI 部署の運営記録を集約する場所。**`office/` は先頭ドット�
 ### 例：research 部署が新規論文を要約した時
 
 ```
-✅ 正：./work/papers/wang-2024-mace.md（`work/` 配下）
+✅ 正：./work/papers/md/wang-2024-mace.md（`work/` 配下）
 ❌ 誤：office/research/papers/wang-2024-mace.md（旧設計）
 ```
 

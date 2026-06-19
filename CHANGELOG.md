@@ -2,6 +2,22 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.49.0 / Codex 1.48.0 / Copilot 1.22.0 / Gemini 1.26.0] - 2026-06-19
+
+### Changed — 論文ライブラリを `work/papers/pdf/` と `work/papers/md/` に分離
+
+caw-register の出力で原本 PDF と生成 md が `work/papers/` 直下に混在していたのを、**PDF は `work/papers/pdf/`、書誌付き要約 md は `work/papers/md/`** に分離。`work/papers/` を参照する全スキルへ波及するため、意味（PDF→`pdf/`／md→`md/`／投入口→`pdf/`／消費側は `md/` を読む／トラック判定など親参照は据え置き）を取り違えないよう全配布で一括整合。
+
+- **caw-register**：PDF を `work/papers/pdf/` から読み、要約を `work/papers/md/<著者-年>.md` に生成（`pdf_local` も `pdf/` 配下を指す）。重複判定は `work/papers/md/` を照合。dir 不在時は登録時に作成。
+- **消費側**：caw-research の登録済み除外（`work/papers/md/`）・caw-write の引用源（`work/papers/md/`）・caw-slides journal-club の素材（`work/papers/md/<著者-年>.md`）・caw-intake の振り分け先（`work/papers/md/`）をすべて `md/` に。
+- **scaffold**：dispatcher が `work/papers/{pdf/, md/}` を作成。caw-doctor は両 dir を点検。旧 `work/papers/inbox/` の投入口は `work/papers/pdf/` に統合。
+- 反映：plugin / codex / copilot / gemini の全スキル・references・README・GEMINI・commands、work/ ディレクトリ表・ツリー図。
+- 併せて Gemini `caw-research.toml` の旧記述（就活で出力形式を尋ねる）を「調査レベルのみ・md+html 両方生成」に修正。
+
+### Note
+
+- 版: plugin 1.48.0 → **1.49.0** / codex 1.47.0 → **1.48.0** / copilot 1.21.0 → **1.22.0** / gemini 1.25.0 → **1.26.0** / marketplace 同期
+
 ## [1.48.0 / Codex 1.47.0] - 2026-06-19
 
 ### Fixed — セミナー前の全体監査で見つかったブロッカー 3 件

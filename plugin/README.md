@@ -56,7 +56,7 @@ your-research-project/
 └── work/                         ← 成果物・作業ファイルはすべてこの中
     ├── orca/    {README.md, inbox/, _past-data/}   ← 入出力ファイル置き場
     ├── gromacs/ {README.md, inbox/, _past-data/}
-    ├── papers/  {README.md, inbox/}                ← 文献要約 + PDF ステージング
+    ├── papers/  {pdf/, md/}                         ← `pdf/`＝原本 PDF・`md/`＝書誌付き要約
     └── analyses/ figures/ manuscripts/ presentations/slides/ …
 ```
 
@@ -67,7 +67,7 @@ your-research-project/
 - **`/caw`**：オンボーディング（研究プロファイルを全ユーザーにヒアリング。部署は全 8 作成）→ 自動スキャフォールド → 運営モードの一連
 - **`/caw-research`**：関心テーマの論文検索（arXiv / Crossref / Semantic Scholar / OpenAlex / PubMed）→ クリックで論文ページに飛べる HTML リスト（`work/topics/`）を生成（入手 PDF の登録は `/caw-register`）
 - **`/caw-register`**：入手済み PDF のメタデータ抽出 → 書誌付き要約 md → ナレッジベース（Notion / Obsidian 他）+ クラウドストレージ（Google Drive 他）への自動登録
-- **`/caw-write`**：登録済み文献（`work/papers/`）を引用源に、論文・申請書・学会要旨を本人の文体で執筆。文書種別ごとにテンプレ・言語・字数チェックを切替、引用は本文＋文献リストを自動生成（裏付け無しは「要出典」明示）。出力は `work/manuscripts/`
+- **`/caw-write`**：登録済み文献（`work/papers/md/`）を引用源に、論文・申請書・学会要旨を本人の文体で執筆。文書種別ごとにテンプレ・言語・字数チェックを切替、引用は本文＋文献リストを自動生成（裏付け無しは「要出典」明示）。出力は `work/manuscripts/`
 - **`/caw-input`**：7 ソフト（Gaussian / ORCA / CP2K / GROMACS / VASP / Quantum ESPRESSO / ChimeraX）の入力ファイル雛形生成、Playbook デフォルト起点 + ジョブ記録自動生成
 - **`/caw-playbook`**：計算 log の自動解析 → Lessons Learned エントリ起案 → Playbook 末尾追記、memory feedback 昇格判定。`_past-data/` に置いた過去データの一括取り込み（その人向けに Playbook を初期最適化）にも対応
 - **`/caw-doctor`**：`office/` 構造の健全性チェック（部署 CLAUDE.md の存在、旧構造の検出、Playbook 更新滞り等）と修復コマンド提示
@@ -105,7 +105,7 @@ your-research-project/
 |---|---|
 | 「今日の TODO を整理して」 | `secretary/todos/YYYY-MM-DD.md` を表示・編集 |
 | 「ORCA で benzene の構造最適化の雛形を作って」 | `work/orca/<system>_<purpose>_<YYYYMMDD>/` を作成し `.inp` 雛形 + `office/computation/jobs/` にジョブ記録 |
-| 「読んだ論文を登録して」 | PDF → `work/papers/<author-year>.md`（`work/` 配下、ファイラーで見える）に書誌情報付き md を生成 |
+| 「読んだ論文を登録して」 | PDF → `work/papers/md/<author-year>.md`（`work/` 配下、ファイラーで見える）に書誌情報付き md を生成 |
 | 「ここまでの会話で決めたことを記録して」 | `secretary/notes/YYYY-MM-DD-decisions.md` に追記 |
 
 ## プラグイン構造

@@ -1,2 +1,2 @@
 description = "論文 PDF を登録して書誌付き要約を作る（研究・抽出レベル選択）"
-prompt = "GEMINI.md の『caw-register』手順に従う。まず必ず抽出レベル（L1 軽量／L2 中間／L3 は paper-register 相当のフル抽出、推奨は設けず・深いほどトークン使用量が増えることを明示）を尋ねてから、work/papers/ に置かれた（または統合 inbox から渡された）PDF を選ばれた深さで処理し work/papers/<著者-年>.md に整理。ナレッジベース/クラウド（MCP 設定済みなら）にも登録。論文の検索・探索は caw-research が担当。対象: {{args}}"
+prompt = "GEMINI.md の『caw-register』手順に従う。まず必ず抽出レベル（L1 軽量／L2 中間／L3 は paper-register 相当のフル抽出、推奨は設けず・深いほどトークン使用量が増えることを明示）を尋ねてから、work/papers/pdf/ に置かれた（または統合 inbox から渡された）PDF を選ばれた深さで処理し work/papers/md/<著者-年>.md に整理。ナレッジベース/クラウド（MCP 設定済みなら）にも登録。論文の検索・探索は caw-research が担当。対象: {{args}}"

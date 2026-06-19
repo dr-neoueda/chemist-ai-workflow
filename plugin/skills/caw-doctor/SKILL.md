@@ -92,7 +92,7 @@ trigger: /caw-doctor
 
 オンボーディングで作られる「投入フォルダ」が消えていないか確認（消えていると初心者が PDF・過去データの置き場で迷う）：
 
-- [ ] research を選択している場合、`work/papers/inbox/` が存在する
+- [ ] research を選択している場合、`work/papers/pdf/`（PDF）と `work/papers/md/`（要約）が存在する
 - [ ] 統合 `inbox/`（caw-intake の投入口：何でも入れて『処理して』）が存在する
 - [ ] 各計算ソフトディレクトリ（`work/gaussian/` `work/gromacs/` `work/cp2k/` 等）に `inbox/` と `_past-data/` が存在する
 
