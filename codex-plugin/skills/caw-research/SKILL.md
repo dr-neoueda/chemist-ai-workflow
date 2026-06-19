@@ -19,7 +19,7 @@ description: >
 
 ## トラック判定（最初に必ず）
 
-`office/AGENTS.md`（Claude Code は `CLAUDE.md`、Gemini は `GEMINI.md`）の冒頭を読み、**`> トラック: 就活` があれば就活トラック（企業・業界研究）**、無ければ**研究トラック（論文検索）**として、対応するワークフローを実行する。
+`office/AGENTS.md`（Claude Code は `CLAUDE.md`、Gemini は `GEMINI.md`）の冒頭を読み、**`> トラック:` が `就活` なら就活トラック（企業・業界研究）／`研究` なら研究トラック（論文検索）**。**`> トラック:` 行が無い（旧 office）場合は `work/companies/` があれば就活、`work/papers/`・`work/topics/` があれば研究と推定し、判別できなければ 1 問だけ尋ねる**。対応するワークフローを実行する。
 
 ## はじめてモードを尊重する
 
