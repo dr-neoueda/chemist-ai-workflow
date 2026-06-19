@@ -64,6 +64,13 @@ Q2 (計算ソフト): 「研究で使う計算ソフトのカテゴリを教え�
   - 計算ソフトは使わない / 主に実験中心
   (multiSelect: true; Other で具体的なソフト名を自由入力可)
 
+Q2-詳 (具体ソフト): Q2 で「使わない」以外のカテゴリを選んだら、**選んだカテゴリごとに「具体的にどのソフトを使っていますか？」を必ず追加で尋ねる**（カテゴリ回答の直後に AskUserQuestion を追加。複数カテゴリは 1 回の呼び出しで category ごとに 1 問・最大 4 問。各 multiSelect: true、選択肢が 4 を超えるものは代表 4 つ＋Other 自由入力で残りを拾う）。**ディレクトリ・Playbook はここで名指しされたソフトについてのみ作る**（カテゴリ内の全ソフトを作らない）。回答が無い／不明のカテゴリはソフト用ディレクトリを作らず、後から追加できる旨を一言添える。
+  - 量子化学計算 → Gaussian / ORCA / Psi4 / その他
+  - 古典 MD → GROMACS / AMBER / NAMD / LAMMPS / OpenMM / その他
+  - 周期系 DFT → CP2K / VASP / Quantum ESPRESSO / その他
+  - 構造可視化・密度マップフィッティング → ChimeraX / その他（PyMOL・VMD 等は Other で）
+  - 機械学習ポテンシャル（MACE 等）を挙げた場合 → `work/mlip/` を作る
+
 Q3 (ナレッジベース): 「文献・ノート管理に使うナレッジベースは？」
   - Notion
   - Obsidian
@@ -157,13 +164,13 @@ Call 2 で得た回答は `office/AGENTS.md` の「パーソナライズメモ�
 **Q2 で計算カテゴリが指定されていた場合**（computation 部署は常に作成済み）：
 
 - `computation/playbooks/` 配下に該当ソフトの Playbook 雛形を配置
-- `references/playbook-starters.md` から該当セクション（gaussian / gromacs / cp2k / orca / vasp 等）を取り出して配置
+- `references/playbook-starters.md` に該当セクション（gaussian / gromacs / cp2k / orca / vasp 等）があれば取り出して配置。**無いソフト**（amber / namd / lammps / openmm / psi4 等）は frontmatter（`tool`・`last_updated`）＋空の `## Lessons Learned` だけの最小 Playbook を作る（以後 caw-playbook が追記してスペシャリスト化）
 
 #### 3-4. `work/` 配下の作業ディレクトリ（実研究ファイル用）
 
 `office/` は AI 部署システムの管理側。実際の研究データを置く作業ディレクトリは、プロジェクト直下に **`work/` ディレクトリを 1 つ作り、その配下にまとめて生成**する（ルート直下に多数のフォルダを散らかさない）。各ディレクトリには `README.md` を 1 枚配置して「何を置くか・関連する `office/` 部署」を明示する。
 
-**Q2（計算ソフト）で選択されたカテゴリに含まれる各ソフトについて、`work/` 配下にディレクトリ作成**：
+**Q2-詳 でユーザーが名指しした各ソフトについてのみ、`work/` 配下にディレクトリ作成**（カテゴリ内の全ソフトは作らない）：
 
 | 計算ソフト | 作業ディレクトリ | README で示す中身 |
 |---|---|---|
@@ -175,8 +182,13 @@ Call 2 で得た回答は `office/AGENTS.md` の「パーソナライズメモ�
 | Quantum ESPRESSO | `work/quantum-espresso/` | `.in` 入力、`.out` 出力、`*.UPF` 擬ポテンシャル |
 | MACE / MLIP | `work/mlip/` | 学習データ、`.model` チェックポイント、評価 trajectory |
 | ChimeraX | `work/chimerax/` | `.cxc`/`.py` スクリプト、PDB/mmCIF 構造、`.mrc`/`.map`/`.ccp4` 密度マップ、`.cxs` セッション、フィット結果・レンダ画像 |
+| Psi4 | `work/psi4/` | `.dat`/`.in` 入力、`.out` 出力、`.fchk`/`.molden` |
+| AMBER | `work/amber/` | `.prmtop`/`.inpcrd`/`.mdin` 入力、`.mdout`/`.nc`(traj)/`.rst` 出力 |
+| NAMD | `work/namd/` | `.conf`/`.namd` 入力、`.psf`/`.pdb`、`.dcd`(traj)、`.log` |
+| LAMMPS | `work/lammps/` | `in.*` 入力、`data.*`、`.dump`/`.lammpstrj`(traj)、`log.lammps` |
+| OpenMM | `work/openmm/` | Python(`.py`) スクリプト、`.pdb`/`.xml`(System/State)、`.dcd`(traj) |
 
-各 README には対応する Playbook へのリンク（`../office/computation/playbooks/<tool>.md`）を必ず含める。
+各 README には対応する Playbook へのリンク（`../office/computation/playbooks/<tool>.md`）を必ず含める。**上表に無いソフトをユーザーが挙げた場合**は `work/<ソフト名 lowercase-kebab>/` を作り、README に主な入出力拡張子を 1 行で記す（同じく `inbox/`・`_past-data/` を付ける）。
 
 **初心者向けの投入フォルダ（各計算ソフトディレクトリ配下に必ず作る）**：パソコン操作に不慣れでも迷わないよう、各計算ソフトディレクトリ（`work/gaussian/` 等）に次の 2 つのサブフォルダと README を作成する：
 

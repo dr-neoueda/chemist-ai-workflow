@@ -2,6 +2,21 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.40.0 / Codex 1.39.0 / Copilot 1.19.0 / Gemini 1.18.0] - 2026-06-19
+
+### Changed — 研究オンボーディングで計算ソフトを「カテゴリ」だけでなく「具体ソフト名」まで尋ねる
+
+Q2（計算ソフト）が**カテゴリ**（量子化学・古典 MD・周期系 DFT・構造可視化）までしか聞かず、例えば古典 MD を選んでも **GROMACS / AMBER / NAMD / LAMMPS / OpenMM のどれか**を尋ねていなかった。**カテゴリ選択の直後に具体ソフト名を必ず追加で尋ねる**よう修正。
+
+- **Q2-詳（具体ソフト）を追加**：選んだカテゴリごとに「具体的にどのソフトを使っていますか？」を `AskUserQuestion` で尋ねる（複数カテゴリは 1 回の呼び出しで最大 4 問、各 multiSelect、選択肢 4 超は代表 4＋Other で残りを拾う）。候補＝量子化学（Gaussian/ORCA/Psi4）・古典 MD（GROMACS/AMBER/NAMD/LAMMPS/OpenMM）・周期系 DFT（CP2K/VASP/Quantum ESPRESSO）・可視化（ChimeraX、PyMOL/VMD は Other）。
+- **ディレクトリ・Playbook は名指しされたソフトのみ作成**（カテゴリ内の全ソフトを作らない）。`work/` の作業ディレクトリ表に **AMBER・NAMD・LAMMPS・OpenMM・Psi4** を追加（主な入出力拡張子つき）＋**表に無いソフトは `work/<slug>/` を汎用生成**。
+- **Playbook starter が無いソフト**（amber/namd/lammps/openmm/psi4 等）は最小 Playbook（frontmatter＋空の `## Lessons Learned`）を作り、以後 caw-playbook が追記。
+- 反映：`caw/SKILL.md`（plugin + codex + copilot）・`GEMINI.md`。
+
+### Note
+
+- 版: plugin 1.39.0 → **1.40.0** / codex 1.38.0 → **1.39.0** / copilot 1.18.0 → **1.19.0** / gemini 1.17.0 → **1.18.0** / marketplace 同期
+
 ## [1.39.0 / Codex 1.38.0 / Gemini 1.17.0] - 2026-06-19
 
 ### Changed — 出力 HTML のデザインを 3 CLI で統一（Claude Code のデザインに揃える）
