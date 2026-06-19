@@ -2,6 +2,20 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.42.0 / Codex 1.41.0 / Gemini 1.20.0] - 2026-06-19
+
+### Changed — 就活 caw-research は md+html を常に両方生成・尋ねるのは調査レベルだけに
+
+就活の企業研究結果は**人間（閲覧）と AI（caw-es/caw-interview が ES・面接準備で読む）の両方**が使うため、出力形式を選ばせる仕様をやめ、**md と html を必ず両方生成**するよう変更。
+
+- **md ＝ 機械可読の正本**（caw-es / caw-interview が読む）、**html ＝ 閲覧用ビュー**（同じ内容を `references/html-style.md` のデザインで整形）。AI は html を読まないため下流の読み込みコストは増えず、追加コストは生成時の 2 形式目の整形（1 社あたり数 K トークン）のみ。
+- **ユーザーに尋ねるのは調査レベル（L1/L2/L3）だけ**。出力形式の確認質問とグラフ方式の確認質問（旧 Step V0）を削除。グラフは**オフライン自己完結 SVG に固定**（Chart.js/CDN は使わない）。
+- 反映：`caw-research/SKILL.md`（plugin + codex）・`GEMINI.md`。テストユーザーガイド（Desktop）も「深さを選ぶと md+html を自動生成」に更新。
+
+### Note
+
+- 版: plugin 1.41.0 → **1.42.0** / codex 1.40.0 → **1.41.0** / gemini 1.19.0 → **1.20.0** / copilot 1.20.0 据え置き（caw-research 非収載）/ marketplace 同期
+
 ## [1.41.0 / Codex 1.40.0 / Copilot 1.20.0 / Gemini 1.19.0] - 2026-06-19
 
 ### Changed — 研究/就活トラックの判定を対称マーカー化＋取り違え防止を全スキルで強化
