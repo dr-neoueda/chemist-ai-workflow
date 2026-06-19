@@ -2,6 +2,20 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.43.0 / Codex 1.42.0 / Gemini 1.21.0] - 2026-06-19
+
+### Changed — 就活 caw-research の企業 HTML を「可視化レシピ」で底上げ（CLI 差を縮小）
+
+同じ指示でも Claude Code は横棒チャートを多用するのに Codex は表中心になり、Codex 出力の情報量・見栄えが劣っていた（実例: Claude 版 SVG 11 個／出典 19 件 vs Codex 版 SVG 1 個／出典 10 件。CSS トークンは同一）。原因は「どの数値を図表化するか」が指示で未規定でモデル任せだったこと。**最低限の図表セットを規定しつつ自由度を残す**形で底上げ。
+
+- **`html-style.md` に横棒チャートの定番スニペットを追加**（ラベル→グレートラック→値バー→数値の 4 要素、`width=280×値/最大`、主役=#aa2d00・比較=#888888）。全 CLI・全スキルで再利用。
+- **caw-research（就活）の企業プロファイルをブロック別レシピ化**：B 財務（セグメント売上・利益）と D 業界（世界シェア）は**横棒チャートで必ず可視化**、ヘッダに証券コード/代表者/創業/本社/志望度/出典方針、選考フローは横並びステップ、各ブロックに出典＋取得日。**「上記は最低限。データがあれば図表を増やしてよい」と自由度を明記**。
+- 反映：`html-style.md`（plugin + codex）・`caw-research/SKILL.md`（plugin + codex）・`GEMINI.md`。
+
+### Note
+
+- 版: plugin 1.42.0 → **1.43.0** / codex 1.41.0 → **1.42.0** / gemini 1.20.0 → **1.21.0** / copilot 1.20.0 据え置き（caw-research 非収載）/ marketplace 同期
+
 ## [1.42.0 / Codex 1.41.0 / Gemini 1.20.0] - 2026-06-19
 
 ### Changed — 就活 caw-research は md+html を常に両方生成・尋ねるのは調査レベルだけに

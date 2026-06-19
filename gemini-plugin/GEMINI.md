@@ -88,7 +88,7 @@ footer{color:var(--muted);font-size:12.5px;margin-top:22px;border-top:1px solid 
 </style>
 ```
 
-部品: リスト=`ol.list>li`＋`.ttl/.meta/.sum`、カード=`.card`、表=`table`、状態=`.badge`、グラフ=インライン `<svg>`（`--accent` と `#888888` の2色）。
+部品: リスト=`ol.list>li`＋`.ttl/.meta/.sum`、カード=`.card`、表=`table`、状態=`.badge`、グラフ=インライン `<svg>`（`--accent` と `#888888` の2色）。 **数値比較は横棒で可視化**＝1 系列 1 行の `<svg>`：ラベル `<text>`→グレートラック `<rect fill=#eeeeee width=280>`→値バー `<rect fill=#aa2d00 width=280×値/系列内最大>`→数値 `<text>`（主役=#aa2d00・比較=#888888）。
 
 ### caw-intake（統合 inbox の自動仕分け）
 過去資料を単一の `inbox/` に入れて「処理して」と言われたら、各ファイルを**開いて中身で種類を判定**し振り分ける（拡張子だけで決めない）。**トラックは office 冒頭の `> トラック:`（就活/研究）で判定、行が無ければ `work/companies/` か `work/papers/`・`work/topics/` の有無で推定**。
@@ -99,7 +99,7 @@ footer{color:var(--muted);font-size:12.5px;margin-top:22px;border-top:1px solid 
 ### caw-research（調べる：研究＝論文検索 / 就活＝企業・業界研究）
 `office/GEMINI.md` 冒頭の `> トラック:`（就活/研究）で分岐する。**行が無い旧 office は `work/companies/` があれば就活、`work/papers/`・`work/topics/` があれば研究と推定し、判別不能なら 1 問尋ねる**。
 - **研究**：関心テーマの論文を検索（arXiv / Crossref / Semantic Scholar / OpenAlex / PubMed、件数・期間を確認）→ クリックで論文ページに飛べる **HTML リスト** `work/topics/<topic>_<YYYYMMDD>_n<件数>.html`（タイトルがリンク・縦リスト・並べ替えなし・要約は日本語・登録済み〔work/papers/〕は既定で除外）に書き出す。**HTML は上の「caw の HTML デザイン」の `<style>`・`ol.list` をそのまま使う**。**探索はリスト化まで**で、入手 PDF の登録は caw-register に渡す（DOI/arXiv ID を残す）。
-- **就活**：発動したら**必ず**「調査レベル（L1 概要 / L2 標準 / L3 詳細）」**だけ**を尋ねる（出力形式・グラフ方式は尋ねない）。汎用 8 ブロック（A 基本/沿革・B 財務/規模・C 戦略/競争優位・D 業界/競合・E リスク/ガバナンス/ESG・F 働く環境・G 採用/選考・H 接点/想定問答）で **`work/companies/<企業>.md`（正本＝caw-es/caw-interview が読む）と `work/companies/<企業>.html`（閲覧用・「caw の HTML デザイン」で整形、グラフはオフライン SVG）を必ず両方生成**する。公式情報は単一ソース可、年収など非公式は複数ソースで裏取り。**L3 では有報・決算説明会資料・統合報告書・中計・サステナビリティ報告書などの公式開示文書を IR から自分で取得して読む**（PDF は `curl`→`pdftotext` で必要箇所だけ抽出＝有報全文は丸読みしない、Gemini は PDF 直読み可）。値は〔文書名＋PDF URL＋取得日〕を出典に。取れなければユーザーに URL/PDF の貼り付けを依頼、捏造しない。L1/L2 は Web ページ中心で深掘りしない。
+- **就活**：発動したら**必ず**「調査レベル（L1 概要 / L2 標準 / L3 詳細）」**だけ**を尋ねる（出力形式・グラフ方式は尋ねない）。汎用 8 ブロック（A 基本/沿革・B 財務/規模・C 戦略/競争優位・D 業界/競合・E リスク/ガバナンス/ESG・F 働く環境・G 採用/選考・H 接点/想定問答）で **`work/companies/<企業>.md`（正本＝caw-es/caw-interview が読む）と `work/companies/<企業>.html`（閲覧用・「caw の HTML デザイン」で整形、グラフはオフライン SVG）を必ず両方生成**する。**html の最低限**：ヘッダに証券コード/代表者/創業/本社/志望度/出典方針、**B 財務のセグメント売上・利益と D 業界の世界シェアは横棒チャートで必ず可視化**、選考フローは横並びステップ、各ブロック末尾に出典リンク＋取得日。**データがあれば図表を増やしてよい（自由度を残す）**。公式情報は単一ソース可、年収など非公式は複数ソースで裏取り。**L3 では有報・決算説明会資料・統合報告書・中計・サステナビリティ報告書などの公式開示文書を IR から自分で取得して読む**（PDF は `curl`→`pdftotext` で必要箇所だけ抽出＝有報全文は丸読みしない、Gemini は PDF 直読み可）。値は〔文書名＋PDF URL＋取得日〕を出典に。取れなければユーザーに URL/PDF の貼り付けを依頼、捏造しない。L1/L2 は Web ページ中心で深掘りしない。
 
 ### caw-es（ES・応募書類／就活）
 企業の設問・文字数を確認 → **必ず `work/companies/<企業>.md`（caw-research の出力）を読み**、`work/self-analysis/`（experiences/strengths/gakuchika/motivation/profile）と `work/documents/voice-style.md`（あれば本人の文体）、`work/documents/past-answers.md`（あれば過去回答を参考）・`work/documents/writing-preferences.md`（あれば推敲で学んだ好み）を踏まえて、**文字数厳守・結論先出し・STAR** でドラフト。`work/documents/<企業>_<種別>.md` に保存。嘘・誇張を書かない。推敲で修正を受けるたびに、その直しが汎用的な好みかを評価し、汎用的なら**自分から**「次回以降も既定にしますか？」と確認のうえ `work/documents/writing-preferences.md` に 1 行ルールで蓄積し（「覚えて」待ちにしない・一度きりの直しは記録しない）、次の ES から先回り適用する。
