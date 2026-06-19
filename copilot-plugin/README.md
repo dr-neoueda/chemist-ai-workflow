@@ -36,6 +36,8 @@ copilot plugin marketplace add dr-neoueda/chemist-ai-workflow
 copilot plugin install caw
 ```
 
+> **前提**：事前に **git** と **Node.js（LTS）** が必要です（`copilot plugin marketplace add` は配布元 GitHub を clone するため git が要ります）。
+
 その後、プロジェクトのディレクトリで `copilot` を起動し、「caw」または
 「化学プロジェクトの環境を作って」と話しかけるとオンボーディングが始まる。
 

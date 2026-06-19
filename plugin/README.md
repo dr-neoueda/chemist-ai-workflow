@@ -10,6 +10,8 @@ claude
 > /plugin install caw
 ```
 
+> **前提**：事前に **git** と **Node.js（LTS）** が必要です（`/plugin marketplace add` は配布元 GitHub を clone するため git が要ります。macOS は `xcode-select --install`、Windows は「Git for Windows」）。
+
 `/plugin list` で `caw` が `enabled` 表示されれば導入完了。
 
 ## 動作環境
