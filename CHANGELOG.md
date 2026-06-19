@@ -2,6 +2,20 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.38.0 / Codex 1.37.0 / Gemini 1.16.0] - 2026-06-19
+
+### Added — caw-research（就活）L3 で公式開示文書を能動的に読みにいく
+
+「○○社の企業研究をして」に対し、**ユーザーが PDF を手で渡さなくても、L3（ディープ）では秘書が IR から公式開示文書を自分で取得して読む**よう設計を明示。L1/L2 は Web ページ中心で従来どおり（速さ優先）。
+
+- **対象文書**（Step 2 に表で明記）：有価証券報告書・決算短信/四半期決算短信・決算説明会資料・統合報告書/中期経営計画・サステナビリティ/ESG・人的資本レポート・コーポレートガバナンス報告書・新卒採用サイト・プレスリリース。各「探す場所」「読む箇所（抜粋）」つき。
+- **取得・読解手順**：web 検索で IR/PDF URL を特定 → `curl` で DL → `pdftotext -layout` で**必要セクションだけ抽出**（有報全文は丸読みせずトークン節約）。**Gemini CLI は PDF 直読み可**。値は〔文書名＋PDF URL＋取得日〕を出典に。取れないとき（Codex のネット制限等）はユーザーへ URL/PDF の貼り付け依頼、**捏造しない**。
+- **L3 のみ**に限定（Step 1・Step 3 の L3 説明にも明記）。反映：`caw-research/SKILL.md`（plugin + codex）・`GEMINI.md`・`commands/caw-research.toml`。
+
+### Note
+
+- 版: plugin 1.37.0 → **1.38.0** / codex 1.36.0 → **1.37.0** / gemini 1.15.0 → **1.16.0** / copilot 1.18.0 据え置き（caw-research 未収載）/ marketplace 同期
+
 ## [1.37.0 / Codex 1.36.0 / Copilot 1.18.0 / Gemini 1.15.0] - 2026-06-18
 
 ### Added — 研究モードの対応計算ソフトに ChimeraX を追加
