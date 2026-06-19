@@ -53,12 +53,11 @@ your-research-project/
 │   ├── secretary/{CLAUDE.md, inbox/, todos/, notes/}
 │   └── computation/{CLAUDE.md, jobs/, parameters/, playbooks/{orca.md, gromacs.md}}
 ├── inbox/                        ← 統合 inbox（何でも入れて「処理して」）
-├── work/                         ← 成果物・作業ファイルはすべてこの中
-│   ├── orca/    {README.md, inbox/, _past-data/}   ← 入出力ファイル置き場
-│   ├── gromacs/ {README.md, inbox/, _past-data/}
-│   ├── papers/  {README.md, inbox/}                ← 文献要約 + PDF ステージング
-│   └── analyses/ figures/ manuscripts/ presentations/slides/ …
-└── はじめにお読みください.md
+└── work/                         ← 成果物・作業ファイルはすべてこの中
+    ├── orca/    {README.md, inbox/, _past-data/}   ← 入出力ファイル置き場
+    ├── gromacs/ {README.md, inbox/, _past-data/}
+    ├── papers/  {README.md, inbox/}                ← 文献要約 + PDF ステージング
+    └── analyses/ figures/ manuscripts/ presentations/slides/ …
 ```
 
 ## 含まれる内容（v1.30.0）

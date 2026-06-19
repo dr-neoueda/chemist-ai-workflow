@@ -2,6 +2,20 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.45.0 / Codex 1.44.0 / Copilot 1.21.0 / Gemini 1.23.0] - 2026-06-19
+
+### Removed — オンボーディングの `はじめにお読みください.md`（START HERE 文書）生成を廃止
+
+caw の初期環境構築でプロジェクトルートに生成していた `はじめにお読みください.md`（START HERE 文書）を**生成しないように変更**。オンボーディング後の「何をしますか？」の最初の一声と完了メッセージは従来どおり残る（ファイルを作らないだけ）。
+
+- **生成の削除**：研究 scaffold（`caw/SKILL.md` §3-6）・就活 scaffold（`job-hunting-departments.md` §D）の START HERE 文書生成ステップを削除。GEMINI のオンボーディング手順からも削除。
+- **参照の整理（孤立検出を防ぐ）**：`caw-doctor`（存在チェック）・`caw-report`（有無の報告フィールド）・`engine-validation-map`・README のディレクトリ図・`commands/caw-doctor.toml` から START HERE 文書への参照を除去。就活フローの節番号を整理（§D2→§D）。
+- 反映：plugin / codex / copilot / gemini の全 4 配布。
+
+### Note
+
+- 版: plugin 1.44.0 → **1.45.0** / codex 1.43.0 → **1.44.0** / copilot 1.20.0 → **1.21.0** / gemini 1.22.0 → **1.23.0** / marketplace 同期
+
 ## [1.44.0 / Codex 1.43.0 / Gemini 1.22.0] - 2026-06-19
 
 ### Changed — caw-events を「named 就活ソース＋予測 floor」で底上げ（CLI 差を縮小）
