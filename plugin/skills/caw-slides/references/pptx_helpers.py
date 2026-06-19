@@ -394,8 +394,14 @@ def add_picture_fit(
     """
     from PIL import Image
 
-    with Image.open(image_path) as img:
-        iw, ih = img.size
+    try:
+        with Image.open(image_path) as img:
+            iw, ih = img.size
+    except OSError as exc:
+        raise FileNotFoundError(
+            f"caw-slides: 画像を開けません: {image_path!r}"
+            "（パスと拡張子を確認してください）"
+        ) from exc
     # Convert pixel dimensions to EMU assuming 96 DPI (1 px = 9525 EMU)
     px_w = Emu(int(iw * 9525))
     px_h = Emu(int(ih * 9525))
@@ -498,6 +504,8 @@ def add_logo_cluster(
         return (left, top, width, height, "<logos:empty>")
     x0 = left + (width - slot * n) // 2
     for i, path in enumerate(icon_paths):
+        if not Path(path).is_file():
+            continue  # skip a missing logo instead of crashing the whole deck
         add_picture_fit(
             slide, path, left=x0 + slot * i, top=top,
             max_width=slot, max_height=height,

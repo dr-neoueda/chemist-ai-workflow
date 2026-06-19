@@ -2,6 +2,24 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.48.0 / Codex 1.47.0] - 2026-06-19
+
+### Fixed — セミナー前の全体監査で見つかったブロッカー 3 件
+
+テストユーザー向けセミナー直前に、プラグイン全体を並列エージェントで監査（連携・セキュリティ・Python 正当性）。ブロッカー級を修正：
+
+- **caw-slides に `trigger: /caw-slides` を追加**（plugin）— 唯一トリガー欠落していたスキル。`/caw-slides` がスラッシュコマンドとして登録されるように。
+- **`plugin/TESTING.md` を install payload から除去**（リポジトリ直下へ移動）— 開発用ノートにオーナーの絶対パス `/Users/neoueda/...` が含まれ、インストールした全テストユーザーに macOS ユーザー名が露出していた。leak-scan（`check-consistency.sh`）に `/Users/neoueda` を追加して再発防止（`<name>` プレースホルダや `dr-neoueda` リポジトリ名は誤検知しない）。
+- **`pptx_helpers.py` の画像パス防御**（plugin + codex）— `add_picture_fit` は不正/欠損パスで raw traceback だったのを **明快な `FileNotFoundError`** に、`add_logo_cluster` は欠損ロゴを **スキップ**するよう変更（デッキ全体のクラッシュ回避）。
+
+監査の結論：連携（skill→skill・work/ パス・3-way トラック判定・reference 実在・engine-validation-map）は整合、ハードコード秘密・MCP 鍵の env 経由・caw-report 匿名性・shell injection は **クリア**。残りの指摘（bare `references/` 表記・helper のエッジケースガード・author 名）は非ブロッカーでセミナー後対応。
+
+- レビュー: python-reviewer（監査で指摘）＋ Codex CLEAN。記録 `review/code-reviews/2026-06-19-caw-slides-image-guards.md`。
+
+### Note
+
+- 版: plugin 1.47.0 → **1.48.0** / codex 1.46.0 → **1.47.0** / copilot 1.21.0・gemini 1.25.0 据え置き / marketplace 同期
+
 ## [1.47.0 / Codex 1.46.0 / Gemini 1.25.0] - 2026-06-19
 
 ### Added — caw-interview が「実際に聞かれた質問」と「提出 ES」も質問の素材に
