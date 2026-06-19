@@ -90,7 +90,7 @@ done
 
 # --- 3. personalization leak scan (distributed tree only) ---
 # Specific proper nouns only — generic field terms (MLIP/CP2K/DFT) are allowed.
-leak_re='aaBrAdox|SPReAD|Bis\(BrPhCH2O\)|NU-[0-9]|PILATUS|n267302|neoueda@'
+leak_re='aaBrAdox|SPReAD|Bis\(BrPhCH2O\)|NU-[0-9]|PILATUS|n267302|neoueda@|/Users/neoueda'
 hits=$(grep -RInE "$leak_re" plugin codex-plugin copilot-plugin gemini-plugin .github/plugin 2>/dev/null \
         | grep -v 'Binary file' || true)
 if [ -z "$hits" ]; then

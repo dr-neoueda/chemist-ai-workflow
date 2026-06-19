@@ -8,6 +8,7 @@ description: >
   assert_no_overlap 自動検証 / Excel-editable native chart を強制する
   スタイルガイドを同梱。スライド作成・パワポ・pptx・発表資料・学会発表・
   論文紹介・journal club・報告会・講義の依頼で発火。
+trigger: /caw-slides
 ---
 
 # caw-slides — 研究発表スライド生成 Skill
