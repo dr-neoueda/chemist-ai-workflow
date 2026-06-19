@@ -149,7 +149,7 @@ soffice --headless --convert-to png --outdir work/figures/_preview work/presenta
 | 用途 | テンプレ | 想定枚数 | 特徴 |
 |------|--------|---------|------|
 | 学会発表（口頭・ポスター） | `generate_conference.py` | 20-25 / 20-50 | 専門家向け、結果プロット主体、L1 一行で主張明確 |
-| 論文紹介（journal club） | `generate_journal_club.py` | 6-12 | 原論文・SI 図主体、pdftoppm + crop 抽出、source line 必須 |
+| 論文紹介（journal club） | `generate_journal_club.py` | 6-12 | 原論文・SI 図主体、pdftoppm + crop 抽出、source line 必須。**各図スライドに「図の読み方」支持本文（軸・色・主要数値・解釈）を必ず添える**（`build_figure_slide` の `support` 必須・図＋一言だけにしない） |
 | 研究室報告会・進捗共有 | `generate_lab_report.py` | 6-15 | 自前データ主体、native chart + table、今後の予定 |
 | 講義・チュートリアル | `generate_lecture.py` | 15-30 | 平易語、概念フロー図、目標 + 前提 + サマリ |
 | 宣伝・紹介・募集（showcase） | `generate_showcase.py` | 5-8 | 実スクショ主役のコラージュ、プログラム名ヘッダ、キャプション画像上、アプリロゴ。**§0 緩和**（style-guide §15） |

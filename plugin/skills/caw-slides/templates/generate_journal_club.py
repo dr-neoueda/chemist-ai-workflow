@@ -101,19 +101,32 @@ def build_title_slide(prs):
     h.assert_no_overlap(rects)
 
 
-def build_figure_slide(prs, slide_number: int, title: str, fig_path: Path,
-                       key_message: str, source: str):
-    """A slide whose primary content is one original-paper figure.
+def build_figure_slide(prs, slide_number: int, title: str,
+                       fig_path: Path | None, key_message: str, source: str,
+                       support: list[str] | None = None):
+    """A slide whose primary content is one original-paper figure PLUS a short
+    reading guide.
 
     ``fig_path`` is a cropped PNG of the figure (700–900 px short edge minimum).
-    Set ``fig_path = None`` to render a placeholder rectangle when running this
-    template before real figures are extracted.
+    Set ``fig_path = None`` to render a placeholder rectangle.
+
+    ``support`` = list of 2–4 short strings = **how to read the figure**
+    (axes / colours / legend), the key numbers, and the one-line interpretation.
+    **Always pass it.** A pasted paper figure with only a single key-message line
+    conveys little to the audience — style-guide §3 requires the 3 elements
+    図 + L1（key message）+ 支持本文（reading guide）on every content slide,
+    journal-club figure slides included.
+
+    Layout: figure on the left, reading-guide card on the right (style-guide §3
+    の 2 ゾーン構成). For very wide multi-panel figures, switch to figure-on-top /
+    support-card-below instead.
     """
     slide = h.blank_slide(prs)
     rects = list(h.add_slide_chrome(slide, title, slide_number))
 
-    fig_left, fig_top = Inches(1.0), Inches(1.18)
-    fig_w, fig_h = Inches(11.3), Inches(5.0)
+    fig_left, fig_top = Inches(0.5), Inches(1.18)
+    fig_w, fig_h = Inches(7.7), Inches(5.0)
+    card_left, card_w = Inches(8.4), Inches(4.55)
 
     if fig_path and fig_path.exists():
         h.add_picture_fit(
@@ -134,6 +147,25 @@ def build_figure_slide(prs, slide_number: int, title: str, fig_path: Path,
             border=h.COLOR_CARD_BORDER,
         )
     rects.append((fig_left, fig_top, fig_w, fig_h, "<figure>"))
+
+    # 支持本文（図の読み方・主要数値・解釈）— 図スライドにも必ず添える。
+    if support is None:
+        support = [
+            "<軸・色・凡例が何を表すか>",
+            "<どこに注目するか・主要な数値>",
+            "<その図が示す結論への含意>",
+        ]
+    card_paras = [h.Paragraph(h.mixed_runs("▸ 図の読み方", size=Pt(20), bold=True,
+                                           color=h.COLOR_TITLE))]
+    card_paras += [h.Paragraph(h.mixed_runs("・" + s, size=Pt(20),
+                                            color=h.COLOR_TEXT_BODY))
+                   for s in support]
+    h.add_shape_card(
+        slide,
+        left=card_left, top=fig_top, width=card_w, height=fig_h,
+        paragraphs=card_paras, border=h.COLOR_CARD_BORDER,
+    )
+    rects.append((card_left, fig_top, card_w, fig_h, "<support>"))
 
     h.add_key_message_band(
         slide,

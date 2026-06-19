@@ -2,6 +2,21 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.46.0 / Codex 1.45.0 / Gemini 1.24.0] - 2026-06-19
+
+### Fixed — caw-slides の図スライドに「図の読み方」支持本文を必ず添える
+
+論文紹介（journal club）スライドで、図表を載せたスライドが**図＋key-message 一行＋出典のみで本文が無く**、情報が伝わりにくいというユーザー報告。原因は journal-club テンプレの `build_figure_slide` が支持本文の引数を持たず、図を全幅で置くだけだったこと（style-guide §3「図＋L1＋支持本文の3要素」に反していた）。
+
+- **`generate_journal_club.py` の `build_figure_slide` を改修**：図を左（max_width 7.7in）、**「▸ 図の読み方」支持カードを右**（軸・色・凡例／主要数値／1 行解釈）に配置。`support: list[str]` 引数を追加（2〜4 点、必須運用）。`assert_no_overlap` 検証済み。
+- **style-guide §3 と SKILL.md（journal-club 行）を強化**：原論文の図を貼るスライドも例外でなく支持本文必須を明記。GEMINI の caw-slides にも「『テキスト最小』は空疎化ではない・図スライドにも読み方本文を添える」を追記。
+- レビュー: python-reviewer APPROVE（型注釈 2 件修正）＋ Codex CLEAN。記録 `review/code-reviews/2026-06-19-caw-slides-journal-club-figure-slide.md`。
+- 反映：`caw-slides`（plugin + codex、テンプレ・style-guide byte-identical）・`GEMINI.md`。
+
+### Note
+
+- 版: plugin 1.45.0 → **1.46.0** / codex 1.44.0 → **1.45.0** / gemini 1.23.0 → **1.24.0** / copilot 1.21.0 据え置き（caw-slides 非収載）/ marketplace 同期
+
 ## [1.45.0 / Codex 1.44.0 / Copilot 1.21.0 / Gemini 1.23.0] - 2026-06-19
 
 ### Removed — オンボーディングの `はじめにお読みください.md`（START HERE 文書）生成を廃止

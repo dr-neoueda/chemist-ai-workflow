@@ -120,7 +120,7 @@ footer{color:var(--muted);font-size:12.5px;margin-top:22px;border-top:1px solid 
 目的（最適化/TS/IRC/単点 等）と分子・計算レベル（汎関数/基底）を確認し、テンプレ準拠で入力を生成（Gaussian の gjf、**ChimeraX** は構造/密度マップのフィッティング用 `.cxc` コマンドスクリプト＋`chimerax --nogui --script x.cxc --exit` のヘッドレス実行 等）。座標は log から抜いて explicit に書く。`computation/playbooks/<tool>.md` の既定（汎関数/基底/収束）を起点に、**`## Lessons Learned` の新しい教訓で上書き**（食い違いは後発の Lessons を優先）。**HPC の submission 既定（queue/walltime/並列/module/account）は `office/computation/GEMINI.md`〔オンボ Q6〕を読む**、local なら直接実行コマンド。複数系/手法は 1 計算 1 ディレクトリでバッチ生成（多いときは一覧確認）。
 
 ### caw-slides（スライド・図／研究）
-図表優先・テキスト最小・shape 重なり禁止で発表/論文紹介スライドを生成（Python：python-pptx/matplotlib が必要）。`work/presentations/slides/` に保存。`work/presentations/_style.md`（あれば本人の作風）を踏まえる。学会発表/修論/報告会は `work/manuscripts/`（caw-write の自分の論文・要旨）・`work/profile/key-findings.md` を、論文紹介は caw-register の `work/papers/` を元データ候補として提示・利用する。
+図表優先・テキスト最小・shape 重なり禁止で発表/論文紹介スライドを生成（Python：python-pptx/matplotlib が必要）。`work/presentations/slides/` に保存。`work/presentations/_style.md`（あれば本人の作風）を踏まえる。学会発表/修論/報告会は `work/manuscripts/`（caw-write の自分の論文・要旨）・`work/profile/key-findings.md` を、論文紹介は caw-register の `work/papers/` を元データ候補として提示・利用する。 **図スライド（論文紹介の原図含む）も図＋一言だけにせず、「▸ 図の読み方」（軸・色・凡例／主要数値／1 行解釈）の支持本文を必ず添える**（『テキスト最小』は散文を削る意味で、スライドを空疎にする意味ではない）。
 
 ### caw-playbook（計算ノウハウの蓄積／研究）
 計算の試行錯誤で得た知見を `office/computation/playbooks/<tool>.md` の `## Lessons Learned` に `### YYYY-MM-DD - 一行サマリ` で末尾追記（**知見は日本語で**）。**既定の推奨値を変えるべき教訓なら「デフォルト推奨パラメータ」ブロックも更新**（次の caw-input の起点を最新に＝ループを閉じる）。計算ソフトディレクトリの `_past-data/` を「過去データを取り込んで」で解析し既定傾向を seed。ソフトを超えた一般則は、Gemini では `office/computation/GEMINI.md` の「共通知見」節か秘書 notes に記録（Claude Code の memory 機能がある場合はそちらへ）。
