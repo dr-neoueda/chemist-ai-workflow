@@ -26,7 +26,7 @@
 
 ### 研究オンボーディング
 モードによる質問の出し分けは無い。**全ユーザーに次の全 8 問を尋ね**、回答をすべて scaffold に反映する（作成部署は常に全 8 部署）。
-1. **研究プロファイル（全 8 問）**：研究分野（有機/物理/材料/計算 等）／計算ソフトのカテゴリ（量子化学・古典 MD・周期系 DFT・構造可視化/フィッティング〔ChimeraX〕・使わない、複数可）／ナレッジベース（Notion/Obsidian/Logseq）／クラウドストレージ（Google Drive/Dropbox/OneDrive）／計算環境（HPC SLURM・PBS・ローカル・クラウド）／研究体制（単独・共著・研究室共有）／申請書予定（学振・科研費・民間財団・なし）／論文ステータス（執筆中・査読中・これから・予定なし）。
+1. **研究プロファイル（全 8 問）**：研究分野（有機/物理/材料/計算 等）／計算ソフトのカテゴリ（量子化学・古典 MD・周期系 DFT・構造可視化/フィッティング〔ChimeraX〕・使わない、複数可）→ **選んだカテゴリごとに具体的なソフト名まで必ず追加で尋ねる**（量子化学=Gaussian/ORCA/Psi4、古典 MD=GROMACS/AMBER/NAMD/LAMMPS/OpenMM、周期系 DFT=CP2K/VASP/Quantum ESPRESSO 等。AskUserQuestion は 4 択＋Other で残りを拾う。**名指しされたソフトのみ** `work/` 配下にディレクトリ・Playbook を作る）／ナレッジベース（Notion/Obsidian/Logseq）／クラウドストレージ（Google Drive/Dropbox/OneDrive）／計算環境（HPC SLURM・PBS・ローカル・クラウド）／研究体制（単独・共著・研究室共有）／申請書予定（学振・科研費・民間財団・なし）／論文ステータス（執筆中・査読中・これから・予定なし）。
 2. **scaffold**（下記）→ `office/GEMINI.md` 生成（冒頭に `> トラック: 研究`）→ START HERE 文書 → 「何をしますか？」
 
 ### 就活オンボーディング
@@ -44,7 +44,7 @@
 - **統合 inbox**：プロジェクト直下に単一の `inbox/` を作り、README に「何でもここに入れて『処理して』と言えば caw が中身を見て振り分けます」と明記。
 
 ### 作業ディレクトリ（`work/` 配下・成果物）
-- 研究：`work/papers/`（文献要約）, `work/topics/`, `work/manuscripts/`（`_style/voice-<name>.md` 含む）, `work/presentations/slides/`, `work/analyses/`, `work/notebooks/`, `work/figures/`, `work/scripts/`, `work/tools/`, `work/profile/`（自分のプロファイル層）, 計算ソフト別 `work/gaussian/` 等（Q2 のカテゴリに応じて。各 `inbox/`・`_past-data/` 付き）。
+- 研究：`work/papers/`（文献要約）, `work/topics/`, `work/manuscripts/`（`_style/voice-<name>.md` 含む）, `work/presentations/slides/`, `work/analyses/`, `work/notebooks/`, `work/figures/`, `work/scripts/`, `work/tools/`, `work/profile/`（自分のプロファイル層）, 計算ソフト別 `work/gaussian/` 等（Q2 で名指しされたソフトに応じて。各 `inbox/`・`_past-data/` 付き）。
 - 就活：`work/companies/`（企業研究）, `work/documents/`（ES 等＋`voice-style.md`・`past-answers.md`）, `work/self-analysis/`, `work/interview-prep/`, `work/recruit/`, `work/feedback/`。
 
 ---
