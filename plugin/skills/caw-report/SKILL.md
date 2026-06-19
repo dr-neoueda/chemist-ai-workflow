@@ -25,7 +25,7 @@ trigger: /caw-report
 
 - **個人情報**：氏名・連絡先・学籍番号・所属・ORCID 等の ID
 - **案件・プロジェクト内容**：企業名・業界名・研究テーマ・化合物名・論文タイトル・ES や志望動機の本文
-- **ファイル名**：`work/companies/<企業>.md` や `work/papers/<著者-年>.md` のような**名前そのもの**（→ 件数だけを出す）
+- **ファイル名**：`work/companies/<企業>.md` や `work/papers/md/<著者-年>.md` のような**名前そのもの**（→ 件数だけを出す）
 - **ファイルの中身**（一文字も引用しない）
 - **絶対パス**：`/Users/<name>/…`・`/home/<name>/…`・`C:\Users\<name>\…`（→ 出さない。標準フォルダ名のみ）
 - **研究分野・志望業界の具体名**（→ トラックは「研究 / 就活」までに留める）
@@ -93,7 +93,7 @@ trigger: /caw-report
 | work/companies/ | ○/× | N | N | N |
 | work/documents/ | ○/× | N | N | N |
 | work/self-analysis/ | ○/× | N | N | N |
-| work/papers/ | ○/× | N | N | N |
+| work/papers/md/ | ○/× | N | N | N |
 | work/profile/ | ○/× | N | N | N |
 | work/manuscripts/ | ○/× | N | N | N |
 | work/recruit/ | ○/× | N | N | N |

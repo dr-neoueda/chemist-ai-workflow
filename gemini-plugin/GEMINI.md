@@ -44,7 +44,7 @@
 - **統合 inbox**：プロジェクト直下に単一の `inbox/` を作り、README に「何でもここに入れて『処理して』と言えば caw が中身を見て振り分けます」と明記。
 
 ### 作業ディレクトリ（`work/` 配下・成果物）
-- 研究：`work/papers/`（文献要約）, `work/topics/`, `work/manuscripts/`（`_style/voice-<name>.md` 含む）, `work/presentations/slides/`, `work/analyses/`, `work/notebooks/`, `work/figures/`, `work/scripts/`, `work/tools/`, `work/profile/`（自分のプロファイル層）, 計算ソフト別 `work/gaussian/` 等（Q2 で名指しされたソフトに応じて。各 `inbox/`・`_past-data/` 付き）。
+- 研究：`work/papers/`（`pdf/`＝PDF・`md/`＝文献要約）, `work/topics/`, `work/manuscripts/`（`_style/voice-<name>.md` 含む）, `work/presentations/slides/`, `work/analyses/`, `work/notebooks/`, `work/figures/`, `work/scripts/`, `work/tools/`, `work/profile/`（自分のプロファイル層）, 計算ソフト別 `work/gaussian/` 等（Q2 で名指しされたソフトに応じて。各 `inbox/`・`_past-data/` 付き）。
 - 就活：`work/companies/`（企業研究）, `work/documents/`（ES 等＋`voice-style.md`・`past-answers.md`）, `work/self-analysis/`, `work/interview-prep/`, `work/recruit/`, `work/feedback/`。
 
 ---
@@ -98,7 +98,7 @@ footer{color:var(--muted);font-size:12.5px;margin-top:22px;border-top:1px solid 
 
 ### caw-research（調べる：研究＝論文検索 / 就活＝企業・業界研究）
 `office/GEMINI.md` 冒頭の `> トラック:`（就活/研究）で分岐する。**行が無い旧 office は `work/companies/` があれば就活、`work/papers/`・`work/topics/` があれば研究と推定し、判別不能なら 1 問尋ねる**。
-- **研究**：関心テーマの論文を検索（arXiv / Crossref / Semantic Scholar / OpenAlex / PubMed、件数・期間を確認）→ クリックで論文ページに飛べる **HTML リスト** `work/topics/<topic>_<YYYYMMDD>_n<件数>.html`（タイトルがリンク・縦リスト・並べ替えなし・要約は日本語・登録済み〔work/papers/〕は既定で除外）に書き出す。**HTML は上の「caw の HTML デザイン」の `<style>`・`ol.list` をそのまま使う**。**探索はリスト化まで**で、入手 PDF の登録は caw-register に渡す（DOI/arXiv ID を残す）。
+- **研究**：関心テーマの論文を検索（arXiv / Crossref / Semantic Scholar / OpenAlex / PubMed、件数・期間を確認）→ クリックで論文ページに飛べる **HTML リスト** `work/topics/<topic>_<YYYYMMDD>_n<件数>.html`（タイトルがリンク・縦リスト・並べ替えなし・要約は日本語・登録済み〔work/papers/md/〕は既定で除外）に書き出す。**HTML は上の「caw の HTML デザイン」の `<style>`・`ol.list` をそのまま使う**。**探索はリスト化まで**で、入手 PDF の登録は caw-register に渡す（DOI/arXiv ID を残す）。
 - **就活**：発動したら**必ず**「調査レベル（L1 概要 / L2 標準 / L3 詳細）」**だけ**を尋ねる（出力形式・グラフ方式は尋ねない）。汎用 8 ブロック（A 基本/沿革・B 財務/規模・C 戦略/競争優位・D 業界/競合・E リスク/ガバナンス/ESG・F 働く環境・G 採用/選考・H 接点/想定問答）で **`work/companies/<企業>.md`（正本＝caw-es/caw-interview が読む）と `work/companies/<企業>.html`（閲覧用・「caw の HTML デザイン」で整形、グラフはオフライン SVG）を必ず両方生成**する。**html の最低限**：ヘッダに証券コード/代表者/創業/本社/志望度/出典方針、**B 財務のセグメント売上・利益と D 業界の世界シェアは横棒チャートで必ず可視化**、選考フローは横並びステップ、各ブロック末尾に出典リンク＋取得日。**データがあれば図表を増やしてよい（自由度を残す）**。公式情報は単一ソース可、年収など非公式は複数ソースで裏取り。**L3 では有報・決算説明会資料・統合報告書・中計・サステナビリティ報告書などの公式開示文書を IR から自分で取得して読む**（PDF は `curl`→`pdftotext` で必要箇所だけ抽出＝有報全文は丸読みしない、Gemini は PDF 直読み可）。値は〔文書名＋PDF URL＋取得日〕を出典に。取れなければユーザーに URL/PDF の貼り付けを依頼、捏造しない。L1/L2 は Web ページ中心で深掘りしない。
 
 ### caw-es（ES・応募書類／就活）
@@ -111,16 +111,16 @@ footer{color:var(--muted);font-size:12.5px;margin-top:22px;border-top:1px solid 
 **既定で 1 社**の就活イベント（インターン・説明会・座談会・選考）と締切を深掘り収集し、**過去 2〜3 年の実績から今年度の開催時期・内容を予測**（「予測（昨年実績ベース）」と根拠の実日付を明示）。公式採用ページを最優先に、**就活サイトを最低 3 つ実際に検索**（ワンキャリア onecareer.jp を最優先、就活会議 syukatsu-kaigi.jp、マイナビ/リクナビ、技術・研究職は理系ナビ rikeinavi.com・LabBase もほぼ必須、口コミは みん就/OpenWork）。**主要イベント種別（サマー/秋冬インターン・本選考説明会・座談会・ES 締切・早期選考）ごとに今年度予測を必ず 1 件ずつ出し、過去の実日付を就活サイト出典つきで併記**。**出典をクリックで開ける HTML**（**上の「caw の HTML デザイン」の `<style>`・`.card`/`table`/SVG をそのまま使う**）`work/recruit/<企業>_<日付>.html`（イベントカタログ/年間スケジュール・予測カレンダー/過去×今年度 対照表、**全項目に出典リンク＋取得日**）を既定の成果物に（md は任意）、確定/予測をバッジで区別、**要確認は過去実績すら見つからないときだけ（安易に逃げない＝要確認だらけは就活サイト不足のサイン）**。秘書の選考スケジュールへ連携。**複数社・業界横断はユーザーが明示指示したときだけ**（`work/recruit/<業界>_<日付>.html`＋企業比較表）。
 
 ### caw-register（論文の登録・管理／研究）
-発動したら**必ず**抽出レベルを尋ねる（**推奨は設けず**、深いほど AI 使用量〔トークン〕が増えることを明示：**L1**＝書誌＋要旨 4 行＋結論の要点／**L2**＝＋背景概要・対象/手法概要・主要な結果（代表テーブル＋数値）／**L3**＝背景・対象・手法詳細・全数値・考察・限界・関連研究・引用文脈テンプレ・キーワードの**フル抽出＝paper-register 相当**。バッチは最初に 1 回だけ）。`work/papers/` に置かれた PDF（または統合 `inbox/` から渡されたもの）から、選ばれたレベルの深さで書誌情報・要約・タグを抽出し `work/papers/<著者-年>.md` に整理（md の充実度もレベル連動）。ナレッジベース／クラウドストレージ（MCP 設定済みなら）にも登録。**論文の検索・探索は caw-research（研究トラック）が担当**し、その `work/topics/` リストから取得した PDF を本スキルが登録する。
+発動したら**必ず**抽出レベルを尋ねる（**推奨は設けず**、深いほど AI 使用量〔トークン〕が増えることを明示：**L1**＝書誌＋要旨 4 行＋結論の要点／**L2**＝＋背景概要・対象/手法概要・主要な結果（代表テーブル＋数値）／**L3**＝背景・対象・手法詳細・全数値・考察・限界・関連研究・引用文脈テンプレ・キーワードの**フル抽出＝paper-register 相当**。バッチは最初に 1 回だけ）。`work/papers/pdf/` に置かれた PDF（または統合 `inbox/` から渡されたもの）から、選ばれたレベルの深さで書誌情報・要約・タグを抽出し `work/papers/md/<著者-年>.md` に整理（md の充実度もレベル連動）。ナレッジベース／クラウドストレージ（MCP 設定済みなら）にも登録。**論文の検索・探索は caw-research（研究トラック）が担当**し、その `work/topics/` リストから取得した PDF を本スキルが登録する。
 
 ### caw-write（論文・申請書の執筆／研究）
-研究側の「書く」担当（就活 caw-es の対応物）。文書種別（論文／申請書／学会要旨／その他）・言語（論文＝英語既定/申請書＝日本語既定）・対象（投稿先・申請区分）・範囲・字数を確認 → **`work/manuscripts/_style/`（あれば本人の文体）**・`work/profile/`（研究プロフィール）・**`work/papers/`（caw-register 登録文献＝引用源）**・`work/topics/`・`work/manuscripts/_style/writing-preferences.md`（あれば推敲で学んだ好み）を踏まえ、アウトライン → セクション → 全体の順でドラフト。**引用は work/papers/ 登録文献から本文引用＋文献リストを作り、無いものは「要出典」と明示して捏造しない**。字数厳守・結論先出し。`work/manuscripts/<doc-slug>/` に保存（md 既定、.tex/.docx は要望時）。**申請書は平易な日本語・未検証仮説を断定しない・数値は一次資料で確認・文中言及形式の引用**。文体プロファイルが無ければ caw-intake を、引用元が無ければ caw-research→caw-register を促す。推敲で修正を受けるたびに、その直しが汎用的な好みかを評価し、汎用的なら**自分から**「次回以降も既定にしますか？」と確認のうえ `work/manuscripts/_style/writing-preferences.md` に蓄積し（「覚えて」待ちにしない・一度きりの直しは記録しない）、次の作文から先回り適用する。
+研究側の「書く」担当（就活 caw-es の対応物）。文書種別（論文／申請書／学会要旨／その他）・言語（論文＝英語既定/申請書＝日本語既定）・対象（投稿先・申請区分）・範囲・字数を確認 → **`work/manuscripts/_style/`（あれば本人の文体）**・`work/profile/`（研究プロフィール）・**`work/papers/md/`（caw-register 登録文献＝引用源）**・`work/topics/`・`work/manuscripts/_style/writing-preferences.md`（あれば推敲で学んだ好み）を踏まえ、アウトライン → セクション → 全体の順でドラフト。**引用は work/papers/md/ 登録文献から本文引用＋文献リストを作り、無いものは「要出典」と明示して捏造しない**。字数厳守・結論先出し。`work/manuscripts/<doc-slug>/` に保存（md 既定、.tex/.docx は要望時）。**申請書は平易な日本語・未検証仮説を断定しない・数値は一次資料で確認・文中言及形式の引用**。文体プロファイルが無ければ caw-intake を、引用元が無ければ caw-research→caw-register を促す。推敲で修正を受けるたびに、その直しが汎用的な好みかを評価し、汎用的なら**自分から**「次回以降も既定にしますか？」と確認のうえ `work/manuscripts/_style/writing-preferences.md` に蓄積し（「覚えて」待ちにしない・一度きりの直しは記録しない）、次の作文から先回り適用する。
 
 ### caw-input（計算入力生成／研究）
 目的（最適化/TS/IRC/単点 等）と分子・計算レベル（汎関数/基底）を確認し、テンプレ準拠で入力を生成（Gaussian の gjf、**ChimeraX** は構造/密度マップのフィッティング用 `.cxc` コマンドスクリプト＋`chimerax --nogui --script x.cxc --exit` のヘッドレス実行 等）。座標は log から抜いて explicit に書く。`computation/playbooks/<tool>.md` の既定（汎関数/基底/収束）を起点に、**`## Lessons Learned` の新しい教訓で上書き**（食い違いは後発の Lessons を優先）。**HPC の submission 既定（queue/walltime/並列/module/account）は `office/computation/GEMINI.md`〔オンボ Q6〕を読む**、local なら直接実行コマンド。複数系/手法は 1 計算 1 ディレクトリでバッチ生成（多いときは一覧確認）。
 
 ### caw-slides（スライド・図／研究）
-図表優先・テキスト最小・shape 重なり禁止で発表/論文紹介スライドを生成（Python：python-pptx/matplotlib が必要）。`work/presentations/slides/` に保存。`work/presentations/_style.md`（あれば本人の作風）を踏まえる。学会発表/修論/報告会は `work/manuscripts/`（caw-write の自分の論文・要旨）・`work/profile/key-findings.md` を、論文紹介は caw-register の `work/papers/` を元データ候補として提示・利用する。 **図スライド（論文紹介の原図含む）も図＋一言だけにせず、「▸ 図の読み方」（軸・色・凡例／主要数値／1 行解釈）の支持本文を必ず添える**（『テキスト最小』は散文を削る意味で、スライドを空疎にする意味ではない）。
+図表優先・テキスト最小・shape 重なり禁止で発表/論文紹介スライドを生成（Python：python-pptx/matplotlib が必要）。`work/presentations/slides/` に保存。`work/presentations/_style.md`（あれば本人の作風）を踏まえる。学会発表/修論/報告会は `work/manuscripts/`（caw-write の自分の論文・要旨）・`work/profile/key-findings.md` を、論文紹介は caw-register の `work/papers/md/` を元データ候補として提示・利用する。 **図スライド（論文紹介の原図含む）も図＋一言だけにせず、「▸ 図の読み方」（軸・色・凡例／主要数値／1 行解釈）の支持本文を必ず添える**（『テキスト最小』は散文を削る意味で、スライドを空疎にする意味ではない）。
 
 ### caw-playbook（計算ノウハウの蓄積／研究）
 計算の試行錯誤で得た知見を `office/computation/playbooks/<tool>.md` の `## Lessons Learned` に `### YYYY-MM-DD - 一行サマリ` で末尾追記（**知見は日本語で**）。**既定の推奨値を変えるべき教訓なら「デフォルト推奨パラメータ」ブロックも更新**（次の caw-input の起点を最新に＝ループを閉じる）。計算ソフトディレクトリの `_past-data/` を「過去データを取り込んで」で解析し既定傾向を seed。ソフトを超えた一般則は、Gemini では `office/computation/GEMINI.md` の「共通知見」節か秘書 notes に記録（Claude Code の memory 機能がある場合はそちらへ）。

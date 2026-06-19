@@ -42,7 +42,7 @@ your-research-project/
 └── work/                         ← 成果物・作業ファイルはすべてこの中
     ├── orca/    {README.md, inbox/, _past-data/}   ← 入出力ファイル置き場
     ├── gromacs/ {README.md, inbox/, _past-data/}
-    ├── papers/  {README.md, inbox/}                ← 文献要約 + PDF ステージング
+    ├── papers/  {pdf/, md/}                         ← `pdf/`＝原本 PDF・`md/`＝書誌付き要約
     └── analyses/ figures/ manuscripts/ presentations/slides/ …
 ```
 

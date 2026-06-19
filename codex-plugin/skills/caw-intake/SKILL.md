@@ -43,7 +43,7 @@ description: >
 
 | 種類 | 判定の手がかり | 処理（行き先） |
 |---|---|---|
-| 外部の論文（他者の文献） | 著者が本人でない・DOI・書誌情報 | **caw-register で登録** → `work/papers/<著者-年>.md`（書誌付き要約） |
+| 外部の論文（他者の文献） | 著者が本人でない・DOI・書誌情報 | **caw-register で登録** → `work/papers/md/<著者-年>.md`（書誌付き要約） |
 | 自分の論文・申請書・要旨 | 著者に本人・自分の研究内容 | §研究抽出 → `work/manuscripts/_style/voice-self.md`・`work/profile/{research-profile,key-findings,publications}.md` |
 | 自分のスライド・ポスター | `.pptx`・発表資料 | §研究抽出 → `work/presentations/_style.md`（＋研究プロファイル） |
 | CV・業績リスト | 経歴・publication list・受賞/グラント | §研究抽出 → `work/profile/cv.md`・`work/profile/publications.md` |

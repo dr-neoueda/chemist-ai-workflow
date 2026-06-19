@@ -10,10 +10,10 @@ description: >
 ## いつ使うか
 
 - PDF 登録・書誌整理を依頼されたとき
-- `work/papers/` に PDF を置いてユーザーが「論文を登録して」「PDF を取り込んで」と言ったとき
-- 既存の `work/papers/` に書誌情報を追加したいとき
+- `work/papers/pdf/` に PDF を置いてユーザーが「論文を登録して」「PDF を取り込んで」と言ったとき
+- 既存の `work/papers/md/` に書誌情報を追加したいとき
 
-**論文の検索・探索（「○○ について論文を集めて」「関心テーマの文献を調べて」等）は `caw-research`（研究トラック）の担当**。caw-research が `work/topics/` に作ったリストから、ユーザーが PDF を取得して `work/papers/` に置いたものを、本スキルが登録する。`office/research/` が無ければ caw で research 部署を追加するよう促す。 **また、office 冒頭が `> トラック: 就活` の場合は「これは研究向けのスキルです。就活プロジェクトのようなので caw-research（企業研究）や caw-es 等をご利用ください」と伝え、無理に進めない。**
+**論文の検索・探索（「○○ について論文を集めて」「関心テーマの文献を調べて」等）は `caw-research`（研究トラック）の担当**。caw-research が `work/topics/` に作ったリストから、ユーザーが PDF を取得して `work/papers/pdf/` に置いたものを、本スキルが登録する。`office/research/` が無ければ caw で research 部署を追加するよう促す。 **また、office 冒頭が `> トラック: 就活` の場合は「これは研究向けのスキルです。就活プロジェクトのようなので caw-research（企業研究）や caw-es 等をご利用ください」と伝え、無理に進めない。**
 
 ---
 
@@ -25,7 +25,7 @@ description: >
 
 ### 前提
 
-- `work/papers/` ディレクトリに対象 PDF が配置されている（caw scaffold で自動生成済）
+- `work/papers/pdf/` ディレクトリに対象 PDF が配置されている（caw scaffold で自動生成済。`work/papers/pdf/`・`work/papers/md/` が無ければ登録時に作成する）
 - `office/AGENTS.md` の「オーナープロフィール」で **ナレッジベース** と **クラウドストレージ** が指定されている
 
 ### Step 0: 抽出レベルを尋ねる（必須・省略禁止）
@@ -45,14 +45,14 @@ description: >
 ### Step 1: PDF の検出
 
 ```bash
-ls work/papers/*.pdf
+ls work/papers/pdf/*.pdf
 ```
 
-新規追加された PDF を検出（既に `work/papers/` に登録済の md と照合してスキップ）。
+新規追加された PDF を検出（既に `work/papers/md/` に登録済の md と照合してスキップ）。
 
 ### Step 2: メタデータ抽出（Step 0 のレベルで深さを変える）
 
-各 PDF について、まず `pdftotext` でテキスト変換（`pdftotext "work/papers/<file>.pdf" /tmp/<file>.txt`）。以降は **Step 0 で選ばれたレベル**で抽出量を変える：
+各 PDF について、まず `pdftotext` でテキスト変換（`pdftotext "work/papers/pdf/<file>.pdf" /tmp/<file>.txt`）。以降は **Step 0 で選ばれたレベル**で抽出量を変える：
 
 | レベル | 読む範囲 | 生成する md の中身 | タグ |
 |---|---|---|---|
@@ -65,7 +65,7 @@ ls work/papers/*.pdf
 
 ### Step 3: ナレッジベース用 md 生成
 
-`work/papers/<author-year-keyword>.md` に書誌情報付き md を生成。命名規則：
+`work/papers/md/<author-year-keyword>.md` に書誌情報付き md を生成。命名規則：
 - `<first-author-lastname>-<year>-<keyword>.md`
 - 例: `tanaka-2024-mof-luminescence.md`
 
@@ -90,7 +90,7 @@ volume: ...
 pages: "..."
 doi: "10.1021/..."
 url: "https://doi.org/..."
-pdf_local: "work/papers/<file>.pdf"
+pdf_local: "work/papers/pdf/<file>.pdf"
 pdf_url: "TBD"
 tags:
   - tag1
@@ -181,7 +181,7 @@ status: "to-read"
 
 #### 「使わない / 未定」の場合
 
-- `work/papers/` 配下のローカル md のみで完結
+- `work/papers/md/` 配下のローカル md のみで完結
 - 将来的な KB 連携のため frontmatter は維持
 
 ### Step 5: クラウドストレージへのアップロード（オプション）
@@ -223,7 +223,7 @@ status: "to-read"
 
 バッチ処理（複数 PDF 一括登録）を依頼された場合：
 
-- 最初に **Step 0（抽出レベル）を 1 回だけ尋ね**、`work/papers/` 配下の全 PDF を対象に同じレベルで Step 1〜6 を順次実行
+- 最初に **Step 0（抽出レベル）を 1 回だけ尋ね**、`work/papers/pdf/` 配下の全 PDF を対象に同じレベルで Step 1〜6 を順次実行
 - 1 ファイルあたり 30-60 秒程度を想定（PDF サイズによる）
 - 進捗を逐次表示（"3/10 件処理中..."）
 - 失敗ファイルはスキップして続行、最後にまとめて報告
@@ -235,7 +235,7 @@ status: "to-read"
 - **抽出レベル（L1/L2/L3）は毎回必ず `AskUserQuestion` で尋ねる**（PDF だけ渡されても自動で決めない・絶対）。推奨は設けず、**レベルでトークン使用量が変わる（L1 < L2 < L3）ことを明示**して選ばせる。バッチは最初に 1 回だけ尋ねる
 - **要約・抽出した本文はユーザーの言語（既定で日本語）で書く**（原文が英語でも日本語に要約する）
 - **既存ファイルは絶対に上書きしない**。同名 md があれば skip して報告
-- **PDF 自動ダウンロード機能は未対応**（論文検索は `caw-research` が担当。そのリストからユーザーが手動で PDF を取得し `work/papers/` に置く前提）
+- **PDF 自動ダウンロード機能は未対応**（論文検索は `caw-research` が担当。そのリストからユーザーが手動で PDF を取得し `work/papers/pdf/` に置く前提）
 - **メタデータ抽出の精度**：pdftotext で読めない PDF（画像 PDF・OCR 未処理）は、ファイル名から推定 + ユーザーに確認を求める
 - **化学物質名・反応名の正確性**：自動タグ付けは初期案として提示、ユーザーに確認・修正の機会を与える
 - **大容量 PDF（>100 MB）**：pdftotext で頭 10 ページのみ抽出、フォールバック処理
