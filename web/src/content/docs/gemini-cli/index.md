@@ -1,14 +1,18 @@
 ---
 title: "Gemini CLI（OSS・caw 対応）"
-description: OSS / Apache 2.0 のターミナル native エージェント。個人 Google アカウント連携で手厚い無料枠
+description: OSS / Apache 2.0 のターミナル native エージェント。caw 利用には有料 API キーが前提（無料枠は限定的）
 ---
+
+:::caution[実地での注意（テスト運用で判明）]
+Gemini CLI の**無料枠は caw を動かすには不十分**でした — API キーが必須で、割り当ても少なく、**オンボーディング（初期環境構築）すら完了できない**ケースがありました。caw を試すなら **Codex CLI / Claude Code を推奨**します。Gemini CLI を使う場合は**有料 API キー**を前提にしてください。
+:::
 
 ## なぜ Gemini CLI を扱うか
 
 - **OSS（Apache 2.0）**：ソースコードが公開されており、内部挙動を確認できる
-- **手厚い無料枠**：個人 Google アカウント連携で Gemini 2.5 Pro クラスを 60 req/min・1000 req/day 程度
+- **無料枠はあるが caw には不十分**：個人 Google アカウントで Gemini 2.5 Pro クラスを 60 req/min・1000 req/day 程度。ただし実地（テスト運用）では caw のオンボーディングが完了せず、**有料 API キーが前提**
 - **Claude Code / Codex CLI と同系統**：ターミナル native エージェントの選択肢として並び立つ
-- 学生・若手 PI にとって、金銭面でのエントリー障壁が低い選択肢
+- OSS でソースが追える選択肢（ただし **caw を回すには有料 API が必要**＝無料枠だけでは厳しい）
 
 ## 章立て（執筆中）
 

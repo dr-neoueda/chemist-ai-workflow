@@ -2,6 +2,20 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.49.1 / Codex 1.48.1 / Copilot 1.22.1] - 2026-06-19
+
+### Docs — テスト会の実地知見を反映（git 前提の明記・Gemini 無料枠の実態修正）
+
+第1回テストユーザー会で判明：(1) caw の導入には **git が前提**（各 CLI の `marketplace add` が配布元 GitHub を clone する）、(2) **Gemini CLI の無料枠は caw を動かすには不十分**（API キー必須・割り当て少で初期構築すら未完）。
+
+- **A: README に git 前提を明記**（plugin / codex / copilot）。「`marketplace add` は GitHub を clone するため git と Node.js（LTS）が事前に必要」を install 手順に追記。`web/requirements.md` は既に git を必須掲載済み。
+- **B: Gemini の位置づけを実態に修正**（web）。`gemini-cli/index.md` 冒頭に caution（無料枠は caw に不十分・Codex/Claude 推奨・有料 API 前提）、「手厚い無料枠」の記述を撤回。`index.mdx`・`about.md` の Gemini 紹介も「無料枠は限定的・有料 API 前提」に。
+- セミナーガイド（配布外 Desktop）も同内容で更新済み。
+
+### Note
+
+- 版: plugin 1.49.0 → **1.49.1** / codex 1.48.0 → **1.48.1** / copilot 1.22.0 → **1.22.1** / gemini 1.26.0 据え置き（web docs 変更はバージョン非依存）/ marketplace 同期
+
 ## [1.49.0 / Codex 1.48.0 / Copilot 1.22.0 / Gemini 1.26.0] - 2026-06-19
 
 ### Changed — 論文ライブラリを `work/papers/pdf/` と `work/papers/md/` に分離
