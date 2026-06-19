@@ -2,6 +2,21 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.41.0 / Codex 1.40.0 / Copilot 1.20.0 / Gemini 1.19.0] - 2026-06-19
+
+### Changed — 研究/就活トラックの判定を対称マーカー化＋取り違え防止を全スキルで強化
+
+トラック判定が「`> トラック: 就活` があれば就活／**無ければ研究**」という**不在ベースの非対称**で、就活 office からマーカーが欠けると黙って研究側へ倒れる弱点があった。**研究側にも明示マーカー `> トラック: 研究` を付け、判定を 3 分岐に統一**。
+
+- **研究 scaffold が `> トラック: 研究` を冒頭出力**：`claude-md-template.md`（plugin）・`agents-md-template.md`（codex + copilot、byte-identical）に追加。Gemini は既に出力済み。就活 `> トラック: 就活` と対称に。
+- **3 分岐リーダー**（`caw-research`・`caw-doctor`・`caw-intake`・`caw-report`、plugin + codex + GEMINI）：`就活`→就活／`研究`→研究／**行が無い旧 office → `work/companies/` か `work/papers/`・`work/topics/` の有無で推定、判別不能なら 1 問尋ねる**。黙って研究へ倒れる挙動を廃止。
+- **caw-doctor がマーカーを自己修復**：旧 office で `> トラック:` 行が欠けていれば、推定したトラックの行を冒頭に補記して移行。
+- **単一トラックスキルに取り違えガード**：就活専用（`caw-es`/`caw-events`/`caw-interview`）・研究専用（`caw-register`/`caw-write`）は、反対トラックの office で起動されたら「これは○○向けです」と伝えて適切なスキルへ誘導し、無理に進めない。
+
+### Note
+
+- 版: plugin 1.40.0 → **1.41.0** / codex 1.39.0 → **1.40.0** / copilot 1.19.0 → **1.20.0** / gemini 1.18.0 → **1.19.0** / marketplace 同期
+
 ## [1.40.0 / Codex 1.39.0 / Copilot 1.19.0 / Gemini 1.18.0] - 2026-06-19
 
 ### Changed — 研究オンボーディングで計算ソフトを「カテゴリ」だけでなく「具体ソフト名」まで尋ねる

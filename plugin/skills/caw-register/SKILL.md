@@ -14,7 +14,7 @@ trigger: /caw-register
 - `work/papers/` に PDF を置いてユーザーが「論文を登録して」「PDF を取り込んで」と言ったとき
 - 既存の `work/papers/` に書誌情報を追加したいとき
 
-**論文の検索・探索（「○○ について論文を集めて」「関心テーマの文献を調べて」等）は `caw-research`（研究トラック）の担当**。caw-research が `work/topics/` に作ったリストから、ユーザーが PDF を取得して `work/papers/` に置いたものを、本スキルが登録する。`office/research/` が無ければ `/caw` で research 部署を追加するよう促す。
+**論文の検索・探索（「○○ について論文を集めて」「関心テーマの文献を調べて」等）は `caw-research`（研究トラック）の担当**。caw-research が `work/topics/` に作ったリストから、ユーザーが PDF を取得して `work/papers/` に置いたものを、本スキルが登録する。`office/research/` が無ければ `/caw` で research 部署を追加するよう促す。 **また、office 冒頭が `> トラック: 就活` の場合は「これは研究向けのスキルです。就活プロジェクトのようなので caw-research（企業研究）や caw-es 等をご利用ください」と伝え、無理に進めない。**
 
 ---
 

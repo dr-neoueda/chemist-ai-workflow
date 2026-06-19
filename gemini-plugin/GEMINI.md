@@ -91,13 +91,13 @@ footer{color:var(--muted);font-size:12.5px;margin-top:22px;border-top:1px solid 
 部品: リスト=`ol.list>li`＋`.ttl/.meta/.sum`、カード=`.card`、表=`table`、状態=`.badge`、グラフ=インライン `<svg>`（`--accent` と `#888888` の2色）。
 
 ### caw-intake（統合 inbox の自動仕分け）
-過去資料を単一の `inbox/` に入れて「処理して」と言われたら、各ファイルを**開いて中身で種類を判定**し振り分ける（拡張子だけで決めない）。
+過去資料を単一の `inbox/` に入れて「処理して」と言われたら、各ファイルを**開いて中身で種類を判定**し振り分ける（拡張子だけで決めない）。**トラックは office 冒頭の `> トラック:`（就活/研究）で判定、行が無ければ `work/companies/` か `work/papers/`・`work/topics/` の有無で推定**。
 - **研究**：自分の論文/申請書/スライド/CV → 執筆スタイル `work/manuscripts/_style/voice-self.md`・研究プロファイル/知見/業績/引用/手法 `work/profile/{research-profile,key-findings,publications,citations,methods}.md`・作図 `work/figures/_style.md`・発表 `work/presentations/_style.md`・CV `work/profile/cv.md`・用語辞書 `work/profile/glossary.md`。外部論文 → caw-register で登録。計算入出力 → caw-playbook の `_past-data/` 取り込み。測定データ → `work/analyses/` 整理＋手法傾向。
 - **就活**：ES/志望動機/自己PR/履歴書 → `work/self-analysis/*`・`work/documents/voice-style.md`・`work/documents/past-answers.md`。企業情報 → caw-research の素材。
 - 既存ファイルは上書きせず追記マージ。判定不能はユーザーに確認。原ファイルは `inbox/` に残す。**設定ファイル（GEMINI.md）は書き換えない**。
 
 ### caw-research（調べる：研究＝論文検索 / 就活＝企業・業界研究）
-`office/GEMINI.md` 冒頭の `> トラック:` で分岐する。
+`office/GEMINI.md` 冒頭の `> トラック:`（就活/研究）で分岐する。**行が無い旧 office は `work/companies/` があれば就活、`work/papers/`・`work/topics/` があれば研究と推定し、判別不能なら 1 問尋ねる**。
 - **研究**：関心テーマの論文を検索（arXiv / Crossref / Semantic Scholar / OpenAlex / PubMed、件数・期間を確認）→ クリックで論文ページに飛べる **HTML リスト** `work/topics/<topic>_<YYYYMMDD>_n<件数>.html`（タイトルがリンク・縦リスト・並べ替えなし・要約は日本語・登録済み〔work/papers/〕は既定で除外）に書き出す。**HTML は上の「caw の HTML デザイン」の `<style>`・`ol.list` をそのまま使う**。**探索はリスト化まで**で、入手 PDF の登録は caw-register に渡す（DOI/arXiv ID を残す）。
 - **就活**：発動したら**必ず**「調査レベル（L1 概要 / L2 標準 / L3 詳細）」と「出力形式（md / HTML / 両方。md 推奨）」を尋ねる（省略禁止）。汎用 8 ブロック（A 基本/沿革・B 財務/規模・C 戦略/競争優位・D 業界/競合・E リスク/ガバナンス/ESG・F 働く環境・G 採用/選考・H 接点/想定問答）で `work/companies/<企業>.md` に整理。公式情報は単一ソース可、年収など非公式は複数ソースで裏取り。**L3 では有報・決算説明会資料・統合報告書・中計・サステナビリティ報告書などの公式開示文書を IR から自分で取得して読む**（PDF は `curl`→`pdftotext` で必要箇所だけ抽出＝有報全文は丸読みしない、Gemini は PDF 直読み可）。値は〔文書名＋PDF URL＋取得日〕を出典に。取れなければユーザーに URL/PDF の貼り付けを依頼、捏造しない。L1/L2 は Web ページ中心で深掘りしない。
 
@@ -126,7 +126,7 @@ footer{color:var(--muted);font-size:12.5px;margin-top:22px;border-top:1px solid 
 計算の試行錯誤で得た知見を `office/computation/playbooks/<tool>.md` の `## Lessons Learned` に `### YYYY-MM-DD - 一行サマリ` で末尾追記（**知見は日本語で**）。**既定の推奨値を変えるべき教訓なら「デフォルト推奨パラメータ」ブロックも更新**（次の caw-input の起点を最新に＝ループを閉じる）。計算ソフトディレクトリの `_past-data/` を「過去データを取り込んで」で解析し既定傾向を seed。ソフトを超えた一般則は、Gemini では `office/computation/GEMINI.md` の「共通知見」節か秘書 notes に記録（Claude Code の memory 機能がある場合はそちらへ）。
 
 ### caw-doctor（構造点検）
-`office/GEMINI.md` のトラックを判定し、ルート設定・秘書部・各部署・成果物ディレクトリ・統合 `inbox/`・START HERE の有無を点検し、不足は作成を提案。二層原則違反（`office/<部署>/` に成果物）も検出。
+`office/GEMINI.md` のトラックを判定（`> トラック:` 行が無ければ `work/` 構造で推定し、**不足していれば `> トラック: <値>` を冒頭に補記して旧 office を移行**）し、ルート設定・秘書部・各部署・成果物ディレクトリ・統合 `inbox/`・START HERE の有無を点検し、不足は作成を提案。二層原則違反（`office/<部署>/` に成果物）も検出。
 
 ### caw-setup（環境チェック）
 不足ツール（Node.js/Python/poppler 等）を検出し、OS 別にインストール手順を案内。

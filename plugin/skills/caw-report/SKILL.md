@@ -36,7 +36,7 @@ trigger: /caw-report
 
 ### Step 1: 環境を匿名で把握する
 
-- `office/`（Codex CLI は `office/AGENTS.md`、Claude Code は `office/CLAUDE.md`、Gemini CLI は `office/GEMINI.md`）の**冒頭メタのみ**を読み、トラック（`> トラック: 就活` の有無）と運用モード（`> 運用モード: はじめて` の有無）を判定する。**研究分野・志望業界などの本文は読み込まない／転記しない**。
+- `office/`（Codex CLI は `office/AGENTS.md`、Claude Code は `office/CLAUDE.md`、Gemini CLI は `office/GEMINI.md`）の**冒頭メタのみ**を読み、トラック（`> トラック:` の値＝就活/研究。行が無ければ `work/companies/` か `work/papers/`・`work/topics/` の有無で推定）と運用モード（`> 運用モード: はじめて` の有無）を判定する。**研究分野・志望業界などの本文は読み込まない／転記しない**。
 - caw のバージョン（プラグイン/拡張の manifest があれば）・利用 **CLI とその version**・**OS 種別**（mac/Win/Linux）を把握する。
 - **外部ツールの有無**を確認（`node -v`／`python --version`／`pdfinfo -v` 等の成否。バージョン文字列は控えて有/無で）。
 - **MCP 連携**：`office/.mcp-setup.md` の有無と、設定済みサーバの**数**（API キー等は読まない・転記しない）。
