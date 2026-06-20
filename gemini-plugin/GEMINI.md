@@ -94,7 +94,7 @@ footer{color:var(--muted);font-size:12.5px;margin-top:22px;border-top:1px solid 
 過去資料を単一の `inbox/` に入れて「処理して」と言われたら、各ファイルを**開いて中身で種類を判定**し振り分ける（拡張子だけで決めない）。**トラックは office 冒頭の `> トラック:`（就活/研究）で判定、行が無ければ `work/companies/` か `work/papers/`・`work/topics/` の有無で推定**。
 - **研究**：自分の論文/申請書/スライド/CV → 執筆スタイル `work/manuscripts/_style/voice-self.md`・研究プロファイル/知見/業績/引用/手法 `work/profile/{research-profile,key-findings,publications,citations,methods}.md`・作図 `work/figures/_style.md`・発表 `work/presentations/_style.md`・CV `work/profile/cv.md`・用語辞書 `work/profile/glossary.md`。外部論文 → caw-register で登録。計算入出力 → caw-playbook の `_past-data/` 取り込み。測定データ → `work/analyses/` 整理＋手法傾向。
 - **就活**：ES/志望動機/自己PR/履歴書 → `work/self-analysis/*`・`work/documents/voice-style.md`・`work/documents/past-answers.md`。企業情報 → caw-research の素材。
-- 既存ファイルは上書きせず追記マージ。判定不能はユーザーに確認。原ファイルは `inbox/` に残す。**設定ファイル（GEMINI.md）は書き換えない**。
+- 既存ファイルは上書きせず追記マージ。判定不能はユーザーに確認。**処理成功した原本は種類別 `_source/` へ `mv`**（外部論文→`work/papers/pdf/`、過去 ES→`work/documents/_source/`、自分の論文→`work/manuscripts/_source/`、スライド→`work/presentations/_source/`、CV→`work/profile/_source/`、計算→`work/<sw>/_past-data/`、測定→`work/analyses/<topic>/_source/`）して **inbox を空にする**（`rm` しない・判定不能は残す）。**設定ファイル（GEMINI.md）は書き換えない**。
 
 ### caw-research（調べる：研究＝論文検索 / 就活＝企業・業界研究）
 `office/GEMINI.md` 冒頭の `> トラック:`（就活/研究）で分岐する。**行が無い旧 office は `work/companies/` があれば就活、`work/papers/`・`work/topics/` があれば研究と推定し、判別不能なら 1 問尋ねる**。

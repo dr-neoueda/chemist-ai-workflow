@@ -2,6 +2,22 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.50.0 / Codex 1.49.0 / Copilot 1.23.0 / Gemini 1.27.0] - 2026-06-20
+
+### Changed — caw-intake が処理後に原本を種類別 `_source/` へ移動し inbox を空にする
+
+従来、caw-intake は inbox の原本を**残す（削除しない）**仕様だったため、抽出した成果物は `work/` に行く一方で**自分の ES・論文・CV・スライドの原本は inbox に放置**されていた（外部論文→`work/papers/pdf/`、計算→`_past-data/` は移動済みなのに自分の書類だけ行き場なし）。研究モードの「論文 PDF→`work/papers/pdf/`」と同じ発想で、**全原本を種類ごとに探しやすい場所へ移動**する。
+
+- **処理成功した原本を種類別の宛先へ `mv`**（`rm` しない＝可逆、`feedback_migration_mv_not_rm` 準拠）し **inbox を空にする**：
+  - 外部論文 PDF → `work/papers/pdf/`（既存）／ ES・履歴書 → `work/documents/_source/` ／ 自分の論文・申請書・要旨 → `work/manuscripts/_source/` ／ スライド・ポスター → `work/presentations/_source/` ／ CV・業績 → `work/profile/_source/` ／ 計算入出力 → `work/<sw>/_past-data/`（既存）／ 測定 raw → `work/analyses/<topic>/_source/`
+  - **判定不能・要確認のファイルは inbox に残す**（移動しない）。完了時に「N 件処理→各 `_source/` へ移動、inbox は空」と報告。
+- 原本は AI 生成物の隣（`work/.../_source/`）に種類別で並ぶので、ユーザーが後から原本を探しやすい。
+- 反映：`caw-intake/SKILL.md`（plugin + codex）・dispatcher `caw/SKILL.md` の inbox README（plugin + codex + copilot）・`GEMINI.md`。
+
+### Note
+
+- 版: plugin 1.49.1 → **1.50.0** / codex 1.48.1 → **1.49.0** / copilot 1.22.1 → **1.23.0** / gemini 1.26.0 → **1.27.0** / marketplace 同期
+
 ## [1.49.1 / Codex 1.48.1 / Copilot 1.22.1] - 2026-06-19
 
 ### Docs — テスト会の実地知見を反映（git 前提の明記・Gemini 無料枠の実態修正）
