@@ -72,7 +72,20 @@ trigger: /caw-intake
 ### Step 3: 報告と次の一歩
 
 - **何を・どう判定し・どこに処理したか**をファイルごとに一覧で報告する（種類／行き先／要点）。
-- `inbox/` の原ファイルは**残す**（削除しない）。処理済みが分かるよう、必要なら一覧で「処理済み」を明示。
+- **処理が成功した原本は、種類ごとに `work/.../_source/` へ `mv`（移動）して `inbox/` を空にする**（`rm` は使わない＝可逆）。これで「inbox＝未処理の置き場」が常にクリーンになり、原本も後から探しやすい。移動先は下表。**判定できなかった／要確認のファイルは `inbox/` に残す**（移動しない）。完了時に「N 件処理 → 各 `_source/` へ移動、inbox は空（残 M 件は要確認）」と報告する。移動先フォルダ（`_source/` 等）が無ければ作成する。
+
+**原本の移動先（種類別）**：
+
+| 種類 | 原本の移動先 |
+|---|---|
+| 外部論文 PDF | `work/papers/pdf/`（`caw-register` が登録、要約は `work/papers/md/`） |
+| 自分の ES・志望動機・自己PR・履歴書 | `work/documents/_source/` |
+| 自分の論文・申請書・要旨 | `work/manuscripts/_source/` |
+| 自分のスライド・ポスター | `work/presentations/_source/` |
+| CV・業績リスト | `work/profile/_source/` |
+| 計算入出力 | `work/<ソフト>/_past-data/`（`caw-playbook` が傾向を取り込み） |
+| 測定 raw（NMR/XRD/IR/DSC 等） | `work/analyses/<topic>/_source/` |
+| 判定不能・要確認 | `inbox/` に残す（移動しない） |
 - 判定に迷った分はまとめて確認する。
 - 次の一歩を 1 つ提示（研究例「これで caw-write が本人の文体・文脈で論文・申請書を書けます」／就活例「caw-es が本人の文体・実績で ES を書けます」）。
 
@@ -128,4 +141,4 @@ caw-write・caw-slides・caw-input がこの出力を読んで本人の文体・
 - **既存ファイルは上書きしない**。追記マージし、重複・矛盾は統合またはユーザー確認で解消する。
 - **事実を歪めない**。原資料の記述をそのまま素材化し、誇張・捏造を足さない。
 - **抽出結果は専用ファイルに書き出す**。部署や `office/` の `AGENTS.md`（`CLAUDE.md`）は**書き換えない**。
-- 原ファイルは `inbox/` に残す（削除しない）。成果物（`work/profile/`・`work/self-analysis/`・`work/manuscripts/_style/` 等）は `work/` 配下 に置く（`office/` 配下に書かない）。
+- 原本は**種類別 `_source/` へ `mv`**（Step 3 の表。外部論文は `work/papers/pdf/`、計算は `_past-data/`）して `inbox/` を空にする（`rm` しない＝可逆・判定不能は残す）。抽出した成果物（`work/profile/`・`work/self-analysis/`・`work/manuscripts/_style/` 等）は `work/` 配下 に置く（`office/` 配下に書かない）。

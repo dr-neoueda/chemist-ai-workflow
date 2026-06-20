@@ -217,7 +217,7 @@ review 部署は内部品質ゲート記録のみ扱うため、`work/` 配下 �
 
 **research（work/papers/）にも投入フォルダ**：research を選択した場合、`work/papers/pdf/`（PDF 置き場）と `work/papers/md/`（書誌付き要約）を作成し、README に「論文 PDF を `work/papers/pdf/` に入れて『登録して』と言うと、caw-register が書誌情報を抽出して `work/papers/md/<著者-年>.md` に整理し、ナレッジベース／クラウドストレージにも登録する」と平易に明記する。初心者が「PDF をどこに置けばいいか」で迷わないようにするのが目的。
 
-**統合 inbox（迷ったらここ）**：プロジェクト直下に `inbox/` を作成し、README に「**種類を問わず何でもここに入れて『処理して』と言えば、`caw-intake` が中身を見て判定し適切に処理します**——自分の論文/スライド/CV→プロファイル・文体を抽出（`work/profile/`・`work/manuscripts/_style/`）、外部論文→登録（`work/papers/`）、計算入出力→Playbook 取り込み。どこに入れるか迷ったらここで OK」と明記する。`work/papers/pdf/`（外部論文の直接登録）や各計算ソフトの `_past-data/` は、置き場が分かっている人向けの直接ルート。
+**統合 inbox（迷ったらここ）**：プロジェクト直下に `inbox/` を作成し、README に「**種類を問わず何でもここに入れて『処理して』と言えば、`caw-intake` が中身を見て判定し適切に処理します**——自分の論文/スライド/CV→プロファイル・文体を抽出（`work/profile/`・`work/manuscripts/_style/`）、外部論文→登録（`work/papers/`）、計算入出力→Playbook 取り込み。**処理が済んだ原本は種類ごとに `work/…/_source/`（過去 ES→`work/documents/_source/` 等）へ移動し、inbox は空になる**ので原本も後から探しやすい。どこに入れるか迷ったらここで OK」と明記する。`work/papers/pdf/`（外部論文の直接登録）や各計算ソフトの `_past-data/` は、置き場が分かっている人向けの直接ルート。
 
 **Q2 で「計算ソフトは使わない / 主に実験中心」を選択していた場合**は、計算ソフト用ディレクトリは作成しない。実験記録用に `work/experiments/` を作るかどうか、その場で `AskUserQuestion` で 1 問追加して確認する（デフォルト Yes）。
 
