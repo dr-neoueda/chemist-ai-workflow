@@ -41,89 +41,103 @@ QT (トラック): 「caw を主に何に使いますか？」
   (multiSelect: false; Other 可)
 ```
 
-- **就活** を選んだら → **`references/job-hunting-departments.md` を読み、その §A〜§E に従って**就活モードのオンボーディング・scaffold・運営モードを実行する（以降の研究向け Call 1〜2 は使わない）。**就活トラックでは常にはじめてモード（平易な日本語・用語説明）で進める**（office 設定に `> 運用モード: はじめて` を必ず書く）。
+- **就活** を選んだら → **`references/job-hunting-departments.md` を読み、その §A〜§E に従って**就活モードのオンボーディング・scaffold・運営モードを実行する（以降の研究向け Call 1〜6 は使わない）。**就活トラックでは常にはじめてモード（平易な日本語・用語説明）で進める**（office 設定に `> 運用モード: はじめて` を必ず書く）。
 - **研究プロジェクト** を選んだら → そのまま下記の研究向けフローへ。
 
-**（以下は研究トラックのオンボーディング）モードによる質問の出し分けは廃止した。全ユーザーに研究プロファイル（Call 1）と詳細プロファイル（Call 2）の全 8 問を尋ね、回答をすべて scaffold に反映する。** 作成する部署は常に全 8 部署で固定（Quick・はじめて等、部署数や質問数を変えるモードは無い）。
+**（以下は研究トラックのオンボーディング）研究分野を「広い分類 → 中分類」と funnel で絞り、論文があれば環境理解のために浅く読み、最後に計算ツールと標準化項目を聞く。全設問は選択式（各設問に Other＝自由入力を必ず添える）。部署は常に全 8 部署で固定。`AskUserQuestion` を順に呼ぶ（分野の中分類は大分類の回答に依存するため逐次）。** 設計の根拠は `docs/analysis-companion-design.md`。
 
-#### Call 1: 研究プロファイル（4 問）
+> **実験手法・装置は onboarding で聞かない**：標準化が難しくユーザーごとの特色が強いため。実験データを実際に解析するとき、解析コンパニオン（`caw-analyze`）が **per-data で具体的に**尋ねる。**計算＝事前に聞いて環境化（Playbook）／実験＝使用時に per-data** の非対称を貫く。
+
+#### Call 1: 研究分野・大分類（最も広い・1 問）
 
 ```
-Q1 (研究分野): 「主な研究分野を教えてください」
-  - 有機化学・生命化学
-  - 物理化学・分析化学
-  - 材料・無機・結晶化学
-  - 計算化学・理論化学
+Q1 (分野・大): 「研究分野は、大きくはどれに当たりますか？」
+  - 化学
+  - 物理・物性
+  - 材料・デバイス
+  - 生命科学・生化学
+  - 計算・データ科学
+  - 環境・エネルギー
   (multiSelect: false; Other で自由入力可)
-
-Q2 (計算ソフト): 「研究で使う計算ソフトのカテゴリを教えてください（複数可）」
-  - 量子化学計算（Gaussian, ORCA, Psi4 等）
-  - 古典 MD（GROMACS, AMBER, NAMD, LAMMPS, OpenMM 等）
-  - 周期系 DFT（CP2K, VASP, Quantum ESPRESSO 等）
-  - 構造可視化・密度マップフィッティング（ChimeraX 等：タンパク質・cryo-EM 密度へのモデルフィット／可視化・解析）
-  - 計算ソフトは使わない / 主に実験中心
-  (multiSelect: true; Other で具体的なソフト名を自由入力可)
-
-Q2-詳 (具体ソフト): Q2 で「使わない」以外のカテゴリを選んだら、**選んだカテゴリごとに「具体的にどのソフトを使っていますか？」を必ず追加で尋ねる**（カテゴリ回答の直後に AskUserQuestion を追加。複数カテゴリは 1 回の呼び出しで category ごとに 1 問・最大 4 問。各 multiSelect: true、選択肢が 4 を超えるものは代表 4 つ＋Other 自由入力で残りを拾う）。**ディレクトリ・Playbook はここで名指しされたソフトについてのみ作る**（カテゴリ内の全ソフトを作らない）。回答が無い／不明のカテゴリはソフト用ディレクトリを作らず、後から追加できる旨を一言添える。
-  - 量子化学計算 → Gaussian / ORCA / Psi4 / その他
-  - 古典 MD → GROMACS / AMBER / NAMD / LAMMPS / OpenMM / その他
-  - 周期系 DFT → CP2K / VASP / Quantum ESPRESSO / その他
-  - 構造可視化・密度マップフィッティング → ChimeraX / その他（PyMOL・VMD 等は Other で）
-  - 機械学習ポテンシャル（MACE 等）を挙げた場合 → `work/mlip/` を作る
-
-Q3 (ナレッジベース): 「文献・ノート管理に使うナレッジベースは？」
-  - Notion
-  - Obsidian
-  - Logseq
-  - 使わない / まだ決めていない
-  (multiSelect: false; Other 可)
-
-Q4 (クラウドストレージ): 「PDF やデータの保管に使うクラウドストレージは？」
-  - Google Drive
-  - Dropbox
-  - OneDrive
-  - 使わない / ローカルのみ
-  (multiSelect: false; Other 可)
 ```
 
-回答内容は後段の scaffold で各部署 AGENTS.md にパーソナライズとして埋め込む。
+#### Call 2: 研究分野・中分類（Q1 に適応・1 問）
 
-> **部署の選択質問は廃止**：部署はモードに応じて常に全部作成するため（化学者モードは全 8 部署）、「どの部署を作るか」をユーザーに尋ねない。
+Q1 の回答に応じて中分類の選択肢を出す（下表。複数領域・該当なしは Other 自由入力で拾う）。ここまでで**領域**が定まる ── 手法・ツール名はまだ出さない。
 
-#### Call 2: 詳細プロファイル（4 問）
+| Q1 大分類 | 中分類の選択肢（例・各 ＋Other） |
+|---|---|
+| 化学 | 有機化学 / 無機・錯体化学 / 物理化学・分光 / 分析化学 / 高分子・超分子 / 結晶・構造化学 / ケミカルバイオロジー |
+| 物理・物性 | 凝縮系 / 表面・界面 / 光物性 / 磁性・スピン / ソフトマター |
+| 材料・デバイス | 電池・エネルギー材料 / 半導体・電子材料 / 触媒 / 高分子材料 / ナノ材料 |
+| 生命科学・生化学 | 構造生物学 / 生化学・酵素 / ケミカルバイオロジー / 創薬 / オミクス |
+| 計算・データ科学 | 量子化学・理論 / 分子シミュレーション / マテリアルズインフォマティクス / ケモインフォマティクス |
+| 環境・エネルギー | 触媒・グリーンケミストリー / エネルギー変換・貯蔵 / 環境分析 |
 
-回答は各部署 AGENTS.md のパーソナライズメモに反映し、運用初期から精度を上げる。
+#### Call 3: 論文添付（任意・環境理解のためだけに浅く読む）
+
+「あなたの論文や、同領域の代表的な論文があれば、研究の輪郭を掴むために見せてください（任意）。**PDF はプロジェクト直下の `inbox/` に置く**か、短い要旨・本文なら**チャットに貼り付け**でも構いません。無ければスキップします。」
+
+- 渡されたら **環境構築に必要な情報だけを浅く抽出**する：研究分野の補強・主な活動（合成 / 測定 / 計算 / 解析）・**使用している計算ツール/手法**・対象系。
+- **やらないこと**：文体（voice）プロファイル・用語辞書（glossary）・key-findings/citations の精密抽出（**環境構築に無関係で重い**。必要になったとき `caw-write` / `caw-intake` で行う）。
+- 本人論文＝「自分が実際にしていること」、同領域論文＝「領域の文脈」として**区別**して扱う。
+- 抽出した研究理解は **ユーザーに反映して確認してから** プロファイルに確定する（黙って決めつけない）。
+- 論文が無ければ次の Call 4 の選択で補う。
+
+#### Call 4: 計算ツール／アプリ（複数選択・use＋train）
+
+「研究で使う計算ツール・アプリを教えてください（複数可）。Call 3 の論文で見えたものはここで**確認・補完**します。」
 
 ```
-Q6 (計算環境): 「計算ジョブをどこで回しますか？」
-  - HPC クラスタ（SLURM）
-  - HPC クラスタ（PBS / その他）
-  - ローカルマシンのみ（ワークステーション / ノート PC）
-  - クラウド（AWS / GCP 等）
-  (multiSelect: true; Other 可。computation 部署の AGENTS.md に submission コマンドの既定を反映)
-
-Q7 (研究体制): 「研究の進め方は？」
-  - 単独研究（指導教員の添削のみ）
-  - 共著者と共同（複数名で執筆・解析を分担）
-  - 研究室全体で office/ を共有
-  (multiSelect: false; writing / review 部署の運用ルールに反映)
-
-Q8 (申請書の予定): 「申請書・助成金の予定はありますか？」
-  - 学振（DC / PD）
-  - 科研費
-  - 民間財団・その他助成
-  - 予定なし
-  (multiSelect: true; 該当があれば writing 部署に申請書トラッカーの雛形を追加提案)
-
-Q9 (論文ステータス): 「論文執筆の状況は？」
-  - 執筆中の論文がある
-  - 投稿済み・査読対応中
-  - これから書き始める
-  - 当面予定なし
-  (multiSelect: false; writing 部署の初期テンプレに反映)
+Q (計算ツール):
+  - Gaussian / ORCA / Psi4（量子化学）
+  - GROMACS / AMBER / LAMMPS / OpenMM（古典 MD）
+  - CP2K / VASP / Quantum ESPRESSO（周期系 DFT）
+  - xtb・CREST（半経験的・配座探索）
+  - MLIP・MLFF（MACE / CHGNet / NequIP 等：ポテンシャルの **利用＋訓練/fine-tune** 両方）
+  - ChimeraX（構造可視化・密度フィット）
+  - 計算は使わない / 主に実験中心
+  (multiSelect: true; Other で具体的なソフト名を自由入力。選択肢が 4 を超えるので代表＋Other で拾う)
 ```
 
-Call 2 で得た回答は `office/AGENTS.md` の「パーソナライズメモ」に箇条書きで保存し、各部署が文脈として参照できるようにする。
+- **ディレクトリ・Playbook は、ここ（＋Call 3 の論文）で名指しされたツールについてのみ作る**。MLIP を挙げたら `work/mlip/`（**利用も訓練/fine-tune も**扱う）。
+- 「計算は使わない / 主に実験中心」を選んだら計算ディレクトリは作らず、実験記録用 `work/experiments/` の要否を `AskUserQuestion` で 1 問だけ確認（既定 Yes）。
+
+#### Call 5: 標準化項目（環境に直結・1 回で 4 問）
+
+有限の共通選択肢が**具体的な環境成果物に一意対応**する項目。1 回の `AskUserQuestion` で 4 問まとめて聞く。
+
+```
+Q (計算実行環境): 「計算ジョブをどこで回しますか？」
+  - HPC（SLURM）/ HPC（PBS・その他）/ ローカルのみ / クラウド（AWS・GCP 等）
+  (multiSelect: true; Other 可 → computation 部署に submission 既定〔queue/walltime/module〕を反映)
+
+Q (文献管理・ナレッジベース): 「文献・ノート管理は？」
+  - Notion / Obsidian / Zotero・Mendeley / Logseq / 使わない
+  (multiSelect: false; Other 可 → caw-register の格納先・連携)
+
+Q (クラウドストレージ): 「PDF・データの保管は？」
+  - Google Drive / Dropbox / OneDrive / ローカルのみ
+  (multiSelect: false; Other 可 → 成果物の同期先)
+
+Q (研究体制): 「研究の進め方は？」
+  - 単独（指導教員の添削のみ）/ 共著で分担 / 研究室で office/ 共有
+  (multiSelect: false → writing / review 部署の運用ルールに反映)
+```
+
+#### Call 6: 執筆・申請（1 回で 2 問）
+
+```
+Q (申請書の予定): 学振（DC/PD）/ 科研費 / 民間財団・その他 / 予定なし
+  (multiSelect: true; 該当あれば writing 部署に申請書トラッカー雛形を追加提案)
+
+Q (論文ステータス): 執筆中 / 投稿済み・査読対応中 / これから / 当面なし
+  (multiSelect: false → writing 部署の初期テンプレに反映)
+```
+
+Call 1〜6 の回答（と Call 3 の論文から浅く抽出した研究理解）は、後段の scaffold で各部署 AGENTS.md と **`work/profile/`（研究分野・活動・使用計算ツール・対象系）** に保存し、各部署・`caw-analyze` が文脈として参照できるようにする。実験系の具体は据え置き（解析時に追記）。
+
+> **部署の選択質問は廃止**：部署は常に全 8 部署を作成するため、「どの部署を作るか」は尋ねない。
 
 ### Step 3: 自動スキャフォールド
 
@@ -131,17 +145,17 @@ Call 2 で得た回答は `office/AGENTS.md` の「パーソナライズメモ�
 
 **scaffold 範囲（全ユーザー共通：化学者モードは常に全 8 部署）**：
 - `office/` + ルート AGENTS.md + **全 8 部署**（secretary / research / engineering / computation / analysis / writing / review / presentation）+ 作業ディレクトリ
-- Call 1（Q1〜Q4）を各部署 AGENTS.md に反映
-- Call 2（Q6〜Q9）の回答を `office/AGENTS.md` のパーソナライズメモと各部署 AGENTS.md に反映 + Q8 で申請書予定があれば writing 部署に申請書トラッカー雛形を追加
+- Call 1〜4（分野 大→中・論文から抽出した研究理解・計算ツール）を各部署 AGENTS.md と `work/profile/` に反映
+- Call 5〜6（計算実行環境・文献管理・クラウド・体制・申請書・論文ステータス）を `office/AGENTS.md` のパーソナライズメモと各部署 AGENTS.md に反映 + 申請書予定があれば writing 部署に申請書トラッカー雛形を追加
 
 #### 3-1. ルート `office/` とルート AGENTS.md
 
 1. `office/` ディレクトリを作成
 2. `references/agents-md-template.md` を読み込み、以下のプレースホルダを置換して `office/AGENTS.md` を生成：
-   - `{{RESEARCH_FIELD}}` ← Q1
-   - `{{COMPUTATION_CATEGORIES}}` ← Q2
-   - `{{KNOWLEDGE_BASE}}` ← Q3
-   - `{{CLOUD_STORAGE}}` ← Q4
+   - `{{RESEARCH_FIELD}}` ← Call 1〜2（分野 大→中）＋ Call 3 論文から補強
+   - `{{COMPUTATION_CATEGORIES}}` ← Call 4（計算ツール）
+   - `{{KNOWLEDGE_BASE}}` ← Call 5（文献管理・ナレッジベース）
+   - `{{CLOUD_STORAGE}}` ← Call 5（クラウドストレージ）
    - `{{CREATED_DATE}}` ← 今日の日付
    - `{{DEPARTMENT_TABLE_ROWS}}` ← 全 8 部署のテーブル行
    - `{{DEPARTMENT_TREE}}` ← 全 8 部署を含むツリー図
@@ -161,7 +175,7 @@ Call 2 で得た回答は `office/AGENTS.md` の「パーソナライズメモ�
 1. 部署ディレクトリとサブフォルダを作成
 2. `<dept>/AGENTS.md` を配置（部署固有の役割・運用ルール・参照ファイル）
 
-**Q2 で計算カテゴリが指定されていた場合**（computation 部署は常に作成済み）：
+**Call 4（＋Call 3 論文）で計算ツールが名指しされていた場合**（computation 部署は常に作成済み）：
 
 - `computation/playbooks/` 配下に該当ソフトの Playbook 雛形を配置
 - `references/playbook-starters.md` に該当セクション（gaussian / gromacs / cp2k / orca / vasp 等）があれば取り出して配置。**無いソフト**（amber / namd / lammps / openmm / psi4 等）は frontmatter（`tool`・`last_updated`）＋空の `## Lessons Learned` だけの最小 Playbook を作る（以後 caw-playbook が追記してスペシャリスト化）
@@ -170,7 +184,7 @@ Call 2 で得た回答は `office/AGENTS.md` の「パーソナライズメモ�
 
 `office/` は AI 部署システムの管理側。実際の研究データを置く作業ディレクトリは、プロジェクト直下に **`work/` ディレクトリを 1 つ作り、その配下にまとめて生成**する（ルート直下に多数のフォルダを散らかさない）。各ディレクトリには `README.md` を 1 枚配置して「何を置くか・関連する `office/` 部署」を明示する。
 
-**Q2-詳 でユーザーが名指しした各ソフトについてのみ、`work/` 配下にディレクトリ作成**（カテゴリ内の全ソフトは作らない）：
+**Call 4（＋Call 3 論文）でユーザーが名指しした各ツールについてのみ、`work/` 配下にディレクトリ作成**（一覧の全ソフトは作らない）：
 
 | 計算ソフト | 作業ディレクトリ | README で示す中身 |
 |---|---|---|
@@ -219,16 +233,16 @@ review 部署は内部品質ゲート記録のみ扱うため、`work/` 配下 �
 
 **統合 inbox（迷ったらここ）**：プロジェクト直下に `inbox/` を作成し、README に「**種類を問わず何でもここに入れて『処理して』と言えば、`caw-intake` が中身を見て判定し適切に処理します**——自分の論文/スライド/CV→プロファイル・文体を抽出（`work/profile/`・`work/manuscripts/_style/`）、外部論文→登録（`work/papers/`）、計算入出力→Playbook 取り込み。**処理が済んだ原本は種類ごとに `work/…/_source/`（過去 ES→`work/documents/_source/` 等）へ移動し、inbox は空になる**ので原本も後から探しやすい。どこに入れるか迷ったらここで OK」と明記する。`work/papers/pdf/`（外部論文の直接登録）や各計算ソフトの `_past-data/` は、置き場が分かっている人向けの直接ルート。
 
-**Q2 で「計算ソフトは使わない / 主に実験中心」を選択していた場合**は、計算ソフト用ディレクトリは作成しない。実験記録用に `work/experiments/` を作るかどうか、その場で `AskUserQuestion` で 1 問追加して確認する（デフォルト Yes）。
+**Call 4 で「計算は使わない / 主に実験中心」を選択していた場合**は、計算ソフト用ディレクトリは作成しない。実験記録用に `work/experiments/` を作るかどうか、その場で `AskUserQuestion` で 1 問追加して確認する（デフォルト Yes）。
 
 #### 3-5. MCP セットアップ手順の生成
 
-Q3（ナレッジベース）/ Q4（クラウドストレージ）の回答に応じて、`office/.mcp-setup.md` を生成する。
+Call 5（文献管理・ナレッジベース / クラウドストレージ）の回答に応じて、`office/.mcp-setup.md` を生成する。
 
 1. `references/mcp-setup-templates.md` を読み込む
 2. 共通ヘッダを `office/.mcp-setup.md` に書き出す
-3. Q3 の回答に該当するナレッジベース MCP セクション（Notion / Obsidian / Logseq / 未設定）を追記
-4. Q4 の回答に該当するクラウドストレージ MCP セクション（Google Drive / Dropbox / OneDrive / 未設定）を追記
+3. 文献管理の回答に該当するナレッジベース MCP セクション（Notion / Obsidian / Zotero・Mendeley / Logseq / 未設定）を追記
+4. クラウドストレージの回答に該当する MCP セクション（Google Drive / Dropbox / OneDrive / 未設定）を追記
 5. 「使わない / 未定」を選んだ項目も、未設定セクションを入れておく（後から再生成しやすい）
 
 **重要**：`office/.mcp-setup.md` は **手順書**であり、API key そのものは絶対に書かない（環境変数経由で渡す手順のみ記載）。GitHub Copilot CLI では MCP サーバを `.mcp.json`（標準 `mcpServers` 形式。プラグイン同梱の `.mcp.json`、またはワークスペース／ユーザの MCP 設定）で設定する。
@@ -324,7 +338,7 @@ scaffold 完了後、不足ツールがありそうなら（例: スライドや
 | 論文 PDF の登録・要約・書誌・引用整理 | research（caw-register） |
 | Python スクリプト作成、CLI 化、解析ツール | engineering |
 | Gaussian / GROMACS / CP2K / ORCA / VASP / ChimeraX / 計算ジョブ・log 解析 | computation |
-| データ可視化、グラフ、統計、機械学習 | analysis |
+| データ解析・定量・fit・可視化（測定/計算データ、手法問わず） | analysis（caw-analyze） |
 | 論文・申請書・要旨の執筆（書く） | writing（caw-write） |
 | コードレビュー、計算妥当性、validation | review |
 | スライド作成、発表資料、図表作成 | presentation |

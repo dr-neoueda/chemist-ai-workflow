@@ -1,8 +1,9 @@
 ---
 name: caw-playbook
 description: >
-  計算ソフトの log ファイルを解析し、収束状況・エラー・パラメータ起因の挙動を抽出して
-  Playbook の Lessons Learned に自動追記するスキル。会話を重ねるほどスペシャリスト化する。
+  計算ソフトの log 解析（収束・エラー・パラメータ起因の挙動）に加え、**解析の再利用レシピ**も
+  蓄積するスキル。計算は `computation/playbooks/<tool>.md` の Lessons Learned に、解析手順は
+  `work/analyses/_playbook/<topic>.md` に追記し、会話を重ねるほどユーザーに特化する。
 ---
 
 # caw-playbook — 計算 log 解析と Playbook 追記
@@ -13,8 +14,18 @@ description: >
 - ユーザーが「log を解析して」「Playbook に追記して」「この計算から何を学べる？」と言ったとき
 - 計算ジョブ完了後の振り返り段階
 - 計算が想定外の挙動を示した（収束しない / 異常終了 / 物理的にあり得ない値）とき
+- **`caw-analyze` で行った解析が再利用に値するとき**（手順・使った汎用ツール・罠・検証観点を残す）
 
-`office/computation/playbooks/` が存在しない場合、caw で computation 部署を追加することを促す。
+`office/computation/playbooks/`（計算）や `work/analyses/_playbook/`（解析）が無ければ、caw で対応部署を追加するよう促す。
+
+## 2 種類の Playbook（同じ「使うほど特化」の仕組み）
+
+| 対象 | 置き場 | 追記する内容 |
+|---|---|---|
+| **計算ソフト**（Gaussian/CP2K/MACE 等） | `office/computation/playbooks/<tool>.md` の `## Lessons Learned` | 収束の罠・推奨パラメータ・失敗の教訓・ベンチ値 |
+| **解析**（`caw-analyze` 由来・手法問わず） | `work/analyses/_playbook/<topic>.md` | 手順・使った汎用ツール（pandas/scipy/RDKit 等）・前処理・検証観点・単位・罠 |
+
+どちらも **`### YYYY-MM-DD - 一行サマリ` で時系列に末尾追記**（既存の上書き禁止）。解析レシピは**ユーザーのローカルに空から育つ**（caw が手法別パイプラインを出荷する代わりに、ユーザーごとのレシピが蓄積する＝`docs/analysis-companion-design.md` §B。スターター素材は同梱しない）。
 
 ---
 

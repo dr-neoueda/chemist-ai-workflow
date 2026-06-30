@@ -2,6 +2,21 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.60.0 / Codex 1.59.0 / Copilot 1.32.0 / Gemini 1.37.0] - 2026-06-30
+
+### Changed — 研究モードを「抽象フレームワーク」に再設計（オンボーディング funnel ＋ 解析コンパニオン）
+
+研究モードの設計方針を転換。**手法別の具体スキルを量産する路線を撤回**し（解析はユーザー依存ゆえスキル化はナンセンス・保守過大）、**薄い土台＋汎用ツール＋ユーザーごとに育つ playbook** で広い化学領域に対応する方針へ。設計の根拠は `docs/analysis-companion-design.md`、スコープは `docs/concept.md`（同リリースで「やらないこと（YAGNI）」を撤廃＝capability 制限なし、保つのは化学者向け identity と抽象フレームワーク規律の 2 点のみ。MLIP 訓練/fine-tune も対象内に）。
+
+- **オンボーディングを abstract→concrete の funnel に**：研究分野を **大分類 → 中分類**（適応的）と絞り、**任意の論文添付**（環境理解のためだけに浅く読む。voice/glossary 等の重い抽出はしない）で研究の輪郭を掴み、**計算ツール**（MLIP/MLFF の利用＋訓練を含む）と標準化項目（計算実行環境・文献管理・クラウド・体制・申請書・論文ステータス）を聞く。**実験手法・装置は onboarding で聞かず、解析時に per-data で尋ねる**（計算＝事前に環境化／実験＝使用時の非対称）。全設問は選択式＋自由入力。
+- **`caw-analyze`（解析コンパニオン）を新設**：手法非依存の薄い“司会者”。固定パイプライン・手法別スキルを持たず、汎用ツール（pandas/numpy/scipy/matplotlib/RDKit 等）でその場の解析を組み、単位・再現性・境界検証・正直な fit 報告の規律を効かせ、再利用に値する手順を **ユーザーの playbook** に蒸留する。
+- **`caw-playbook` を一般化**：計算 log の Lessons に加え、`work/analyses/_playbook/<topic>.md` に**解析レシピ**も蓄積（使うほどユーザーに特化。スターター素材は同梱しない）。
+- dispatch を「データ解析・定量・fit・可視化（手法問わず）→ analysis（caw-analyze）」に更新。
+- **配布**：plugin / codex-plugin / copilot-plugin の `caw`・（codex は）`caw-analyze`・`caw-playbook` SKILL.md、gemini `GEMINI.md` ＋ `commands/caw-analyze.toml` を全て funnel・新スキルに更新。consistency 全 OK。
+- 版番号は archive ブランチ（撤回した per-technique 実装が 1.51〜1.59 を消費）と衝突しないよう **plugin 1.60.0 / codex 1.59.0 / copilot 1.32.0 / gemini 1.37.0** へ。
+
+> 撤回した per-technique 実装（caw-parse/analyze/xrd/echem/kinetics/medchem/xas/db ＋ caw-input 拡張・237 テスト）は `archive/data-skills-v1` ブランチに保全（main 非マージ）。
+
 ## [1.50.0 / Codex 1.49.0 / Copilot 1.23.0 / Gemini 1.27.0] - 2026-06-20
 
 ### Changed — caw-intake が処理後に原本を種類別 `_source/` へ移動し inbox を空にする
