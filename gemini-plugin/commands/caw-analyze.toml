@@ -1,0 +1,2 @@
+description = "解析コンパニオン：手法を固定せず汎用ツールでその場の解析を組む（研究）"
+prompt = "GEMINI.md の『caw-analyze』手順に従う。手法別の固定パイプラインは持たない。work/profile/ と既存 work/analyses/_playbook/ を読んで文脈に合わせ、(1) データと問い・単位を確定（実験データは per-data で具体を聞く）(2) 既存規約に沿って配置 (3) 目的に合う汎用ツール（pandas/numpy/scipy/matplotlib/RDKit 等）で解析スクリプトを書く (4) 規律＝単位明示・再現性（seed/パラメータ記録）・境界検証・fit は R²/残差/前提を正直に・手法選定と解釈はユーザー (5) 繰り返す価値があれば work/analyses/_playbook/ にレシピ蒸留。重要な再利用コードは二段レビュー案内。スターター素材は同梱しない。対象: {{args}}"

@@ -7,7 +7,7 @@
 ## 使い方（発火）
 
 - 自然言語でそのまま頼む：「環境を作って」「企業研究して」「inbox を処理して」「ES を書いて」「論文を集めて」「健康診断して」。
-- 明示コマンドも用意（`commands/`）：`/caw`（オンボーディング）, `/caw-research`, `/caw-intake`, `/caw-es`, `/caw-interview`, `/caw-events`, `/caw-register`, `/caw-write`, `/caw-input`, `/caw-slides`, `/caw-playbook`, `/caw-doctor`。
+- 明示コマンドも用意（`commands/`）：`/caw`（オンボーディング）, `/caw-research`, `/caw-intake`, `/caw-es`, `/caw-interview`, `/caw-events`, `/caw-register`, `/caw-write`, `/caw-input`, `/caw-analyze`, `/caw-slides`, `/caw-playbook`, `/caw-doctor`。
 - `office/` が無ければ、まず「環境を作りましょうか？」とオンボーディングを促す。
 
 ## はじめてモード
@@ -26,7 +26,7 @@
 
 ### 研究オンボーディング
 モードによる質問の出し分けは無い。**全ユーザーに次の全 8 問を尋ね**、回答をすべて scaffold に反映する（作成部署は常に全 8 部署）。
-1. **研究プロファイル（全 8 問）**：研究分野（有機/物理/材料/計算 等）／計算ソフトのカテゴリ（量子化学・古典 MD・周期系 DFT・構造可視化/フィッティング〔ChimeraX〕・使わない、複数可）→ **選んだカテゴリごとに具体的なソフト名まで必ず追加で尋ねる**（量子化学=Gaussian/ORCA/Psi4、古典 MD=GROMACS/AMBER/NAMD/LAMMPS/OpenMM、周期系 DFT=CP2K/VASP/Quantum ESPRESSO 等。AskUserQuestion は 4 択＋Other で残りを拾う。**名指しされたソフトのみ** `work/` 配下にディレクトリ・Playbook を作る）／ナレッジベース（Notion/Obsidian/Logseq）／クラウドストレージ（Google Drive/Dropbox/OneDrive）／計算環境（HPC SLURM・PBS・ローカル・クラウド）／研究体制（単独・共著・研究室共有）／申請書予定（学振・科研費・民間財団・なし）／論文ステータス（執筆中・査読中・これから・予定なし）。
+1. **研究プロファイル（funnel・全選択式＋Other・逐次）**：(a) **研究分野・大分類**（化学/物理・物性/材料・デバイス/生命科学・生化学/計算・データ科学/環境・エネルギー）→ (b) **中分類**（大分類に適応。化学なら 有機/無機・錯体/物理化学・分光/分析/高分子/結晶・構造/ケミカルバイオロジー 等）→ (c) **論文添付（任意）**：本人/同領域の論文を `inbox/` 投入 or 貼付。**環境理解のためだけに浅く読む**（研究分野補強・活動・使用計算ツール・対象系。**voice/glossary 等の重い抽出はしない**）→ (d) **計算ツール**（Gaussian/ORCA/Psi4・GROMACS/AMBER/LAMMPS/OpenMM・CP2K/VASP/QE・xtb/CREST・**MLIP/MLFF〔MACE 等：利用＋訓練/fine-tune〕**・ChimeraX・使わない。**名指しされたツールのみ** `work/` にディレクトリ・Playbook）→ **標準化項目**（計算実行環境 HPC SLURM/PBS・ローカル・クラウド／文献管理 Notion/Obsidian/Zotero／クラウド Drive/Dropbox/OneDrive／研究体制／申請書予定／論文ステータス）。**実験手法・装置は onboarding で聞かず、解析時に caw-analyze が per-data で尋ねる**（計算＝事前に環境化／実験＝使用時）。
 2. **scaffold**（下記）→ `office/GEMINI.md` 生成（冒頭に `> トラック: 研究`）→ 「何をしますか？」
 
 ### 就活オンボーディング
@@ -53,7 +53,7 @@
 
 `office/` がある状態では、秘書が窓口になりキーワードで担当部署／スキルに振り分ける。該当部署が未作成なら作成を提案。
 
-**研究**：締切/TODO→秘書、文献検索・論文を探す→`research`（caw-research）、論文 PDF 登録→`research`（caw-register）、計算入力→`computation`（caw-input）、データ解析・可視化→`analysis`、論文・申請書・要旨の執筆→`writing`（caw-write）、スライド→`presentation`（caw-slides）、計算ノウハウ→`computation`（caw-playbook）、過去資料の取り込み→caw-intake、構造点検→caw-doctor。
+**研究**：締切/TODO→秘書、文献検索・論文を探す→`research`（caw-research）、論文 PDF 登録→`research`（caw-register）、計算入力→`computation`（caw-input）、データ解析・定量・fit・可視化（手法問わず）→`analysis`（caw-analyze）、論文・申請書・要旨の執筆→`writing`（caw-write）、スライド→`presentation`（caw-slides）、計算ノウハウ・解析レシピの蓄積→`computation`/`analysis`（caw-playbook）、過去資料の取り込み→caw-intake、構造点検→caw-doctor。
 
 **就活**：締切・選考スケジュール→秘書、企業・業界研究→`research`（caw-research）、自己分析→`analysis`、ES・書類→`writing`（caw-es）、面接→`presentation`（caw-interview）、ある企業の就活イベント深掘り・締切＋今年度予測（複数社横断は明示時）→秘書＋`research`（caw-events）、過去 ES の取り込み→caw-intake、構造点検→caw-doctor。
 
@@ -119,11 +119,14 @@ footer{color:var(--muted);font-size:12.5px;margin-top:22px;border-top:1px solid 
 ### caw-input（計算入力生成／研究）
 目的（最適化/TS/IRC/単点 等）と分子・計算レベル（汎関数/基底）を確認し、テンプレ準拠で入力を生成（Gaussian の gjf、**ChimeraX** は構造/密度マップのフィッティング用 `.cxc` コマンドスクリプト＋`chimerax --nogui --script x.cxc --exit` のヘッドレス実行 等）。座標は log から抜いて explicit に書く。`computation/playbooks/<tool>.md` の既定（汎関数/基底/収束）を起点に、**`## Lessons Learned` の新しい教訓で上書き**（食い違いは後発の Lessons を優先）。**HPC の submission 既定（queue/walltime/並列/module/account）は `office/computation/GEMINI.md`〔オンボ Q6〕を読む**、local なら直接実行コマンド。複数系/手法は 1 計算 1 ディレクトリでバッチ生成（多いときは一覧確認）。
 
+### caw-analyze（解析コンパニオン／研究）
+手法を固定せず、ユーザーのデータと「何を知りたいか」に対し **汎用ツール（pandas/numpy/scipy/matplotlib/RDKit 等）でその場の解析を組む**。固定パイプライン・手法別スキルは持たない。`work/profile/` と既存 `work/analyses/_playbook/` を読んで文脈に合わせ、(1) データと問い・**単位**を確定（**実験データは per-data で具体を聞く**）(2) 既存規約に沿って配置 (3) 目的に合う汎用ツールで解析スクリプトを書く (4) 規律＝単位明示・再現性（seed/パラメータ記録）・境界検証・**fit は R²/残差/前提を正直に**・手法選定と解釈はユーザー (5) 繰り返す価値があれば `work/analyses/_playbook/` にレシピ蒸留（caw-playbook 方式）。重要な再利用コードは Claude+Codex 二段レビューを案内。**スターター素材は同梱しない**。設計＝`docs/analysis-companion-design.md`。
+
 ### caw-slides（スライド・図／研究）
 図表優先・テキスト最小・shape 重なり禁止で発表/論文紹介スライドを生成（Python：python-pptx/matplotlib が必要）。`work/presentations/slides/` に保存。`work/presentations/_style.md`（あれば本人の作風）を踏まえる。学会発表/修論/報告会は `work/manuscripts/`（caw-write の自分の論文・要旨）・`work/profile/key-findings.md` を、論文紹介は caw-register の `work/papers/md/` を元データ候補として提示・利用する。 **図スライド（論文紹介の原図含む）も図＋一言だけにせず、「▸ 図の読み方」（軸・色・凡例／主要数値／1 行解釈）の支持本文を必ず添える**（『テキスト最小』は散文を削る意味で、スライドを空疎にする意味ではない）。
 
-### caw-playbook（計算ノウハウの蓄積／研究）
-計算の試行錯誤で得た知見を `office/computation/playbooks/<tool>.md` の `## Lessons Learned` に `### YYYY-MM-DD - 一行サマリ` で末尾追記（**知見は日本語で**）。**既定の推奨値を変えるべき教訓なら「デフォルト推奨パラメータ」ブロックも更新**（次の caw-input の起点を最新に＝ループを閉じる）。計算ソフトディレクトリの `_past-data/` を「過去データを取り込んで」で解析し既定傾向を seed。ソフトを超えた一般則は、Gemini では `office/computation/GEMINI.md` の「共通知見」節か秘書 notes に記録（Claude Code の memory 機能がある場合はそちらへ）。
+### caw-playbook（計算ノウハウ・解析レシピの蓄積／研究）
+計算の試行錯誤で得た知見を `office/computation/playbooks/<tool>.md` の `## Lessons Learned` に `### YYYY-MM-DD - 一行サマリ` で末尾追記（**知見は日本語で**）。**既定の推奨値を変えるべき教訓なら「デフォルト推奨パラメータ」ブロックも更新**（次の caw-input の起点を最新に＝ループを閉じる）。計算ソフトディレクトリの `_past-data/` を「過去データを取り込んで」で解析し既定傾向を seed。ソフトを超えた一般則は、Gemini では `office/computation/GEMINI.md` の「共通知見」節か秘書 notes に記録（Claude Code の memory 機能がある場合はそちらへ）。**解析レシピも同様に蓄積**：caw-analyze の解析が再利用に値するなら `work/analyses/_playbook/<topic>.md` に手順・使った汎用ツール・罠・検証観点を追記（手法別パイプラインを出荷せず、ユーザーごとにレシピが空から育つ）。
 
 ### caw-doctor（構造点検）
 `office/GEMINI.md` のトラックを判定（`> トラック:` 行が無ければ `work/` 構造で推定し、**不足していれば `> トラック: <値>` を冒頭に補記して旧 office を移行**）し、ルート設定・秘書部・各部署・成果物ディレクトリ・統合 `inbox/` の有無を点検し、不足は作成を提案。二層原則違反（`office/<部署>/` に成果物）も検出。
