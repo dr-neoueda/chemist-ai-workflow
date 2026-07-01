@@ -45,6 +45,11 @@ caw-analyze は **「何を解析するか」を固定しない**。手法別ス
 ### Step 3: 汎用ツールでその場の解析を組む
 目的に合うライブラリ（pandas/numpy/scipy/matplotlib・必要なら RDKit/ASE/lmfit 等）で、**ユーザーの問いに合わせた解析スクリプト**を書く。固定パイプラインに当てはめない。スクリプトは `work/scripts/` か `work/analyses/<topic>/` に、再利用するなら残す。
 
+> **生データの取込・専用ソフト・高リスク工程は `references/analysis-conventions.md` の 3 規約に従う**（役割境界）:
+> - **取込アダプタ規約** — ベンダーバイナリ（NMR FID・MS/クロマト・EPR・`.mpr`・回折フレーム 等）は、まず OSS リーダ（msconvert / galvani / gemmi / mrcfile 等）か native 実装で**中立形式（CSV/mzML/ASCII/extxyz）に変換**してから解析。手法別パーサは作らず変換レシピを playbook 蓄積。
+> - **外部専用ソフト orchestration 契約** — scriptable なもの（GSAS-II scriptable・xraylarch・phreeqpython・pyglotaran・impedance.py 等）は caw-analyze が subprocess/Python-API で**駆動し規律をラップ**。**GUI/MATLAB 専用（SHELX 精密化・CasaXPS・EasySpin・RELION 等）は caw の外**＝ユーザーが還元 → caw は post-export の下流解析＋妥当性検証で協働（誇張しない）。
+> - **高リスク解析の規律チェックリスト** — モデル依存工程（EIS 等価回路・TA ターゲット・EXAFS パス数・XPS 背景 等）は前提開示・代替モデル比較・過剰フィット検知・一意性を必ず求める。
+
 ### Step 4: 規律ガードレール（必ず効かせる）
 - **物理量は単位明示**（コメントで `# kJ/mol`, `# Å`, `# eV` 等）。
 - **再現性**：乱数 seed 固定・パラメータはハードコードせず引数/設定に・使った値を出力に記録。

@@ -40,6 +40,7 @@ printf '%s    gemini-plugin version: %s (extension)%s\n' "$dim" "${gv:-?}" "$off
 mirror_dirs=(
   "skills/caw-slides/references"
   "skills/caw-slides/templates"
+  "skills/caw-analyze/references"
 )
 for d in "${mirror_dirs[@]}"; do
   p="plugin/$d"; c="codex-plugin/$d"

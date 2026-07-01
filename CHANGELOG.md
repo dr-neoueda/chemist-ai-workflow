@@ -2,6 +2,21 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.62.0 / Codex 1.61.0 / Copilot 1.34.0 / Gemini 1.39.0] - 2026-07-01
+
+### Added — カバレッジ監査の反映（役割境界の明記・横断ギャップに効く汎用資産 3 つ・caw-input のエンジン方言分離）
+
+化学全分野の対応可否を、web 検索とオープンアクセス論文を参照する並列エージェントで監査（`docs/chemistry-coverage-audit.md`）。全 16 サブ領域で「部分対応」＝有機系＋下流解析は被覆する一方、**ベンダーバイナリ生データと専用ソフト（GUI/MATLAB）の一次還元がギャップ**と判明。**手法別スキルを増やさない**抽象フレームワーク方針を保ったまま、以下 3 点で対処。
+
+- **① 役割境界を正直に明記**（「全分野対応」と誇張しない）：`docs/concept.md` と `docs/analysis-companion-design.md` に役割境界節を追加。caw が担うのは (a) 9 部署の組織化 (b) 下流解析＋規律 (c) 執筆/文献/playbook 蓄積。**GUI/MATLAB 専用の一次還元（SHELX 精密化・CasaXPS・EasySpin・RELION 等）はユーザーに委譲**し、caw は post-export の下流解析と妥当性検証で協働する、と明示。監査サマリを `docs/chemistry-coverage-audit.md` に集約。
+- **② 横断ギャップに効く汎用資産 3 つ**（`skills/caw-analyze/references/analysis-conventions.md`、plugin↔codex バイト一致）：
+  - **資産1 取込アダプタ規約** — ベンダーバイナリ（NMR FID・MS/クロマト・EPR・`.mpr`・回折フレーム 等）は OSS リーダ（msconvert/galvani/gemmi/mrcfile）か native 実装で**中立形式（CSV/mzML/ASCII/extxyz）に変換**してから解析。手法別パーサは作らず変換レシピを playbook 蓄積。
+  - **資産2 外部専用 CLI orchestration 契約** — scriptable（GSAS-II scriptable・xraylarch・phreeqpython・pyglotaran・impedance.py）は caw-analyze が subprocess/Python-API で駆動し規律をラップ。GUI/MATLAB 専用は out-of-scope の外部委譲。
+  - **資産3 高リスク解析の規律チェックリスト** — モデル依存工程（EIS 等価回路・TA ターゲット・EXAFS パス数・XPS 背景）は前提開示・代替モデル比較・過剰フィット検知・一意性を必ず求める。
+  - caw-analyze SKILL.md に Step 3b（3 規約参照）、caw-playbook に「取込アダプタ・外部専用ソフト orchestrate 手順」の蓄積対象を追記。
+- **③ caw-input の分離（幾何＋メソッド＋エンジン方言アダプタ）**：入力生成を 3 層に整理し、リスト外エンジン（Psi4/NWChem/OpenMolcas/xtb・CREST/LAMMPS/AMBER/OpenMM/AutoDock Vina/PHREEQC 等）は **per-engine テンプレ 1 枚を playbook に足すだけ**で対応（新スキルを作らない）。Q1 に「その他（Other 自由入力）」を追加。文法はベンダー一次資料で裁定（`feedback_comp_input_template_primary_source`）。
+- 全 4 CLI 反映（gemini は GEMINI.md の caw-input/caw-analyze 節に要約）・consistency 全 OK（mirror_dirs に `caw-analyze/references` 追加済）。版 plugin 1.61→**1.62**・codex 1.60→**1.61**・copilot 1.33→**1.34**・gemini 1.38→**1.39**。
+
 ## [1.61.0 / Codex 1.60.0 / Copilot 1.33.0 / Gemini 1.38.0] - 2026-07-01
 
 ### Added — 標準部署に「実験部（experiment）」を追加（8 → 9 部署）
