@@ -39,18 +39,18 @@ claude
 
 `office/` が存在しない場合、オンボーディングウィザードが起動：
 
-1. **研究プロファイル**（全 8 問）：研究分野、計算ソフト、ナレッジベース、クラウドストレージ、計算環境、研究体制、申請書予定、論文ステータス
-2. **全 8 部署を自動作成**（部署の選択は不要）
+1. **研究プロファイル**（funnel・選択式）：研究分野（大分類→中分類）→ 任意の論文添付（環境理解のみ）→ 計算ツール（MLIP の利用＋訓練含む）→ 標準化項目（計算実行環境・文献管理・クラウド・研究体制・申請書予定・論文ステータス）。実験手法は onboarding で聞かず解析時に per-data で尋ねる
+2. **全 9 部署を自動作成**（部署の選択は不要）
 
 回答に応じて、`office/` 部署と作業ディレクトリ（`work/gaussian/`、`work/papers/` 等）が一括生成される。2 回目以降の `/caw` は運営モードで起動し、秘書を窓口にした対話型の研究支援に入る。
 
 ## 生成される構造の例
 
-研究分野：物理化学、計算ソフト：ORCA + GROMACS、KB：Obsidian、ストレージ：Google Drive の場合（全 8 部署を作成。下記は抜粋）：
+研究分野：物理化学、計算ソフト：ORCA + GROMACS、KB：Obsidian、ストレージ：Google Drive の場合（全 9 部署を作成。下記は抜粋）：
 
 ```
 your-research-project/
-├── office/                       ← 運営側（全 8 部署。各 CLAUDE.md＋運営情報のみ）
+├── office/                       ← 運営側（全 9 部署。各 CLAUDE.md＋運営情報のみ）
 │   ├── CLAUDE.md
 │   ├── secretary/{CLAUDE.md, inbox/, todos/, notes/}
 │   └── computation/{CLAUDE.md, jobs/, parameters/, playbooks/{orca.md, gromacs.md}}
@@ -84,7 +84,7 @@ your-research-project/
 
 ### 部署テンプレート
 
-- 8 部署 CLAUDE.md：secretary / research / engineering / computation / analysis / writing / review / presentation
+- 9 部署 CLAUDE.md：secretary / research / engineering / computation / experiment / analysis / writing / review / presentation
 - 成果物は project root 直下（`work/papers/` `slides/` 等）、運営情報は `office/<dept>/` という二層構造
 
 ### Playbook 雛形

@@ -20,13 +20,13 @@ caw は **化学者向け機能（本機能）** と **就活向け機能（サ�
 
 **この 1〜7 が壊れていなければ、化学トラックの同じパスも壊れていない。** 就活で 1〜7 を踏むことが、化学側の同パスの間接検証になる。
 
-> なお**就活トラックの部署フォルダ名は化学トラックと統一**（`secretary` / `research` / `analysis` / `writing` / `presentation` ＝化学8部署のサブセット）。中身（CLAUDE.md / AGENTS.md）は就活向けで別物だが、**同じ部署パス（scaffold・dispatch）を通る**ため、上の scaffold 検証がより厳密になる。`engineering` / `computation` / `review` は化学専用。
+> なお**就活トラックの部署フォルダ名は化学トラックと統一**（`secretary` / `research` / `analysis` / `writing` / `presentation` ＝化学9部署のサブセット）。中身（CLAUDE.md / AGENTS.md）は就活向けで別物だが、**同じ部署パス（scaffold・dispatch）を通る**ため、上の scaffold 検証がより厳密になる。`engineering` / `computation` / `experiment` / `review` は化学専用。
 
 ## 1. 検証マップ（化学 ↔ 就活 ↔ 共有エンジンパス ↔ 就活で検証されること）
 
 | 化学（本機能） | 就活（テスト） | 共有エンジンパス | 就活で検証されること |
 |---|---|---|---|
-| 研究オンボ → 8 部署 scaffold | 就活オンボ → 就活部署 scaffold | オンボ＋scaffold | トラック分岐・scaffold・二層原則が機能する |
+| 研究オンボ → 9 部署 scaffold | 就活オンボ → 就活部署 scaffold | オンボ＋scaffold | トラック分岐・scaffold・二層原則が機能する |
 | 秘書（研究 TODO/notes） | 秘書（選考スケジュール） | 秘書ゲートウェイ・dispatch | 窓口・キーワード振り分け・notes 追記が機能する |
 | caw-research（論文検索→`work/topics/`）→ caw-register（PDF→`work/papers/` 登録） | caw-research（企業研究→`work/companies/`）/ caw-events（イベント収集） | 収集 → 構造化 →（登録 / 可視化） | 収集・構造化・出典方針が機能する。**caw-research は同一スキルが両トラックの「収集」を担う**＝就活利用が研究の探索パスを直接検証 |
 | caw-input（計算入力生成） | caw-es（ES 生成） | 生成 → 制約チェック | テンプレ準拠生成・制約（文字数/書式）厳守・推敲ループ＋好み学習（writing-preferences）蓄積→次回適用が機能する |

@@ -144,27 +144,28 @@ office/
 | `{{KNOWLEDGE_BASE}}` | Q3 | ナレッジベース（Notion, Obsidian, Logseq 等） |
 | `{{CLOUD_STORAGE}}` | Q4 | クラウドストレージ（Google Drive, Dropbox 等） |
 | `{{CREATED_DATE}}` | 自動 | 組織構築日（YYYY-MM-DD） |
-| `{{DEPARTMENT_TREE}}` | 全部署（固定） | 化学者モード全 8 部署のディレクトリツリー（インデント済） |
-| `{{DEPARTMENT_TABLE_ROWS}}` | 全部署（固定） | 化学者モード全 8 部署のテーブル行 |
+| `{{DEPARTMENT_TREE}}` | 全部署（固定） | 化学者モード全 9 部署のディレクトリツリー（インデント済） |
+| `{{DEPARTMENT_TABLE_ROWS}}` | 全部署（固定） | 化学者モード全 9 部署のテーブル行 |
 | `{{PERSONALIZATION_NOTES}}` | Q1〜Q4 から派生 | 研究分野と使用ツールに応じた運用ヒント |
 
 ---
 
 ## 部署 → ツリー / テーブル マッピング
 
-全 8 部署を `{{DEPARTMENT_TREE}}` と `{{DEPARTMENT_TABLE_ROWS}}` に反映するための対応表（化学者モードは全部署を常に作成）：
+全 9 部署を `{{DEPARTMENT_TREE}}` と `{{DEPARTMENT_TABLE_ROWS}}` に反映するための対応表（化学者モードは全部署を常に作成）：
 
 | 部署 ID | ツリー行 | テーブル行 |
 |---|---|---|
 | research | `├── research/` | `\| 文献部 \| research \| 文献検索、要約、ナレッジ DB 化 \|` |
 | engineering | `├── engineering/` | `\| 開発部 \| engineering \| Python ツール、計算入力ジェネレータ、CLI \|` |
 | computation | `├── computation/` | `\| 計算管理部 \| computation \| 量子化学・MD・DFT ジョブ管理 + Playbook \|` |
-| analysis | `├── analysis/` | `\| データ解析部 \| analysis \| 解析スクリプト、可視化、統計 \|` |
+| experiment | `├── experiment/` | `\| 実験部 \| experiment \| 実験の段取り・電子ノート・試薬/サンプル在庫・安全 \|` |
+| analysis | `├── analysis/` | `\| データ解析部 \| analysis \| 手法非依存の解析コンパニオン（fit・定量・可視化） \|` |
 | writing | `├── writing/` | `\| 論文執筆部 \| writing \| LaTeX / Word 原稿、図表、参考文献 \|` |
 | review | `├── review/` | `\| レビュー部 \| review \| コード品質、計算妥当性の確認 \|` |
 | presentation | `└── presentation/` | `\| プレゼン部 \| presentation \| スライド生成（python-pptx + matplotlib + RDKit） \|` |
 
-最後の部署のツリー行は `└──` を使う（順序：research → engineering → computation → analysis → writing → review → presentation）。
+最後の部署のツリー行は `└──` を使う（順序：research → engineering → computation → experiment → analysis → writing → review → presentation）。
 
 ---
 
