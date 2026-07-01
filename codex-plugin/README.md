@@ -32,11 +32,11 @@ codex
 
 ## 生成される構造の例
 
-研究分野：物理化学、計算ソフト：ORCA + GROMACS、KB：Obsidian、ストレージ：Google Drive の場合（全 8 部署を作成。下記は抜粋）：
+研究分野：物理化学、計算ソフト：ORCA + GROMACS、KB：Obsidian、ストレージ：Google Drive の場合（全 9 部署を作成。下記は抜粋）：
 
 ```
 your-research-project/
-├── office/                       ← 運営側（全 8 部署。各 AGENTS.md＋運営情報のみ）
+├── office/                       ← 運営側（全 9 部署。各 AGENTS.md＋運営情報のみ）
 │   ├── AGENTS.md
 │   ├── secretary/{AGENTS.md, inbox/, todos/, notes/}
 │   └── computation/{AGENTS.md, jobs/, parameters/, playbooks/{orca.md, gromacs.md}}
@@ -51,7 +51,7 @@ your-research-project/
 ## 含まれる内容
 
 - **`caw` スキル**：オンボーディング → 自動スキャフォールド → 運営モードの一連（起動は `caw` と入力、または自然言語で指示）
-- **8 部署 AGENTS.md テンプレート**：secretary / research / engineering / computation / analysis / writing / review / presentation
+- **9 部署 AGENTS.md テンプレート**：secretary / research / engineering / computation / experiment / analysis / writing / review / presentation
 - **Playbook 雛形**：Gaussian / GROMACS / CP2K / ORCA / VASP / Quantum ESPRESSO + 汎用
 - **作業ディレクトリ自動生成**：選択した計算ソフトと部署に応じて配置。初心者向けに投入用 `inbox/` と過去データ用 `_past-data/` も生成
 - **`caw-setup` スキル**：外部ツール（Python・poppler・python-pptx 等）の不足を検出し、計画提示 → 一度の承認 → 順番にインストール（macOS / Windows）。CLI/Node 自体は `setup/caw-setup.sh`・`setup/caw-setup.ps1` を案内

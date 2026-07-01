@@ -45,7 +45,7 @@ QT (トラック): 「caw を主に何に使いますか？」
 - **就活** を選んだら → **`references/job-hunting-departments.md` を読み、その §A〜§E に従って**就活モードのオンボーディング・scaffold・運営モードを実行する（以降の研究向け Call 1〜6 は使わない）。**就活トラックでは常にはじめてモード（平易な日本語・用語説明）で進める**（office 設定に `> 運用モード: はじめて` を必ず書く）。
 - **研究プロジェクト** を選んだら → そのまま下記の研究向けフローへ。
 
-**（以下は研究トラックのオンボーディング）研究分野を「広い分類 → 中分類」と funnel で絞り、論文があれば環境理解のために浅く読み、最後に計算ツールと標準化項目を聞く。全設問は選択式（各設問に Other＝自由入力を必ず添える）。部署は常に全 8 部署で固定。`AskUserQuestion` を順に呼ぶ（分野の中分類は大分類の回答に依存するため逐次）。** 設計の根拠は `docs/analysis-companion-design.md`。
+**（以下は研究トラックのオンボーディング）研究分野を「広い分類 → 中分類」と funnel で絞り、論文があれば環境理解のために浅く読み、最後に計算ツールと標準化項目を聞く。全設問は選択式（各設問に Other＝自由入力を必ず添える）。部署は常に全 9 部署で固定。`AskUserQuestion` を順に呼ぶ（分野の中分類は大分類の回答に依存するため逐次）。** 設計の根拠は `docs/analysis-companion-design.md`。
 
 > **実験手法・装置は onboarding で聞かない**：標準化が難しくユーザーごとの特色が強いため。実験データを実際に解析するとき、解析コンパニオン（`caw-analyze`）が **per-data で具体的に**尋ねる。**計算＝事前に聞いて環境化（Playbook）／実験＝使用時に per-data** の非対称を貫く。
 
@@ -138,14 +138,14 @@ Q (論文ステータス): 執筆中 / 投稿済み・査読対応中 / これ�
 
 Call 1〜6 の回答（と Call 3 の論文から浅く抽出した研究理解）は、後段の scaffold で各部署 CLAUDE.md と **`work/profile/`（研究分野・活動・使用計算ツール・対象系）** に保存し、各部署・`caw-analyze` が文脈として参照できるようにする。実験系の具体は据え置き（解析時に追記）。
 
-> **部署の選択質問は廃止**：部署は常に全 8 部署を作成するため、「どの部署を作るか」は尋ねない。
+> **部署の選択質問は廃止**：部署は常に全 9 部署を作成するため、「どの部署を作るか」は尋ねない。
 
 ### Step 3: 自動スキャフォールド
 
 ヒアリング結果に基づいて、以下を一括生成する。
 
-**scaffold 範囲（全ユーザー共通：化学者モードは常に全 8 部署）**：
-- `office/` + ルート CLAUDE.md + **全 8 部署**（secretary / research / engineering / computation / analysis / writing / review / presentation）+ 作業ディレクトリ
+**scaffold 範囲（全ユーザー共通：化学者モードは常に全 9 部署）**：
+- `office/` + ルート CLAUDE.md + **全 9 部署**（secretary / research / engineering / computation / experiment / analysis / writing / review / presentation）+ 作業ディレクトリ
 - Call 1〜4（分野 大→中・論文から抽出した研究理解・計算ツール）を各部署 CLAUDE.md と `work/profile/` に反映
 - Call 5〜6（計算実行環境・文献管理・クラウド・体制・申請書・論文ステータス）を `office/CLAUDE.md` のパーソナライズメモと各部署 CLAUDE.md に反映 + 申請書予定があれば writing 部署に申請書トラッカー雛形を追加
 
@@ -158,8 +158,8 @@ Call 1〜6 の回答（と Call 3 の論文から浅く抽出した研究理解�
    - `{{KNOWLEDGE_BASE}}` ← Call 5（文献管理・ナレッジベース）
    - `{{CLOUD_STORAGE}}` ← Call 5（クラウドストレージ）
    - `{{CREATED_DATE}}` ← 今日の日付
-   - `{{DEPARTMENT_TABLE_ROWS}}` ← 全 8 部署のテーブル行
-   - `{{DEPARTMENT_TREE}}` ← 全 8 部署を含むツリー図
+   - `{{DEPARTMENT_TABLE_ROWS}}` ← 全 9 部署のテーブル行
+   - `{{DEPARTMENT_TREE}}` ← 全 9 部署を含むツリー図
 
 #### 3-2. 秘書部（必須）
 
@@ -169,9 +169,9 @@ Call 1〜6 の回答（と Call 3 の論文から浅く抽出した研究理解�
 2. `office/secretary/CLAUDE.md` を配置（化学研究向けにカスタマイズされた秘書ロール）
 3. `office/secretary/todos/YYYY-MM-DD.md` を今日の日付で作成（テンプレ付き）
 
-#### 3-3. 化学者向け部署（全 8 部署を一括作成）
+#### 3-3. 化学者向け部署（全 9 部署を一括作成）
 
-化学者モードの全部署（research / engineering / computation / analysis / writing / review / presentation。secretary は 3-2 で作成済み）について、`references/chemistry-departments.md` の各セクションから：
+化学者モードの全部署（research / engineering / computation / experiment / analysis / writing / review / presentation。secretary は 3-2 で作成済み）について、`references/chemistry-departments.md` の各セクションから：
 
 1. 部署ディレクトリとサブフォルダを作成
 2. `<dept>/CLAUDE.md` を配置（部署固有の役割・運用ルール・参照ファイル）
@@ -258,8 +258,8 @@ Call 5（文献管理・ナレッジベース / クラウドストレージ）�
 │   ├── CLAUDE.md
 │   ├── secretary/               ← 窓口：TODO・意思決定・学び（CLAUDE.md / inbox/ / notes/）
 │   │   └── todos/{{TODAY}}.md
-│   └── research/ engineering/ computation/ analysis/ writing/ review/ presentation/
-│                                ← 全 8 部署を常に作成（各 CLAUDE.md＋運営情報のみ）
+│   └── research/ engineering/ computation/ experiment/ analysis/ writing/ review/ presentation/
+│                                ← 全 9 部署を常に作成（各 CLAUDE.md＋運営情報のみ）
 │
 ├── inbox/                       ← 統合 inbox：何でもここに入れて「処理して」
 │   └── README.md
@@ -339,6 +339,7 @@ scaffold 完了後、不足ツールがありそうなら（例: スライドや
 | 論文 PDF の登録・要約・書誌・引用整理 | research（caw-register） |
 | Python スクリプト作成、CLI 化、解析ツール | engineering |
 | Gaussian / GROMACS / CP2K / ORCA / VASP / ChimeraX / 計算ジョブ・log 解析 | computation |
+| 実験の記録・段取り・電子ノート・試薬/サンプル在庫・安全（SDS/廃棄） | experiment |
 | データ解析・定量・fit・可視化（測定/計算データ、手法問わず） | analysis（caw-analyze） |
 | 論文・申請書・要旨の執筆（書く） | writing（caw-write） |
 | コードレビュー、計算妥当性、validation | review |

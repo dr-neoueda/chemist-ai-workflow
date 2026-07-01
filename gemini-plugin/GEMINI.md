@@ -25,7 +25,7 @@
 - **研究**を選んだら → §研究オンボーディングへ。
 
 ### 研究オンボーディング
-モードによる質問の出し分けは無い。**全ユーザーに次の全 8 問を尋ね**、回答をすべて scaffold に反映する（作成部署は常に全 8 部署）。
+モードによる質問の出し分けは無い。**全ユーザーに funnel（研究分野 大→中・論文添付・計算ツール・標準化項目）でヒアリングし**、回答をすべて scaffold に反映する（作成部署は常に全 9 部署）。
 1. **研究プロファイル（funnel・全選択式＋Other・逐次）**：(a) **研究分野・大分類**（化学/物理・物性/材料・デバイス/生命科学・生化学/計算・データ科学/環境・エネルギー）→ (b) **中分類**（大分類に適応。化学なら 有機/無機・錯体/物理化学・分光/分析/高分子/結晶・構造/ケミカルバイオロジー 等）→ (c) **論文添付（任意）**：本人/同領域の論文を `inbox/` 投入 or 貼付。**環境理解のためだけに浅く読む**（研究分野補強・活動・使用計算ツール・対象系。**voice/glossary 等の重い抽出はしない**）→ (d) **計算ツール**（Gaussian/ORCA/Psi4・GROMACS/AMBER/LAMMPS/OpenMM・CP2K/VASP/QE・xtb/CREST・**MLIP/MLFF〔MACE 等：利用＋訓練/fine-tune〕**・ChimeraX・使わない。**名指しされたツールのみ** `work/` にディレクトリ・Playbook）→ **標準化項目**（計算実行環境 HPC SLURM/PBS・ローカル・クラウド／文献管理 Notion/Obsidian/Zotero／クラウド Drive/Dropbox/OneDrive／研究体制／申請書予定／論文ステータス）。**実験手法・装置は onboarding で聞かず、解析時に caw-analyze が per-data で尋ねる**（計算＝事前に環境化／実験＝使用時）。
 2. **scaffold**（下記）→ `office/GEMINI.md` 生成（冒頭に `> トラック: 研究`）→ 「何をしますか？」
 
@@ -38,7 +38,7 @@
 - **ルート `office/`**（可視フォルダ。先頭ドットの不可視フォルダは作らない）を作り、`office/GEMINI.md` を生成。
 - **秘書部 `office/secretary/{inbox,todos,notes}`**（必須）。
 - **部署は常に全部作成**（ユーザーに「どの部署か」を尋ねない）。
-  - 研究＝全 8 部署：`secretary` / `research` / `engineering` / `computation` / `analysis` / `writing` / `review` / `presentation`。
+  - 研究＝全 9 部署：`secretary` / `research` / `engineering` / `computation` / `experiment` / `analysis` / `writing` / `review` / `presentation`。
   - 就活＝全 4 部署＋秘書：`secretary` / `research` / `analysis` / `writing` / `presentation`。
 - **二層原則**：運営情報は `office/<部署>/`、**成果物は `work/` ディレクトリ配下にまとめて置く**（ルート直下に散らかさない。`office/<部署>/papers/` のようなパスは禁止）。プロジェクト直下に `work/` を 1 つ作り、その配下に各成果物ディレクトリを置く。
 - **統合 inbox**：プロジェクト直下に単一の `inbox/` を作り、README に「何でもここに入れて『処理して』と言えば caw が中身を見て振り分けます」と明記。
@@ -53,7 +53,7 @@
 
 `office/` がある状態では、秘書が窓口になりキーワードで担当部署／スキルに振り分ける。該当部署が未作成なら作成を提案。
 
-**研究**：締切/TODO→秘書、文献検索・論文を探す→`research`（caw-research）、論文 PDF 登録→`research`（caw-register）、計算入力→`computation`（caw-input）、データ解析・定量・fit・可視化（手法問わず）→`analysis`（caw-analyze）、論文・申請書・要旨の執筆→`writing`（caw-write）、スライド→`presentation`（caw-slides）、計算ノウハウ・解析レシピの蓄積→`computation`/`analysis`（caw-playbook）、過去資料の取り込み→caw-intake、構造点検→caw-doctor。
+**研究**：締切/TODO→秘書、文献検索・論文を探す→`research`（caw-research）、論文 PDF 登録→`research`（caw-register）、計算入力→`computation`（caw-input）、実験の記録・段取り・電子ノート・試薬/サンプル在庫・安全→`experiment`、データ解析・定量・fit・可視化（手法問わず）→`analysis`（caw-analyze）、論文・申請書・要旨の執筆→`writing`（caw-write）、スライド→`presentation`（caw-slides）、計算ノウハウ・解析レシピの蓄積→`computation`/`analysis`（caw-playbook）、過去資料の取り込み→caw-intake、構造点検→caw-doctor。
 
 **就活**：締切・選考スケジュール→秘書、企業・業界研究→`research`（caw-research）、自己分析→`analysis`、ES・書類→`writing`（caw-es）、面接→`presentation`（caw-interview）、ある企業の就活イベント深掘り・締切＋今年度予測（複数社横断は明示時）→秘書＋`research`（caw-events）、過去 ES の取り込み→caw-intake、構造点検→caw-doctor。
 

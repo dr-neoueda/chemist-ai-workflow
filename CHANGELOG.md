@@ -2,6 +2,17 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.61.0 / Codex 1.60.0 / Copilot 1.33.0 / Gemini 1.38.0] - 2026-07-01
+
+### Added — 標準部署に「実験部（experiment）」を追加（8 → 9 部署）
+
+主対象が実験系化学者であることを踏まえ、湿式ラボの実験ワークフローを担う **experiment（実験部）** を標準部署に追加。8 → **9 部署**（`secretary / research / engineering / computation / experiment / analysis / writing / review / presentation`）。
+
+- **機能的な役割**（化学サブ領域ではない）：実験の**段取り・電子ノート・試薬/サンプル在庫・安全（SDS/リスク/廃棄）・測定スケジュール**を担当。分野を問わず横断的に支える。
+- **境界**：記録・整理・段取りを助けるが、**科学判断（合成ルート・条件・手法選定）はユーザー**。**具体的な測定データの定量・解析は analysis（caw-analyze）が per-data で**扱う（実験部＝湿式ラボの「家」／analysis＝結果の定量、と分担）。→ 「計算＝事前に環境化／実験＝使用時に per-data」の非対称と整合。
+- `chemistry-departments.md`（plugin/codex/copilot）に experiment 部署テンプレ（`notebook/` `inventory/` `safety/`）を追加。SKILL.md の scaffold 範囲・3-3・完了ツリー・dispatch 表（「実験の記録・段取り・在庫・安全 → experiment」）、`claude-md/agents-md-template` の DEPARTMENT 対応表、`engine-validation-map`（化学専用バケットに experiment 追加）、GEMINI.md、README、concept.md をすべて 9 部署へ更新。
+- 全 4 CLI 反映・consistency 全 OK。版 plugin 1.60→**1.61**・codex 1.59→**1.60**・copilot 1.32→**1.33**・gemini 1.37→**1.38**。
+
 ## [1.60.0 / Codex 1.59.0 / Copilot 1.32.0 / Gemini 1.37.0] - 2026-06-30
 
 ### Changed — 研究モードを「抽象フレームワーク」に再設計（オンボーディング funnel ＋ 解析コンパニオン）

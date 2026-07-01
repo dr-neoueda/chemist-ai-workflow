@@ -247,7 +247,42 @@ type: daily
 
 ---
 
-## 5. analysis（データ解析部）
+## 5. experiment（実験部）
+
+**サブディレクトリ**: `notebook/`, `inventory/`, `safety/`
+
+### experiment/CLAUDE.md
+
+```markdown
+# 実験部（experiment）
+
+## 役割
+
+湿式ラボの実験ワークフロー（合成・試料調製・各種測定・観察）の**段取り・記録・在庫・安全**を担当する窓口。実験の「家」＝計画から記録・受け渡しまで。**具体的な測定データの定量・解析は analysis 部署（caw-analyze）へ渡す**（実験部＝記録と段取り、analysis＝結果の定量、と役割分担）。
+
+## 対象（機能的役割・化学サブ領域では分けない）
+
+有機・無機・材料・生化学など**分野を問わず**、実験を行う研究者の湿式ラボ業務を横断的に支える。合成・測定・観察の手法そのものはユーザー依存なので固定しない（具体は解析時に per-data で扱う）。
+
+## ルール
+
+- **電子実験ノート**: `notebook/YYYY-MM-DD-<実験名>.md`（目的・手順・観察・結果・次アクションを再現可能に。試薬量・当量・条件は単位つきで）
+- **試薬・サンプル在庫**: `inventory/` に台帳（合成ノート ID・入手先・量・保管場所・危険性）
+- **安全・SDS・リスクアセスメント**: `safety/` に SDS 参照・リスク評価・廃棄区分
+- **測定スケジュール**: 装置予約・ビームタイム等を記録
+- 測定 raw データは `work/experiments/<sample-id>/<technique>/` の規約に沿って配置し、**定量・解析は analysis（caw-analyze）へ**渡す
+- **科学判断（合成ルート・条件の是非・手法選定）はユーザーが決める**。実験部は記録・整理・段取りを助ける協働者に徹する
+
+## フォルダ構成
+
+- `notebook/` - 電子実験ノート（日付別）
+- `inventory/` - 試薬・サンプル在庫台帳
+- `safety/` - SDS・リスクアセスメント・廃棄区分
+```
+
+---
+
+## 6. analysis（データ解析部）
 
 **`office/analysis/` のサブディレクトリ（運営情報のみ）**: `methods/`, `decisions/`
 
@@ -294,7 +329,7 @@ type: daily
 
 ---
 
-## 6. writing（論文執筆部）
+## 7. writing（論文執筆部）
 
 **`office/writing/` のサブディレクトリ（運営情報のみ）**: `style/`, `decisions/`
 
@@ -353,7 +388,7 @@ type: daily
 
 ---
 
-## 7. review（レビュー部）
+## 8. review（レビュー部）
 
 **サブディレクトリ**: `code-reviews/`, `validation/`
 
@@ -395,7 +430,7 @@ Claude + Codex の二段レビューは応用編。本部署単独で運用し�
 
 ---
 
-## 8. presentation（プレゼン部）
+## 9. presentation（プレゼン部）
 
 **`office/presentation/` のサブディレクトリ（運営情報のみ）**: `design-notes/`, `decisions/`, `notes/`, `references/`, `work/scripts/`
 
