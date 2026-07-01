@@ -38,7 +38,10 @@ Q1: どの計算ソフトの入力ファイルを生成しますか？
   - VASP
   - Quantum ESPRESSO
   - ChimeraX（構造/密度マップのフィッティング・可視化）
+  - その他（Other 自由入力：Psi4 / NWChem / OpenMolcas / xtb・CREST / LAMMPS / AMBER / OpenMM / AutoDock Vina / PHREEQC 等）
 ```
+
+> **エンジン方言アダプタ方式（新エンジンはスキルを増やさず拡張）**：入力生成を **「幾何（座標）＋メソッド指定（汎関数/基底/計算種）＋エンジン方言アダプタ（各ソフトの入力文法）」** の 3 層に分けて考える。上記リストに無いエンジンを頼まれたら、**per-engine のテンプレート 1 枚**（最小入力の骨格＋そのエンジンの方言メモ）を `office/computation/playbooks/<engine>.md` に足すだけで対応する（新スキルは作らない）。需要の高い次のものは **caw-analyze の「その場実装＋playbook」好例**として標準レシピ化してよい：**CREST/xtb**（配座探索）・**DP4+ 相当**（Boltzmann 平均＋Student-t の NMR 帰属、純 numpy で容易）・**PHREEQC**（`phreeqpython`）・**AutoDock Vina**（ドッキング）。**計算入力の文法は必ずベンダー一次資料で裁定**（memory `feedback_comp_input_template_primary_source`：`! CASSCF` 欠落で HF が黙って走る等）。HPC/長時間ジョブは既存 tmux/SLURM 規約（`office/computation` playbook）に従う。
 
 選択されたソフトに対応する Playbook を最初に読む：
 - `office/computation/playbooks/<tool>.md`（存在しない場合は `references/playbook-starters.md` から該当セクションを参照）

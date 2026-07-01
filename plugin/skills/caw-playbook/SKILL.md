@@ -24,7 +24,7 @@ trigger: /caw-playbook
 | 対象 | 置き場 | 追記する内容 |
 |---|---|---|
 | **計算ソフト**（Gaussian/CP2K/MACE 等） | `office/computation/playbooks/<tool>.md` の `## Lessons Learned` | 収束の罠・推奨パラメータ・失敗の教訓・ベンチ値 |
-| **解析**（`caw-analyze` 由来・手法問わず） | `work/analyses/_playbook/<topic>.md` | 手順・使った汎用ツール（pandas/scipy/RDKit 等）・前処理・検証観点・単位・罠 |
+| **解析**（`caw-analyze` 由来・手法問わず） | `work/analyses/_playbook/<topic>.md` | 手順・使った汎用ツール（pandas/scipy/RDKit 等）・**取込アダプタ（ベンダーバイナリ→中立形式の変換手順）**・**外部専用ソフトの orchestrate 手順**・前処理・検証観点・単位・罠 |
 
 どちらも **`### YYYY-MM-DD - 一行サマリ` で時系列に末尾追記**（既存の上書き禁止）。解析レシピは**ユーザーのローカルに空から育つ**（caw が手法別パイプラインを出荷する代わりに、ユーザーごとのレシピが蓄積する＝`docs/analysis-companion-design.md` §B。スターター素材は同梱しない）。
 

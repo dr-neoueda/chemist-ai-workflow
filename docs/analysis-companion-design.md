@@ -58,6 +58,22 @@ caw は解析パイプラインを同梱しない。土台・規律・蓄積の�
 
 > 「制限なし」は**ユーザーが頼めること**の話。**専用機能を増やす**意味ではない（抽象設計ゆえ出荷せずとも何でも手伝える）。
 
+## 役割境界と横断ギャップ対処（カバレッジ監査 2026-07-01 反映）
+
+化学全 16 領域の監査で **全領域が partial**（下流解析◎／一次データ還元は専用ソフト依存で外）と判明。
+「全分野対応」は誇張とし、**役割境界を正直に明記**した上で、横断ギャップを **手法別スキルを増やさず** 次で埋める。
+
+- **役割境界**: caw は ①9 部署の組織運営 ②raw→数値化後の下流定量解析＋規律 ③執筆・文献・playbook のハブ。
+  ベンダー GUI/MATLAB 専用ソフトの対話的 raw 還元（SCXRD 精密化・XPS 定量・EPR・cryo-EM 等）は外部委譲。
+  詳細＝[`chemistry-coverage-audit.md`](./chemistry-coverage-audit.md)。
+- **3 つの汎用資産**（[`caw-analyze/references/analysis-conventions.md`](../plugin/skills/caw-analyze/references/analysis-conventions.md)）:
+  1. **取込アダプタ規約** — ベンダーバイナリ → 中立形式の変換レシピ（OSS リーダ or native）を playbook 蓄積。
+  2. **外部専用ソフト orchestration 契約** — scriptable ソフト（GSAS-II scriptable・xraylarch・phreeqpython 等）を
+     caw-analyze が駆動し規律をラップ。GUI/MATLAB 専用は外部委譲と明示。
+  3. **高リスク解析の規律チェックリスト** — モデル依存工程の誤帰属防止（前提開示・代替モデル・過剰フィット・一意性）。
+- **caw-input の分離** — 「幾何＋メソッド＋エンジン方言アダプタ」に分け、新エンジンは playbook にテンプレ 1 枚で拡張
+  （CREST/xtb・DP4+・PHREEQC・Vina を標準レシピ化）。エンジンを無制限に足さない。
+
 ## 配線（最小）
 
 - 既存 `analysis` 部署に属する **1 スキル**。dispatch は「データ解析・可視化 → analysis（caw-analyze）」の 1 行のみ（手法別の行を作らない）。
