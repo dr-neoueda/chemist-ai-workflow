@@ -2,6 +2,18 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.63.0 / Codex 1.62.0 / Copilot 1.35.0 / Gemini 1.40.0] - 2026-07-03
+
+### Added — オンボーディング後に計算ツール Playbook を web 種まき（バックグラウンド・1 ツール 1 エージェント並列）
+
+Call 4 で名指しされた計算ツールについて、**scaffold 完了後にバックグラウンドで初期 Playbook を種まき**する仕組みを追加。空 Playbook のコールドスタート（使い始めは中身が無く価値が出ない）を、**そのユーザーの named ツールだけ・その場の web 検索**で埋める。配布物に汎用コンテンツを同梱しない（per-technique 量産の失敗を繰り返さない）ための live 生成方式。
+
+- **走らせ方**：オンボーディングの funnel は止めず、完了メッセージ表示後に**自動・バックグラウンド**で起動。**1 ツール＝1 エージェント**、複数ツールは**並列**（並列サブエージェントが使える CLI＝並列、無い CLI＝順次にフォールバック／web 検索不可の CLI＝skip）。全完了後に 1 回だけ通知。
+- **seed 先を分離**：各ツールの `office/computation/playbooks/<tool>.md` の新セクション **`## 外部リファレンス（web 由来・要検証）`** に隔離。**`## Lessons Learned`（ユーザー本人が run から得た検証済み知見・`_past-data` seeding 先）には触れない**。両者が食い違えば **Lessons が常に優先**（provenance を明確化）。
+- **規律**：一次資料・公式優先（公式は単一ソース可・非公式は 2 つ以上で裏取り）、出典 URL 必須、**計算入力の構文が絡む種は Codex 二段クロスチェック**（`feedback_comp_input_template_primary_source`）、信頼できる出典が無ければ「未取得（要一次資料）」と空欄化し憶測で埋めない。中身は「意思決定に使える既定」（汎関数/基底/力場/擬ポテンシャル/cutoff/既知の罠/version 依存の文法）に絞りチュートリアル丸写しをしない。
+- **住処**：オンボーディング専用ステップ（Step 3-7）。共通仕様は新 `skills/caw/references/playbook-web-seeding.md`（plugin↔codex↔copilot バイト一致・consistency で強制）に集約し、各 CLI の 3-7 は起動方法のみ規定（plugin＝Task＋`run_in_background` 並列、codex/copilot＝並列可なら並列・無ければ順次、gemini＝GEMINI.md にインライン）。後日ツールを足したときは同手順を単発で再実行できる door を残す（自動配線はしない）。
+- 全 4 CLI 反映・consistency 全 OK（2a plugin↔codex／2b codex↔copilot に新リファレンスを追加）。版 plugin 1.62→**1.63**・codex 1.61→**1.62**・copilot 1.34→**1.35**・gemini 1.39→**1.40**。
+
 ## [1.62.0 / Codex 1.61.0 / Copilot 1.34.0 / Gemini 1.39.0] - 2026-07-01
 
 ### Added — カバレッジ監査の反映（役割境界の明記・横断ギャップに効く汎用資産 3 つ・caw-input のエンジン方言分離）
