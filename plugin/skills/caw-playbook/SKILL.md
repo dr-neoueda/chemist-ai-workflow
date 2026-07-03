@@ -113,7 +113,7 @@ trigger: /caw-playbook
 | **失敗教訓** | 「opt=(ts,calcfc) で 76 step 後 Lambda0=1.8e-6 → Hessian 陳腐化、recalcfc=20 推奨」 |
 | **新しい罠** | 「PBC supercell の connectivity-based 分子抽出で Kabsch RMSD 爆発 → unwrap 必須」 |
 | **ベンチマーク値** | 「v8-MP NPT 450K で V drift -0.64% / 4 ps（Phase A Go 条件 ±2% を 3× margin でクリア）」 |
-| **Codex 二段検証で防げた誤り** | 「python-reviewer は構文/DRY、Codex は物理意味論（Stationary point filter 不在）」 |
+| **レビューで防げた誤り**（二段レビュー使用時） | 「セルフレビューは構文/DRY、二段〔Codex〕は物理意味論（Stationary point filter 不在）」 |
 
 ### Step 4: 追記候補の提示
 
@@ -226,5 +226,5 @@ log 解析完了：
 - **化学物理の用語は正確に**：汎関数名・基底関数・force field・cell parameter の表記揺れを起こさない
 - **数値には単位を明記**：エネルギー (Hartree / eV / kcal/mol)、長さ (Å / bohr)、時間 (fs / ps / ns)、温度 (K)
 - **再現性が確認できない知見は採用しない**：1 回限りの異常は「観測例」として記録、複数事例で確証された場合のみ「教訓」に昇格
-- **Codex 二段レビューで防げた誤り**は積極的に記録（python-reviewer は構文、Codex は物理意味論の役割分担を残す）
+- **レビューで防げた誤り**は積極的に記録（**二段レビュー〔Claude＋Codex〕を回している場合**はその指摘も。二段は応用編・任意——単体のセルフレビューでも十分）
 - **ベンチマーク値はそのまま転記**：drift 率・wall time・parity slope 等は加工せず生数値で
