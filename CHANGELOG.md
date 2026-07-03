@@ -2,6 +2,19 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.65.0 / Codex 1.64.0 / Copilot 1.36.0 / Gemini 1.42.0] - 2026-07-03
+
+### Changed — 二段レビュー（Claude＋Codex）を全スキルで「応用編・任意」に統一（追加プラグイン依存を仮定しない）
+
+中核スキル（`caw` SKILL.md・`chemistry-departments.md`）は既に二段レビューを「応用編・慣れてから手動追加」と位置づけていたが、**枝葉のスキルが既定手順のように書いていて不整合**だった（Claude Code だけの購入者に `codex:review`＝Codex CLI ＋配線という追加依存を暗黙に要求）。この不整合を解消し、**基本線＝各 CLI 単体のセルフレビュー／二段レビューは応用編（任意・Codex CLI も併用している場合のみ）／追加プラグインは前提にしない**で統一。
+
+- `caw-analyze`（plugin/codex）Step 5：再利用コードのレビュー案内を「その CLI 単体のセルフレビューで十分・二段は応用編」に。
+- `caw-write`（plugin/codex）：英文/引用クロスチェックを「各 CLI の自己レビューが基本線・`codex:review` は Codex 併用時の任意」に（従来は Claude 版に codex:review を要求）。
+- `caw-playbook`（plugin/codex）：playbook 記録カテゴリの表行・蓄積ルールを「二段レビュー使用時はその指摘も／二段は応用編・単体セルフレビューでも十分」に条件化。
+- `GEMINI.md`（caw-analyze 節）：同様に「Gemini 単体の自己レビューが基本線・二段は応用編」に。
+- copilot-plugin は該当スキル（caw-analyze/write/playbook）を同梱しないため変更なし＝版据置（1.36.0）。
+- 版 plugin 1.64→**1.65**・codex 1.63→**1.64**・gemini 1.41→**1.42**。consistency 全 OK。
+
 ## [1.64.0 / Codex 1.63.0 / Copilot 1.36.0 / Gemini 1.41.0] - 2026-07-03
 
 ### Changed — web 種まきから「計算入力の構文が絡む種の Codex 二段クロスチェック」を撤去
