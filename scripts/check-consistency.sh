@@ -60,7 +60,7 @@ done
 # --- 2a. plugin <-> codex single shared files (byte-identical) ---
 # HTML design contract: all HTML-producing skills follow it, so plugin and codex
 # must carry the exact same file (Gemini inlines it in GEMINI.md separately).
-for f in skills/caw/references/html-style.md; do
+for f in skills/caw/references/html-style.md skills/caw/references/playbook-web-seeding.md; do
   pf="plugin/$f"; cf="codex-plugin/$f"
   if [ ! -f "$pf" ] || [ ! -f "$cf" ]; then
     printf '%s    skip mirror %s (missing)%s\n' "$dim" "$f" "$off"; continue
@@ -77,7 +77,7 @@ done
 # (SKILL.md and mcp-setup-templates.md intentionally differ per CLI; chemistry-
 #  departments may carry CLI-specific wording — so only the pure-shared template
 #  files are enforced byte-identical here.)
-for f in skills/caw/references/agents-md-template.md skills/caw/references/playbook-starters.md skills/caw/references/job-hunting-departments.md skills/caw/references/engine-validation-map.md; do
+for f in skills/caw/references/agents-md-template.md skills/caw/references/playbook-starters.md skills/caw/references/job-hunting-departments.md skills/caw/references/engine-validation-map.md skills/caw/references/playbook-web-seeding.md; do
   cf="codex-plugin/$f"; pf="copilot-plugin/$f"
   if [ ! -f "$cf" ] || [ ! -f "$pf" ]; then
     printf '%s    skip copilot mirror %s (missing)%s\n' "$dim" "$f" "$off"; continue
