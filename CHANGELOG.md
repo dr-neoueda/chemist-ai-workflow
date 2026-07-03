@@ -2,6 +2,16 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.64.0 / Codex 1.63.0 / Copilot 1.36.0 / Gemini 1.41.0] - 2026-07-03
+
+### Changed — web 種まきから「計算入力の構文が絡む種の Codex 二段クロスチェック」を撤去
+
+1.63.0 で入れた web 種まきの規律のうち、**計算入力の構文が絡む種の Codex 二段クロスチェック**を廃止（ユーザー判断）。構文リスクへの安全弁は残すが手段を変更し、**「特にベンダー一次資料（公式マニュアル）で裏取りしてから記す」**に置き換え（`feedback_comp_input_template_primary_source` の「構文は一次資料で裁定」は維持）。
+
+- `skills/caw/references/playbook-web-seeding.md`（plugin↔codex↔copilot バイト一致）の規律 1 項目を Codex 二段 → 一次資料裏取りに変更。
+- plugin / codex / copilot の Step 3-7 から「構文が絡む種は書き込み前にクロスチェック」の起動側 1 行を削除（3-7 は起動方法のみに整理）。gemini は元々当該記述なし。
+- 版 plugin 1.63→**1.64**・codex 1.62→**1.63**・copilot 1.35→**1.36**・gemini 1.40→**1.41**。consistency 全 OK。
+
 ## [1.63.0 / Codex 1.62.0 / Copilot 1.35.0 / Gemini 1.40.0] - 2026-07-03
 
 ### Added — オンボーディング後に計算ツール Playbook を web 種まき（バックグラウンド・1 ツール 1 エージェント並列）

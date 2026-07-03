@@ -40,7 +40,7 @@
 
 - **一次資料・公式を優先**：ベンダーマニュアル／公式 docs／被引用の多い手法論文。**公式は単一ソース可、非公式は 2 つ以上で裏取り**（[[feedback_official_single_nonofficial_multi_source]]）。
 - **各記述に出典 URL を必ず添える**。二次情報は出典併記し、機械的に正典化しない。
-- **計算入力の構文が絡む種は Codex で二段クロスチェック**してから記す（[[feedback_comp_input_template_primary_source]]：`! CASSCF` 欠落で HF が黙って走る等、generic ソースも LLM も普通に間違える）。
+- **計算入力の構文が絡む種は、特にベンダー一次資料（公式マニュアル）で裏取り**してから記す（[[feedback_comp_input_template_primary_source]]：`! CASSCF` 欠落で HF が黙って走る等、generic ソースも LLM も普通に間違える）。
 - **数値をでっち上げない**：信頼できる出典が見つからない項目は「未取得（要一次資料）」と書いて空欄化する。憶測で埋めない。
 
 ## 非目標
