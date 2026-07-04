@@ -115,6 +115,7 @@ Master default 互換。上書き可）：
   `<use data-icon="lib/name">` 方式は **caw では使わない**（11,600 アイコンライブラリを同梱しないため
   vendor 変換器で解決できない）。線画アイコンは細い stroke の path で描く。
 - 表紙の同心円・アクセント図形などの装飾は native shape で。
+- **数式（LaTeX）は例外的にラスタ**：`scripts/render_latex.py` で**透過 PNG** にレンダして SVG に data-URI で埋め込む（native shape では組めないため）。既定は matplotlib mathtext のオフライン（速度論 `k=A e^{-E_a/RT}`・熱力学 `ΔG=ΔH−TΔS`・量子化学 `⟨ψ|H|ψ⟩` 等を広くカバー）、`\ce{}` 等フル LaTeX のみ `--online`。色は本文/ink に合わせる。
 
 ---
 

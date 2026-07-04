@@ -53,6 +53,11 @@ trigger: /caw-slides
   ```
   切り抜き図は SVG に **data-URI で埋め込む**（`<image href="data:image/png;base64,...">`）。source caption（誌名・Fig 番号）を必ず添える。
 - **自作の図表・チャート・スキームは native SVG shape** で描く（`<rect>`/`<line>`/`<path>`/`<text>`）→ 変換後も編集可能。棒グラフ＝rect、フロー＝rect＋marker 矢印、表＝rect（navy ヘッダ）＋text＋divider line。
+- **数式（LaTeX）**：`scripts/render_latex.py` で**透過 PNG にレンダ**して SVG に data-URI で埋め込む（図の切り抜きと同じ流儀。数式はラスタ埋込になる）。既定は **matplotlib mathtext のオフライン**（ネット不要・第三者送信なし・速度論/熱力学/量子化学の数式を広くカバー）。`\ce{}`（mhchem）等フル LaTeX が要る式のみ `--online`（codecogs へ・要ネット）:
+  ```bash
+  python3 ${SKILL}/scripts/render_latex.py "k = A e^{-E_a/RT}" <out.png> --dpi 300 --color "#16283D"
+  python3 ${SKILL}/scripts/render_latex.py "\ce{2H2 + O2 -> 2H2O}" <out.png> --online   # フル LaTeX
+  ```
 
 ### Step C: ゲート（必ず PASS させる）
 ```bash
@@ -111,6 +116,7 @@ python3 ${SKILL}/scripts/fix_ea_font.py work/presentations/slides/<deck>.pptx
 | `scripts/assert_font_rule.py` | 和文フォントゲート（stdlib のみ） |
 | `scripts/assert_no_overlap.py` | 重なり/はみ出しゲート（stdlib のみ） |
 | `scripts/crop_paper_figures.py` | 論文 PDF 図の高解像度切り抜き（PyMuPDF） |
+| `scripts/render_latex.py` | LaTeX 数式を透過 PNG にレンダ（matplotlib オフライン→任意で codecogs） |
 | `scripts/fix_ea_font.py` | ビルド後 pptx の ea フォント修正（python-pptx） |
 | `tests/` | 上記スクリプトの pytest（挙動仕様） |
 
@@ -119,7 +125,9 @@ python3 ${SKILL}/scripts/fix_ea_font.py work/presentations/slides/<deck>.pptx
 pip install python-pptx        # 変換・ea 修正（必須）
 pip install Pillow             # ラスタ図の埋め込み時
 pip install PyMuPDF            # 論文図の切り抜き時（crop_paper_figures）
+pip install matplotlib         # LaTeX 数式のオフラインレンダ時（render_latex）
 # 和文は MS Gothic を想定（macOS は Office 同梱／Windows 標準）。プレビューは Hiragino 代替可
+# 数式のフル LaTeX（\ce 等）を --online で使う場合はネットワークが要る（codecogs）
 ```
 
 ## トラブルシュート

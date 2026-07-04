@@ -2,6 +2,18 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.69.0 / Codex 1.68.0 / Copilot 1.39.0 / Gemini 1.46.0] - 2026-07-04
+
+### Added — caw-slides に LaTeX 数式レンダを復活（ハイブリッド：matplotlib オフライン＋codecogs 任意）
+
+SVG-first 化で外していた LaTeX 数式レンダを **拾い直した**（化学スライドに必須）。PPT Master の `latex_render.py`（オンライン provider）を参考に、**caw の方針に合わせてハイブリッド化**。
+
+- **`scripts/render_latex.py`（新規）**：LaTeX → **透過 PNG** にレンダし SVG に data-URI 埋込。**backend 2 段**＝(1) **matplotlib mathtext オフライン既定**（ネット不要・第三者送信なし・追加依存なし。速度論 `k=A e^{-E_a/RT}`・熱力学 `ΔG=ΔH−TΔS`・量子化学 `⟨ψ|H|ψ⟩` 等を広くカバー）(2) `\ce{}` 等フル LaTeX が要る式のみ **codecogs にフォールバック**（`--online`・要ネット）。
+- **セキュリティ**：codecogs は **https＋latex.codecogs.com のみ許可＋リダイレクト禁止**（SSRF/ダウングレード防止）、`color` を hex 検証（LaTeX 注入防止）、PNG 署名 8 byte 検証、フォールバックは mathtext 非対応時のみ（保存失敗等は式を送らない）。
+- **TDD＋二段レビュー**：pytest 14 件（注入拒否・二重失敗・非PNG拒否・非codecogsホスト拒否・main CLI・透過確認）。Claude+Codex レビューで HIGH/MEDIUM を全対応（記録 `review/code-reviews/2026-07-04-caw-slides-render-latex.md`）。caw-slides 全 72 PASS。
+- **配線**：SKILL.md Step B に数式ステップ＋同梱資産/依存（matplotlib）、design-system.md §6、plugin↔codex バイト一致ミラー、gemini GEMINI.md 節、caw-setup の matplotlib 理由に「スライドの数式レンダ」追記。
+- 版 plugin 1.68→**1.69**・codex 1.67→**1.68**・copilot 1.38→**1.39**（caw-setup 更新）・gemini 1.45→**1.46**。consistency 全 OK。
+
 ## [1.68.0 / Codex 1.67.0 / Copilot 1.38.0 / Gemini 1.45.0] - 2026-07-04
 
 ### Changed — 前提ツール導入をオンボーディングで per-tool・理由説明つきに（一括承認を撤回）
