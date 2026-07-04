@@ -20,11 +20,10 @@ description: >
 
 ## 安全方針（厳守）
 
-- **計画提示 → 一度だけ承認 → 順番に実行**。各ツールごとに毎回確認はしない（任意ツールのみ個別確認）
-- **冪等**：既に入っているものはスキップ
+- **全ツールを個別に、なぜ必要かを説明して尋ねる**。各ツールに「どの caw 機能のために要るか」を 1 行添え、**導入するかをユーザーが 1 つずつ選べる**ようにする（一括の暗黙導入も勝手なスキップもしない）
+- **冪等**：既に入っているものは尋ねず ✓ 表示のみ（導入しない）
 - **sudo / 管理者権限は使わない**。Homebrew（user 権限）/ winget / Scoop / pip --user の範囲で行う
-- 各ステップの**成否を記録**し、失敗しても止めずに続行、最後にまとめて報告
-- インストールは計画を提示して `[y/N]` 相当の同意を取ってから実行する
+- 選ばれたツールだけを順に導入し、各ステップの**成否を記録**、失敗しても止めず最後にまとめて報告
 
 ## ワークフロー
 
@@ -37,36 +36,40 @@ description: >
 
 以下を `command -v`（macOS）/ `Get-Command`（Windows）で確認し、導入済み / 不足を表にまとめる：
 
-| 機能 | ツール | チェック | 必須度 |
+| 機能 | ツール | チェック | なぜ必要か（ユーザーに必ず説明する） |
 |---|---|---|---|
-| コア | Python 3 | `python3` / `python` | 必須 |
-| PDF（文献登録・レポート・intake） | poppler | `pdftoppm` / `pdftotext` | PDF を扱うなら必須 |
-| 論文図の切り抜き（スライド） | PyMuPDF | `python3 -c "import fitz"` | 論文紹介スライドで必須 |
-| スライド変換（SVG→native pptx） | python-pptx | `python3 -c "import pptx"` | スライドで必須 |
-| ラスタ図の埋め込み（スライド） | Pillow | `python3 -c "import PIL"` | 図入りスライドで必須 |
-| スライドのプレビュー（任意） | cairosvg / LibreOffice | `python3 -c "import cairosvg"` / `soffice` | 任意 |
-| 解析・作図 | numpy / pandas / scipy / matplotlib | `python3 -c "import numpy, pandas, scipy, matplotlib"` | 解析するなら必須 |
-| 解析（分野依存・任意で提案） | lmfit / RDKit / ASE | `python3 -c "import lmfit, rdkit, ase"` | 任意 |
-| バージョン管理・検索（任意） | GitHub CLI (gh) | `gh` | 任意 |
+| コア | Python 3 | `python3` / `python` | caw の全 Python 処理（スライド変換・解析・PDF）の土台 |
+| PDF | poppler | `pdftoppm` / `pdftotext` | 論文 PDF のテキスト抽出・画像化（文献登録・レポート・取り込み） |
+| スライド | PyMuPDF | `python3 -c "import fitz"` | 論文の図を高解像度で切り抜いてスライドに載せる |
+| スライド | python-pptx | `python3 -c "import pptx"` | 手描き SVG を**編集可能な pptx** に変換する（caw-slides の要） |
+| スライド | Pillow | `python3 -c "import PIL"` | スライドに写真・切り抜き図（ラスタ画像）を埋め込む |
+| スライド（任意） | cairosvg / LibreOffice | `python3 -c "import cairosvg"` / `soffice` | 完成前にスライドをプレビュー画像で目視 QA する |
+| 解析・作図 | numpy / pandas / scipy | `python3 -c "import numpy, pandas, scipy"` | 測定・計算データの読み込み・整形・数値解析 |
+| 解析・作図 | matplotlib | `python3 -c "import matplotlib"` | 解析結果のグラフ作成 |
+| 解析（任意） | lmfit | `python3 -c "import lmfit"` | 速度論・スペクトル等の非線形フィッティング |
+| 解析（任意） | RDKit | `python3 -c "import rdkit"` | 分子構造の生成・記述子・描画 |
+| 解析（任意） | ASE | `python3 -c "import ase"` | 原子構造の読み書き・計算入力の準備 |
+| 検索・VC（任意） | GitHub CLI (gh) | `gh` | GitHub の検索・PR |
 
-> **使わない機能の依存は入れない**：オンボーディングの回答（スライド／解析／PDF を使うか）から必要な機能だけを検出・提案する。計算エンジン本体（Gaussian/ORCA/CP2K/GROMACS/MACE 等）は caw-setup の対象外（ユーザーが HPC/ローカルに導入するもの）。
+> 各ツールは上の「なぜ必要か」を添えて**個別に導入可否を尋ねる**（既に入っているものは尋ねない）。計算エンジン本体（Gaussian/ORCA/CP2K/GROMACS/MACE 等）は caw-setup の対象外（ユーザーが HPC/ローカルに導入するもの）。
 
 CLI 本体（`copilot`）・`node` も確認し、**無ければ** bootstrap スクリプトを案内（Step 5）。
 
-### Step 3: 計画提示 → 承認（一度だけ）
+### Step 3: 各ツールを個別に説明して尋ねる
 
-不足ツールと、それぞれの**実行予定コマンド**（OS 別）を一覧で見せ、まとめて 1 回だけ同意を取る。
+Step 2 で**不足していた**ツールを、**1 つずつ**「なぜ必要か（上表の説明）」を添えて、導入するか尋ねる。
 
-- **pip パッケージ（機能別・必要な層だけ）**：スライド＝`python-pptx Pillow PyMuPDF`／解析＝`numpy pandas scipy matplotlib`／分野依存〔任意〕＝`lmfit rdkit ase`／プレビュー〔任意〕＝`cairosvg`
-- macOS: poppler は `brew install poppler` / `python3 -m pip install <pkgs>`（PEP 668 で弾かれたら `--user --break-system-packages` で再試行）
-- Windows: `winget install -e --id <id>` / poppler は `scoop install poppler`（Scoop 無ければ導入を提案）/ `python -m pip install <pkgs>`
+- **尋ね方**：Claude Code は `AskUserQuestion`（機能グループごとに複数選択・各ツールの説明欄に「なぜ必要か」を書く）、他 CLI は不足ツールを説明つきで列挙し、どれを入れるか選ばせる。**全ツールについて説明つきで意思決定を取る**（勝手に入れない・勝手に飛ばさない）。既に入っているものは尋ねない（✓ 表示のみ）。
+- **オンボーディングで実行**：`/caw` オンボーディングの scaffold 完了後にこの Step を必ず走らせ、その場で不足ツールを説明つきで尋ねる（「あとで /caw-setup」の後回しではなく初期構築の一部）。
+- **導入コマンド（選ばれたツールのみ）**：
+  - pip：スライド＝`python-pptx Pillow PyMuPDF`／解析＝`numpy pandas scipy matplotlib`／任意＝`lmfit rdkit ase cairosvg`
+  - macOS: poppler は `brew install poppler`／pip は `python3 -m pip install <pkgs>`（PEP 668 で弾かれたら `--user --break-system-packages`）
+  - Windows: `winget install -e --id <id>`／poppler は `scoop install poppler`／`python -m pip install <pkgs>`
+  - Homebrew / winget / Scoop が無ければ、その導入も選択肢として説明する。
 
-Homebrew / winget / Scoop が前提として無い場合は、その導入も計画に含めて明示する。
+### Step 4: 選ばれたツールを順に導入
 
-### Step 4: 順番にインストール
-
-承認後、上から順に実行。各ステップで「installing … → OK / FAIL」を表示。**必須 → Python パッケージ →
-任意（任意のみ個別に y/N）** の順。失敗は記録して次へ進む。
+Step 3 で選ばれたツールを上から順に実行。各ステップで「installing … → OK / FAIL」を表示。失敗は記録して次へ進む（選ばれなかったツールは入れない）。
 
 ### Step 5: CLI / Node が無い場合（bootstrap 誘導）
 
@@ -76,7 +79,7 @@ Homebrew / winget / Scoop が前提として無い場合は、その導入も計
 - macOS: `bash setup/caw-setup.sh`
 - Windows: `powershell -ExecutionPolicy Bypass -File setup/caw-setup.ps1`
 
-これらは CLI・Node・git も含めて順番に導入する（同じ「計画提示 → 一括」方式）。
+これらは CLI・Node・git も含めて順番に導入する（前提が無い初回のみ・以降は本スキルの per-tool 方式）。
 
 ### Step 6: 動作確認と報告
 
