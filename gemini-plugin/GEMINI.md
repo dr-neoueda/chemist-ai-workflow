@@ -138,8 +138,8 @@ footer{color:var(--muted);font-size:12.5px;margin-top:22px;border-top:1px solid 
 ### caw-doctor（構造点検）
 `office/GEMINI.md` のトラックを判定（`> トラック:` 行が無ければ `work/` 構造で推定し、**不足していれば `> トラック: <値>` を冒頭に補記して旧 office を移行**）し、ルート設定・秘書部・各部署・成果物ディレクトリ・統合 `inbox/` の有無を点検し、不足は作成を提案。二層原則違反（`office/<部署>/` に成果物）も検出。
 
-### caw-setup（環境チェック）
-不足ツールを**使う機能に応じて**検出し、OS 別にインストール手順を案内。機能別: PDF＝poppler（pdftoppm/pdftotext）＋PyMuPDF／スライド＝python-pptx・Pillow（＋任意 cairosvg・LibreOffice）／解析・作図＝numpy・pandas・scipy・matplotlib（＋任意 lmfit・RDKit・ASE）。使わない機能の依存は入れない。計算エンジン本体（Gaussian/ORCA/CP2K/GROMACS/MACE 等）・CLI/Node は対象外（前者はユーザー導入、後者は bootstrap 誘導）。
+### caw-setup（環境チェック・オンボーディングで per-tool 実行）
+不足ツールを検出し、**各ツールを 1 つずつ「なぜ必要か」を説明して導入するか尋ねる**（一括の暗黙導入・勝手なスキップはしない・既存は尋ねない）。**オンボーディングの scaffold 完了後に必ず実行**（後回しにしない）。機能別の「なぜ必要か」: **poppler**（pdftoppm/pdftotext）＝論文 PDF のテキスト抽出・画像化／**PyMuPDF**＝論文図の高解像度切り抜き／**python-pptx**＝手描き SVG を編集可能な pptx に変換／**Pillow**＝スライドへのラスタ図埋め込み／**numpy・pandas・scipy**＝データ読込・整形・数値解析／**matplotlib**＝解析グラフ作成／任意: **cairosvg/LibreOffice**（プレビュー）・**lmfit**（非線形 fit）・**RDKit**（分子）・**ASE**（原子構造）・**gh**（GitHub）。sudo 不使用（brew/winget/scoop/pip --user）。計算エンジン本体（Gaussian/ORCA/CP2K/GROMACS/MACE 等）・CLI/Node は対象外（前者はユーザー導入、後者は bootstrap 誘導）。
 
 ### caw-report（開発者向け動作レポート・匿名）
 テストユーザー環境の**環境/互換性・オンボーディング完遂度・構造の健全性と逸脱・利用状況と完成度（件数）・エラー（スキル別×種別）・運用エンゲージメント**を、**個人情報・案件内容・ファイル名・本文・絶対パスを一切含めず**にまとめた匿名レポートを `caw-report/<YYYY-MM-DD>.md` に生成する。出せるのは標準フォルダ名・件数・ファイルサイズ区分・放置日数・合否・エラー種別・version/CLI/OS/トラック/モード・ツール有無・MCP 有無/サーバ数・利用期間/最終活動日のみ（研究分野・志望業界の具体名・ファイル名・本文・絶対パスは出さない）。生成後に自分で読み返して PII（絶対パス・氏名・企業名・研究テーマ・ファイル名・本文断片）が無いか自己点検し、混入していれば件数や ○/× に丸める。保存後、**提出先フォームの URL をチャットに表示**し「レポートの中身をこのフォームに貼り付けて送ってください（匿名なのでそのまま提出可）」と案内する（提出フォーム: https://docs.google.com/forms/d/e/1FAIpQLScvql2d5wA2GiCeGjXuX5172sjvwX4tQ2bFfXE19vvqYLA9vQ/viewform ）。**caw は自動で外部送信しない**（提出はユーザーの手で）。

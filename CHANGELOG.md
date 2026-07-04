@@ -2,6 +2,17 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.68.0 / Codex 1.67.0 / Copilot 1.38.0 / Gemini 1.45.0] - 2026-07-04
+
+### Changed — 前提ツール導入をオンボーディングで per-tool・理由説明つきに（一括承認を撤回）
+
+ユーザー要望により、caw-setup を **「一括承認 → 順に導入」から「各ツールを個別に、なぜ必要かを説明して導入するか尋ねる」** に変更し、**オンボーディングの一部として必ず実行**するようにした。
+
+- **caw-setup（plugin/codex/copilot）**：安全方針を per-tool 確認に変更（一括の暗黙導入・勝手なスキップをしない）。Step 2 表に **「なぜ必要か」列**を追加し 1 ツール 1 行に展開（poppler＝PDF テキスト抽出、PyMuPDF＝論文図切り抜き、python-pptx＝SVG→編集可能 pptx、Pillow＝ラスタ図埋込、numpy/pandas/scipy＝データ解析、matplotlib＝作図、lmfit/RDKit/ASE＝分野依存、cairosvg/LibreOffice＝プレビュー、gh）。Step 3 を「各ツールを個別に説明して尋ねる」に（Claude Code は AskUserQuestion の機能グループ別複数選択、他 CLI は説明つき列挙）。既存は尋ねない・選ばれたものだけ導入。
+- **caw オンボーディング（plugin/codex/copilot）**：scaffold 完了後に **3-6b「前提ツールの per-tool 確認」** を新設し、caw-setup Step 2〜4 を必ず実行（「あとで /caw-setup」の後回しを廃止）。
+- **gemini GEMINI.md**：caw-setup 節を per-tool・理由説明・オンボ実行に更新。
+- 版 plugin 1.67→**1.68**・codex 1.66→**1.67**・copilot 1.37→**1.38**・gemini 1.44→**1.45**。consistency 全 OK。
+
 ## [1.67.0 / Codex 1.66.0 / Copilot 1.37.0 / Gemini 1.44.0] - 2026-07-04
 
 ### Changed — caw-setup の依存チェックを全スキル棚卸しで刷新（機能階層・SVG-first 対応）
