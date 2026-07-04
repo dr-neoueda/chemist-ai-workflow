@@ -2,6 +2,17 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.67.0 / Codex 1.66.0 / Copilot 1.37.0 / Gemini 1.44.0] - 2026-07-04
+
+### Changed — caw-setup の依存チェックを全スキル棚卸しで刷新（機能階層・SVG-first 対応）
+
+caw 全体（実在15スキル）の依存を追跡し、caw-setup のツールチェックを**機能階層に再構成**。旧チェックは caw-slides SVG-first 化・caw-analyze 追加の前の内容で欠落・陳腐化していた。
+
+- **追加**：**PyMuPDF**（caw-slides の論文図切り抜き）、**pandas / scipy**（caw-analyze/playbook のコア）、**lmfit / RDKit / ASE**（caw-analyze の fit・分子・構造＝分野依存で任意提案）、**cairosvg**（スライドのプレビュー・任意）。
+- **再配置**：**matplotlib** を「スライド必須」から「解析・作図」層へ（SVG-first スライドは native SVG chart のため matplotlib 不要）。**Pillow** をスライドのラスタ図埋め込みとして明示。
+- **階層化**：`import pptx, matplotlib, PIL, numpy` の一括チェックを廃し、**機能（PDF／スライド／解析）ごとに検出・提案**。使わない機能の依存は入れない（`feedback_caw_no_assumed_extra_plugin_dependency` と整合）。計算エンジン本体（Gaussian/ORCA/CP2K/GROMACS/MACE）は対象外を明記。
+- plugin/codex/copilot の caw-setup SKILL.md（共通ブロックを一致更新）＋ gemini GEMINI.md の caw-setup 節を反映。版 plugin 1.66→**1.67**・codex 1.65→**1.66**・copilot 1.36→**1.37**・gemini 1.43→**1.44**。consistency 全 OK。
+
 ## [1.66.0 / Codex 1.65.0 / Copilot 1.36.0 / Gemini 1.43.0] - 2026-07-04
 
 ### Changed — caw-slides を SVG-first に全面再設計（native pptx・自己完結・PPT Master default 準拠）

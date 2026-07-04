@@ -1,7 +1,7 @@
 ---
 name: caw-setup
 description: >
-  caw を十分に使うための外部ツール（Python・poppler・python-pptx 等）の不足を検出し、
+  caw を十分に使うための外部ツール（Python・poppler・PyMuPDF・python-pptx・Pillow・解析ライブラリ 等）の不足を、使う機能に応じて検出し、
   計画を提示して一度の承認のうえ順番にインストールする。OS（macOS / Windows）を判定し、
   既に入っているものはスキップ。CLI/Node 自体の導入は配布リポジトリの bootstrap スクリプトへ誘導。
 trigger: /caw-setup
@@ -38,13 +38,19 @@ trigger: /caw-setup
 
 以下を `command -v`（macOS）/ `Get-Command`（Windows）で確認し、導入済み / 不足を表にまとめる：
 
-| ツール | チェック | 必須度 |
-|---|---|---|
-| Python 3 | `python3` / `python` | 必須（スライド・図・PDF） |
-| poppler | `pdftoppm` | PDF を扱うなら必須 |
-| python-pptx / matplotlib / pillow / numpy | `python3 -c "import pptx, matplotlib, PIL, numpy"` | 必須 |
-| GitHub CLI (gh) | `gh` | 任意 |
-| LibreOffice | `soffice` | 任意 |
+| 機能 | ツール | チェック | 必須度 |
+|---|---|---|---|
+| コア | Python 3 | `python3` / `python` | 必須 |
+| PDF（文献登録・レポート・intake） | poppler | `pdftoppm` / `pdftotext` | PDF を扱うなら必須 |
+| 論文図の切り抜き（スライド） | PyMuPDF | `python3 -c "import fitz"` | 論文紹介スライドで必須 |
+| スライド変換（SVG→native pptx） | python-pptx | `python3 -c "import pptx"` | スライドで必須 |
+| ラスタ図の埋め込み（スライド） | Pillow | `python3 -c "import PIL"` | 図入りスライドで必須 |
+| スライドのプレビュー（任意） | cairosvg / LibreOffice | `python3 -c "import cairosvg"` / `soffice` | 任意 |
+| 解析・作図 | numpy / pandas / scipy / matplotlib | `python3 -c "import numpy, pandas, scipy, matplotlib"` | 解析するなら必須 |
+| 解析（分野依存・任意で提案） | lmfit / RDKit / ASE | `python3 -c "import lmfit, rdkit, ase"` | 任意 |
+| バージョン管理・検索（任意） | GitHub CLI (gh) | `gh` | 任意 |
+
+> **使わない機能の依存は入れない**：オンボーディングの回答（スライド／解析／PDF を使うか）から必要な機能だけを検出・提案する。計算エンジン本体（Gaussian/ORCA/CP2K/GROMACS/MACE 等）は caw-setup の対象外（ユーザーが HPC/ローカルに導入するもの）。
 
 CLI 本体（`claude` / `codex`）・`node` も確認し、**無ければ** bootstrap スクリプトを案内（Step 5）。
 
@@ -52,7 +58,8 @@ CLI 本体（`claude` / `codex`）・`node` も確認し、**無ければ** boot
 
 不足ツールと、それぞれの**実行予定コマンド**（OS 別）を一覧で見せ、まとめて 1 回だけ同意を取る。
 
-- macOS: `brew install <pkg>` / `python3 -m pip install <pkgs>`（PEP 668 で弾かれたら `--user --break-system-packages` で再試行）
+- **pip パッケージ（機能別・必要な層だけ）**：スライド＝`python-pptx Pillow PyMuPDF`／解析＝`numpy pandas scipy matplotlib`／分野依存〔任意〕＝`lmfit rdkit ase`／プレビュー〔任意〕＝`cairosvg`
+- macOS: poppler は `brew install poppler` / `python3 -m pip install <pkgs>`（PEP 668 で弾かれたら `--user --break-system-packages` で再試行）
 - Windows: `winget install -e --id <id>` / poppler は `scoop install poppler`（Scoop 無ければ導入を提案）/ `python -m pip install <pkgs>`
 
 Homebrew / winget / Scoop が前提として無い場合は、その導入も計画に含めて明示する。
@@ -76,7 +83,9 @@ Homebrew / winget / Scoop が前提として無い場合は、その導入も計
 
 ```
 node -v / git --version / python(3) --version / pdftoppm -v / claude --version
-python -c "import pptx, matplotlib, PIL, numpy; print('python deps OK')"
+python -c "import pptx, PIL; print('slides deps OK')"                 # スライドを入れたら
+python -c "import fitz; print('PyMuPDF OK')"                          # 論文図を入れたら
+python -c "import numpy, pandas, scipy, matplotlib; print('analysis deps OK')"
 ```
 
 導入済み / 今回入れた / 失敗 / 任意で見送り、を表で報告。最後に「`work/gaussian/_past-data/` 等に
