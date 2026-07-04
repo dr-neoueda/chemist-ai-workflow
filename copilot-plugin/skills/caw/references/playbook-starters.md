@@ -850,7 +850,7 @@ last_updated: "{{TODAY}}"
 
 | 部署 | Skill | Playbook 相当の知見の場所 |
 |---|---|---|
-| presentation | `caw-slides` | `references/style-guide.md`（14 セクション + canonical 実装パターン）+ `references/pptx_helpers.py`（1000+ 行ヘルパ）+ 4 用途バリアントテンプレート |
+| presentation | `caw-slides` | `references/design-system.md`（PPT Master default 準拠のデザイン規約）+ `scripts/`（フォント/重なりゲート・図切り抜き・ea 修正）+ `vendor/svg_to_pptx`（native 変換器） |
 | writing | （Phase 2 で追加予定） | `work/manuscripts/_style/` 配下の文体プロファイル |
 
-`caw-slides` の場合、新しい失敗パターン（フォント豆腐・shape 重なり・L1 違反など）を見つけたら `office/presentation/CLAUDE.md` (or AGENTS.md) の Lessons Learned セクションに追記する。スタイルガイド本体（plugin 同梱の `references/style-guide.md`）は plugin 更新で上書きされるため触らない。
+`caw-slides` の場合、新しい失敗パターン（フォント豆腐・shape 重なり・はみ出しなど）を見つけたら `office/presentation/CLAUDE.md` (or AGENTS.md) の Lessons Learned セクションに追記する。デザイン規約本体（plugin 同梱の `references/design-system.md`）は plugin 更新で上書きされるため触らない。

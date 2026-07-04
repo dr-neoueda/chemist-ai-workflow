@@ -2,6 +2,19 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.66.0 / Codex 1.65.0 / Copilot 1.36.0 / Gemini 1.43.0] - 2026-07-04
+
+### Changed — caw-slides を SVG-first に全面再設計（native pptx・自己完結・PPT Master default 準拠）
+
+スライド生成を **python-pptx レイアウト＋Codex 委譲** から **手描き SVG → native DrawingML pptx** に転換。図形・表・chart が PowerPoint で直接編集でき、デザインは **PPT Master default に高忠実**（ユーザーが理想とする lab の PPT Master プロセスに寄せた）。実物の論文紹介デッキ（Angew 2025・6枚・論文図切り抜き＋自作チャート）で忠実度と end-to-end を検証済み。
+
+- **Phase 0 — MIT 変換器を vendor**：`skills/caw-slides/vendor/`（`svg_to_pptx` 8163＋`svg_finalize` 3227＋`config`＋`console_encoding` ＝ 12,179 行、上流 PPT Master © Hugo He, MIT・無改変）＋ `LICENSE`/`NOTICE.md`。native shape 出力を隔離 venv（python-pptx のみ）で smoke 実証。cairosvg（system Cairo）不要・画像埋込時のみ Pillow。
+- **Phase 1 — `references/design-system.md`**：PPT Master default を distill＋日本語ローカライズ（role ベース配色11役＋navy 既定パレット、和文 MS Gothic/英数 Arial、添字 `baseline-shift` tspan、レイアウトパターン、SVG 制約、ゲートが拾わない2罠）。個人ブランドは載せない。
+- **Phase 2 — 品質ゲート＋後処理（pytest 58）**：`scripts/assert_font_rule.py`（和文=日本語フォント・stdlib のみ）、`scripts/assert_no_overlap.py`（重なり/はみ出し・stdlib のみ）、`scripts/crop_paper_figures.py`（論文PDF図の切り抜き）、`scripts/fix_ea_font.py`（ビルド後 pptx の CJK run を ea=MS Gothic に強制・新規）。Claude+Codex 二段レビュー（HIGH4/MED3/LOW2 対応。Claude が HIGH とした ea 挿入順は一次資料+実行時で誤検出と裁定）。
+- **Phase 3 — SKILL.md を SVG-first に書き直し**：author→gate→convert→fix_ea→目視→配布 の自己完結ワークフロー。**Codex 委譲を撤廃**（各 CLI 自身が完結・追加プラグイン不要）。**出力は pptx のみ**（preview PNG を配布先に置かない hard rule）。旧 python-pptx 資産（`pptx_helpers.py`/`research_icons.py`/`style-guide.md`/`codex-exec-templates.md`/`templates/generate_*.py`）を撤去。
+- **Phase 4 — 配線**：`vendor/`・`scripts/`・`design-system.md` を plugin↔codex バイト一致でミラー（check-consistency の mirror_dirs に scripts・vendor 追加、削除した templates を除去）。gemini `GEMINI.md` の caw-slides 節を SVG-first に更新（変換器は同梱せず PPT Master / caw plugin の vendor を案内）。**copilot は caw-slides 非同梱ゆえ据置**。
+- 版 plugin 1.65→**1.66** / codex 1.64→**1.65** / gemini 1.42→**1.43** / copilot 1.36 据置。consistency 全 OK。
+
 ## [1.65.0 / Codex 1.64.0 / Copilot 1.36.0 / Gemini 1.42.0] - 2026-07-03
 
 ### Changed — 二段レビュー（Claude＋Codex）を全スキルで「応用編・任意」に統一（追加プラグイン依存を仮定しない）

@@ -39,7 +39,8 @@ printf '%s    gemini-plugin version: %s (extension)%s\n' "$dim" "${gv:-?}" "$off
 # --- 2. plugin <-> codex mirror (byte-identical shared assets only) ---
 mirror_dirs=(
   "skills/caw-slides/references"
-  "skills/caw-slides/templates"
+  "skills/caw-slides/scripts"
+  "skills/caw-slides/vendor"
   "skills/caw-analyze/references"
 )
 for d in "${mirror_dirs[@]}"; do

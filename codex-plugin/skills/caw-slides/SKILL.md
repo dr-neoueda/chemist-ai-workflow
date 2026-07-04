@@ -1,192 +1,136 @@
 ---
 name: caw-slides
 description: >
-  化学研究発表用 PowerPoint スライドを python-pptx ベースで生成する。
-  学会発表（口頭・ポスター）、論文紹介（journal club）、研究室報告会・進捗共有、
-  講義・チュートリアル資料の 4 用途に対応した汎用テンプレートを内蔵。
-  16:9 / 和文 MS Gothic + 英数字 Arial / L1 強調 1 個ルール /
-  assert_no_overlap 自動検証 / Excel-editable native chart を強制する
-  スタイルガイドを同梱。スライド作成・パワポ・pptx・発表資料・学会発表・
-  論文紹介・journal club・報告会・講義の依頼で発火。
+  研究発表用 PowerPoint スライドを SVG-first で生成する。手描き SVG（1280×720）を
+  native DrawingML pptx に変換し、図形・表・native chart が PowerPoint で直接編集できる。
+  学会発表・論文紹介（journal club）・研究室報告会・講義の 4 用途に対応。デザインは
+  PPT Master default 準拠（和文 MS Gothic / 英数 Arial）。フォント/重なりゲートで
+  authoring ミス（豆腐・はみ出し・重なり）を機械的に潰す。各 CLI で自己完結（外部委譲なし）。
+  スライド・パワポ・pptx・発表資料・学会発表・論文紹介・journal club・報告会・講義で発火。
 ---
 
-# caw-slides — 研究発表スライド生成 Skill（Codex 版）
+# caw-slides — 研究発表スライド生成（SVG-first）
 
 ## いつ使うか
 
-ユーザーが以下のような発言をしたら発火:
+- 「スライド作って」「パワポ作って」「発表資料お願い」「学会発表用に」「ポスター」
+- 「この論文を紹介するスライドにして」「journal club」「報告会の資料」「講義スライド」
 
-- 「スライド作って」「パワポ作って」「発表資料お願い」
-- 「学会発表用に」「○月○日の発表で」「ポスター」
-- 「この論文を紹介するスライドにして」「journal club」
-- 「報告会の資料」「今週の進捗まとめて」
-- 「○○の講義スライド」「チュートリアル資料」
+`office/presentation/`（プレゼン部）が無ければ `caw` でスキャフォールドを促す。**就活トラック**では「これは研究向けのスキルです」と伝える。
 
-Codex CLI ではスラッシュ起動不要。自然言語マッチで発火する。
+## 設計思想（重要）
 
-## ワークフロー（Codex 直接生成）
+**手描き SVG → native pptx**。python-pptx でレイアウトを組むのではなく、**SVG を正として描き**、同梱の変換器（`vendor/svg_to_pptx`、native DrawingML 出力）で pptx 化する。だから図形・表・チャートが PowerPoint で**直接編集できる**（ラスタ画像でない）。
 
-Codex は自分で構成・L1 メッセージ・視覚デザインを決定し、生成スクリプトと .pptx を作る。Claude Code 版と異なり、**委譲なし・直接実行**。
+- **デザインは `references/design-system.md` に従う**（PPT Master default 準拠・日本語ローカライズ）。**発火時に必ず design-system.md を読む**。
+- **各 CLI で自己完結**：Claude Code / Codex CLI / Gemini CLI いずれも、その CLI 自身が SVG を描き・変換し・検証する。**別 CLI への委譲はしない**（追加プラグイン不要）。
+- **ゲートで機械的に検証**：authoring ミス（和文の豆腐・はみ出し・重なり）は目視前にスクリプトで潰す。
+- **出力は pptx のみ**（§出力規約）。
 
-### Step 1: 要件確認
+`${SKILL}` = このスキルの install 位置（各 CLI のプラグイン配下の `skills/caw-slides/`）。以下のコマンドの `${SKILL}` を実パスに置換して実行する。
 
-ユーザーの指示から以下を確認:
+## はじめてモードを尊重する
 
-- **元データ**: パス or 本文（例: `work/experiments/<...>/REPRODUCTION.md`）
-- **発表場面**: 研究室報告会 / 国内学会 / 国際学会 / 研究紹介 / 修論 / 論文紹介 / 講義
-- **言語**: 日本語 / 英語
-- **制約**: 枚数指定、必須図など（あれば）
+`office/CLAUDE.md`（Codex/Copilot は `AGENTS.md`、Gemini は `GEMINI.md`）冒頭に `> 運用モード: はじめて` があれば、`caw` skill の「はじめてモードの挙動」を全応答に適用する。
 
-**元データの候補（発表場面別）**：学会発表/修論/研究紹介/報告会は `work/manuscripts/`（caw-write で書いた自分の論文・要旨）・`work/profile/key-findings.md`・解析結果（`work/analyses/`）、論文紹介は caw-register の `work/papers/md/<著者-年>.md`（他者論文）、講義はユーザー指定教材。ユーザーが元データ path を指定しなければこれらを候補提示する。
+## ワークフロー（Step A–H）
 
-ユーザーが構成や枚数を指定していなければ、スタイルガイドの場面別目安に従い Codex が自ら決める。
+### Step A: 用途と素材を確定
+| 項目 | 内容 |
+|---|---|
+| 用途 | 論文紹介 / 学会発表 / 報告会 / 講義 |
+| 元データ | 論文紹介＝`work/papers/`（`caw-register` 登録の md ＋原論文 PDF）／ 学会・報告会＝`work/manuscripts/`・`work/profile/key-findings.md`・`work/analyses/`／ 講義＝指定教材 |
+| 言語・場面・制約 | 日本語/英語、枚数目安（下表）、必須で入れる図 |
 
-### Step 2: スタイルガイド読込 + 計画メモ
+### Step B: SVG を描く（`design-system.md` どおり）
+- 1 スライド = 1 つの `.svg`（`01_cover.svg`, `02_...` と連番）。`viewBox="0 0 1280 720"`。作業場所は `work/presentations/slides/_src/<deck>/`（配布先でなく作業層）。
+- **§0 図表優先・1 スライド 1 メッセージ**。タイトルは主張形。家具（accent bar＋kicker＋navy タイトル＋divider、footer）は design-system.md §2 の座標に従う。
+- **論文図の切り抜き**（論文紹介）：まずページを見て座標を当て、region で高解像度切り抜き：
+  ```bash
+  python3 ${SKILL}/scripts/crop_paper_figures.py page   <pdf> <page_no> /tmp/pg.png --dpi 150
+  python3 ${SKILL}/scripts/crop_paper_figures.py region <pdf> <page_no> <x0> <y0> <x1> <y1> <out.png> --dpi 300
+  ```
+  切り抜き図は SVG に **data-URI で埋め込む**（`<image href="data:image/png;base64,...">`）。source caption（誌名・Fig 番号）を必ず添える。
+- **自作の図表・チャート・スキームは native SVG shape** で描く（`<rect>`/`<line>`/`<path>`/`<text>`）→ 変換後も編集可能。棒グラフ＝rect、フロー＝rect＋marker 矢印、表＝rect（navy ヘッダ）＋text＋divider line。
 
-1. `references/style-guide.md`（同梱）を読み、適用すべきルールを把握
-2. プロジェクトに `<project_root>/office/presentation/AGENTS.md` があればそれも読む（プロジェクト固有のオーバライド）
-3. `office/presentation/notes/<YYYY-MM-DD>-plan.md` を作成し、以下を書き残してから実装に入る:
-   - スライド数（場面別目安: 報告会 6-15 / 国内学会 20-50 / 国際学会 20-25 / 修論 25-35 / 論文紹介 6-12 / 講義 15-30）
-   - 各スライドのタイトル
-   - 各スライドの L1 メッセージ（1 スライド 1 個、具体的な主張）
-   - 視覚要素の方針（テーブル / chart / フロー図 / 原図切り抜き）
-
-### Step 3: テンプレ + ヘルパをユーザーの work/scripts/ にコピー
-
+### Step C: ゲート（必ず PASS させる）
 ```bash
-# Codex CLI install location は ~/.codex/plugins/cache/*/skills/caw-slides/
-CAW_SLIDES_DIR=$(find ~/.codex/plugins/cache -type d -name "caw-slides" | head -1)
-
-cp "${CAW_SLIDES_DIR}/references/pptx_helpers.py" office/presentation/scripts/
-cp "${CAW_SLIDES_DIR}/references/research_icons.py" office/presentation/scripts/
-
-USE_CASE=conference   # conference / journal_club / lab_report / lecture
-TODAY=$(date +%Y%m%d)
-cp "${CAW_SLIDES_DIR}/templates/generate_${USE_CASE}.py" \
-   "office/presentation/scripts/generate_<purpose>_${TODAY}.py"
+python3 ${SKILL}/scripts/assert_font_rule.py  work/presentations/slides/_src/<deck>/   # 和文=日本語フォント
+python3 ${SKILL}/scripts/assert_no_overlap.py work/presentations/slides/_src/<deck>/   # 重なり・はみ出し
 ```
+違反が出たら SVG を直して再実行。**両方 PASS するまで次に進まない**（豆腐・重なりはここで潰す）。
 
-**`office/presentation/` が未存在**なら、先に `caw` Skill でスキャフォールド。
-
-### Step 4: 実装（テンプレ編集）
-
-コピーした `generate_<purpose>_<YYYYMMDD>.py` を編集:
-
-1. `<...>` プレースホルダをユーザー要件の実値で置換
-2. 元データから抽出した数値・図を反映
-3. スライドビルダーを必要数だけ追加（Step 2 計画通り）
-4. **各スライドビルダー末尾で `assert_no_overlap(rects)` を必ず呼ぶ**
-5. L1 強調は 1 スライド 1 個（`add_key_message_band` を 1 回だけ）
-6. グラフは **native chart のみ**（`add_bar_chart` / `add_scatter_line_chart`）
-7. フロー図は **native shape + arrow のみ**（`add_flow_box` + `add_flow_arrow`）
-
-### Step 5: 生成 + 検証
-
+### Step D: native pptx に変換（同梱変換器）
 ```bash
-python office/presentation/scripts/generate_<purpose>_<YYYYMMDD>.py
+python3 - <<'PY'
+import sys; sys.path.insert(0, "${SKILL}/vendor")
+from pathlib import Path
+from svg_to_pptx import create_pptx_with_native_svg
+src = Path("work/presentations/slides/_src/<deck>")
+create_pptx_with_native_svg(sorted(src.glob("*.svg")),
+    Path("work/presentations/slides/<deck>.pptx"),
+    canvas_format="ppt169", use_native_shapes=True, verbose=False)
+PY
 ```
 
-`assert_no_overlap` が `ValueError` で停止したら、座標を調整して再実行。
-
-検証:
-
-```python
-from pptx import Presentation
-p = Presentation("work/presentations/slides/<purpose>_<YYYYMMDD>.pptx")
-print(f"slide count: {len(p.slides)}")
-print(f"aspect: {p.slide_width}x{p.slide_height}")  # 16:9 確認
-```
-
-`soffice` があれば PNG レンダで目視:
-
+### Step E: 後処理（ea フォント修正）
 ```bash
-soffice --headless --convert-to png --outdir work/figures/_preview work/presentations/slides/<...>.pptx
+python3 ${SKILL}/scripts/fix_ea_font.py work/presentations/slides/<deck>.pptx
 ```
+変換器が CJK run に残す ea≠MS Gothic を強制修正（必ず 1 回）。
 
-### Step 6: 完了報告
+### Step F: 目視 QA（プレビューは scratchpad のみ）
+- 全ページを目視する。プレビュー PNG は **scratchpad（`/tmp` 配下）でだけ**生成し、配布先には置かない（§出力規約）。cairosvg があれば SVG→PNG（プレビュー時のみ `'MS Gothic'`→`Hiragino` 置換で macOS 描画）。
+- design-system.md §8 の 2 罠（中央寄せ×混在フォント×添字／丸数字豆腐）はゲート緑でも残るので必ず目視。
 
-`office/secretary/notes/<YYYY-MM-DD>-decisions.md` に記録:
+### Step G: 配布（pptx のみ）
+- `work/presentations/slides/<deck>.pptx` を **pptx 1 ファイルだけ**残す。**preview PNG・中間 SVG を配布先に置かない**。
+- 生成に使った SVG は `_src/<deck>/` に残して再生成可能にする（配布先の直下には出さない）。
 
-- 出力 .pptx パス
-- 採用した枚数 + 根拠
-- 各スライドのタイトル + L1 メッセージ一覧
-- 使ったテンプレート種別
+### Step H: 残す価値があれば playbook に蒸留
+- 繰り返す構成・レシピは `caw-playbook` 方式で `work/presentations/_playbook.md` 等に残す。
 
-## 5 用途バリアント
+## 出力規約（HARD rule）
+- **配布先（`work/presentations/slides/`）に置く成果物は `.pptx` のみ。** preview PNG・中間 SVG・ページ画像をコピーしない。
+- preview PNG は目視 QA 専用として scratchpad で生成し、QA 後は放置でよい。
 
-| 用途 | テンプレ | 想定枚数 | 特徴 |
-|------|--------|---------|------|
-| 学会発表（口頭・ポスター） | `generate_conference.py` | 20-25 / 20-50 | 専門家向け、結果プロット主体、L1 一行で主張明確 |
-| 論文紹介（journal club） | `generate_journal_club.py` | 6-12 | 原論文・SI 図主体、pdftoppm + crop 抽出、source line 必須。**各図スライドに「図の読み方」支持本文（軸・色・主要数値・解釈）を必ず添える**（`build_figure_slide` の `support` 必須・図＋一言だけにしない） |
-| 研究室報告会・進捗共有 | `generate_lab_report.py` | 6-15 | 自前データ主体、native chart + table、今後の予定 |
-| 講義・チュートリアル | `generate_lecture.py` | 15-30 | 平易語、概念フロー図、目標 + 前提 + サマリ |
-| 宣伝・紹介・募集（showcase） | `generate_showcase.py` | 5-8 | 実スクショ主役のコラージュ、プログラム名ヘッダ、キャプション画像上、アプリロゴ。**§0 緩和**（style-guide §15） |
-
-showcase variant は研究発表用 4 種と設計思想が異なり、§0 のテキスト最小ルールを緩和する（密なコラージュ）。詳細は style-guide §15。
-
-## スタイルガイドの絶対ルール
-
-`references/style-guide.md` に体系化されている。**Skill 発火時は必ず style-guide.md の §0 を最初に読むこと。**
-
-### §0（最優先・絶対ルール）
-
-**文字数を極限まで減らし、図表で直感的に伝える。** スライドはテキストを読ませる媒体ではなく、聴衆に瞬時に意味を伝える視覚装置。
-
-- 数値・比較・時系列・プロセス・関係性は **必ず** 図表（chart / table / flow diagram / scheme）で示す
-- 1 スライド内のテキストボックスは **3 個まで**（タイトル + 本文 + key-message band）、補足 1 個まで許容
-- 本文ブロックは **総 8 行まで**、1 ボックス内 **120 字まで**；超えたらスライド分割 or 内容捨てる
-- フォント自動縮小で 16pt 未満に落とすのは禁止
-- タイトルは主張形（❌「結果」/ ✅「Form I が 175 分で Form II に転移」）
-- このルールはセクション 11 / 12 / 14 のすべてに優先する。判断に迷ったら §0 が勝つ
-
-### 他のルール（§0 と矛盾しない範囲で適用）
-
-- スライドサイズは **常に 16:9（13.33" × 7.5"）**
-- 和文 = **MS Gothic**、英数字 = **Arial**（`mixed_runs` で自動切替）
-- フォントサイズ: タイトル 28pt / 本文 20pt / 強調 24pt / 補足 12pt
-- **1 スライド 1 メッセージ**（L1 強調は 1 スライド 1 個）
-- 白背景、アニメーションなし、グリッド整列
-- **`assert_no_overlap` を全スライドビルダー末尾で必ず呼ぶ**
-- グラフは **Excel-editable native chart のみ**（PNG 禁止）
-- フロー図は **native shape + arrow のみ**
+## 用途別の目安
+| 用途 | 想定枚数 | 特徴 |
+|------|---------|------|
+| 論文紹介（journal club） | 6–12 | 原論文図（crop）＋自作図表を混在。①表紙 ②背景 ③機構/系 ④自作データ ⑤主要図 ⑥結論＋**自研究への接続**。各図に「図の読み方」支持本文 |
+| 学会発表（口頭・ポスター） | 20–25 | 専門家向け、結果プロット主体、L1 一行で主張明確 |
+| 研究室報告会・進捗 | 6–15 | 自前データ主体、native chart＋table、今後の予定 |
+| 講義・チュートリアル | 15–30 | 平易語、概念フロー図、目標＋前提＋サマリ |
 
 ## 同梱資産
+| パス | 役割 |
+|---|---|
+| `references/design-system.md` | デザイン規約（PPT Master default 準拠・日本語ローカライズ・SVG 制約）。**発火時必読** |
+| `vendor/svg_to_pptx/` | SVG→native DrawingML 変換器（上流 PPT Master・MIT、`vendor/NOTICE.md` 参照） |
+| `scripts/assert_font_rule.py` | 和文フォントゲート（stdlib のみ） |
+| `scripts/assert_no_overlap.py` | 重なり/はみ出しゲート（stdlib のみ） |
+| `scripts/crop_paper_figures.py` | 論文 PDF 図の高解像度切り抜き（PyMuPDF） |
+| `scripts/fix_ea_font.py` | ビルド後 pptx の ea フォント修正（python-pptx） |
+| `tests/` | 上記スクリプトの pytest（挙動仕様） |
 
-| ファイル | 役割 |
-|---------|------|
-| `references/pptx_helpers.py` | 共通ヘルパ（1000+ 行） |
-| `references/research_icons.py` | 概念イラスト（線画アイコン 10 種 + hub/cycle/converging 構図ビルダー）。詳細は style-guide §11bis |
-| `references/style-guide.md` | スタイルガイド本体（§15 = showcase レイアウト） |
-| `references/codex-exec-templates.md` | プロンプトテンプレ集（他 CLI 連携用） |
-| `templates/generate_conference.py` | 学会発表 variant |
-| `templates/generate_journal_club.py` | 論文紹介 variant |
-| `templates/generate_lab_report.py` | 報告会 variant |
-| `templates/generate_lecture.py` | 講義 variant |
-| `templates/generate_showcase.py` | 宣伝・紹介・募集 variant（コラージュ型・§15） |
-
-## 重要な注意事項
-
-- 既存スライドの修正は **PowerPoint 上の手修正ではなくスクリプトを正とする**
-- スタイルガイド本体（`references/style-guide.md`）はプラグイン更新で上書きされる。プロジェクト固有ルールは `office/presentation/AGENTS.md` に追加
-- Python 依存:
-
+## 依存
 ```bash
-pip install python-pptx matplotlib Pillow
+pip install python-pptx        # 変換・ea 修正（必須）
+pip install Pillow             # ラスタ図の埋め込み時
+pip install PyMuPDF            # 論文図の切り抜き時（crop_paper_figures）
+# 和文は MS Gothic を想定（macOS は Office 同梱／Windows 標準）。プレビューは Hiragino 代替可
 ```
 
-- MS Gothic が標準パスにない場合: `export CAW_SLIDES_MSGOTHIC=/path/to/msgothic.ttc`
-
 ## トラブルシュート
-
 | 症状 | 対処 |
 |------|------|
-| `ValueError: Layout overlap: ...` | shape 矩形が重なっている。`assert_no_overlap` のメッセージで重なった shape ペアを特定し座標調整 |
-| 日本語が豆腐（縦長 □）に | `pptx_helpers.configure_matplotlib_japanese()` を呼んでいるか確認 |
-| L1 強調が複数スライドに | スタイルガイド §14-2 違反。各スライドで `add_key_message_band` を 1 回だけ呼ぶ |
+| `assert_font_rule` FAIL（CJK in non-JP font） | その run の font-family を日本語フォントに。中央寄せラベルは単一 MS Gothic 化、添字は左寄せ＋`baseline-shift` tspan（design-system §5/§8） |
+| `assert_no_overlap` FAIL（overlap/off-canvas） | 座標を調整 or 要素削減。transform 付き text は使わず explicit x/y に |
+| 日本語が豆腐（□） | 和文が Arial run に入っている（丸数字①・全角記号・⁻¹ も）。日本語フォント run へ。ビルド後は `fix_ea_font` |
+| 図が編集できない（画像化） | native shape/text で描いたか確認。ラスタは論文切り抜き図のみ |
 
 ## 関連 Skill
-
-- `caw` — `office/` 部署スキャフォールド（presentation 部含む）
-- `caw-register` — 論文 PDF を `work/papers/` に登録
-- `caw-write` — 自分の論文・要旨を `work/manuscripts/` に執筆（学会発表/修論/報告会スライドの元データの源泉）
-- `caw-playbook` — 計算ソフト Playbook 蓄積
+- `caw` — presentation 部を含む scaffold
+- `caw-register` — 論文 PDF を `work/papers/` に登録（journal club 素材）
+- `caw-write` — 自分の論文・要旨（学会/報告会スライドの元データ）
+- `caw-playbook` — 構成・レシピの蓄積
