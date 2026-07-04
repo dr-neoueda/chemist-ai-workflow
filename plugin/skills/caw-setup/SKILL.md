@@ -46,7 +46,7 @@ trigger: /caw-setup
 | スライド | Pillow | `python3 -c "import PIL"` | スライドに写真・切り抜き図（ラスタ画像）を埋め込む |
 | スライド（任意） | cairosvg / LibreOffice | `python3 -c "import cairosvg"` / `soffice` | 完成前にスライドをプレビュー画像で目視 QA する |
 | 解析・作図 | numpy / pandas / scipy | `python3 -c "import numpy, pandas, scipy"` | 測定・計算データの読み込み・整形・数値解析 |
-| 解析・作図 | matplotlib | `python3 -c "import matplotlib"` | 解析結果のグラフ作成 |
+| 解析・作図 | matplotlib | `python3 -c "import matplotlib"` | 解析結果のグラフ作成・スライドの数式レンダ（render_latex オフライン） |
 | 解析（任意） | lmfit | `python3 -c "import lmfit"` | 速度論・スペクトル等の非線形フィッティング |
 | 解析（任意） | RDKit | `python3 -c "import rdkit"` | 分子構造の生成・記述子・描画 |
 | 解析（任意） | ASE | `python3 -c "import ase"` | 原子構造の読み書き・計算入力の準備 |
