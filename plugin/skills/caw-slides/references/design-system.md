@@ -140,7 +140,13 @@ PPT Master `shared-standards.md`／`design_spec_reference §XI` 由来のハー�
 
 1. **中央寄せ × 混在フォント × 添字**：`text-anchor="middle"` のラベルに Arial tspan＋baseline-shift 添字が混ざると変換器が幅を誤測し、後続日本語が重なる/添字が飛ぶ。→ **中央寄せラベルは単一 MS Gothic 化**（Latin も MS Gothic で可）。**添字を含む式は左寄せ**にして x を手動調整。
 2. **丸数字 ①②③（U+2460+）は Arial に無く豆腐 □**。→ 丸数字は必ず **MS Gothic run 内**に置く。
-- ビルド後の pptx は **全ページ目視**（プレビュー PNG は scratchpad で生成し配布先には置かない）。
+- ビルド後の pptx は **全ページ目視**。
+
+## 8bis. 出力成果物（HARD rule）
+
+- **配布先（`work/presentations/slides/` 等）に置く成果物は `.pptx` 1 ファイルのみ。** プレビュー PNG・中間 SVG・ページ画像を配布先にコピーしない。
+- **プレビュー PNG は目視 QA 専用**として scratchpad（`/tmp` 配下等）でだけ生成し、QA が済んだら放置でよい（配布先には残さない）。
+- 理由：ユーザーが Finder で開くのは pptx だけ。PNG が並ぶと不要物になる（ユーザー明示指示）。
 
 ---
 
