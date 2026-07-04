@@ -74,7 +74,7 @@ your-research-project/
 - **`/caw-playbook`**：計算 log の自動解析 → Lessons Learned エントリ起案 → Playbook 末尾追記、memory feedback 昇格判定。`_past-data/` に置いた過去データの一括取り込み（その人向けに Playbook を初期最適化）にも対応
 - **`/caw-doctor`**：`office/` 構造の健全性チェック（部署 CLAUDE.md の存在、旧構造の検出、Playbook 更新滞り等）と修復コマンド提示
 - **`/caw-setup`**：caw を十分に使うための外部ツール（Python・poppler・python-pptx 等）の不足を検出し、計画提示 → 一度の承認 → 順番にインストール（macOS / Windows、冪等）。CLI/Node 自体の導入は `setup/caw-setup.sh`・`setup/caw-setup.ps1` を案内
-- **`/caw-slides`**：研究発表用 PowerPoint スライドを生成（学会発表 / 論文紹介 / 報告会 / 講義の 4 用途バリアント）。`pptx_helpers.py`（1000+ 行のヘルパ）+ スタイルガイド（16:9・フォント階層・図表優先・shape 重なり禁止の品質ゲート）同梱。出力は `work/presentations/slides/`
+- **`/caw-slides`**：研究発表用スライドを **SVG-first**（手描き SVG → native DrawingML pptx で図形・表・chart が編集可能）で生成（学会発表 / 論文紹介 / 報告会 / 講義）。`design-system.md`（PPT Master default 準拠）＋フォント/重なりゲート＋native 変換器同梱。出力は `work/presentations/slides/` に pptx のみ
 
 ### Hooks
 
@@ -137,7 +137,7 @@ plugin/
     ├── caw-setup/SKILL.md
     └── caw-slides/
         ├── SKILL.md
-        ├── references/   ← style-guide.md, pptx_helpers.py, research_icons.py
+        ├── references/   ← design-system.md ／ scripts/ ← gates ／ vendor/ ← svg_to_pptx
         └── templates/    ← generate_*.py（4 用途バリアント）
 ```
 

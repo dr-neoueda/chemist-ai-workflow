@@ -163,7 +163,7 @@ office/
 | analysis | `├── analysis/` | `\| データ解析部 \| analysis \| 手法非依存の解析コンパニオン（fit・定量・可視化） \|` |
 | writing | `├── writing/` | `\| 論文執筆部 \| writing \| LaTeX / Word 原稿、図表、参考文献 \|` |
 | review | `├── review/` | `\| レビュー部 \| review \| コード品質、計算妥当性の確認 \|` |
-| presentation | `└── presentation/` | `\| プレゼン部 \| presentation \| スライド生成（python-pptx + matplotlib + RDKit） \|` |
+| presentation | `└── presentation/` | `\| プレゼン部 \| presentation \| スライド生成（SVG-first → native pptx） \|` |
 
 最後の部署のツリー行は `└──` を使う（順序：research → engineering → computation → experiment → analysis → writing → review → presentation）。
 

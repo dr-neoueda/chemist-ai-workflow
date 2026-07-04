@@ -1,6 +1,6 @@
 {
   "name": "caw",
-  "version": "1.42.0",
+  "version": "1.43.0",
   "description": "Chemist's AI Workflow（caw）— Gemini CLI 版。研究プロジェクト（化学者向け）と就活の 2 トラックに対応した AI 部署システム。秘書から始めて、必要な部署を必要なときに増やす。",
   "contextFileName": "GEMINI.md"
 }

@@ -443,7 +443,7 @@ Claude + Codex の二段レビューは応用編。本部署単独で運用し�
 - 「スライド作って」「パワポ作って」「発表資料お願い」
 - 「学会発表用」「論文紹介」「報告会の資料」「講義スライド」
 
-`caw-slides` skill は 4 用途バリアント（学会発表 / 論文紹介 / 報告会 / 講義）+ 共通 `pptx_helpers.py`（1000+ 行のヘルパ）+ 詳細スタイルガイドを提供する。詳細は同 skill の `SKILL.md` 参照。
+`caw-slides` skill は **SVG-first**（手描き SVG → native pptx で図形・表・chart が編集可能）で 4 用途（学会発表 / 論文紹介 / 報告会 / 講義）に対応。`references/design-system.md`（PPT Master default 準拠のデザイン規約）＋フォント/重なりゲート＋同梱変換器を持つ。詳細は同 skill の `SKILL.md` 参照。
 
 ### presentation/CLAUDE.md
 
@@ -452,21 +452,21 @@ Claude + Codex の二段レビューは応用編。本部署単独で運用し�
 
 ## 役割
 
-学会・研究会・グループミーティング・教育セッションのスライド生成。python-pptx + matplotlib + RDKit で再現可能な形で作る。**`caw-slides` skill を起点に**運用する。
+学会・研究会・グループミーティング・教育セッションのスライド生成。**SVG-first**（手描き SVG → native DrawingML pptx で図形・表・chart が編集可能）で作る。**`caw-slides` skill を起点に**運用する。
 
 ## 成果物の置き場（CRITICAL）
 
 ユーザーが ファイラーから開ける場所に置く：
 
 - **スライド本体**：`{{PROJECT_ROOT}}/work/presentations/slides/<topic>_YYYYMMDD.pptx`（`work/` 配下）
-- **生成スクリプト**：`{{PROJECT_ROOT}}/office/presentation/scripts/generate_<topic>_YYYYMMDD.py`（運営情報、再生成用）
+- **SVG ソース**：`{{PROJECT_ROOT}}/work/presentations/slides/_src/<topic>/*.svg`（再生成用・配布先直下でなく _src に置く）
 - **中間図**：`{{PROJECT_ROOT}}/work/presentations/figures/fig_<topic>_<n>_YYYYMMDD.png`（`work/` 配下、analysis と共有）
 
 ❌ `office/presentation/slides/<...>.pptx` のようなパスに書かない（旧設計）
 
 `office/presentation/` 配下は運営情報のみ：
 
-- `work/scripts/` — 生成スクリプト + コピーされた `pptx_helpers.py`（source of truth、再生成用）
+- SVG ソースは `work/presentations/slides/_src/<topic>/` に置く（再生成の source of truth）
 - `notes/<YYYY-MM-DD>-plan.md` — 各スライドの構成・L1 メッセージ計画
 - `design-notes/<topic>_source.md` — 視覚要素の設計ノート
 - `decisions/` — トピック選定や figure 取捨選択の意思決定ログ
@@ -474,18 +474,18 @@ Claude + Codex の二段レビューは応用編。本部署単独で運用し�
 
 ## ルール
 
-- スタイル: 16:9、MS Gothic + Arial、L1（key message）1 スライド 1 個
+- スタイル: 16:9、和文 MS Gothic / 英数 Arial、1 スライド 1 メッセージ（`references/design-system.md` 準拠）
 - shape の矩形交差 0 を厳守（`assert_no_overlap` で自動検証）
 - 箇条書きは 3 行以下に抑え、長くなったらテーブル / グラフ化
-- グラフは **Excel-editable native chart のみ**（PNG 禁止）
+- 図表・チャートは **native SVG shape** で描く（変換後も編集可能）。論文図のみラスタ切り抜き可（`crop_paper_figures.py`）
 - フロー図は **native shape + arrow のみ**
 
 ## 用途別
 
-- **学会発表（口頭・ポスター）**: `caw-slides` の `generate_conference.py` テンプレ。専門家向け、20-50 枚
-- **論文紹介**: `generate_journal_club.py`。原論文・SI の図を主、自作補助。Figure 番号を出典に明記
-- **研究室報告会・進捗共有**: `generate_lab_report.py`。自前データ主体、6-15 枚
-- **講義・チュートリアル**: `generate_lecture.py`。平易語・概念図、15-30 枚
+- **学会発表（口頭・ポスター）**: 専門家向け、結果プロット主体、20-50 枚
+- **論文紹介**: 原論文図を切り抜き（`crop_paper_figures.py`）＋自作図表を混在。Figure 番号を出典に明記、6-12 枚
+- **研究室報告会・進捗共有**: 自前データ主体、6-15 枚
+- **講義・チュートリアル**: 平易語・概念図、15-30 枚
 
 ## 検証手順
 
