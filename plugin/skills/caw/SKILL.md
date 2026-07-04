@@ -219,7 +219,8 @@ Call 1〜6 の回答（と Call 3 の論文から浅く抽出した研究理解�
 | research | `work/papers/` | `pdf/`＝原本 PDF ／ `md/`＝文献要約（`<author-year>.md`） |
 | research | `work/topics/` | 調査トピック・文献リスト（caw-research の HTML、`<topic>.html`） |
 | writing | `work/manuscripts/` | 論文・申請書ドラフト（`caw-write`、md / LaTeX / Word）、図表、参考文献 |
-| presentation | `work/presentations/slides/` | 発表資料・論文紹介スライド（`.pptx`）。生成スクリプトは `office/presentation/scripts/`（再生成用） |
+| presentation | `work/presentations/slides/` | 発表資料・論文紹介スライド（`.pptx`）。SVG ソースは同下の `_src/<deck>/`（再生成用） |
+| presentation | `work/presentations/figures/` | **スライドに使う画像をユーザーが置く inbox**（顕微鏡写真・装置スクショ・外部プロット・スキャンした手描き図 等）。`caw-slides` がここの画像を拾って埋め込み、質の高いスライドにする |
 | analysis | `work/analyses/` | 解析結果（1 トピック 1 サブフォルダ） |
 | analysis | `work/notebooks/` | Jupyter Notebook |
 | analysis | `work/figures/` | 解析・論文・スライド用の図表（presentation と共有） |
@@ -231,6 +232,8 @@ Call 1〜6 の回答（と Call 3 の論文から浅く抽出した研究理解�
 review 部署は内部品質ゲート記録のみ扱うため、`work/` 配下 ディレクトリは作らず `office/review/{code-reviews,validation}/` のみで運用する。
 
 **research（work/papers/）にも投入フォルダ**：research を選択した場合、`work/papers/pdf/`（PDF 置き場）と `work/papers/md/`（書誌付き要約）を作成し、README に「論文 PDF を `work/papers/pdf/` に入れて『登録して』と言うと、`/caw-register` が書誌情報を抽出して `work/papers/md/<著者-年>.md` に整理し、ナレッジベース／クラウドストレージにも登録する」と平易に明記する。初心者が「PDF をどこに置けばいいか」で迷わないようにするのが目的。
+
+**presentation（work/presentations/figures/）＝スライド用画像の投入フォルダ**：`work/presentations/figures/` を作成し、README に「**スライドに載せたい画像（顕微鏡写真・装置スクショ・外部で作ったプロット・スキャンした手描き図・ロゴ 等）をここに入れておくと、『スライド作って』と言ったときに `caw-slides` が候補として拾い、アスペクト比を保って埋め込みます**。ファイル名は内容が分かる名前に（例 `xrd_120C.png`）。PNG / JPEG / SVG が使えます」と平易に明記する。ユーザーが自分の実データ画像で質の高いスライドを作れるようにするのが目的。
 
 **統合 inbox（迷ったらここ）**：プロジェクト直下に `inbox/` を作成し、README に「**種類を問わず何でもここに入れて『処理して』と言えば、`caw-intake` が中身を見て判定し適切に処理します**——自分の論文/スライド/CV→プロファイル・文体を抽出（`work/profile/`・`work/manuscripts/_style/`）、外部論文→登録（`work/papers/`）、計算入出力→Playbook 取り込み。**処理が済んだ原本は種類ごとに `work/…/_source/`（過去 ES→`work/documents/_source/` 等）へ移動し、inbox は空になる**ので原本も後から探しやすい。どこに入れるか迷ったらここで OK」と明記する。`work/papers/pdf/`（外部論文の直接登録）や各計算ソフトの `_past-data/` は、置き場が分かっている人向けの直接ルート。
 

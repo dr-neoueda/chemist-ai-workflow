@@ -2,6 +2,18 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.70.0 / Codex 1.69.0 / Copilot 1.40.0 / Gemini 1.47.0] - 2026-07-04
+
+### Added — ユーザー画像を `work/presentations/figures/` に置いてスライドに使えるように
+
+`work/presentations/figures/` を **スライド用画像のユーザー投入フォルダ**として正式化し、caw-slides がそこの画像（顕微鏡写真・装置スクショ・外部プロット・スキャン図・ロゴ 等）を拾って**アスペクト比を保って埋め込む**ようにした。実データ画像で質の高いスライドを作れる。
+
+- **scaffold**：caw オンボーディングで `work/presentations/figures/` を作成し、README に「ここに画像を入れると『スライド作って』で caw-slides が拾って埋め込む」と平易に明記（plugin/codex/copilot の caw SKILL）。
+- **`scripts/embed_image.py`（新規）**：SVG 内の `<image href="local">` を **data-URI にインライン化**（vendored 変換器に埋め込ませる）＋ `image_size`/`fit_box`（アスペクト維持・既定は非拡大）。堅牢化：クォート/空白/`xlink:href` 対応・`data-href` 誤一致回避・コメント領域除外・**MIME は magic bytes 判定**・**path traversal ガード**（base_dir 外は `--allow-outside` 時のみ）。
+- **caw-slides SKILL**：Step A に `work/presentations/figures/` を素材源として追加、Step B に画像埋め込み（アスペクト維持）、Step D に「変換前にローカル image href を data-URI 化」を追加。
+- **TDD＋二段レビュー**：pytest 32 件（regex 全バリアント・traversal・magic MIME・コメント・upscale）。Claude+Codex が `_HREF_RE` の silent バグ 2 件を一致検出→修正（記録 `review/code-reviews/2026-07-04-caw-slides-embed-image.md`）。caw-slides 全 104 PASS。plugin↔codex バイト一致・gemini 節も更新。
+- 版 plugin 1.69→**1.70**・codex 1.68→**1.69**・copilot 1.39→**1.40**（figures scaffold）・gemini 1.46→**1.47**。consistency 全 OK。
+
 ## [1.69.0 / Codex 1.68.0 / Copilot 1.39.0 / Gemini 1.46.0] - 2026-07-04
 
 ### Added — caw-slides に LaTeX 数式レンダを復活（ハイブリッド：matplotlib オフライン＋codecogs 任意）

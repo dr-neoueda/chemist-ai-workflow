@@ -41,6 +41,7 @@ trigger: /caw-slides
 |---|---|
 | 用途 | 論文紹介 / 学会発表 / 報告会 / 講義 |
 | 元データ | 論文紹介＝`work/papers/`（`caw-register` 登録の md ＋原論文 PDF）／ 学会・報告会＝`work/manuscripts/`・`work/profile/key-findings.md`・`work/analyses/`／ 講義＝指定教材 |
+| **ユーザー画像** | **`work/presentations/figures/` を必ず確認**。ユーザーが置いた画像（顕微鏡写真・装置スクショ・外部プロット・スキャン図・ロゴ 等）と `work/figures/`・`work/analyses/` の解析図があれば、**候補として提示し使うものをスライドに埋め込む**（質の高いスライドの主材料）|
 | 言語・場面・制約 | 日本語/英語、枚数目安（下表）、必須で入れる図 |
 
 ### Step B: SVG を描く（`design-system.md` どおり）
@@ -58,6 +59,7 @@ trigger: /caw-slides
   python3 ${SKILL}/scripts/render_latex.py "k = A e^{-E_a/RT}" <out.png> --dpi 300 --color "#16283D"
   python3 ${SKILL}/scripts/render_latex.py "\ce{2H2 + O2 -> 2H2O}" <out.png> --online   # フル LaTeX
   ```
+- **ユーザー画像・解析図の埋め込み**：`work/presentations/figures/`（ユーザーが置いた画像）や `work/figures/`・`work/analyses/` の図を使うときは、SVG に `<image href="work/presentations/figures/foo.png" x=.. y=.. width=.. height=..>` と書く。**アスペクト比を保って配置**する（潰さない）：`scripts/embed_image.py` の `image_size()`＋`fit_box(iw, ih, max_w, max_h)` で目標ボックスに収めた幅高を得てから width/height を決める。写真・実データ図はラスタ埋込。source/撮影条件などの caption を添える。
 
 ### Step C: ゲート（必ず PASS させる）
 ```bash
@@ -66,8 +68,15 @@ python3 ${SKILL}/scripts/assert_no_overlap.py work/presentations/slides/_src/<de
 ```
 違反が出たら SVG を直して再実行。**両方 PASS するまで次に進まない**（豆腐・重なりはここで潰す）。
 
-### Step D: native pptx に変換（同梱変換器）
+### Step D: 画像を data-URI にインライン化 → native pptx に変換
+
+SVG に `<image href="local-file">`（ユーザー画像・切り抜き図・数式 PNG）がある場合、**変換前に data-URI へインライン化**する（vendored 変換器を直呼びすると外部ファイル href は埋め込まれないため）。無ければこの inline は不要。
 ```bash
+# 各 SVG のローカル image href を data-URI 化（base-dir はプロジェクトルート）
+for f in work/presentations/slides/_src/<deck>/*.svg; do
+  python3 ${SKILL}/scripts/embed_image.py inline "$f" "$f" --base-dir .
+done
+# native pptx へ変換
 python3 - <<'PY'
 import sys; sys.path.insert(0, "${SKILL}/vendor")
 from pathlib import Path
@@ -116,6 +125,7 @@ python3 ${SKILL}/scripts/fix_ea_font.py work/presentations/slides/<deck>.pptx
 | `scripts/assert_font_rule.py` | 和文フォントゲート（stdlib のみ） |
 | `scripts/assert_no_overlap.py` | 重なり/はみ出しゲート（stdlib のみ） |
 | `scripts/crop_paper_figures.py` | 論文 PDF 図の高解像度切り抜き（PyMuPDF） |
+| `scripts/embed_image.py` | ユーザー画像（`work/presentations/figures/`）を SVG に data-URI 埋込＋アスペクト維持 fit |
 | `scripts/render_latex.py` | LaTeX 数式を透過 PNG にレンダ（matplotlib オフライン→任意で codecogs） |
 | `scripts/fix_ea_font.py` | ビルド後 pptx の ea フォント修正（python-pptx） |
 | `tests/` | 上記スクリプトの pytest（挙動仕様） |
