@@ -83,7 +83,9 @@ for svg in src.glob("*.svg"):              # ローカル image href を data-UR
     svg.write_text(inline_image_hrefs(svg.read_text(encoding="utf-8"), base_dir="."), encoding="utf-8")
 create_pptx_with_native_svg(sorted(src.glob("*.svg")),
     Path("work/presentations/slides/<deck>.pptx"),
-    canvas_format="ppt169", use_native_shapes=True, verbose=False)
+    canvas_format="ppt169", use_native_shapes=True,
+    transition=None,                       # ← 切り替えアニメを無効化（既定 'fade' を明示的に切る）
+    verbose=False)
 ```
 
 ### Step E: 後処理（ea フォント修正）
