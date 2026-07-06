@@ -2,6 +2,18 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.72.0 / Codex 1.71.0 / Copilot 1.40.0 / Gemini 1.47.0] - 2026-07-06
+
+### Changed — caw-slides 出力クリーンアップ：最背面フル白パネル廃止＋切り替えアニメを明示無効化
+
+caw-slides の authoring ガイドが本文ページに**フルキャンバスの白 `<rect x0 y0 w1280 h720 fill=#FFFFFF>`** を描くよう指示しており、vendored 変換器がそれを**最背面のスライド大シェイプ**として pptx に出していた。PowerPoint のスライド背景（slideMaster `bgRef schemeClr=bg1`＝既定で白）と冗長で、編集時に背面の白四角を誤選択する・シェイプ数が 1 枚ごとに増える弊害があった。ラボ本体の PPT Master プロセスは 2026-07-06 に同挙動を廃止済みだったが、caw 配布側に未反映（ドリフト）だったため揃えた。
+
+- **`references/design-system.md`（plugin ↔ codex バイト一致）**：本文ページの「背景：`<rect …/>`」を **「背景シェイプは置かない（SVG は実コンテンツから開始・ページ背景は master bg1=白がそのまま出る）」** に変更。§7 オーサリング厳守事項 #5「背景は `<rect>`」を **「全面背景 rect は生成しない。塗りが要る領域だけ部分 `<rect>`/`<path>`」** に修正。
+- 影響範囲：SKILL.md のスケルトンは元から bg rect を持たず修正不要。gemini GEMINI.md は design-system を inline せず（bg-rect 指示なし）、copilot は caw-slides 非同梱のため、**copilot/gemini は据置**。
+- ドキュメント変更のみ・既存デッキの再生成不要（新規デッキから白パネルが出なくなる）。
+- **切り替えアニメの明示無効化**：生成スニペット `_build.py`（SKILL.md・plugin/codex）で `create_pptx_with_native_svg(..., transition=None)` を明示。vendored 変換器は `pptx_animations` を非同梱＝`ANIMATIONS_AVAILABLE=False` で**元から `<p:transition>` を出さない**（実機 2 枚デッキで transition/timing/anim ノード 0 を実証）が、API 既定が `transition='fade'` のままだったため、将来 animation モジュールを同梱しても切り替えが復活しないよう **`None` で短絡**（`if transition and ANIMATIONS_AVAILABLE:` を確実に False に）。スライド切り替えアニメなしがユーザー既定。
+- 版 plugin 1.71→**1.72**・codex 1.70→**1.71**。consistency 全 OK。
+
 ## [1.71.0 / Codex 1.70.0 / Copilot 1.40.0 / Gemini 1.47.0] - 2026-07-06
 
 ### Changed — 第 2 回テスト会（スライド作成ハンズオン・Windows）向けに手順書とパイプラインを整備

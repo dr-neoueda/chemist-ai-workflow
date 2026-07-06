@@ -29,7 +29,7 @@ distill し、**日本語の化学スライド向けにローカライズ**し�
 - メタ：著者・誌名・DOI を `text x100, 16–19px {body}/{ink} Arial`、左に `rect w4 h60 fill={primary}`。
 
 ### 本文ページ（content）
-- 背景：`<rect x0 y0 w1280 h720 fill={bg}/>`
+- **背景シェイプは置かない**：フルキャンバスの白 rect（`<rect x0 y0 w1280 h720 fill=#FFFFFF>` や `<g id="bg">…`）を **authoring 時に生成しない**。SVG は実コンテンツ（下記ヘッダ）から開始する。ページ背景は pptx の slideMaster（`bgRef schemeClr=bg1`＝既定で白）がそのまま出るので見た目は不変。全面白 rect を描くと、最背面にスライド大の冗長な全面シェイプが 1 枚ごとに増え、PowerPoint での誤選択・シェイプ数増の原因になる。塗りが要る領域だけ部分 `<rect>`/`<path>` で。
 - **ヘッダ**：`rect x80 y72 w40 h6 fill={primary}`（アクセントバー）＋ kicker `text x80 y104 15px bold {primary} Arial letter-spacing="2"`（和文語は tspan で MS Gothic）＋ タイトル `text x80 y142 28px bold {ink}` ＋ 区切り線 `line x1=80 x2=1200 y=166 stroke={divider}`。
 - **本文エリア**：y~190–650。§4 のレイアウトパターンから選ぶ。
 - **フッタ**：出典 `text x80 y694 13px {grey} Arial`（左）＋ ページ番号 `text x1200 y694 13px {grey} text-anchor="end"`（右、`"N / M"`）。
@@ -128,7 +128,7 @@ PPT Master `shared-standards.md`／`design_spec_reference §XI` 由来のハー�
 3. **透明度**：`fill-opacity` / `stroke-opacity`（`rgba()` 不可）。`<g opacity>` 不可（子に個別）。
 4. **文字**：約物・記号は **raw Unicode**（`—` `–` `©` `→` `·` を直接）。HTML 実体参照（`&mdash;`
    `&nbsp;` 等）**禁止**。XML 予約文字は実体で（`R&amp;D`、`error &lt; 5%`）。
-5. **背景は `<rect>`**。角丸ボックスは `<rect rx>` か `<path>`（`A` 円弧）で。
+5. **全面背景 rect は生成しない**（ページ背景は master `bg1`＝白がそのまま出る）。塗りが要る領域だけ**部分** `<rect>`/`<path>` を置く。角丸ボックスは `<rect rx>` か `<path>`（`A` 円弧）で。
 6. `marker-start`/`marker-end` は条件付き可（`<marker>` は `<defs>` 内・`orient="auto"`・形は三角/菱形/円）。
 7. `clipPath` は **`<image>` 要素にのみ**可（`<defs>` 内・単一 shape child）。shape/group/text には使わず、目的の形を native 要素で直接描く。
 8. インラインスタイルのみ。外部 CSS・`@font-face` 不可。
