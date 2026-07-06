@@ -69,22 +69,21 @@ python3 ${SKILL}/scripts/assert_no_overlap.py work/presentations/slides/_src/<de
 
 ### Step D: 画像を data-URI にインライン化 → native pptx に変換
 
-SVG に `<image href="local-file">`（ユーザー画像・切り抜き図・数式 PNG）がある場合、**変換前に data-URI へインライン化**する（vendored 変換器を直呼びすると外部ファイル href は埋め込まれないため）。無ければこの inline は不要。
-```bash
-# 各 SVG のローカル image href を data-URI 化（base-dir はプロジェクトルート）
-for f in work/presentations/slides/_src/<deck>/*.svg; do
-  python3 ${SKILL}/scripts/embed_image.py inline "$f" "$f" --base-dir .
-done
-# native pptx へ変換
-python3 - <<'PY'
-import sys; sys.path.insert(0, "${SKILL}/vendor")
+SVG に `<image href="local-file">`（ユーザー画像・切り抜き図・数式 PNG）があれば、**変換前に data-URI へインライン化**する（vendored 変換器を直呼びすると外部ファイル href は埋め込まれないため）。**inline と変換を 1 つの Python で行う**（Windows / macOS 共通・bash のループ不要）。次を `_build.py` として保存し、`python _build.py`（Windows は `py _build.py`）で実行:
+```python
+import sys
 from pathlib import Path
+SKILL = r"${SKILL}"                        # ← このスキルの install 位置に置換
+sys.path[:0] = [f"{SKILL}/scripts", f"{SKILL}/vendor"]
+from embed_image import inline_image_hrefs
 from svg_to_pptx import create_pptx_with_native_svg
+
 src = Path("work/presentations/slides/_src/<deck>")
+for svg in src.glob("*.svg"):              # ローカル image href を data-URI 化（in-place）
+    svg.write_text(inline_image_hrefs(svg.read_text(encoding="utf-8"), base_dir="."), encoding="utf-8")
 create_pptx_with_native_svg(sorted(src.glob("*.svg")),
     Path("work/presentations/slides/<deck>.pptx"),
     canvas_format="ppt169", use_native_shapes=True, verbose=False)
-PY
 ```
 
 ### Step E: 後処理（ea フォント修正）

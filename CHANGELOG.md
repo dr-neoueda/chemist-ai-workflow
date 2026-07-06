@@ -2,6 +2,17 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.71.0 / Codex 1.70.0 / Copilot 1.40.0 / Gemini 1.47.0] - 2026-07-06
+
+### Changed — 第 2 回テスト会（スライド作成ハンズオン・Windows）向けに手順書とパイプラインを整備
+
+明後日のテスト会（Windows ユーザーのみ・スライド作成ハンズオン）に向けて、ツール導入手順とスライド生成の Windows 互換性を整えた。
+
+- **`TESTING-slides-handson.md`（新規）**：Windows 向けスライド作成ハンズオン手順書。①スライド用ツール導入（`環境を整えて` で per-tool 導入 or 手動 `py -m pip install python-pptx pillow pymupdf matplotlib numpy`）②`work/presentations/figures/` に画像を置く ③「スライド作って」④pptx を PowerPoint で開いて編集可能性を確認、の流れ＋Windows トラブルシュート。
+- **`web/.../requirements.md` 更新**：スライドツールを現状（SVG-first）に。**PyMuPDF を追加**、python-pptx/pillow/matplotlib の役割を明記、`/caw-setup` を「一括」→「per-tool・理由説明つき」に、動作確認を `import pptx, PIL, fitz, matplotlib` に更新。Windows pip 行に `pymupdf` 追加。
+- **caw-slides Step D を Windows 互換に**（plugin/codex）：`for f in ...; do ...; done` の bash ループを撤廃し、**inline（画像 data-URI 化）＋変換を 1 つの Python（`_build.py`）**に統合（`py _build.py` で動く）。実ローカル画像で PICTURE 埋込を確認。
+- 版 plugin 1.70→**1.71**・codex 1.69→**1.70**（copilot/gemini はスライド Step 変更の影響外で据置）。consistency 全 OK。
+
 ## [1.70.0 / Codex 1.69.0 / Copilot 1.40.0 / Gemini 1.47.0] - 2026-07-04
 
 ### Added — ユーザー画像を `work/presentations/figures/` に置いてスライドに使えるように
