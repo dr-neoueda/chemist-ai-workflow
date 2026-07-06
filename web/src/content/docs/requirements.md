@@ -21,7 +21,10 @@ caw のコア（オンボーディング、部署スキャフォールド、Play
 | 土台 | Node.js（LTS） | Claude Code 本体・npx ベースの MCP サーバー | 必須 |
 | 土台 | git | プラグインの取得・バージョン管理 | 必須 |
 | Python<br />機能 | Python 3.12 以上 | スライド・図・解析・PDF 処理の基盤 | 十分活用に必須 |
-| Python<br />機能 | python-pptx / matplotlib / pillow / numpy | caw-slides の図・スライド生成 | 同上 |
+| スライド | python-pptx | 手描き SVG を編集可能な pptx に変換（caw-slides の核） | スライドに必須 |
+| スライド | pillow | 写真・切り抜き図（ラスタ画像）の埋め込み | 図入りスライドに必須 |
+| スライド | PyMuPDF | 論文 PDF から図を高解像度で切り抜く | 論文紹介スライドに必須 |
+| スライド | matplotlib | 数式（LaTeX）レンダ・解析グラフ作成 | 数式/作図に必須 |
 | PDF 処理 | poppler（pdftoppm / pdftotext / pdfinfo） | 論文 PDF の図抽出・メタデータ抽出 | PDF を扱うなら必須 |
 | Windows のみ | Git Bash または WSL2 | **Claude Code 版**の Hooks（bash スクリプト）の実行 | Claude Code を Windows で使う場合のみ（Codex CLI / Copilot CLI 版は Hooks 無しで不要） |
 | 任意 | GitHub CLI（gh） | engineering / review 部署の PR ワークフロー | 任意 |
@@ -53,7 +56,7 @@ powershell -ExecutionPolicy Bypass -File caw-setup.ps1
 
 :::tip
 すでに Claude Code / Codex CLI / GitHub Copilot CLI が動く環境なら、CLI の中で **`/caw-setup`**（Codex / Copilot では「環境を整えて」）と
-言うだけで、不足ツールの検出から導入まで同じ「計画提示 → 一括」方式で行えます。
+言うだけで、不足ツールを **1 つずつ「なぜ必要か」を説明しながら**導入するか尋ねてくれます（`/caw` オンボーディングの一部としても自動で実行されます）。
 :::
 
 以下は、何が入るのかを把握したい場合の **手動インストール手順**です。
@@ -73,8 +76,8 @@ npm install -g @openai/codex
 # GitHub Copilot CLI を使う場合（任意、Node.js 22 以上）
 npm install -g @github/copilot
 
-# Python パッケージ（caw-slides の図・スライド生成）
-python3 -m pip install python-pptx matplotlib pillow numpy
+# Python パッケージ（caw-slides のスライド生成）
+python3 -m pip install python-pptx pillow pymupdf matplotlib numpy
 
 # 任意：PR ワークフロー / pptx 目視確認
 brew install gh
@@ -104,8 +107,8 @@ npm install -g @openai/codex
 # GitHub Copilot CLI を使う場合（任意、Node.js 22 以上）
 npm install -g @github/copilot
 
-# Python パッケージ
-py -m pip install python-pptx matplotlib pillow numpy
+# Python パッケージ（caw-slides のスライド生成）
+py -m pip install python-pptx pillow pymupdf matplotlib numpy
 
 # poppler（Scoop 経由。または conda install -c conda-forge poppler）
 scoop install poppler
@@ -125,7 +128,7 @@ git --version
 python --version        # Windows は py --version でも可
 claude --version
 pdftoppm -v             # poppler
-python -c "import pptx, matplotlib, PIL, numpy; print('python deps OK')"
+python -c "import pptx, PIL, fitz, matplotlib, numpy; print('slide deps OK')"
 ```
 
 ## 関連ページ
