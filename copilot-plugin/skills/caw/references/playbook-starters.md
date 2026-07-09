@@ -525,9 +525,10 @@ simulation.step(500000)
 
 ### computation/playbooks/chimerax.md
 
+````markdown
 ---
 tool: ChimeraX
-last_updated: 2026-06-18
+last_updated: "{{TODAY}}"
 ---
 
 # ChimeraX Playbook
@@ -564,6 +565,7 @@ UCSF ChimeraX の構造可視化・密度マップフィッティング・解析
 
 - UCSF ChimeraX User Guide（`fitmap` / `molmap` / `measure correlation` コマンド）
 - ISOLDE（cryo-EM モデル rebuilding プラグイン）
+````
 
 ## Python ライブラリ Playbook
 

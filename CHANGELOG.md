@@ -2,6 +2,31 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.74.0 / Codex 1.73.0 / Copilot 1.42.0 / Gemini 1.48.0] - 2026-07-09
+
+### Changed — 初期構築のトークン第2削減：scaffold をモデルの逐次 Write から `scaffold.py` 1 実行へ
+
+第 2 回テスト会で判明した「初期構築のトークン過多」の第 2 の主因＝**Step 3 scaffold がモデルに ~40 ファイルを個別 Write させていた**（Write の中身＝そのまま出力トークン、概算 15〜25k）。同梱スクリプトが参照ファイルをパース・置換して配置する方式へ変更し、モデルが書くのは **設定 JSON 1 枚＋`work/profile/` の小ファイルだけ**に圧縮。
+
+- **`scripts/scaffold.py`（新規・plugin/codex/copilot 3 変種で byte 一致）**：オンボ回答 JSON を受け、`references/*.md`（`chemistry-departments.md`＝`### <path>`+fenced、`claude-md-template.md`／`agents-md-template.md`、`playbook-starters.md`、`mcp-setup-templates.md`）をパースして `office/**` + `work/**` を一括生成。root 出力は `CLAUDE.md`（Claude Code）／`AGENTS.md`（Codex/Copilot）を自動判定。**24〜40 ファイルの逐次 Write → 1 コマンド実行**。
+- **caw SKILL.md Step 3 を配線**（plugin/codex/copilot）：3-1 設定 JSON を書く → 3-2 `python3 ${SKILL}/scripts/scaffold.py` 実行 → 3-3 `work/profile/research-profile.md` だけ Write。Python 未導入時のフォールバックを明記。旧・詳細な部署/work-dir/README テーブルはスクリプトへ移動（SKILL も 496→430 行に圧縮）。
+- **安全性（二段レビュー: Claude python-reviewer + Codex adversarial ×2 周）**：path traversal guard（`safe_relpath`/`resolve_within`/`normalize_tool`）・Windows 予約名拒否・fence fail-closed・`assert_no_placeholders`・mutable ファイル（playbook/todo）保護・`assemble_mcp` を fence-aware（`### Q3/Q4 = <choice>`）に。**25 pytest GREEN**。記録 `review/code-reviews/2026-07-09-caw-scaffold.md`。
+- **`playbook-starters.md`**：`chimerax` が fence 欠落で silent drop していたのを修正（fence 化＋`{{TODAY}}`）。回帰ガード test（全 `### computation/playbooks/*` header が抽出される）を追加。
+- **gemini** は単一 GEMINI.md 構造で参照ファイル/スクリプトを同梱しないため**散文 scaffold のまま**（据置 1.48.0）。plugin/codex/copilot が script 方式。
+- 版 plugin 1.73→**1.74**・codex 1.72→**1.73**・copilot 1.41→**1.42**。consistency 全 OK。
+
+## [1.73.0 / Codex 1.72.0 / Copilot 1.41.0 / Gemini 1.48.0] - 2026-07-09
+
+### Changed — 初期構築のトークン過多を解消：Playbook の web 種まきをオンボーディング自動から「初回利用時・1 ツール」の遅延方式へ
+
+第 2 回テスト会で判明した最大の問題＝**初期環境構築でトークンを使い過ぎる**の主因は、オンボーディングの `Step 3-7` が名指しツールごとに web 検索サブエージェントを**並列自動起動**していたこと（3〜6 ツールで 10 万〜30 万トークン級、caw を使い始める前に利用枠を消費）。**種まきを onboarding から外し、遅延（lazy）方式に変更**した。
+
+- **オンボーディングでは web 種まきを自動起動しない**（全 4 変種：plugin/codex/copilot の caw `SKILL.md` §3-7、gemini `GEMINI.md`）。同梱の `playbook-starters.md` 由来の starter でそのまま使い始められる。
+- **遅延方式**：`caw-input` が対象ツールの Playbook を **cold-start**（`## Lessons Learned` も `## 外部リファレンス` も空）と検出したときだけ、入力生成前に **1 回だけ**「このツールの初期 Playbook を web から種まきしますか？（トークン多め・任意）」と尋ね、**同意時のみ・そのツール 1 つだけ**種まきする（plugin/codex の `caw-input` Step 1）。明示要求「◯◯を web から種まきして」も 1 ツール単位で `caw-playbook` から実行可（plugin/codex）。
+- **`playbook-web-seeding.md`（plugin↔codex↔copilot バイト一致）**：タイトル・「いつ・どう走らせるか」を「初回利用時・1 ツールだけ・遅延／onboarding では走らせない／web 検索は最小限」に作り替え。
+- 効果：オンボーディングのトークンを、名指しツール数に比例した web 研究エージェント分だけ丸ごと削減。種まきコストは「実際にそのツールを使うユーザー」にだけ、使うツール分だけ後払いになる。
+- 版 plugin 1.72→**1.73**・codex 1.71→**1.72**・copilot 1.40→**1.41**・gemini 1.47→**1.48**。consistency 全 OK。
+
 ## [1.72.0 / Codex 1.71.0 / Copilot 1.40.0 / Gemini 1.47.0] - 2026-07-06
 
 ### Changed — caw-slides 出力クリーンアップ：最背面フル白パネル廃止＋切り替えアニメを明示無効化
