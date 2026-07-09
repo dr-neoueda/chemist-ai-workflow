@@ -44,6 +44,7 @@ Q1: どの計算ソフトの入力ファイルを生成しますか？
 
 選択されたソフトに対応する Playbook を最初に読む：
 - `office/computation/playbooks/<tool>.md`（存在しない場合は `references/playbook-starters.md` から該当セクションを参照）
+- **初回利用の種まきオファー（任意・遅延／トークン枠保護）**：その Playbook が **cold-start**（`## Lessons Learned` も `## 外部リファレンス（web 由来・要検証）` も空＝同梱の starter しか無い）なら、入力生成に入る前に **1 回だけ**「このツールの初期 Playbook を web から種まきしますか？（web 検索でトークンを多めに使います・任意）」と尋ねる（既定＝「今は入力を進める」）。**同意したときだけ**、その **1 ツールだけ** に対し caw スキルの `references/playbook-web-seeding.md` の手順を実行し（web で一次資料・公式を数クエリ調べ、`## 外部リファレンス（web 由来・要検証）` に出典 URL つきで既定・罠を追記。`## Lessons Learned` には触れない）、その結果を下の Step 4 の既定に反映する。**既に中身のある Playbook では尋ねない**。オンボーディングでは種まきしない方針の受け皿（[caw] Step 3-7）。
 
 あわせて `office/computation/AGENTS.md`（Claude Code は `CLAUDE.md`、Gemini は `GEMINI.md`）も読む — オンボーディングの計算環境（Q6）で記録された **submission の既定**（HPC か local か、queue・walltime・並列数・module load・account など）を、後段の実行スクリプト生成（Step 5）で使う。
 

@@ -140,116 +140,52 @@ Call 1〜6 の回答（と Call 3 の論文から浅く抽出した研究理解�
 
 > **部署の選択質問は廃止**：部署は常に全 9 部署を作成するため、「どの部署を作るか」は尋ねない。
 
-### Step 3: 自動スキャフォールド
+### Step 3: 自動スキャフォールド（scaffold スクリプトで一括生成）
 
-ヒアリング結果に基づいて、以下を一括生成する。
+ヒアリング結果から **office/ + work/ 一式をスクリプトで一括生成**する。モデルが 30〜40 個のファイルを個別に Write するとオンボーディングでトークンを大量消費するため、**同梱の `scripts/scaffold.py` が参照ファイル（`references/*.md`）をパース・置換して配置**する。モデルが Write するのは **小さな設定 JSON と `work/profile/` の個別化だけ**。
 
-**scaffold 範囲（全ユーザー共通：化学者モードは常に全 9 部署）**：
-- `office/` + ルート CLAUDE.md + **全 9 部署**（secretary / research / engineering / computation / experiment / analysis / writing / review / presentation）+ 作業ディレクトリ
-- Call 1〜4（分野 大→中・論文から抽出した研究理解・計算ツール）を各部署 CLAUDE.md と `work/profile/` に反映
-- Call 5〜6（計算実行環境・文献管理・クラウド・体制・申請書・論文ステータス）を `office/CLAUDE.md` のパーソナライズメモと各部署 CLAUDE.md に反映 + 申請書予定があれば writing 部署に申請書トラッカー雛形を追加
+`${SKILL}` = このスキルの install 位置（Claude Code: `~/.claude/plugins/marketplaces/*/skills/caw/`）。
 
-#### 3-1. ルート `office/` とルート CLAUDE.md
+#### 3-1. 回答を設定 JSON にまとめる（これだけ Write・小さい）
 
-1. `office/` ディレクトリを作成
-2. `references/claude-md-template.md` を読み込み、以下のプレースホルダを置換して `office/CLAUDE.md` を生成：
-   - `{{RESEARCH_FIELD}}` ← Call 1〜2（分野 大→中）＋ Call 3 論文から補強
-   - `{{COMPUTATION_CATEGORIES}}` ← Call 4（計算ツール）
-   - `{{KNOWLEDGE_BASE}}` ← Call 5（文献管理・ナレッジベース）
-   - `{{CLOUD_STORAGE}}` ← Call 5（クラウドストレージ）
-   - `{{CREATED_DATE}}` ← 今日の日付
-   - `{{DEPARTMENT_TABLE_ROWS}}` ← 全 9 部署のテーブル行
-   - `{{DEPARTMENT_TREE}}` ← 全 9 部署を含むツリー図
+Call 1〜6 の回答から `.caw-scaffold.json`（プロジェクト直下・一時ファイル）を書き出す：
 
-#### 3-2. 秘書部（必須）
+```json
+{
+  "today": "<今日 YYYY-MM-DD>",
+  "research_field": "<Call 1〜2 大→中＋Call 3 論文で補強>",
+  "computation_categories": "<Call 4 の計算ツール（表示名可）>",
+  "knowledge_base": "<Call 5 文献管理: Notion / Obsidian / Logseq / 空>",
+  "cloud_storage": "<Call 5 クラウド: Google Drive / Dropbox / OneDrive / 空>",
+  "personalization_notes": "<Call 1〜4 から派生した運用ヒントを箇条書き 2〜4 行。claude-md-template.md の『パーソナライズメモ生成ガイド』の例に倣う>",
+  "tools": ["<Call 4/Call 3 で名指しされた計算ツールのみ。表示名でよい（例 'Quantum ESPRESSO'）。スクリプトが lowercase-kebab に正規化>"],
+  "wants_experiment_dir": false
+}
+```
 
-`references/chemistry-departments.md` の「secretary」セクションから：
+- `tools` は **名指しされたものだけ**（一覧の全ソフトは入れない）。「計算は使わない / 主に実験中心」なら `tools` を `[]`、`wants_experiment_dir` を `true` にする。
+- `personalization_notes` はモデルが生成する（ここだけ知的作業）。**API key 等の秘匿情報は入れない**。
 
-1. `office/secretary/{inbox,todos,notes}` を作成
-2. `office/secretary/CLAUDE.md` を配置（化学研究向けにカスタマイズされた秘書ロール）
-3. `office/secretary/todos/YYYY-MM-DD.md` を今日の日付で作成（テンプレ付き）
+#### 3-2. scaffold スクリプトを実行
 
-#### 3-3. 化学者向け部署（全 9 部署を一括作成）
+```bash
+python3 "${SKILL}/scripts/scaffold.py" --config .caw-scaffold.json --skill "${SKILL}" --out .
+```
 
-化学者モードの全部署（research / engineering / computation / experiment / analysis / writing / review / presentation。secretary は 3-2 で作成済み）について、`references/chemistry-departments.md` の各セクションから：
+- `python3` が無ければ `py`（Windows）。**Python 未導入なら先に 3-6b の caw-setup で Python を入れてから実行**する（Python はスライド・解析でも必須）。どうしても Python が使えない環境のみ、フォールバックとして `references/chemistry-departments.md` の各 `### <path>` フェンスブロックを手で書き出す。
+- 出力の `wrote: …` 行と末尾 `scaffold complete: N files` を確認する。失敗時は `error: …`（exit 2）を読んで対処。
 
-1. 部署ディレクトリとサブフォルダを作成
-2. `<dept>/CLAUDE.md` を配置（部署固有の役割・運用ルール・参照ファイル）
+**スクリプトが生成するもの（モデルは個別に Write しない）**：
+- `office/CLAUDE.md`（`claude-md-template.md` を置換・全 9 部署の表/ツリー込み）＋ **全 9 部署 `CLAUDE.md`**（`chemistry-departments.md`）＋ secretary の当日 `todos/<today>.md`
+- 名指しツールの `office/computation/playbooks/<tool>.md`（`playbook-starters.md` の該当セクション、無いツールは frontmatter＋空 `## Lessons Learned` の最小 stub）
+- `office/.mcp-setup.md`（`mcp-setup-templates.md` から Call 5 の Notion/Obsidian/Logseq × Google Drive/Dropbox/OneDrive を選んで組立。**API key は書かない手順書**）
+- `work/` 配下：名指しツール dir（README＋`inbox/`＋`_past-data/`）＋ドメイン dir（papers{pdf,md}/topics/manuscripts/presentations{slides,figures}/analyses/notebooks/figures/scripts/tools）＋統合 `inbox/`（README つき）
+- **既存の playbook / 当日 todos は上書きしない**（`--force` でも保護）。static テンプレの再生成が必要なときだけ `--force`。
 
-**Call 4（＋Call 3 論文）で計算ツールが名指しされていた場合**（computation 部署は常に作成済み）：
+#### 3-3. work/profile の個別化（モデルが書く・ここだけ）
 
-- `computation/playbooks/` 配下に該当ソフトの Playbook 雛形を配置
-- `references/playbook-starters.md` に該当セクション（gaussian / gromacs / cp2k / orca / vasp 等）があれば取り出して配置。**無いソフト**（amber / namd / lammps / openmm / psi4 等）は frontmatter（`tool`・`last_updated`）＋空の `## Lessons Learned` だけの最小 Playbook を作る（以後 caw-playbook が追記してスペシャリスト化）
+scaffold 後、**`work/profile/research-profile.md`** に研究プロファイル（分野・活動・使用計算ツール・対象系）を Call 1〜4＋Call 3 論文の浅い抽出から短くまとめて Write する。`key-findings` / `publications` / `citations` / `methods` は空でよい（後で `caw-intake` が過去資料から埋める）。実験系の具体は据え置き（解析時に追記）。**申請書予定**があれば writing 部署に申請書トラッカー雛形を追記してよい。
 
-#### 3-4. `work/` 配下の作業ディレクトリ（実研究ファイル用）
-
-`office/` は AI 部署システムの管理側。実際の研究データを置く作業ディレクトリは、プロジェクト直下に **`work/` ディレクトリを 1 つ作り、その配下にまとめて生成**する（ルート直下に多数のフォルダを散らかさない）。各ディレクトリには `README.md` を 1 枚配置して「何を置くか・関連する `office/` 部署」を明示する。
-
-**Call 4（＋Call 3 論文）でユーザーが名指しした各ツールについてのみ、`work/` 配下にディレクトリ作成**（一覧の全ソフトは作らない）：
-
-| 計算ソフト | 作業ディレクトリ | README で示す中身 |
-|---|---|---|
-| Gaussian | `work/gaussian/` | `.gjf` 入力、`.log`/`.chk`/`.fchk` 出力、`run_*.sh` ジョブスクリプト |
-| GROMACS | `work/gromacs/` | `.gro`/`.top`/`.itp`/`.mdp`/`.ndx`/`.tpr`/`.xtc`/`.edr` |
-| CP2K | `work/cp2k/` | `.inp` 入力、`.out`/`.restart`/`.ener`/`.pos` 出力 |
-| ORCA | `work/orca/` | `.inp` 入力、`.out`/`.gbw` 出力 |
-| VASP | `work/vasp/` | `INCAR`/`POSCAR`/`KPOINTS`/`POTCAR`、`OUTCAR`/`CHGCAR`/`WAVECAR`/`vasprun.xml` |
-| Quantum ESPRESSO | `work/quantum-espresso/` | `.in` 入力、`.out` 出力、`*.UPF` 擬ポテンシャル |
-| MACE / MLIP | `work/mlip/` | 学習データ、`.model` チェックポイント、評価 trajectory |
-| ChimeraX | `work/chimerax/` | `.cxc`/`.py` スクリプト、PDB/mmCIF 構造、`.mrc`/`.map`/`.ccp4` 密度マップ、`.cxs` セッション、フィット結果・レンダ画像 |
-| Psi4 | `work/psi4/` | `.dat`/`.in` 入力、`.out` 出力、`.fchk`/`.molden` |
-| AMBER | `work/amber/` | `.prmtop`/`.inpcrd`/`.mdin` 入力、`.mdout`/`.nc`(traj)/`.rst` 出力 |
-| NAMD | `work/namd/` | `.conf`/`.namd` 入力、`.psf`/`.pdb`、`.dcd`(traj)、`.log` |
-| LAMMPS | `work/lammps/` | `in.*` 入力、`data.*`、`.dump`/`.lammpstrj`(traj)、`log.lammps` |
-| OpenMM | `work/openmm/` | Python(`.py`) スクリプト、`.pdb`/`.xml`(System/State)、`.dcd`(traj) |
-
-各 README には対応する Playbook へのリンク（`../office/computation/playbooks/<tool>.md`）を必ず含める。**上表に無いソフトをユーザーが挙げた場合**は `work/<ソフト名 lowercase-kebab>/` を作り、README に主な入出力拡張子を 1 行で記す（同じく `inbox/`・`_past-data/` を付ける）。
-
-**初心者向けの投入フォルダ（各計算ソフトディレクトリ配下に必ず作る）**：パソコン操作に不慣れでも迷わないよう、各計算ソフトディレクトリ（`work/gaussian/` 等）に次の 2 つのサブフォルダと README を作成する：
-
-- `inbox/` — これから計算したい構造ファイルや下書き入力を一時的に置く場所。「`work/gaussian/inbox/` の構造で最適化入力を作って」のように指示できる
-- `_past-data/` — 過去に自分が回した入力・出力（`.gjf`/`.log`/`.inp`/`.out` 等）を入れる場所。ここにデータを入れて「過去データを取り込んで」と言うと、caw が中身を解析し、その人の汎関数・基底・収束設定などの傾向を該当 Playbook の `## Lessons Learned` に初期 seed する（[caw-playbook] の「過去データ一括取り込み」と連携）。以後の入力生成がその人向けに最適化される
-
-各サブフォルダの README は「ここに何を入れる → 何が起きる」を 1〜2 行の平易な日本語で書く（専門用語を避け、具体例を 1 つ添える）。
-
-**全部署のドメイン作業ディレクトリ（成果物置き場）を必ず `work/` 配下 に作成**：
-
-| 部署 | 作業ディレクトリ | README で示す中身 |
-|---|---|---|
-| research | `work/papers/` | `pdf/`＝原本 PDF ／ `md/`＝文献要約（`<author-year>.md`） |
-| research | `work/topics/` | 調査トピック・文献リスト（caw-research の HTML、`<topic>.html`） |
-| writing | `work/manuscripts/` | 論文・申請書ドラフト（`caw-write`、md / LaTeX / Word）、図表、参考文献 |
-| presentation | `work/presentations/slides/` | 発表資料・論文紹介スライド（`.pptx`）。SVG ソースは同下の `_src/<deck>/`（再生成用） |
-| presentation | `work/presentations/figures/` | **スライドに使う画像をユーザーが置く inbox**（顕微鏡写真・装置スクショ・外部プロット・スキャンした手描き図 等）。`caw-slides` がここの画像を拾って埋め込み、質の高いスライドにする |
-| analysis | `work/analyses/` | 解析結果（1 トピック 1 サブフォルダ） |
-| analysis | `work/notebooks/` | Jupyter Notebook |
-| analysis | `work/figures/` | 解析・論文・スライド用の図表（presentation と共有） |
-| engineering | `work/scripts/` | 単発・一時スクリプト |
-| engineering | `work/tools/` | 再利用される本格的なツール |
-
-**重要**：成果物は **必ず `work/` 配下**。`office/research/papers/` のようなパスは禁止。`office/<dept>/` 配下には部署の運営ノート（CLAUDE.md、計画メモ、内部レビュー記録など、ユーザーが日常的に ファイラーで開かないもの）のみ置く。
-
-review 部署は内部品質ゲート記録のみ扱うため、`work/` 配下 ディレクトリは作らず `office/review/{code-reviews,validation}/` のみで運用する。
-
-**research（work/papers/）にも投入フォルダ**：research を選択した場合、`work/papers/pdf/`（PDF 置き場）と `work/papers/md/`（書誌付き要約）を作成し、README に「論文 PDF を `work/papers/pdf/` に入れて『登録して』と言うと、`/caw-register` が書誌情報を抽出して `work/papers/md/<著者-年>.md` に整理し、ナレッジベース／クラウドストレージにも登録する」と平易に明記する。初心者が「PDF をどこに置けばいいか」で迷わないようにするのが目的。
-
-**presentation（work/presentations/figures/）＝スライド用画像の投入フォルダ**：`work/presentations/figures/` を作成し、README に「**スライドに載せたい画像（顕微鏡写真・装置スクショ・外部で作ったプロット・スキャンした手描き図・ロゴ 等）をここに入れておくと、『スライド作って』と言ったときに `caw-slides` が候補として拾い、アスペクト比を保って埋め込みます**。ファイル名は内容が分かる名前に（例 `xrd_120C.png`）。PNG / JPEG / SVG が使えます」と平易に明記する。ユーザーが自分の実データ画像で質の高いスライドを作れるようにするのが目的。
-
-**統合 inbox（迷ったらここ）**：プロジェクト直下に `inbox/` を作成し、README に「**種類を問わず何でもここに入れて『処理して』と言えば、`caw-intake` が中身を見て判定し適切に処理します**——自分の論文/スライド/CV→プロファイル・文体を抽出（`work/profile/`・`work/manuscripts/_style/`）、外部論文→登録（`work/papers/`）、計算入出力→Playbook 取り込み。**処理が済んだ原本は種類ごとに `work/…/_source/`（過去 ES→`work/documents/_source/` 等）へ移動し、inbox は空になる**ので原本も後から探しやすい。どこに入れるか迷ったらここで OK」と明記する。`work/papers/pdf/`（外部論文の直接登録）や各計算ソフトの `_past-data/` は、置き場が分かっている人向けの直接ルート。
-
-**Call 4 で「計算は使わない / 主に実験中心」を選択していた場合**は、計算ソフト用ディレクトリは作成しない。実験記録用に `work/experiments/` を作るかどうか、その場で `AskUserQuestion` で 1 問追加して確認する（デフォルト Yes）。
-
-#### 3-5. MCP セットアップ手順の生成
-
-Call 5（文献管理・ナレッジベース / クラウドストレージ）の回答に応じて、`office/.mcp-setup.md` を生成する。
-
-1. `references/mcp-setup-templates.md` を読み込む
-2. 共通ヘッダを `office/.mcp-setup.md` に書き出す
-3. 文献管理の回答に該当するナレッジベース MCP セクション（Notion / Obsidian / Zotero・Mendeley / Logseq / 未設定）を追記
-4. クラウドストレージの回答に該当する MCP セクション（Google Drive / Dropbox / OneDrive / 未設定）を追記
-5. 「使わない / 未定」を選んだ項目も、未設定セクションを入れておく（後から再生成しやすい）
-
-**重要**：`office/.mcp-setup.md` は **手順書**であり、API key そのものは絶対に書かない（環境変数経由で渡す手順のみ記載）。
 
 #### 3-6. 完了メッセージ
 
@@ -297,16 +233,13 @@ Call 5（文献管理・ナレッジベース / クラウドストレージ）�
 
 scaffold 完了後、**`caw-setup` SKILL の Step 2〜4 を per-tool モードで実行する**。`caw-setup` 表の各ツールについて、**不足していて・ユーザーの機能に関わるものを 1 つずつ、「なぜ必要か」を添えて導入するか尋ねる**（`AskUserQuestion` を機能グループごとに使い、各ツールの説明欄に「なぜ必要か」を書く）。既に入っているものは尋ねない。選ばれたものだけを導入し、結果を報告する。**「あとで /caw-setup」の後回しにせず、初期構築の一部として必ず行う**。
 
-#### 3-7. 計算ツール Playbook の web 種まき（バックグラウンド・自動）
+#### 3-7. 計算ツール Playbook の web 種まき（オンボーディングでは行わない・遅延）
 
-完了メッセージを表示した**後**、Call 4（＋Call 3 論文）で名指しされた計算ツールについて、**信頼性の高いソースから初期 Playbook を種まき**する。手順・成果物の書式・規律・非目標はすべて **`references/playbook-web-seeding.md` に従う**（ここでは起動方法のみ規定）。
+**オンボーディングでは web 種まきを自動起動しない。** 名指しツール数だけ web 検索エージェントを並列起動すると初期構築でトークンを大量消費し、実際に caw を使い始める前に利用枠を使い切ってしまうため。同梱の starter playbook（`references/playbook-starters.md` 由来）でそのまま使い始められる。
 
-- **`references/playbook-web-seeding.md` を読み込む**。
-- 名指しされたツール**1 つにつき 1 サブエージェント**を、`Task` ツールで **`run_in_background: true`（並列・非ブロッキング）** で起動する。各サブエージェントには「対象ツール名＋ユーザーの研究分野（Call 1〜2）」を渡し、`WebSearch` で一次資料・公式ドキュメントを調べさせ、`office/computation/playbooks/<tool>.md` の **`## 外部リファレンス（web 由来・要検証）`** セクションに追記させる（`## Lessons Learned` には触れない）。
-- **funnel は待たせない**：オンボーディングの応答フローはここで完了扱いにし、種まきは裏で進める。全サブエージェント完了後に **1 回だけ**「N ツールの初期 Playbook を各 `## 外部リファレンス（web 由来・要検証）` に置きました（web 由来・要検証。実際に回した知見は Lessons Learned に書けば上書きされます）」と通知する。
-- 「計算は使わない / 主に実験中心」を選んでいた場合は**この種まきをスキップ**する。
-
-> **後日の再利用**：ユーザーが後からツールを 1 個足したときは、同じ `references/playbook-web-seeding.md` を読んでそのツール 1 つだけに種まきしてよい（オンボーディング時の自動配線はしない）。
+- **遅延方式（既定）**：各ツールの初期 Playbook 種まきは、**そのツールを初めて使うとき**にオファーする。`caw-input` が対象ツールの Playbook を **cold-start**（`## Lessons Learned` も `## 外部リファレンス（web 由来・要検証）` も空）と検出したら、**そのツール 1 つだけ**種まきするか 1 回尋ねる。手順・書式・規律は `references/playbook-web-seeding.md`。
+- **明示要求**：ユーザーが「◯◯の Playbook を web から種まきして」と言えば、そのツール 1 つに `references/playbook-web-seeding.md` の手順を単発実行する。
+- 完了メッセージには「計算ツールの初期ノウハウは、**各ツールを最初に使うときに** web から種まきするか尋ねます（任意・トークンを多めに使います）。同梱の Playbook 出発点はすぐ使えます」と 1 行だけ添える。
 
 ---
 

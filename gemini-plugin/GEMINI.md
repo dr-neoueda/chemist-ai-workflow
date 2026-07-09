@@ -47,8 +47,8 @@
 - 研究：`work/papers/`（`pdf/`＝PDF・`md/`＝文献要約）, `work/topics/`, `work/manuscripts/`（`_style/voice-<name>.md` 含む）, `work/presentations/slides/`, `work/analyses/`, `work/notebooks/`, `work/figures/`, `work/scripts/`, `work/tools/`, `work/profile/`（自分のプロファイル層）, 計算ソフト別 `work/gaussian/` 等（Q2 で名指しされたソフトに応じて。各 `inbox/`・`_past-data/` 付き）。
 - 就活：`work/companies/`（企業研究）, `work/documents/`（ES 等＋`voice-style.md`・`past-answers.md`）, `work/self-analysis/`, `work/interview-prep/`, `work/recruit/`, `work/feedback/`。
 
-### 計算ツール Playbook の web 種まき（scaffold 後・自動）
-scaffold と完了メッセージの**後**、Q2（計算ツール）で名指しされた各ツールについて、**信頼性の高いソースから初期 Playbook を種まき**する（空 Playbook のコールドスタート対策。funnel は止めない）。**1 ツール＝1 エージェント**（並列が使えれば並列、無ければ順次）で、web 検索により**一次資料・公式ドキュメント**を調べ、`office/computation/playbooks/<tool>.md` の **`## 外部リファレンス（web 由来・要検証）`** セクションに追記する。ルール：**(1)** `## Lessons Learned` には触れない（本人が run から得た検証済み知見に予約。両者が食い違えば Lessons が優先）。**(2)** 出典 URL を必ず添える／公式は単一ソース可・非公式は 2 つ以上で裏取り。**(3)** 中身は「意思決定に使える既定」（汎関数・基底・力場・thermostat・擬ポテンシャル・cutoff・既知の罠・version 依存の文法）に絞り、チュートリアルを丸写ししない。**(4)** 信頼できる出典が無い項目は「未取得（要一次資料）」と空欄化し憶測で埋めない。web 検索が使えない場合はスキップし「後から Playbook に追記できます」と案内。「計算は使わない/主に実験中心」なら種まきをスキップ。完了後に **1 回だけ**「N ツールの初期 Playbook を外部リファレンス欄に置きました（web 由来・要検証）」と通知。後日ツールを足したときは、そのツール 1 つだけに同じ手順を単発で再実行してよい。
+### 計算ツール Playbook の web 種まき（オンボーディングでは行わない・遅延）
+**オンボーディングでは自動種まきしない**（名指しツール数だけ web 検索を並列起動すると初期構築でトークンを大量消費し、caw を使い始める前に利用枠を使い切るため）。同梱の starter playbook でそのまま使い始められる。種まきは**遅延**：ユーザーがあるツールを**初めて使うとき**（入力生成や Playbook 操作）に、その Playbook が **cold-start**（`## Lessons Learned` も `## 外部リファレンス` も空）なら、**そのツール 1 つだけ**種まきするか 1 回尋ねる。ユーザーの「◯◯を web から種まきして」の明示要求でも走る。手順：**1 回につき 1 ツールだけ**（並列 N 個の一括起動はしない）、web 検索で**一次資料・公式ドキュメント**を数クエリ調べ `office/computation/playbooks/<tool>.md` の **`## 外部リファレンス（web 由来・要検証）`** に追記する。ルール：**(1)** `## Lessons Learned` には触れない（本人の検証済み知見に予約。食い違えば Lessons 優先）。**(2)** 出典 URL 必須／公式は単一・非公式は 2 つ以上で裏取り。**(3)** 「意思決定に使える既定」（汎関数・基底・力場・thermostat・擬ポテンシャル・cutoff・既知の罠・version 依存の文法）に絞りチュートリアルを丸写ししない。**(4)** 出典が無い項目は「未取得（要一次資料）」と空欄化し憶測で埋めない。web 検索が使えない場合はスキップし「後から Playbook に追記できます」と案内。完了後に **1 回だけ**「&lt;tool&gt; の初期 Playbook を外部リファレンス欄に置きました（web 由来・要検証）」と通知。
 
 ---
 
