@@ -231,12 +231,13 @@ claude mcp add gmail --env GOOGLE_CREDENTIALS_PATH=$HOME/.config/gmail-creds.jso
 
 ---
 
-## Codex CLI を併用する場合
+## 他の CLI を併用する場合
 
-Codex CLI も同じ MCP サーバを使えるが、設定ファイルは別管理：
+どの CLI も同じ MCP サーバを使えるが、設定ファイルは別管理：
 
-- Claude Code: `claude mcp add ...`（`~/.claude.json` 等）
 - Codex CLI: `codex mcp add ...` または `~/.codex/config.toml` の `[mcp_servers]` セクション
+- Claude Code: `claude mcp add ...`（`~/.claude.json` 等）
+- GitHub Copilot CLI: `.mcp.json`（標準 `mcpServers` 形式）
 
 ```toml
 # ~/.codex/config.toml

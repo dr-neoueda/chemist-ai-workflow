@@ -33,8 +33,42 @@ else
   bad "plugin ($pv) != marketplace ($mv) — bump both together"
 fi
 printf '%s    codex-plugin version: %s%s\n' "$dim" "${cv:-?}" "$off"
-printf '%s    copilot-plugin version: %s (PoC track)%s\n' "$dim" "${cpv:-?}" "$off"
-printf '%s    gemini-plugin version: %s (extension)%s\n' "$dim" "${gv:-?}" "$off"
+printf '%s    copilot-plugin version: %s (enterprise track)%s\n' "$dim" "${cpv:-?}" "$off"
+
+# Copilot ships from its own marketplace manifest (.github/plugin/marketplace.json).
+# It drifted silently from 1.17.0 while the plugin reached 1.44.0 because nothing compared them.
+cpmv=$(json_version .github/plugin/marketplace.json)
+if [ -n "$cpv" ] && [ "$cpv" = "$cpmv" ]; then
+  ok "copilot-plugin version == copilot marketplace version ($cpv)"
+else
+  bad "copilot-plugin ($cpv) != .github/plugin/marketplace.json ($cpmv) — bump both together"
+fi
+
+# gemini-plugin is FROZEN (see gemini-plugin/FROZEN.md). Do not follow plugin changes
+# or bump its version. Report how far behind it has drifted so the gap stays visible.
+frozen_file="gemini-plugin/FROZEN.md"
+if [ -f "$frozen_file" ]; then
+  fdate=$(sed -n 's/^frozen_date:[[:space:]]*//p' "$frozen_file" | head -1)
+  fplug=$(sed -n 's/^frozen_at_plugin_version:[[:space:]]*//p' "$frozen_file" | head -1)
+  # minor-version gap between the plugin version at freeze time and the current one
+  f_minor=$(printf '%s' "$fplug" | cut -d. -f2)
+  p_minor=$(printf '%s' "$pv"    | cut -d. -f2)
+  f_major=$(printf '%s' "$fplug" | cut -d. -f1)
+  p_major=$(printf '%s' "$pv"    | cut -d. -f1)
+  if [ "$f_major" = "$p_major" ] && [ -n "$f_minor" ] && [ -n "$p_minor" ]; then
+    gap=$((p_minor - f_minor))
+  else
+    gap="?"
+  fi
+  printf '%s    gemini-plugin version: %s (FROZEN %s at plugin %s; plugin now %s, %s minor behind)%s\n' \
+    "$dim" "${gv:-?}" "${fdate:-?}" "${fplug:-?}" "${pv:-?}" "$gap" "$off"
+  if [ "$gap" != "?" ] && [ "$gap" -ge 20 ] 2>/dev/null; then
+    printf '%s    NOTE: gemini-plugin is %s minor versions behind — revisit gemini-plugin/FROZEN.md%s\n' \
+      "$dim" "$gap" "$off"
+  fi
+else
+  printf '%s    gemini-plugin version: %s (extension)%s\n' "$dim" "${gv:-?}" "$off"
+fi
 
 # --- 2. plugin <-> codex mirror (byte-identical shared assets only) ---
 mirror_dirs=(
@@ -61,7 +95,7 @@ done
 # --- 2a. plugin <-> codex single shared files (byte-identical) ---
 # HTML design contract: all HTML-producing skills follow it, so plugin and codex
 # must carry the exact same file (Gemini inlines it in GEMINI.md separately).
-for f in skills/caw/references/html-style.md skills/caw/references/playbook-web-seeding.md; do
+for f in skills/caw/references/html-style.md skills/caw/references/playbook-web-seeding.md skills/caw/scripts/scaffold.py; do
   pf="plugin/$f"; cf="codex-plugin/$f"
   if [ ! -f "$pf" ] || [ ! -f "$cf" ]; then
     printf '%s    skip mirror %s (missing)%s\n' "$dim" "$f" "$off"; continue
@@ -73,12 +107,10 @@ for f in skills/caw/references/html-style.md skills/caw/references/playbook-web-
   fi
 done
 
-# --- 2b. codex <-> copilot shared reference files (PoC) ---
-# copilot-plugin reuses codex's CLI-agnostic templates verbatim for these two.
-# (SKILL.md and mcp-setup-templates.md intentionally differ per CLI; chemistry-
-#  departments may carry CLI-specific wording — so only the pure-shared template
-#  files are enforced byte-identical here.)
-for f in skills/caw/references/agents-md-template.md skills/caw/references/playbook-starters.md skills/caw/references/job-hunting-departments.md skills/caw/references/engine-validation-map.md skills/caw/references/playbook-web-seeding.md; do
+# --- 2b. codex <-> copilot shared reference files ---
+# copilot-plugin reuses codex's CLI-agnostic templates verbatim.
+# (mcp-setup-templates.md intentionally differs per CLI and is NOT enforced here.)
+for f in skills/caw/references/agents-md-template.md skills/caw/references/playbook-starters.md skills/caw/references/job-hunting-departments.md skills/caw/references/engine-validation-map.md skills/caw/references/playbook-web-seeding.md skills/caw/references/html-style.md skills/caw/references/chemistry-departments.md skills/caw/scripts/scaffold.py; do
   cf="codex-plugin/$f"; pf="copilot-plugin/$f"
   if [ ! -f "$cf" ] || [ ! -f "$pf" ]; then
     printf '%s    skip copilot mirror %s (missing)%s\n' "$dim" "$f" "$off"; continue
@@ -87,6 +119,23 @@ for f in skills/caw/references/agents-md-template.md skills/caw/references/playb
     ok "copilot mirror identical: $f"
   else
     bad "copilot mirror DRIFT: $f (codex vs copilot differ)"
+  fi
+done
+
+# --- 2c. codex <-> copilot skill directories (byte-identical) ---
+# The 2026-08-21 full port copied these 13 skills verbatim from codex-plugin.
+# caw/ and caw-setup/ are deliberately excluded: they carry Copilot-specific
+# CLI names (copilot vs codex/claude) and must be maintained per variant.
+for s in caw-research caw-register caw-write caw-input caw-playbook caw-analyze \
+         caw-slides caw-doctor caw-intake caw-report caw-es caw-interview caw-events; do
+  cd_="codex-plugin/skills/$s"; pd_="copilot-plugin/skills/$s"
+  if [ ! -d "$cd_" ] || [ ! -d "$pd_" ]; then
+    printf '%s    skip copilot skill mirror %s (missing)%s\n' "$dim" "$s" "$off"; continue
+  fi
+  if diff -r -q "$cd_" "$pd_" >/dev/null 2>&1; then
+    ok "copilot skill mirror identical: $s"
+  else
+    bad "copilot skill mirror DRIFT: $s (codex vs copilot differ)"
   fi
 done
 

@@ -1,5 +1,15 @@
 # caw — Gemini CLI 版
 
+> ## ⛔ この版は凍結中です（非推奨）
+>
+> **Gemini CLI の無料枠では caw のオンボーディングすら完走できません**（2026-06-19 のテストユーザー会で実地に判明）。
+> API キーが必須で無料枠の割り当てが少なく、caw を使い始める前に枠を使い切ります。実用には**有料 API が前提**です。
+>
+> **2026-08-21 に凍結しました。** 以後、本体（Claude Code / Codex CLI / Copilot CLI 版）の変更をこの版に追従させません。
+> バージョンも 1.49.0 で据え置きます。凍結の経緯・解除条件は [`FROZEN.md`](./FROZEN.md) を参照してください。
+>
+> **推奨：Codex CLI（本命）／ Claude Code（次点）／ Copilot CLI（企業向け）** のいずれかをお使いください。
+
 [Chemist's AI Workflow（caw）](https://github.com/dr-neoueda/chemist-ai-workflow) の **Gemini CLI 版**。研究プロジェクト（化学者向け）と就活の 2 トラックに対応した AI 部署システムを、Gemini CLI の **extension** として提供する。
 
 ## Claude Code / Codex CLI 版との違い
@@ -25,9 +35,9 @@ gemini extensions install https://github.com/dr-neoueda/chemist-ai-workflow
 
 ## できること
 
-研究：文献検索（`/caw-research`）・文献登録（`/caw-register`）・論文/申請書執筆（`/caw-write`）・計算入力（`/caw-input`）・スライド/図（`/caw-slides`）・計算ノウハウ蓄積（`/caw-playbook`）・解析。
+研究：文献検索（`/caw-research`）・文献登録（`/caw-register`）・論文/申請書執筆（`/caw-write`）・計算入力（`/caw-input`）・スライド/図（`/caw-slides`）・計算ノウハウ蓄積（`/caw-playbook`）・データ解析（`/caw-analyze`）。
 就活：企業/業界研究（`/caw-research`）・ES（`/caw-es`）・面接対策（`/caw-interview`）・募集/締切収集（`/caw-events`）。
-共通：過去資料の取り込み・自動仕分け（`/caw-intake`、統合 `inbox/`）・構造点検（`/caw-doctor`）。
+共通：環境整備（`/caw-setup`）・過去資料の取り込み・自動仕分け（`/caw-intake`、統合 `inbox/`）・構造点検（`/caw-doctor`）・動作レポート（`/caw-report`）。
 
 ## データの扱い
 

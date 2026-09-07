@@ -2,8 +2,8 @@
 name: caw-setup
 description: >
   caw を十分に使うための外部ツール（Python・poppler・PyMuPDF・python-pptx・Pillow・解析ライブラリ 等）の不足を、使う機能に応じて検出し、
-  計画を提示して一度の承認のうえ順番にインストールする。OS（macOS / Windows）を判定し、
-  既に入っているものはスキップ。CLI/Node 自体の導入は配布リポジトリの bootstrap スクリプトへ誘導。
+  各ツールを 1 つずつ「なぜ必要か」を添えて導入するか尋ねる（一括の暗黙導入も勝手なスキップもしない）。OS（macOS / Windows）を判定し、
+  既に入っているものは尋ねない。CLI/Node 自体の導入は配布リポジトリの bootstrap スクリプトへ誘導。
 ---
 
 # caw-setup — 前提ツールの検出と順次インストール

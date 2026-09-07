@@ -165,7 +165,7 @@ log 解析完了：
 知見が **特定の計算ソフトを超えた一般則** だった場合、汎用知見として保存を提案する。**保存先は使っている環境による**：
 
 - **Claude Code で auto-memory を使っている場合**：`~/.claude/projects/<project>/memory/` に feedback memory を新規作成。
-- **それ以外（Codex / Gemini、または memory 機能を使っていない）**：`office/computation/CLAUDE.md`（Codex/Copilot は `AGENTS.md`、Gemini は `GEMINI.md`）の「共通知見」節、または秘書の `secretary/notes/` に 1 行で記録。
+- **それ以外（Codex / GitHub Copilot / Gemini、または memory 機能を使っていない）**：`office/computation/CLAUDE.md`（Codex/Copilot は `AGENTS.md`、Gemini は `GEMINI.md`）の「共通知見」節、または秘書の `secretary/notes/` に 1 行で記録。
 
 ```
 この教訓は Gaussian だけでなく一般則として「PBC supercell の connectivity-based 分子抽出は必ず unwrap を伴う」に拡張できそうです。

@@ -50,12 +50,32 @@ your-research-project/
 
 ## 含まれる内容
 
-- **`caw` スキル**：オンボーディング → 自動スキャフォールド → 運営モードの一連（起動は `caw` と入力、または自然言語で指示）
+### スキル（15）
+
+**研究トラック（12）**
+
+| スキル | 役割 |
+|---|---|
+| `caw` | オンボーディング → 自動スキャフォールド → 運営モードの一連（起動は `caw` と入力、または自然言語で指示） |
+| `caw-research` | 関心テーマの論文検索（arXiv / Crossref / Semantic Scholar / OpenAlex / PubMed）→ クリック可能な HTML リスト |
+| `caw-register` | 入手済み PDF → 書誌付き要約 md → ナレッジベース + クラウドストレージへ登録 |
+| `caw-write` | 登録済み文献を引用源に、論文・申請書・学会要旨を本人の文体で執筆 |
+| `caw-input` | 7 ソフト（Gaussian / ORCA / CP2K / GROMACS / VASP / Quantum ESPRESSO / ChimeraX）の入力雛形 + ジョブ記録 |
+| `caw-playbook` | 計算 log の解析 → Lessons Learned 起案 → Playbook 追記。`_past-data/` の過去データ一括取り込みで初期 seed |
+| `caw-analyze` | 手法非依存の解析コンパニオン。汎用ツールでその場の解析を組み、再利用に値する手順を playbook に蒸留 |
+| `caw-slides` | 発表資料を SVG-first（手描き SVG → native DrawingML pptx）で生成。図形・表・数式が PowerPoint で編集可能 |
+| `caw-setup` | 外部ツール（Python・poppler・python-pptx 等）の不足を検出し、**1 つずつ「なぜ必要か」を説明しながら**導入。CLI/Node 自体は `setup/caw-setup.sh`・`setup/caw-setup.ps1` を案内 |
+| `caw-doctor` | `office/` 構造の健全性チェックと修復提示 |
+| `caw-intake` | 統合 `inbox/` の自動仕分け。処理後の原本は種類別 `work/*/_source/` へ移動 |
+| `caw-report` | 開発者向けの匿名動作レポート |
+
+**就活トラック（3）**：`caw-es`（エントリーシート）・`caw-interview`（面接対策）・`caw-events`（1 社深掘り＋募集/締切予測）
+
+### テンプレート・生成物
+
 - **9 部署 AGENTS.md テンプレート**：secretary / research / engineering / computation / experiment / analysis / writing / review / presentation
-- **Playbook 雛形**：Gaussian / GROMACS / CP2K / ORCA / VASP / Quantum ESPRESSO + 汎用
-- **作業ディレクトリ自動生成**：選択した計算ソフトと部署に応じて配置。初心者向けに投入用 `inbox/` と過去データ用 `_past-data/` も生成
-- **`caw-setup` スキル**：外部ツール（Python・poppler・python-pptx 等）の不足を検出し、計画提示 → 一度の承認 → 順番にインストール（macOS / Windows）。CLI/Node 自体は `setup/caw-setup.sh`・`setup/caw-setup.ps1` を案内
-- **`caw-playbook` の過去データ取り込み**：`_past-data/` の過去入出力を解析し、その人の傾向を Playbook に初期 seed
+- **Playbook 雛形**：Gaussian / GROMACS / CP2K / ORCA / VASP / Quantum ESPRESSO / Psi4 / NAMD / LAMMPS / OpenMM / ChimeraX + 汎用
+- **作業ディレクトリ自動生成**：選択した計算ソフトと部署に応じて配置。投入用 `inbox/` と過去データ用 `_past-data/` も生成
 
 ## Claude Code 版との関係
 

@@ -24,7 +24,7 @@ trigger: /caw-slides
 **手描き SVG → native pptx**。python-pptx でレイアウトを組むのではなく、**SVG を正として描き**、同梱の変換器（`vendor/svg_to_pptx`、native DrawingML 出力）で pptx 化する。だから図形・表・チャートが PowerPoint で**直接編集できる**（ラスタ画像でない）。
 
 - **デザインは `references/design-system.md` に従う**（PPT Master default 準拠・日本語ローカライズ）。**発火時に必ず design-system.md を読む**。
-- **各 CLI で自己完結**：Claude Code / Codex CLI / Gemini CLI いずれも、その CLI 自身が SVG を描き・変換し・検証する。**別 CLI への委譲はしない**（追加プラグイン不要）。
+- **各 CLI で自己完結**：Codex CLI / Claude Code / GitHub Copilot CLI いずれも、その CLI 自身が SVG を描き・変換し・検証する。**別 CLI への委譲はしない**（追加プラグイン不要）。
 - **ゲートで機械的に検証**：authoring ミス（和文の豆腐・はみ出し・重なり）は目視前にスクリプトで潰す。
 - **出力は pptx のみ**（§出力規約）。
 
