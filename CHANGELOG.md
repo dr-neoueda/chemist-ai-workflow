@@ -2,6 +2,97 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [配布物の版は据え置き — リポジトリ側ツールの追加] - 2026-08-24
+
+### Added — USB 等で手渡しするオフライン導入バンドル
+
+**想定シナリオ**：ネットは通るが**ファイルのダウンロードが制限される**環境（企業ネットワークで GitHub がブロックされている等）。USB から相手の PC にコピーして caw 環境を構築する。**完全オフラインは対象外**（caw は CLI がモデル API を呼ぶためネット自体は必須）。
+
+- **`scripts/make-offline-bundle.sh`（新規）**：配る側が実行してバンドルを生成する。**3 CLI 分のマニフェストとプラグインを 1 つのフォルダに同居**させる（`.agents/plugins/` ／ `.claude-plugin/` ／ `.github/plugin/` と読まれる場所が CLI ごとに違うため共存できる）＝**1 本の USB で相手がどの CLI でも使える**。`gemini-plugin` は凍結中のため同梱しない。生成物 **3.1 MB**（リポジトリ 221 MB のうち `web/` 189 MB と `.git` 20 MB は不要）。
+  - **設計原則：バンドルは marketplace 配布と byte 一致でなければならない。** 加工すると「第 3 の配布面」が生まれてドリフトするため、copy と除外（`.DS_Store` / `__pycache__`）のみを行い、**最後に `diff -r` で一致を検証**する。
+  - 出力先が空でなければ中止する（既存を破壊しない）。
+- **`scripts/bundle-templates/`（新規）**：受け取る側が実行する `install.sh`（macOS/Linux）・`install.ps1`（Windows）・`はじめにお読みください.md`。CLI を自動検出し、コピー → marketplace 登録 → プラグイン導入まで行う。スクリプトがスクリプトを生成する形は読みづらく壊れても気づきにくいため、**テンプレートは実ファイルで持つ**。
+- **⚠️ 実測で見つけた落とし穴：ローカルパスの marketplace は「その場」を参照し続ける。** Git 由来は `~/.codex/.tmp/marketplaces/<name>/` に**クローンされる**が、**ローカルパス由来は指定パスをそのまま root にする**（コピーされない）。⇒ **USB を直接登録すると抜いた時点で caw が壊れる。** `install.sh` はこれを避けるため必ず `~/caw-plugin` にコピーしてから登録し、既存があれば `caw-plugin.old-<日時>` へ退避する（削除しない）。
+- **実測で確定させたコマンド形**（ヘルプの記述だけで判断せず実行して確認）：
+  - **Codex**：`codex plugin marketplace add <path>` → `codex plugin add caw@chemist-ai-workflow` ── **完全実証**（1.1 MB のローカルディレクトリを登録し `caw@<name>` が installable と表示されるまで確認、検証後に撤去）
+  - **Claude Code**：`claude plugin marketplace add <path>` → `claude plugin install caw@chemist-ai-workflow` ── 登録まで実証（`Source: Directory` として受理）。インストールは既存登録を増やすため未実行
+  - **GitHub Copilot CLI**：未検証（実機確認そのものが未了）
+  - **git は不要**（clone しないため）。第 1 回テスト会で判明した「git が隠れ前提」はこの経路では消える
+- `install.sh` を実走して検証：コピー 3.1 MB・インストーラ自身の除外・全マニフェストの存在・CLI 自動検出（Codex と Claude を発見、Copilot を未導入と判定）。
+- **前提**（バンドルは caw 本体のみ。相手側で用意が必要）：CLI 本体・Node.js LTS・Python 3・Python パッケージ。`install.sh` は CLI が無ければ導入コマンドを案内して終了する。
+- **配布物（plugin / codex-plugin / copilot-plugin / gemini-plugin）の中身は変更していないため版は据え置き。**
+
+## [1.77.0 / Codex 1.76.0 / Copilot 1.45.0 / Gemini 1.49.0 ⛔FROZEN] - 2026-08-21
+
+### Changed — 本命 CLI を Claude Code → **Codex CLI** に変更
+
+伴走（マンツーマン導入支援・1 セッション 3 時間規模）で**セッション途中に使用量上限へ当たらない**ことを優先し、Tier 1 を入れ替えた。**Codex は 2026-07-12 に 5 時間ローリングウィンドウが撤廃され、週次上限のみ**になっている（OpenAI の Codex 責任者が announce）。
+
+> ⚠️ **調査上の教訓**：`learn.chatgpt.com/docs/pricing` は撤廃後も旧ポリシーの 5 時間テーブルを残しており、**ドキュメントだけを見ると「5 時間制限あり」と誤読する**。決定的だったのは一次コミュニティの検定＝`openai/codex` の issue で **「5-hour limit」への言及は 2026-07-22 が最後**、**8 月に立った使用量 issue 20 件は全て「weekly」**だったこと。「まだ有効か」はドキュメントではなく**新規報告が止まったか**で判定する。
+
+- **Tier 表を入れ替え**（`RESUME.md` / `README.md` / gemini の 2 ファイル）：Codex CLI = Tier 1（本命）、Claude Code = Tier 2。
+- **⚠️ 未解決**：本命になった Codex 版に **hooks が無い**。Codex CLI は hooks を公式サポート（`SessionStart`/`PostToolUse`/`Stop` ほか、プラグインが `hooks/hooks.json` で同梱可、Windows 対応、既定で有効、`PLUGIN_ROOT` と互換の `CLAUDE_PLUGIN_ROOT`）だが、**単純コピーでは動かない**：(a) `CLAUDE_PROJECT_DIR` が無く stdin JSON の `cwd` を使う (b) 出力を `{"hookSpecificOutput":{...,"additionalContext":...}}` で包む必要がある (c) **PostToolUse の対象が `apply_patch` で `tool_input.file_path` が存在しない**ため patch 解析が要る。`RESUME.md` に分割方針つきで追跡タスク化。
+
+### Added — GitHub Copilot CLI 版を 2 スキルの PoC から **15 スキルへフルポート**
+
+企業顧客（化学メーカーの研究部門など、GitHub Copilot が全社導入されている組織）での導入伴走を想定したトラック。
+
+- **13 スキルを codex-plugin から byte 一致でコピー**：`caw-research` / `caw-register` / `caw-write` / `caw-input` / `caw-playbook` / `caw-analyze` / `caw-slides`（38 ファイル・vendor 含む）/ `caw-doctor` / `caw-intake` / `caw-report` ＋ `caw-es` / `caw-interview` / `caw-events`。`caw` と `caw-setup` は Copilot 固有の CLI 名を持つため系統別に維持。
+- **就活 3 本も入れた（当初方針の変更）**：企業顧客に不要なので落とす想定だったが、**copilot の `caw` オンボーディングは既に就活トラックを提示し `job-hunting-departments.md` も同梱済み**で、3 本を欠くと「部署は作られるがスキルが無い」不整合になるため全 15 本とした。
+- **⚠️ dangling reference を修正**：`html-style.md` が copilot に無いのに**移植したスキルから 7 箇所参照**されていた（HTML 生成スキルのデザイン規約）。コピーして解消。全参照の解決を機械監査（唯一残る `shared-standards.md` は **codex 側でも同様に不在**＝上流 PPT Master の出典表記であり同梱物ではないことを対照確認）。
+- **⚠️ 版ドリフトを修正**：`.github/plugin/marketplace.json`（Copilot の配布 manifest）が **1.17.0 のまま 2026-06-18 から放置**され、プラグイン本体 1.44.0 と乖離していた。**何もこの組を比較していなかったのが原因**なので、`check-consistency.sh` に比較を追加（**実在の不一致 1.44.0 vs 1.17.0 で BAD が出ることを確認**してから修正）。
+- **CLI 列挙で Copilot が抜けていた 7 箇所を 3 系統そろえて修正**：`caw-slides`（自己完結の CLI 列挙）・`caw-playbook`（memory 代替先）・`caw-write`／`caw-es`／`caw-interview`（好み・傾向の学習が共通な CLI）・`caw-report`（`office/` ファイル名の CLI 対応）・`html-style.md`（HTML 統一対象）・`mcp-setup-templates.md`（MCP 登録先。「Codex CLI を併用する場合」→「他の CLI を併用する場合」に一般化）。
+- **ドリフト防止を追加**：`check-consistency.sh` に (1) copilot marketplace 版一致 (2) 単一ファイルミラーへ `html-style.md`・`chemistry-departments.md` 追加 (3) **13 スキルのディレクトリ単位 byte 一致検査**。**(3) は copilot 側に 1 行注入して BAD が出ること・復旧で OK に戻ることを実データで確認**。
+- `copilot-plugin/README.md` を全面更新（PoC 表記を撤廃・15 スキル表・既知の制約を明記）。`plugin.json` の `"skills": ["skills/"]` はディレクトリ指定のため列挙の更新は不要だった。
+- **既知の未了**：`caw-slides` の **Windows 実機確認は未実施**（パイプラインは v1.71.0 で Windows 互換化済みだが Copilot CLI 上では未検証）。hooks 未移植。
+- **⚠️ 配布物に混入していた「走らせると落ちるテスト」を除去（既存の欠陥）**：`codex-plugin/skills/caw/tests/test_scaffold.py` は plugin 版からの byte 一致コピーで、**`CLAUDE.md` を期待するアサーションを持つ**。codex/copilot の scaffold は**正しく `AGENTS.md` を出す**ため、その系統で走らせると **3 件が必ず落ちる**（実装は正常・テストが系統を見ていない）。**`plugin` の正本スイートには `test_scaffold_agents_variant_codex` があり、codex-plugin の references を直接読んで `AGENTS.md` 生成を検証している**（skip されず PASSED を確認）ので、codex 側の挙動は既にカバー済み。よって配布物からテストのコピーを削除した（v1.48.0 で `plugin/TESTING.md` を payload から出したのと同じ原則＝開発用成果物を install payload に入れない）。
+  - 発見の経緯：copilot に移植した `scaffold.py` を**その同梱テストで実際に走らせた**ところ 3 件 FAIL。`scaffold.py` は 3 系統 byte 一致だったので「同じバイトだからカバーされている」で済ませていたら見逃していた。**対照として codex 版でも走らせ、同じ 3 件が落ちる＝移植起因ではなく既存欠陥**と切り分けた。
+  - なお本セッション中に報告していた「125 passed」は **plugin 変種のスイートのみ**の結果であり、codex 変種のテストは一度も走っていなかった。
+  - **既知の未了**：`plugin/` は依然としてテストを install payload に同梱している（同種の問題だが今回のスコープ外）。
+- `scaffold.py` を plugin↔codex・codex↔copilot 双方のミラー検査に追加（**copilot 側に 1 行注入して BAD が出ることを確認**）。3 系統とも 510 行で byte 一致。
+- 版 plugin 1.76→**1.77**・codex 1.75→**1.76**・copilot 1.44→**1.45**（marketplace も 1.17.0→**1.45.0** に同期）。gemini は凍結のため据え置き。
+
+## [1.76.0 / Codex 1.75.0 / Copilot 1.44.0 / Gemini 1.49.0 ⛔FROZEN] - 2026-08-21
+
+### Changed — CLI トラックの再配分：Gemini を凍結し、Copilot を企業向けにフルポートする方針へ
+
+商品モデルが「プラグインを配る」から「**導入伴走を売る**」に変わったこと（同日確定）を受け、4 CLI 系統の保守面積を測って再配分した。**削減ではなく再配分**である点に注意。
+
+**実測した保守コスト**：
+
+| 系統 | 行数 | コミット | 版上げ | スキル |
+|---|---|---|---|---|
+| plugin（Claude Code） | 21,061 | 89 | 87 | 15 |
+| codex-plugin | 19,918 | 82 | 85 | 15 |
+| copilot-plugin | 3,440 | 41 | 20 | **2** |
+| gemini-plugin | **226** | 43 | **44** | 15 |
+
+- **Gemini を凍結（非推奨）**：`gemini-plugin` は **226 行しかないのに 43 コミット・44 回の版上げ**を消費していた（本体 87 版に対し、**変更のおよそ 2 回に 1 回は追従が必要な定額コスト**）。かつ第 1 回テスト会で「無料枠では caw のオンボーディングすら完走できない」と実地に判定済み。伴走で相手の環境に入れるのは Claude Code / Codex / Copilot の 3 系統になり、Gemini を勧める場面が無くなった。
+  - **`gemini-plugin/FROZEN.md`（新規）**：凍結記録の**単一情報源**。`frozen_date` / `frozen_at_plugin_version` / `frozen_at_gemini_version` と、凍結理由・保守コスト実測・**解除条件**・復活手順を記載。
+  - **`scripts/check-consistency.sh`**：`FROZEN.md` を読んで **「本体から何 minor 遅れているか」を毎回表示**し、20 minor 以上で NOTE を出す。**ずれを隠さず、測れる形で見せる**方針（「残すが凍結」の既知リスク＝古いファイルが main に残ってずれが再び育つ、への対策）。**既知の遅れ 24 minor で NOTE が発火し、5 minor では発火しないことを実データで検証**。
+  - `gemini-plugin/README.md`・`GEMINI.md` の冒頭に凍結告知。版は **1.49.0 で据え置き**（以後上げない）。
+- **Copilot をフルポートする方針を決定**（実装は次段）：**企業顧客では Copilot が対象になることが多い**ため。現在 2 スキル（`caw` / `caw-setup`）。移植規模を実測したところ、**単一ファイルの 10 本は SKILL.md のコピー＋`trigger:` 除去等の軽微な置換で済む**（Codex 版との差分を diff で確認）。`caw-input`・`caw-analyze` は `references/` のミラーが加わる。`caw-slides` のみ 19,301 行（うち 12,179 行は無改変 vendor）で Windows 実機確認が要る。**就活トラック 3 本（`caw-es`/`caw-interview`/`caw-events`）は企業顧客に不要なため Copilot には載せない**（研究トラック 12 本に絞る）。
+- 版 plugin 1.75→**1.76**・codex 1.74→**1.75**・copilot 1.43→**1.44**。**gemini は凍結のため据え置き 1.49.0**。
+
+## [1.75.0 / Codex 1.74.0 / Copilot 1.43.0 / Gemini 1.49.0] - 2026-08-20
+
+### Fixed — 正典ドキュメントの stale 化を解消（配布物 4 系統の README ＋ リポジトリ内の再開ポイント）
+
+42 日の中断（最終コミット 2026-07-09）を挟んで開発を再開するにあたり全ドキュメントを実態と突き合わせたところ、**「次回まずこれを読む」とされているファイルが軒並み 1〜3 か月 stale** で、なかでも配布物である各 CLI の README が**ユーザーに見える形で誤っていた**。
+
+- **`plugin/README.md`**：見出しが `含まれる内容（v1.30.0）` のまま（実態 v1.74.0）で、**15 スキル中 9 しか記載が無かった**。不足していた `caw-analyze` / `caw-intake` / `caw-report` ＋就活トラック 3 本（`caw-es` / `caw-interview` / `caw-events`）を追記し、研究/就活トラックの区分を明示。プラグイン構造ツリーの `skills/` 一覧も現状化。
+- **`codex-plugin/README.md`**：`含まれる内容` が `caw` / `caw-setup` / `caw-playbook` の 3 本しか触れておらず、**Codex 版も 15 スキルある**という事実が読み取れなかった。15 スキルの表に差し替え。Playbook 雛形の列挙も 6 → 11 ソフト（Psi4 / NAMD / LAMMPS / OpenMM / ChimeraX を追加）に修正。
+- **`caw-setup` の説明が v1.68.0 で撤回した仕様のまま**（plugin / copilot）：「計画提示 → **一度の承認** → 順番にインストール」と書かれていたが、v1.68.0 で**一括承認は撤回**し per-tool・理由説明つきに変更済み。3 系統の記述を実装に合わせた。
+- **`copilot-plugin/README.md`**：未収載スキルを「残りの 6 スキル」としていたが実際は **13 スキル**。全 13 本を列挙し、フルポートの可否が未決である旨を明記。
+- **`gemini-plugin/README.md`**：`caw-analyze` / `caw-report` / `caw-setup` が「できること」から漏れていたため追記。
+- **リポジトリ内ドキュメント（配布対象外）**：`RESUME.md` は「**凍結中・新規作業は行わない**」（2026-05-09 の記述）のままで次セッションを誤誘導する状態だったため全面書き直し。`README.md`（リポジトリ直下）は「現フェーズ：構想」だったため現状化。`docs/roadmap.md` は Phase 0–3 を実績で置き換え、Phase 4（商品化）を**未決の問い 6 件**として明示。
+- **記録した事実**：当初計画の「教材（テキスト商材）」から「4 CLI 対応プラグイン ＋ ドキュメントサイト」へ商品形態が転換しており、`content/` `templates/` `case-studies/` `marketing/` は存在しない。旧 roadmap の「教材ページ数」等の指標は無効として撤回。
+- **⚠️ `caw-setup` の frontmatter が本文と矛盾していたのを修正（plugin / codex / copilot の 3 系統）**：SKILL.md の**本文**は v1.68.0 で per-tool 方式（「1 つずつ『なぜ必要か』を添えて尋ねる・一括の暗黙導入も勝手なスキップもしない」）に更新済みだったが、**frontmatter の `description` だけが旧仕様「計画を提示して一度の承認のうえ順番にインストールする」のまま**残っていた。`description` はエージェントが発火判断と挙動把握に使うため、**本文と矛盾した指示を先に読ませている**状態だった。gemini の `GEMINI.md` のみ正しく更新済みだったため、3 系統で修正して揃えた。旧文言の残存を全系統 grep で 0 件確認。
+- 上記を除きコード変更なし。consistency 全 OK、125 passed / 4 skipped。
+- 版 plugin 1.74→**1.75**・codex 1.73→**1.74**・copilot 1.42→**1.43**・gemini 1.48→**1.49**。
+
+> **教訓**：日付入りのドキュメントは「直した日」ではなく「最後に見た日」しか示さない。`RESUME.md` の冒頭に「本ファイルの記述は正しさの保証ではない・実態は `git log -1` と `check-consistency.sh` で確認せよ」を明記した。参照: memory `feedback_document_staleness_from_source_mtime_not_stated_date`。
+
 ## [1.74.0 / Codex 1.73.0 / Copilot 1.42.0 / Gemini 1.48.0] - 2026-07-09
 
 ### Changed — 初期構築のトークン第2削減：scaffold をモデルの逐次 Write から `scaffold.py` 1 実行へ

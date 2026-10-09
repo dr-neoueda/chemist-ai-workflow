@@ -62,9 +62,11 @@ your-research-project/
     └── analyses/ figures/ manuscripts/ presentations/slides/ …
 ```
 
-## 含まれる内容（v1.30.0）
+## 含まれる内容
 
-### Skills
+### Skills（15）
+
+#### 研究トラック（12）
 
 - **`/caw`**：オンボーディング（研究プロファイルを全ユーザーにヒアリング。部署は全 8 作成）→ 自動スキャフォールド → 運営モードの一連
 - **`/caw-research`**：関心テーマの論文検索（arXiv / Crossref / Semantic Scholar / OpenAlex / PubMed）→ クリックで論文ページに飛べる HTML リスト（`work/topics/`）を生成（入手 PDF の登録は `/caw-register`）
@@ -73,8 +75,19 @@ your-research-project/
 - **`/caw-input`**：7 ソフト（Gaussian / ORCA / CP2K / GROMACS / VASP / Quantum ESPRESSO / ChimeraX）の入力ファイル雛形生成、Playbook デフォルト起点 + ジョブ記録自動生成
 - **`/caw-playbook`**：計算 log の自動解析 → Lessons Learned エントリ起案 → Playbook 末尾追記、memory feedback 昇格判定。`_past-data/` に置いた過去データの一括取り込み（その人向けに Playbook を初期最適化）にも対応
 - **`/caw-doctor`**：`office/` 構造の健全性チェック（部署 CLAUDE.md の存在、旧構造の検出、Playbook 更新滞り等）と修復コマンド提示
-- **`/caw-setup`**：caw を十分に使うための外部ツール（Python・poppler・python-pptx 等）の不足を検出し、計画提示 → 一度の承認 → 順番にインストール（macOS / Windows、冪等）。CLI/Node 自体の導入は `setup/caw-setup.sh`・`setup/caw-setup.ps1` を案内
+- **`/caw-setup`**：caw を十分に使うための外部ツール（Python・poppler・python-pptx 等）の不足を検出し、**1 つずつ「なぜ必要か」を説明しながら**導入の可否を確認してインストール（macOS / Windows、冪等）。CLI/Node 自体の導入は `setup/caw-setup.sh`・`setup/caw-setup.ps1` を案内
 - **`/caw-slides`**：研究発表用スライドを **SVG-first**（手描き SVG → native DrawingML pptx で図形・表・chart が編集可能）で生成（学会発表 / 論文紹介 / 報告会 / 講義）。`design-system.md`（PPT Master default 準拠）＋フォント/重なりゲート＋native 変換器同梱。出力は `work/presentations/slides/` に pptx のみ
+- **`/caw-analyze`**：手法非依存の解析コンパニオン。固定パイプラインや手法別スキルを持たず、汎用ツール（pandas / numpy / scipy / matplotlib / RDKit 等）でその場の解析を組み、単位・再現性・境界検証・正直な fit 報告の規律を効かせる。再利用に値する手順は `work/analyses/_playbook/` に蒸留
+- **`/caw-intake`**：統合 `inbox/` に投げ込まれたものを自動仕分け。処理後の原本は種類別の `work/*/_source/` へ移動し inbox を空にする
+- **`/caw-report`**：開発者向けの匿名動作レポート（不具合・使用感のフィードバック送信）
+
+#### 就活トラック（3）
+
+- **`/caw-es`**：エントリーシートの起案・推敲（`work/documents/`）。過去 ES から抽出した文体・経験・強みを反映
+- **`/caw-interview`**：面接対策。`caw-research` が作った企業調査 md を必ず参照して想定問答を組む
+- **`/caw-events`**：1 社深掘り＋今年度の募集・締切予測（named 就活ソース準拠）
+
+> 就活トラックは化学トラックの**間接テストハーネス**でもある（同じ部署構造・同じ規律を別ドメインで走らせることで、汎用性の破れを早期に検出する）。
 
 ### Hooks
 
@@ -129,12 +142,21 @@ plugin/
     │       ├── chemistry-departments.md
     │       ├── playbook-starters.md
     │       └── mcp-setup-templates.md
+    ├── caw-research/SKILL.md
     ├── caw-register/SKILL.md
     ├── caw-write/SKILL.md
     ├── caw-input/SKILL.md
     ├── caw-playbook/SKILL.md
     ├── caw-doctor/SKILL.md
     ├── caw-setup/SKILL.md
+    ├── caw-intake/SKILL.md
+    ├── caw-report/SKILL.md
+    ├── caw-es/SKILL.md          ← 就活トラック
+    ├── caw-interview/SKILL.md   ← 就活トラック
+    ├── caw-events/SKILL.md      ← 就活トラック
+    ├── caw-analyze/
+    │   ├── SKILL.md
+    │   └── references/
     └── caw-slides/
         ├── SKILL.md
         ├── references/   ← design-system.md ／ scripts/ ← gates ／ vendor/ ← svg_to_pptx

@@ -253,7 +253,7 @@ GitHub Copilot CLI は MCP サーバを **JSON 設定（`.mcp.json`、標準 `mc
 
 ### 他の CLI を併用する場合
 
-同じ MCP サーバを Claude Code（`claude mcp add ...` / `~/.claude.json`）や Codex CLI（`codex mcp add ...` / `~/.codex/config.toml` の `[mcp_servers]`）でも設定できる。設定ファイルは CLI ごとに別管理だが、env による鍵参照を共通化すれば一元管理できる。
+同じ MCP サーバを Codex CLI（`codex mcp add ...` / `~/.codex/config.toml` の `[mcp_servers]`）・Claude Code（`claude mcp add ...` / `~/.claude.json`）・GitHub Copilot CLI（`.mcp.json` の標準 `mcpServers` 形式）でも設定できる。設定ファイルは CLI ごとに別管理だが、env による鍵参照を共通化すれば一元管理できる。
 
 ---
 

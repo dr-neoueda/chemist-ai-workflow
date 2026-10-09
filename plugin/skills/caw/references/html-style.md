@@ -1,6 +1,6 @@
 # caw HTML デザイン契約（全 CLI 共通の唯一の設計図）
 
-caw が出力する HTML（文献リスト・企業プロファイル・イベントカタログ・比較表など）の見た目を **Claude Code / Codex CLI / Gemini CLI で統一**するための単一の設計図。**HTML を生成するスキルは、この `<style>` と部品をそのまま使う**（CLI ごとに自己流の CSS を作らない）。これにより、どの CLI で作っても同じデザインの HTML が出る。
+caw が出力する HTML（文献リスト・企業プロファイル・イベントカタログ・比較表など）の見た目を **Codex CLI / Claude Code / GitHub Copilot CLI で統一**するための単一の設計図。**HTML を生成するスキルは、この `<style>` と部品をそのまま使う**（CLI ごとに自己流の CSS を作らない）。これにより、どの CLI で作っても同じデザインの HTML が出る。
 
 ## 原則
 
