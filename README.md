@@ -16,7 +16,7 @@
 - **秘書部** が TODO・意思決定・学びを 1 日 1 ファイルで蓄積する
 - **計算管理部** が Gaussian / ORCA / CP2K / GROMACS 等の入力生成・ジョブ記録・log 解析を担い、罠と処方を **Playbook** に貯めていく
 - **文献部** が論文を検索・登録し、**論文執筆部** がそれを引用源に本人の文体で書く
-- **プレゼン部** が手描き SVG から**編集可能な PowerPoint** を生成する
+- **プレゼン部** がSVG から**編集可能な PowerPoint** を生成する
 
 単発のチャットではなく、**ファイルシステム上に状態を持つ組織**として AI を運用するのが中核アイデアです。
 
@@ -61,7 +61,7 @@ cd ~/your-research-project && claude
 | `/caw-input` | 7 ソフト（Gaussian / ORCA / CP2K / GROMACS / VASP / Quantum ESPRESSO / ChimeraX）の入力雛形 + ジョブ記録 |
 | `/caw-playbook` | 計算 log の解析 → Lessons Learned 起案 → Playbook 追記。過去データの一括取り込みにも対応 |
 | `/caw-analyze` | 手法非依存の解析コンパニオン（raw → 数値化後の下流定量解析） |
-| `/caw-slides` | 発表資料を **SVG-first**（手描き SVG → native DrawingML pptx）で生成。図形・表・数式が PowerPoint で編集可能 |
+| `/caw-slides` | 発表資料を **SVG-first**（SVG → native DrawingML pptx）で生成。図形・表・数式が PowerPoint で編集可能 |
 | `/caw-setup` | 不足している外部ツールを検出し、**1 つずつ理由を説明しながら**導入 |
 | `/caw-doctor` | `office/` 構造の健全性チェックと修復提示 |
 | `/caw-intake` | 統合 inbox に投げ込まれたものを自動仕分け |

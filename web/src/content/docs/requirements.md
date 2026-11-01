@@ -21,14 +21,15 @@ caw のコア（オンボーディング、部署スキャフォールド、Play
 | 土台 | Node.js（LTS） | Claude Code 本体・npx ベースの MCP サーバー | 必須 |
 | 土台 | git | プラグインの取得・バージョン管理 | 必須 |
 | Python<br />機能 | Python 3.12 以上 | スライド・図・解析・PDF 処理の基盤 | 十分活用に必須 |
-| スライド | python-pptx | 手描き SVG を編集可能な pptx に変換（caw-slides の核） | スライドに必須 |
-| スライド | pillow | 写真・切り抜き図（ラスタ画像）の埋め込み | 図入りスライドに必須 |
+| スライド | python-pptx | 生成した SVG を編集可能な pptx に変換（caw-slides の核） | スライドに必須 |
+| スライド | pillow | 画像の検定と埋め込み | スライドに必須 |
 | スライド | PyMuPDF | 論文 PDF から図を高解像度で切り抜く | 論文紹介スライドに必須 |
-| スライド | matplotlib | 数式（LaTeX）レンダ・解析グラフ作成 | 数式/作図に必須 |
+| スライド | matplotlib | 数値の図・数式（LaTeX）レンダ・解析グラフ作成 | 図・数式に必須 |
 | PDF 処理 | poppler（pdftoppm / pdftotext / pdfinfo） | 論文 PDF の図抽出・メタデータ抽出 | PDF を扱うなら必須 |
 | Windows のみ | Git Bash または WSL2 | **Claude Code 版**の Hooks（bash スクリプト）の実行 | Claude Code を Windows で使う場合のみ（Codex CLI / Copilot CLI 版は Hooks 無しで不要） |
 | 任意 | GitHub CLI（gh） | engineering / review 部署の PR ワークフロー | 任意 |
-| 任意 | LibreOffice | 生成した pptx を画像化して目視確認 | 任意 |
+| 任意 | Chrome または Edge | スライドをプレビュー画像にして目視確認 | 任意 |
+| 任意 | ffmpeg | スライドに載せる動画の変換 | 動画を使う場合のみ |
 | 任意 | RDKit / ASE / pymatgen / MDAnalysis / cclib | 研究内容に応じた解析・前処理 | 任意 |
 | 推奨 | VS Code または Cursor | 編集・diff・ターミナル統合 | 推奨 |
 

@@ -1,7 +1,6 @@
 """crop_paper_figures のテスト（座標検証＋合成 PDF での切り抜きスモーク）。"""
-import pytest
-
 import crop_paper_figures as cpf
+import pytest
 
 
 @pytest.mark.parametrize(

@@ -3,7 +3,6 @@ import io
 from pathlib import Path
 
 import pytest
-
 import render_latex as rl
 
 _PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"

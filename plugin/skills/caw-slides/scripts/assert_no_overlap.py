@@ -19,7 +19,7 @@ Notes
 SVG は名前空間有無・属性/``style`` 両記法（inline style を優先）・位置指定 tspan(x/y/dy)・
 先頭テキストを扱う。``transform`` 付きテキストは座標が不定で検証できないため **hard 違反**
 とする（caw-slides は text に transform を使わず explicit x/y で配置する規約）。キャンバスは
-既定 1280x720（ppt169）。
+SVG の viewBox から読む（読めなければ既定 1280x720 として警告）。
 
 既知の制約（設計上の割り切り）: フォント関連プロパティ（font-size / font-weight /
 letter-spacing / text-anchor）の祖先 ``<g>`` からの継承と ``<tspan dx=...>`` の相対 X は
@@ -31,6 +31,7 @@ from __future__ import annotations
 
 import argparse
 import glob
+import math
 import os
 import re
 import sys
@@ -250,9 +251,56 @@ def _under_transform(el: ET.Element, parents: dict[ET.Element, ET.Element]) -> b
     return False
 
 
-def parse_svg_lines(svg_path: str) -> tuple[list[TextLine], list[str]]:
+def _valid_size(w: float | None, h: float | None) -> tuple[float, float] | None:
+    """正の有限値の組だけを寸法として認める。
+
+    ``inf`` を弾くのが要点。``float("1e400")`` はオーバーフローして ``inf`` になり、
+    ``inf > 0`` は真なので、正数チェックだけでは通ってしまう。``inf`` を寸法に
+    採用するとどの座標も範囲内と判定され、**はみ出し検査が丸ごと無効化**される。
+    """
+    if w is None or h is None:
+        return None
+    if not (math.isfinite(w) and math.isfinite(h)):
+        return None
+    if w <= 0 or h <= 0:
+        return None
+    return w, h
+
+
+def parse_canvas_size(root: ET.Element) -> tuple[float, float] | None:
+    """SVG 自身のキャンバス寸法 (幅, 高さ) を px で返す。判定できなければ ``None``。
+
+    ``viewBox`` を第一情報源とし、無ければ ``width``/``height`` 属性を見る。
+    16:9 スライド以外（A0 ポスター等）を検査するとき、既定値を決め打ちすると
+    キャンバス内の要素が一律「はみ出し」と誤検出されるため必要。
+
+    寸法を決められないときに既定値を黙って使うと、既定より小さいキャンバス
+    （``wechat`` 900x383 等）で本物のはみ出しを見逃す。呼び出し側が警告を
+    出せるよう、ここでは ``None`` を返して既定へ落とす判断を委ねる。
+    """
+    vb = (root.get("viewBox") or "").replace(",", " ").split()
+    if len(vb) == 4:
+        try:
+            size = _valid_size(float(vb[2]), float(vb[3]))
+        except ValueError:
+            size = None
+        if size is not None:
+            return size
+
+    def _px(value: str | None) -> float | None:
+        """``"1280"`` / ``"1280px"``（前後空白可）のみ受ける。他単位は None。"""
+        if not value:
+            return None
+        try:
+            return float(value.strip().removesuffix("px"))
+        except ValueError:
+            return None
+
+    return _valid_size(_px(root.get("width")), _px(root.get("height")))
+
+
+def parse_svg_lines(root: ET.Element) -> tuple[list[TextLine], list[str]]:
     """SVG から全テキスト行のボックスを抽出。``transform`` 付きは警告のみ返す。"""
-    root = ET.parse(svg_path).getroot()
     parents = {child: parent for parent in root.iter() for child in parent}
     lines: list[TextLine] = []
     warnings: list[str] = []
@@ -274,15 +322,19 @@ def _intersection(a: TextLine, b: TextLine) -> tuple[float, float]:
     return ox, oy
 
 
-def find_out_of_canvas(lines: Iterable[TextLine]) -> list[TextLine]:
-    """キャンバス外へはみ出す行を返す。"""
+def find_out_of_canvas(
+    lines: Iterable[TextLine],
+    canvas_w: float = CANVAS_W,
+    canvas_h: float = CANVAS_H,
+) -> list[TextLine]:
+    """キャンバス外へはみ出す行を返す。寸法は呼び出し側が SVG から読んだ値を渡す（``parse_canvas_size``）。"""
     bad = []
     for ln in lines:
         if (
             ln.x0 < -CANVAS_MARGIN
             or ln.y0 < -CANVAS_MARGIN
-            or ln.x1 > CANVAS_W + CANVAS_MARGIN
-            or ln.y1 > CANVAS_H + CANVAS_MARGIN
+            or ln.x1 > canvas_w + CANVAS_MARGIN
+            or ln.y1 > canvas_h + CANVAS_MARGIN
         ):
             bad.append(ln)
     return bad
@@ -311,8 +363,14 @@ def find_overlaps(lines: list[TextLine]) -> list[tuple[TextLine, TextLine, float
 
 def check_svg(svg_path: str) -> tuple[list[TextLine], list[tuple[TextLine, TextLine, float, str]], list[str]]:
     """1 ファイルを検査し (はみ出し行, 重なり, 警告) を返す。"""
-    lines, warnings = parse_svg_lines(svg_path)
-    return find_out_of_canvas(lines), find_overlaps(lines), warnings
+    root = ET.parse(svg_path).getroot()
+    lines, warnings = parse_svg_lines(root)
+    size = parse_canvas_size(root)
+    if size is None:
+        # 黙って既定へ落とすと、既定より小さいキャンバスで見逃しが出る
+        warnings.append(f"canvas size undetermined; assumed {CANVAS_W:.0f}x{CANVAS_H:.0f}")
+        size = (CANVAS_W, CANVAS_H)
+    return find_out_of_canvas(lines, *size), find_overlaps(lines), warnings
 
 
 def resolve_svgs(path: str) -> list[str]:
@@ -378,7 +436,7 @@ def check_path(path: str) -> int:
         # ここに来ること自体が規約外の authoring を示す。
         for msg in warns:
             hard += 1
-            print(f"   [ERROR] unmeasurable (transform on text): {msg}")
+            print(f"   [ERROR] unmeasurable: {msg}")
         for a, b, ratio, _sev in warns_ov:
             warn += 1
             print(f"   [warn]  overlap {ratio:.0%}: {_snippet(a)!r} × {_snippet(b)!r}")
@@ -393,6 +451,7 @@ def check_path(path: str) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
+    sys.stdout.reconfigure(errors="replace")   # cp932 に無い文字（— ≈）で検定そのものが落ちないように
     parser = argparse.ArgumentParser(description="SVG レイアウト衝突ゲート (assert_no_overlap)")
     parser.add_argument("path", help=".svg ファイル or SVG を含むディレクトリ")
     args = parser.parse_args(argv)

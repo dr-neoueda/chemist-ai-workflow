@@ -1,7 +1,6 @@
 """assert_font_rule ゲートのテスト（和文=日本語フォント / 英数=Arial）。"""
-import pytest
-
 import assert_font_rule as afr
+import pytest
 
 JP = "'MS Gothic','Hiragino Kaku Gothic ProN',Arial"
 
@@ -116,3 +115,10 @@ def test_check_path_returns_zero_on_clean(tmp_path):
 
 def test_check_path_missing_returns_two(tmp_path):
     assert afr.check_path(str(tmp_path / "nope")) == 2
+
+
+def test_circled_digit_in_arial_is_flagged(tmp_path):
+    """丸数字は Arial に無く豆腐になるので、CJK と同じく和文フォントを要求する。"""
+    svg = tmp_path / "s.svg"
+    svg.write_text('<svg xmlns="http://www.w3.org/2000/svg"><text font-family="Arial">①</text></svg>', encoding="utf-8")
+    assert afr.check_path(str(svg)) != 0

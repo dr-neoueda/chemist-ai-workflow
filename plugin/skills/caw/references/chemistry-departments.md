@@ -443,7 +443,7 @@ Claude + Codex の二段レビューは応用編。本部署単独で運用し�
 - 「スライド作って」「パワポ作って」「発表資料お願い」
 - 「学会発表用」「論文紹介」「報告会の資料」「講義スライド」
 
-`caw-slides` skill は **SVG-first**（手描き SVG → native pptx で図形・表・chart が編集可能）で 4 用途（学会発表 / 論文紹介 / 報告会 / 講義）に対応。`references/design-system.md`（PPT Master default 準拠のデザイン規約）＋フォント/重なりゲート＋同梱変換器を持つ。詳細は同 skill の `SKILL.md` 参照。
+`caw-slides` skill は **SVG-first**（SVG → native pptx で図形・表・chart が編集可能）で 4 用途（学会発表 / 論文紹介 / 報告会 / 講義）に対応。`references/design-system.md`（PPT Master default 準拠のデザイン規約）＋フォント/重なりゲート＋同梱変換器を持つ。詳細は同 skill の `SKILL.md` 参照。
 
 ### presentation/CLAUDE.md
 
@@ -452,7 +452,7 @@ Claude + Codex の二段レビューは応用編。本部署単独で運用し�
 
 ## 役割
 
-学会・研究会・グループミーティング・教育セッションのスライド生成。**SVG-first**（手描き SVG → native DrawingML pptx で図形・表・chart が編集可能）で作る。**`caw-slides` skill を起点に**運用する。
+学会・研究会・グループミーティング・教育セッションのスライド生成。**SVG-first**（SVG → native DrawingML pptx で図形・表・chart が編集可能）で作る。**`caw-slides` skill を起点に**運用する。
 
 ## 成果物の置き場（CRITICAL）
 

@@ -1,18 +1,16 @@
-# 再開ポイント — 最終更新 2026-08-20
+# 再開ポイント — 最終更新 2026-11-01
 
 > 次回このプロジェクトを再開するときは、まずこのファイルを読んでください。
 > **このファイルの記述は「最後に見た日」であって「正しさの保証」ではありません。**
 > 実態は必ず `git log -1` / `.claude-plugin/marketplace.json` の version / `scripts/check-consistency.sh` で確認してください。
 
-## 現在地（2026-08-20 実測）
+## 現在地（2026-11-01 実測）
 
 | 項目 | 値 |
 |---|---|
-| **配布版** | plugin **1.74.0** / codex 1.73.0 / copilot 1.42.0 / gemini 1.48.0 |
-| **最終コミット** | 2026-07-09（v1.74.0）── **以後 42 日間コミットなし** |
-| リポジトリ | clean・`main == origin/main`・open PR 0・open issue 0 |
-| CI | consistency 全 OK（最終 run success） |
-| テスト | 125 passed / 4 skipped（`plugin/skills/{caw,caw-slides}/tests`） |
+| **配布版** | plugin **1.78.0** / codex 1.77.0 / copilot 1.46.0 / gemini 1.49.0（凍結） |
+| **直近の作業** | `caw-slides` を lab のスライド作成と同等に更新（ブランチ `feat/caw-slides-lab-parity`） |
+| テスト | caw-slides 157 passed、カバレッジ 83 %（`plugin/skills/caw-slides/tests`） |
 | 配布元 | https://github.com/dr-neoueda/chemist-ai-workflow |
 
 ## ★ 商品モデル（2026-08-21 確定）— 売り物はプラグインではない
@@ -71,7 +69,7 @@
 ### その他
 
 - **9 部署**スキャフォールド：secretary / research / engineering / computation / experiment / analysis / writing / review / presentation
-- `caw-slides` は **SVG-first に全面再設計済み**（v1.66.0）。lab 本体の PPT Master と同じ native pptx 変換器を vendor（MIT）
+- `caw-slides` は **v1.78.0 で lab の到達点へ更新**：生成器（`deck_chrome` / `deck_parts`）＋ `build_deck` の 1 コマンド。lab の実デッキ 2 本の書き出しと全図形が一致することを確認。変換器は lab と同じ版を vendor（MIT）。上流 v6.8.0 への更新は別の作業として見送り（baseline-shift を変換器が扱う模様）
 - Web ドキュメント（Astro Starlight、30+ ページ）。CI でビルド検証
 
 ## テストユーザー会は 2 回実施済み
@@ -99,7 +97,8 @@
 |---|---|---|---|
 | T1 | **Copilot CLI の実機動作確認** | 🔲 未着手（後回し・2026-08-24 ユーザー判断） | 15 スキルへフルポート済みだが **Copilot CLI を一度も起動していない**。`docs/copilot-compatibility.md` は 2026-06-04 の**机上調査**。テスト会 2 回はどちらも Claude Code。README の見出しが「インストール（**リポジトリ公開・marketplace 設定後**）」＝ install 手順が未実行。**Codex は実機で誤りが判明し 2 ステップに修正された履歴があるが Copilot には無い**ため、現在の `copilot plugin install caw` は同型の誤りの可能性。ローカルに `copilot` 未導入 |
 | T2 | **Codex 版への hooks 移植** | 🔲 未着手 | 下記詳細 |
-| T3 | **`caw-slides` の Windows 実機確認** | 🔲 未着手 | パイプラインは v1.71.0 で Windows 互換化済みだが Copilot CLI 上では未検証 |
+| T3 | **`caw-slides` の Windows 実機確認** | 🔲 未着手 | v1.78.0 の `build_deck` / `make_preview` / `fig_style` も Windows 実機では未確認（MS ゴシック・Chrome/Edge の場所は OS ごとに探す実装） |
+| T8 | **`caw-slides` の動画の PowerPoint 実再生** | 🔲 未着手 | XML と参照までは検定済み。PowerPoint を開いての自動再生・ループは未確認 |
 | T4 | **USB 配布の仕組み** | ✅ **2026-08-24 実装・実測済** | `scripts/make-offline-bundle.sh` でバンドル生成（3.1 MB・3 CLI 分・byte 一致検証つき）。受け取る側は `install.sh` / `install.ps1` を実行するだけ。詳細は下記 |
 | T5 | チャネル（申込導線）の決定 | 🔲 未決 | Phase 4 |
 | T6 | Web サイトの公開 | 🔲 未着手 | `astro.config.mjs` に `site` 未設定・deploy workflow 無し |

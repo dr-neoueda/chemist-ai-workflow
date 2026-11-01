@@ -2,6 +2,37 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [1.78.0 / Codex 1.77.0 / Copilot 1.46.0] - 2026-11-01
+
+### Changed — `caw-slides` を実運用の到達点まで引き上げ
+
+7 月時点のデザインと手順のまま止まっていた `caw-slides` を、実際の研究発表で固めた規約と道具に揃えた。実デッキ 2 本（計 21 枚・図形 639 個）を新しい経路で書き出し、元の書き出しと種類・位置・大きさ・文字・文字サイズ・和文フォント・上付き・画像の中身まで全図形が一致することを確認した（未発表データのため照合は手元のみ）。
+
+- **デザイン規約を全面改訂**（`references/design-system.md`）：定型の生成物に見える構造物を廃止（強調帯と見出しの縦棒・二言語キッカー・タイトル下のリード文・全ページの注記・固定幅の枠）。タイトルは主張形でなく短い名詞句、区切り線は y=140、フッターは番号のみ、本文は 14 pt 以上、低塗り、要点ボックスは枠線＋ごく薄い地。文章の規約（確定した結果だけ・書き言葉・見出しに人名を入れない・文中に「—」を使わない）を追加。
+- **`scripts/build_deck.py`（新規）**：検定→変換→後処理→出力検定を 1 コマンドに固定。落ちたら配布先に何も出さない。CLI ごとに手順がぶれない。旧来の `_build.py` を貼る手順を廃止。
+- **描画部品（新規）**：`deck_chrome.py`（見出し・本文・強調帯・表紙。`^{}` / `_{}` で上付き・下付き）、`deck_parts.py`（表・図枠・矢印・バッジ）、`fig_style.py`（matplotlib の書式）。
+- **検定（新規）**：`check_margins.py`（右余白）、`vendor/svg_quality_checker.py`（SVG の制約・上流を無改変で同梱）。`assert_no_overlap` は viewBox からキャンバス寸法を読む（ポスターを誤判定しない）。`assert_font_rule` / `fix_ea_font` は丸数字を和文扱いにする。
+- **後処理（新規）**：`fix_scripts.py`（変換器が捨てる上付き・下付きを復元）、`ungroup_pptx.py`（グループを解いて編集しやすくする）。
+- **動画（新規）**：`prepare_video.py`（H.264・BT.709）、`add_videos.py`（自動再生・ループ）。`videos.json` で位置を指定。
+- **発表ノート**：`notes/<SVG の名前>.md` が各枚のノートに入る。
+- **手直し版の保護（新規）**：`build_deck` は前回の書き出しと中身が違う pptx を `--force` なしでは上書きしない。`copy_slide_pptx.py` で 1 枚単位の差し替えができる。
+- **プレビュー（新規）**：`make_preview.py`（Chrome / Edge。1280×720 を検定）。
+- **見本（新規）**：`references/sample_deck.py`。全機能を使う生成器の手本で、テストでも通しで走る。
+
+### Changed — デッキのフォルダ
+
+- スライドは `_src/<deck>/svg_output/*.svg`、図は `_src/<deck>/images/`（SVG からは `../images/<名前>`）に置く。旧来の `_src/<deck>/*.svg` は `svg_output/` へ移す。
+
+### Removed
+
+- `scripts/embed_image.py`：変換器が `../images/` を直接読むので不要。図の縦横比は `deck_parts.figure` が扱う。
+- cairosvg への言及：プレビューは Chrome / Edge に統一（cairosvg は外部画像を空白で描き、重なりを見逃す）。
+
+### Fixed
+
+- 全角空白を含む行の上付き・下付きが復元できなかった（変換器が全角空白を半角へ置き換えるため）。
+- 個人化リーク検査の語を追加（`scripts/check-consistency.sh`）。
+
 ## [配布物の版は据え置き — リポジトリ側ツールの追加] - 2026-08-24
 
 ### Added — USB 等で手渡しするオフライン導入バンドル

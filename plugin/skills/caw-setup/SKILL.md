@@ -44,9 +44,10 @@ trigger: /caw-setup
 | スライド | PyMuPDF | `python3 -c "import fitz"` | 論文の図を高解像度で切り抜いてスライドに載せる |
 | スライド | python-pptx | `python3 -c "import pptx"` | 手描き SVG を**編集可能な pptx** に変換する（caw-slides の要） |
 | スライド | Pillow | `python3 -c "import PIL"` | スライドに写真・切り抜き図（ラスタ画像）を埋め込む |
-| スライド（任意） | cairosvg / LibreOffice | `python3 -c "import cairosvg"` / `soffice` | 完成前にスライドをプレビュー画像で目視 QA する |
+| スライド（任意） | Chrome または Edge | ブラウザの有無 | 完成前にスライドをプレビュー画像で目視 QA する |
+| スライド（任意） | ffmpeg | `ffmpeg -version` | スライドに動画を載せる（変換・自動再生ループ） |
 | 解析・作図 | numpy / pandas / scipy | `python3 -c "import numpy, pandas, scipy"` | 測定・計算データの読み込み・整形・数値解析 |
-| 解析・作図 | matplotlib | `python3 -c "import matplotlib"` | 解析結果のグラフ作成・スライドの数式レンダ（render_latex オフライン） |
+| 解析・作図 | matplotlib | `python3 -c "import matplotlib"` | 解析結果のグラフ作成・スライドの図と数式 |
 | 解析（任意） | lmfit | `python3 -c "import lmfit"` | 速度論・スペクトル等の非線形フィッティング |
 | 解析（任意） | RDKit | `python3 -c "import rdkit"` | 分子構造の生成・記述子・描画 |
 | 解析（任意） | ASE | `python3 -c "import ase"` | 原子構造の読み書き・計算入力の準備 |
@@ -63,7 +64,7 @@ Step 2 で**不足していた**ツールを、**1 つずつ**「なぜ必要か
 - **尋ね方**：Claude Code は `AskUserQuestion`（機能グループごとに複数選択・各ツールの説明欄に「なぜ必要か」を書く）、他 CLI は不足ツールを説明つきで列挙し、どれを入れるか選ばせる。**全ツールについて説明つきで意思決定を取る**（勝手に入れない・勝手に飛ばさない）。既に入っているものは尋ねない（✓ 表示のみ）。
 - **オンボーディングで実行**：`/caw` オンボーディングの scaffold 完了後にこの Step を必ず走らせ、その場で不足ツールを説明つきで尋ねる（「あとで /caw-setup」の後回しではなく初期構築の一部）。
 - **導入コマンド（選ばれたツールのみ）**：
-  - pip：スライド＝`python-pptx Pillow PyMuPDF`／解析＝`numpy pandas scipy matplotlib`／任意＝`lmfit rdkit ase cairosvg`
+  - pip：スライド＝`python-pptx Pillow PyMuPDF matplotlib`／解析＝`numpy pandas scipy matplotlib`／任意＝`lmfit rdkit ase`
   - macOS: poppler は `brew install poppler`／pip は `python3 -m pip install <pkgs>`（PEP 668 で弾かれたら `--user --break-system-packages`）
   - Windows: `winget install -e --id <id>`／poppler は `scoop install poppler`／`python -m pip install <pkgs>`
   - Homebrew / winget / Scoop が無ければ、その導入も選択肢として説明する。
