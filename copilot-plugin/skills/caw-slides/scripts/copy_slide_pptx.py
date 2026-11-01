@@ -163,6 +163,7 @@ def replace_slide(prs, number: int, src_slide):
     prs.part.drop_rel(old_id.rId)
     ids.remove(old_id)
     _retarget_links(prs, old_part, new.part)
+    prs.part.rename_slide_parts([s.rId for s in ids])   # python-pptx は最初の一度しか振り直さず、続けると名前が重なる
     return new
 
 
@@ -186,6 +187,9 @@ def prepend_notes_line(slide, text: str, replace_if: str | None = None) -> None:
     first = tf.paragraphs[0]
     if replace_if and re.match(replace_if, first.text.strip()):
         runs = first.runs
+        if not runs:
+            first.text = text
+            return
         runs[0].text = text
         for r in runs[1:]:
             r._r.getparent().remove(r._r)

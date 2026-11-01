@@ -7,8 +7,8 @@ import pytest
 import ungroup_pptx as ug
 from pptx import Presentation
 from pptx.enum.shapes import MSO_SHAPE, MSO_SHAPE_TYPE
-from pptx.presentation import Presentation as PptxPresentation
 from pptx.oxml.ns import qn
+from pptx.presentation import Presentation as PptxPresentation
 from pptx.util import Emu
 
 

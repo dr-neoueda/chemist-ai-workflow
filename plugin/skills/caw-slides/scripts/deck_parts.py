@@ -8,7 +8,20 @@ import math
 from pathlib import Path
 from xml.sax.saxutils import escape
 
-from deck_chrome import BLUE, BODY, DIVIDER, FRAME, GREY, HAIRLINE, JP, NAVY, body_size, fmt_size, text, wash
+from deck_chrome import (
+    BLUE,
+    BODY,
+    DIVIDER,
+    FRAME,
+    GREY,
+    HAIRLINE,
+    JP,
+    NAVY,
+    body_size,
+    fmt_size,
+    text,
+    wash,
+)
 from PIL import Image
 
 Cell = str | tuple[str, str] | tuple[str, str, bool]  # 文字 / (文字, 色) / (文字, 色, 太字)

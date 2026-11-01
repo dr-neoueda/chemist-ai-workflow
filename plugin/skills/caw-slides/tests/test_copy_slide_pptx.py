@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import io
+import zipfile
 from pathlib import Path
 
 import copy_slide_pptx as cs
@@ -257,3 +258,28 @@ def test_picture_without_an_embedded_image_is_copied_as_it_is(tmp_path: Path) ->
     del picture._element.blipFill.find(cs.qn("a:blip")).attrib[cs.qn("r:embed")]
     new = cs.copy_slide(src.slides[0], Presentation(_dst(tmp_path)))
     assert len(new.shapes) == len(src.slides[0].shapes)
+
+
+def test_two_replacements_before_saving_keep_both_slides(tmp_path: Path) -> None:
+    """python-pptx は部品の名前を最初の一度しか振り直さない。続けて入れ替えると名前が重なり 1 枚消える（Codex 2026-11-01）。"""
+    prs = Presentation(_dst(tmp_path))
+    prs.slides.add_slide(prs.slide_layouts[6])
+    prs.slides.add_slide(prs.slide_layouts[6])
+    src = Presentation(_src(tmp_path)).slides[0]
+    first = cs.replace_slide(prs, 2, src)
+    first.shapes.add_textbox(Emu(1), Emu(1), Emu(2), Emu(2)).text_frame.text = "一枚目"
+    second = cs.replace_slide(prs, 3, src)
+    second.shapes.add_textbox(Emu(1), Emu(1), Emu(2), Emu(2)).text_frame.text = "二枚目"
+    out = tmp_path / "out.pptx"
+    prs.save(out)
+    names = zipfile.ZipFile(out).namelist()
+    assert len(names) == len(set(names))
+    slides = Presentation(out).slides
+    assert [s.shapes[-1].text_frame.text for s in slides] == ["既存", "一枚目", "二枚目"]
+
+
+def test_prepend_notes_line_can_replace_an_empty_paragraph(tmp_path: Path) -> None:
+    slide = Presentation(_dst(tmp_path)).slides[0]
+    cs.set_notes(slide, "")
+    cs.prepend_notes_line(slide, "発表 1 分", replace_if=r"^$")
+    assert slide.notes_slide.notes_text_frame.text == "発表 1 分"
