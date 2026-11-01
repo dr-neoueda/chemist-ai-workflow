@@ -202,3 +202,58 @@ def test_connector_end_whose_shape_stays_behind_is_detached(tmp_path: Path) -> N
     cs.copy_shapes(src, target, keep=lambda s: s.shape_id != first.shape_id)
     rectangle = next(s for s in target.shapes if s.shape_type == MSO_SHAPE_TYPE.AUTO_SHAPE)
     assert _endpoints(target) == (None, str(rectangle.shape_id))
+
+
+def _deck_with_link(tmp_path: Path) -> tuple:
+    prs = Presentation(_dst(tmp_path))
+    old = prs.slides.add_slide(prs.slide_layouts[6])
+    link = prs.slides[0].shapes.add_shape(MSO_SHAPE.RECTANGLE, Emu(0), Emu(0), Emu(9), Emu(9))
+    link.click_action.target_slide = old
+    return prs, link
+
+
+def test_replace_slide_retargets_links_after_an_earlier_save(tmp_path: Path) -> None:
+    """保存すると関係の行き先がキャッシュされる。作り直さないと古い枚を指して保存される（Codex 2026-11-01）。"""
+    prs, link = _deck_with_link(tmp_path)
+    prs.save(tmp_path / "before.pptx")
+    new = cs.replace_slide(prs, 2, Presentation(_src(tmp_path)).slides[0])
+    assert link.click_action.target_slide.slide_id == new.slide_id
+    out = tmp_path / "out.pptx"
+    prs.save(out)
+    assert Presentation(out).slides[0].shapes[-1].click_action.target_slide.slide_id == new.slide_id
+
+
+def test_replace_slide_keeps_the_section_and_the_custom_show(tmp_path: Path) -> None:
+    """節と目的別スライドショーが古い枚を指したままだと PowerPoint が修復を求める（レビュー 2026-11-01）。"""
+    prs = Presentation(_dst(tmp_path))
+    prs.slides.add_slide(prs.slide_layouts[6])
+    ids = prs.slides._sldIdLst
+    first, second = ids[0], ids[1]
+    p14 = 'xmlns:p14="http://schemas.microsoft.com/office/powerpoint/2010/main"'
+    root = prs.part._element
+    root.append(parse_xml(
+        f'<p:custShowLst {nsdecls("p", "r")}><p:custShow name="短縮" id="0"><p:sldLst><p:sld r:id="{second.rId}"/>'
+        '</p:sldLst></p:custShow></p:custShowLst>'))
+    root.append(parse_xml(
+        f'<p:extLst {nsdecls("p")}><p:ext uri="{{521415D9-36F7-43E2-AB2F-B90AF26B5E84}}"><p14:sectionLst {p14}>'
+        f'<p14:section name="本編" id="{{00000000-0000-0000-0000-000000000001}}"><p14:sldIdLst>'
+        f'<p14:sldId id="{first.get("id")}"/><p14:sldId id="{second.get("id")}"/></p14:sldIdLst></p14:section>'
+        '</p14:sectionLst></p:ext></p:extLst>'))
+    new = cs.replace_slide(prs, 2, Presentation(_src(tmp_path)).slides[0])
+    out = tmp_path / "out.pptx"
+    prs.save(out)
+    again = Presentation(out)
+    saved = again.part._element
+    section = [n.get("id") for n in saved.iter("{http://schemas.microsoft.com/office/powerpoint/2010/main}sldId")]
+    assert section == [str(i.get("id")) for i in again.slides._sldIdLst] and section[1] == str(new.slide_id)
+    shown = next(saved.iter(cs.qn("p:sld"))).get(cs.qn("r:id"))
+    assert again.part.related_part(shown).slide.slide_id == new.slide_id
+
+
+def test_picture_without_an_embedded_image_is_copied_as_it_is(tmp_path: Path) -> None:
+    """``r:embed`` の無い空の blip で落ちない。"""
+    src = Presentation(_src(tmp_path))
+    picture = next(s for s in src.slides[0].shapes if s.shape_type == MSO_SHAPE_TYPE.PICTURE)
+    del picture._element.blipFill.find(cs.qn("a:blip")).attrib[cs.qn("r:embed")]
+    new = cs.copy_slide(src.slides[0], Presentation(_dst(tmp_path)))
+    assert len(new.shapes) == len(src.slides[0].shapes)

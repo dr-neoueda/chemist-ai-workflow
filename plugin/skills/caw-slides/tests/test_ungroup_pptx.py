@@ -7,6 +7,7 @@ import pytest
 import ungroup_pptx as ug
 from pptx import Presentation
 from pptx.enum.shapes import MSO_SHAPE, MSO_SHAPE_TYPE
+from pptx.presentation import Presentation as PptxPresentation
 from pptx.oxml.ns import qn
 from pptx.util import Emu
 
@@ -80,3 +81,19 @@ def test_each_unflattenable_group_is_reported_once(tmp_path: Path) -> None:
     report = ug.ungroup(src, out)
     assert len(report["skipped"]) == 3
     assert len({group_id for _, group_id, _ in report["skipped"]}) == 3
+
+
+def test_failed_write_over_the_input_leaves_it_untouched(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """手で直した pptx にもかけるので、書き込みの途中で落ちても元を壊さない（Codex 2026-11-01）。"""
+    src = _deck(tmp_path)
+    before = src.read_bytes()
+
+    def fail_midway(self: object, target: str) -> None:
+        Path(target).write_bytes(b"partial")
+        raise OSError("disk full")
+
+    monkeypatch.setattr(PptxPresentation, "save", fail_midway)
+    with pytest.raises(OSError, match="disk full"):
+        ug.ungroup(src, src)
+    assert src.read_bytes() == before
+    assert [p.name for p in tmp_path.iterdir()] == ["in.pptx"]

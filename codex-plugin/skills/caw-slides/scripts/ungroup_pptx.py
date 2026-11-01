@@ -14,6 +14,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
 
 from pptx import Presentation
@@ -109,7 +110,13 @@ def ungroup(src: Path, dst: Path) -> dict:
             else:
                 kept.append(grp)
                 skipped.append([n, _group_id(grp), reason])
-    prs.save(str(dst))
+    dst = Path(dst)
+    tmp = dst.with_name(f".{dst.name}.tmp")   # 手で直した pptx にもかけるので、書き込みに失敗しても元を壊さない
+    try:
+        prs.save(str(tmp))
+        os.replace(tmp, dst)
+    finally:
+        tmp.unlink(missing_ok=True)
     return {"groups_removed": removed, "skipped": skipped}
 
 

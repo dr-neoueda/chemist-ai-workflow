@@ -10,7 +10,7 @@
 |---|---|
 | **配布版** | plugin **1.78.0** / codex 1.77.0 / copilot 1.46.0 / gemini 1.49.0（凍結） |
 | **直近の作業** | `caw-slides` を lab のスライド作成と同等に更新（ブランチ `feat/caw-slides-lab-parity`） |
-| テスト | caw-slides 192 passed、カバレッジ 82 %（`plugin/skills/caw-slides/tests`） |
+| テスト | caw-slides 199 passed、カバレッジ 82 %（`plugin/skills/caw-slides/tests`） |
 | 配布元 | https://github.com/dr-neoueda/chemist-ai-workflow |
 
 ## ★ 商品モデル（2026-08-21 確定）— 売り物はプラグインではない

@@ -161,9 +161,12 @@ def test_failed_gate_leaves_an_existing_output_byte_identical(project):
 def test_output_locked_by_powerpoint_is_a_clear_error_and_keeps_the_old_file(project, monkeypatch):
     out = bd.build(project)
     before = out.read_bytes()
+    real_replace = bd.os.replace
 
     def locked(src, dst):
-        raise PermissionError("in use")
+        if str(dst) == str(out):      # 後処理の作業ファイルの置き換えは通す
+            raise PermissionError("in use")
+        real_replace(src, dst)
 
     monkeypatch.setattr(bd.os, "replace", locked)
     with pytest.raises(bd.BuildError, match="PowerPoint"):

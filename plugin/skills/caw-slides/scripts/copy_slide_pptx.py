@@ -21,6 +21,7 @@ from pptx.opc.constants import RELATIONSHIP_TYPE as RT
 from pptx.oxml.ns import qn
 
 R_ATTRS = (qn("r:embed"), qn("r:id"), qn("r:link"), qn("r:pict"))
+P14_SLD_ID = "{http://schemas.microsoft.com/office/powerpoint/2010/main}sldId"   # 節（sections）の中の枚
 GEOMETRY_TOLERANCE_EMU = 9525           # 1 px
 
 
@@ -65,6 +66,8 @@ def _check_relationships(elements: list) -> None:
 def _rebind_images(el, src_slide, dst_slide) -> None:
     """``el`` の画像の中身を ``dst_slide`` に入れ直し、参照を付け替える。"""
     for blip in el.iter(qn("a:blip")):
+        if blip.get(qn("r:embed")) is None:
+            continue
         blob = src_slide.part.related_part(blip.get(qn("r:embed"))).blob
         _, rid = dst_slide.part.get_or_add_image_part(io.BytesIO(blob))
         blip.set(qn("r:embed"), rid)
@@ -117,11 +120,30 @@ def move_shapes(slide, select, dy_emu: int) -> int:
 
 
 def _retarget_links(prs, old_part, new_part) -> None:
-    """他の枚から ``old_part`` へのリンクを ``new_part`` へ付け替える。"""
+    """他の枚から ``old_part`` へのリンクを ``new_part`` へ付け替える。
+
+    関係は作り直す。python-pptx は関係の行き先をキャッシュするので、行き先だけ書き換えると古い枚を指して保存される。
+    """
     for slide in prs.slides:
-        for rel in slide.part.rels.values():
-            if rel.reltype == RT.SLIDE and rel.target_part is old_part:
-                rel._target = new_part
+        part = slide.part
+        stale = [rid for rid, rel in part.rels.items() if rel.reltype == RT.SLIDE and rel.target_part is old_part]
+        for old_rid in stale:
+            new_rid = part.relate_to(new_part, RT.SLIDE)
+            for node in slide._element.iter():
+                if node.get(qn("r:id")) == old_rid:
+                    node.set(qn("r:id"), new_rid)
+            part.drop_rel(old_rid)
+
+
+def _carry_deck_lists(prs, old_id, new_id) -> None:
+    """節と目的別スライドショーの中の古い枚を新しい枚へ置き換える。"""
+    root = prs.part._element
+    for node in root.iter(P14_SLD_ID):
+        if node.get("id") == old_id.get("id"):
+            node.set("id", new_id.get("id"))
+    for node in root.iter(qn("p:sld")):
+        if node.get(qn("r:id")) == old_id.rId:
+            node.set(qn("r:id"), new_id.rId)
 
 
 def replace_slide(prs, number: int, src_slide):
@@ -135,6 +157,7 @@ def replace_slide(prs, number: int, src_slide):
     new = copy_slide(src_slide, prs)
     new_id, old_id = ids[-1], ids[number - 1]
     old_part = prs.part.related_part(old_id.rId)
+    _carry_deck_lists(prs, old_id, new_id)
     ids.remove(new_id)
     ids.insert(number - 1, new_id)
     prs.part.drop_rel(old_id.rId)

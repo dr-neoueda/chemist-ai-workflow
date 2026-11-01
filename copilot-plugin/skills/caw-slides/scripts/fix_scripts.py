@@ -8,6 +8,7 @@
 同じ文面の行が複数あれば出現順で組にし、数が合わなければ止める（上付きの無い同文の行に取られないように）。
 ``baseline`` は上付き +30 %・下付き −25 %、文字の大きさは行の大きさへ戻す（PowerPoint が自分で縮めるので、
 縮めたままだと二重に小さくなる）。行か添字が 1 つでも見つからなければ保存しない。
+行の中の添字は文字だけでなく位置（前にある空白以外の文字数）でも照合し、同じ文字の小さい run に取られないようにする。
 
 Usage
 -----
@@ -16,6 +17,7 @@ Usage
 from __future__ import annotations
 
 import argparse
+import os
 import re
 import sys
 import xml.etree.ElementTree as ET
@@ -25,6 +27,7 @@ from pathlib import Path
 
 from pptx import Presentation
 from pptx.enum.shapes import MSO_SHAPE_TYPE
+from pptx.presentation import Presentation as PresentationType
 from pptx.shapes.shapetree import SlideShapes
 from pptx.slide import Slide
 from pptx.text.text import _Paragraph
@@ -38,10 +41,18 @@ class ScriptMismatch(Exception):
 
 
 @dataclass(frozen=True)
-class Line:
-    """SVG の 1 行。全文と、各添字の (文字, 向き) を順に持つ（添字が無ければ空）。"""
+class Script:
+    """添字 1 つ。文字、向き、行の中でこの添字より前にある空白以外の文字数。"""
     text: str
-    scripts: tuple[tuple[str, str], ...]
+    shift: str
+    offset: int
+
+
+@dataclass(frozen=True)
+class Line:
+    """SVG の 1 行。全文と、添字を順に持つ（添字が無ければ空）。"""
+    text: str
+    scripts: tuple[Script, ...]
 
 
 def _normal(line: str) -> str:
@@ -49,13 +60,33 @@ def _normal(line: str) -> str:
     return re.sub(r"\s+", " ", line.replace("\u3000", " ")).strip()
 
 
+def _ink(text: str) -> int:
+    """空白以外の文字数。変換器が手を入れない部分なので、行の中の位置はこれで数える。"""
+    return len("".join(text.split()))
+
+
+def _segments(node: ET.Element, shift: str | None = None) -> Iterator[tuple[str, str | None]]:
+    """``<text>`` の中の断片を (文字, 向き) で文書の順に返す。"""
+    own = node.get("baseline-shift")
+    here = own if own in SHIFT else shift
+    if node.text:
+        yield node.text, here
+    for child in node:
+        yield from _segments(child, here)
+        if child.tail:
+            yield child.tail, here
+
+
 def svg_lines(svg: Path) -> list[Line]:
     """SVG のすべての行を出現順に取り出す。"""
     out = []
     for node in ET.parse(svg).getroot().iter(f"{SVG_NS}text"):
-        scripts = tuple((t.text or "", t.get("baseline-shift"))
-                        for t in node.iter(f"{SVG_NS}tspan") if t.get("baseline-shift") in SHIFT)
-        out.append(Line(_normal("".join(node.itertext())), scripts))
+        scripts, offset = [], 0
+        for piece, shift in _segments(node):
+            if shift is not None and _ink(piece):
+                scripts.append(Script(_normal(piece), shift, offset))
+            offset += _ink(piece)
+        out.append(Line(_normal("".join(node.itertext())), tuple(scripts)))
     return out
 
 
@@ -74,11 +105,13 @@ def apply(para: _Paragraph, line: Line) -> None:
     if base is None:
         raise ScriptMismatch(f"{line.text!r}: 文字の大きさを持つ run が無い")
     queue = list(line.scripts)
+    offset = 0
     for run in para.runs:
-        if queue and run.text == queue[0][0] and run.font.size is not None and run.font.size < base:
-            _, shift = queue.pop(0)
+        if (queue and offset == queue[0].offset and _normal(run.text) == queue[0].text
+                and run.font.size is not None and run.font.size < base):
             run.font.size = base
-            run._r.get_or_add_rPr().set("baseline", SHIFT[shift])
+            run._r.get_or_add_rPr().set("baseline", SHIFT[queue.pop(0).shift])
+        offset += _ink(run.text)
     if queue:
         raise ScriptMismatch(f"{line.text!r}: 添字 {queue} が縮小された run に見つからない")
 
@@ -101,6 +134,16 @@ def fix_slide(slide: Slide, lines: list[Line]) -> int:
         raise ScriptMismatch(f"pptx に見つからない行: {left}。dy で行を積んだ <text> は 1 段落にまとまるので、"
                              "1 行 1 <text> で書き直す")
     return sum(len(ln.scripts) for ln in lines)
+
+
+def _save_over(prs: PresentationType, path: Path) -> None:
+    """隣に書いてから入れ替える。書き込みに失敗しても元の pptx は壊れない。"""
+    tmp = path.with_name(f".{path.name}.tmp")
+    try:
+        prs.save(str(tmp))
+        os.replace(tmp, path)
+    finally:
+        tmp.unlink(missing_ok=True)
 
 
 def fix_scripts(pptx_path: str | Path, svg_dir: str | Path) -> int:
@@ -129,7 +172,7 @@ def fix_scripts(pptx_path: str | Path, svg_dir: str | Path) -> int:
         raise ScriptMismatch(f"SVG {len(per_slide)} 枚に対して pptx は {len(prs.slides)} 枚")
     total = sum(fix_slide(slide, lines) for slide, lines in zip(prs.slides, per_slide, strict=True))
     if total:
-        prs.save(str(pptx_path))
+        _save_over(prs, Path(pptx_path))
     return total
 
 
