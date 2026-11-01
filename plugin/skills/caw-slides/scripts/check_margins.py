@@ -11,6 +11,7 @@ Usage
 from __future__ import annotations
 
 import argparse
+import html
 import re
 import sys
 from pathlib import Path
@@ -37,7 +38,7 @@ def check(root: Path) -> list[str]:
             if "x" not in attrs or "font-size" not in attrs:
                 continue
             x, size = float(attrs["x"]), float(attrs["font-size"])
-            plain = TAG.sub("", match.group(2))
+            plain = html.unescape(TAG.sub("", match.group(2)))
             width = advance(plain, size)
             anchor = attrs.get("text-anchor", "start")
             end = x if anchor == "end" else x + (width / 2 if anchor == "middle" else width)

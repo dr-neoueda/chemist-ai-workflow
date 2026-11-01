@@ -51,3 +51,11 @@ def test_figure_needs_exactly_one_of_width_or_height(tmp_path):
 def test_arrow_head_is_a_polygon_not_a_marker():
     root = _parse(dp.arrow(0, 0, 100, 0))
     assert list(root.iter(f"{SVG}polygon")) and not list(root.iter(f"{SVG}marker"))
+
+
+def test_figure_rejects_a_file_name_the_gates_cannot_follow(tmp_path):
+    """``R&D.png`` は SVG で ``&amp;`` になり、svg_quality_checker が画像を見つけられない（実ゲートで確認）。"""
+    png = tmp_path / "R&D.png"
+    Image.new("RGB", (40, 20)).save(png)
+    with pytest.raises(ValueError, match="R&D.png"):
+        dp.figure(png, 80, 200, w=400)

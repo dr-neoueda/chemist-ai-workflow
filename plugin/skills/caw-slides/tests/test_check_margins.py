@@ -19,3 +19,9 @@ def test_fractional_font_size_is_read(tmp_path):
 
 def test_missing_directory_is_an_error_not_zero_findings(tmp_path):
     assert cm.main([str(tmp_path / "nope")]) == 2
+
+
+def test_entities_are_measured_as_the_characters_they_show(tmp_path):
+    """``&lt;0.01`` は 5 文字で測る（Codex 2026-11-01）。そのまま測ると 8 文字になり、余白に収まる行を誤って落とす。"""
+    root = _write(tmp_path, '<text x="1140" y="200" font-size="20">&lt;0.01</text>')
+    assert cm.check(root) == []

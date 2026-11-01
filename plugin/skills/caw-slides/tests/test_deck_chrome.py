@@ -124,3 +124,9 @@ def test_callout_rejects_a_line_that_only_fits_without_the_safety_margin():
     fits_barely = dc.CALLOUT_PAD * 2 + dc.advance(line, dc.BODY_MIN_PX) + 2
     with pytest.raises(ValueError, match="幅"):
         dc.callout(80, 500, fits_barely, 60, [line])
+
+
+def test_latin1_superscript_digits_stay_in_the_arial_run():
+    """¹²³ は Latin-1。和文の run に入ると字面が基線からずれる。"""
+    assert 'font-family="Arial">10¹³ m² </tspan>' in dc.mix("10¹³ m² の面")
+    assert ">³</tspan>" in dc.mix("の³")

@@ -15,7 +15,7 @@
 - **後処理（新規）**：`fix_scripts.py`（変換器が捨てる上付き・下付きを復元）、`ungroup_pptx.py`（グループを解いて編集しやすくする）。
 - **動画（新規）**：`prepare_video.py`（H.264・BT.709）、`add_videos.py`（自動再生・ループ）。`videos.json` で位置を指定。
 - **発表ノート**：`notes/<SVG の名前>.md` が各枚のノートに入る。
-- **手直し版の保護（新規）**：`build_deck` は前回の書き出しと中身が違う pptx を `--force` なしでは上書きしない。`copy_slide_pptx.py` で 1 枚単位の差し替えができる。
+- **手直し版の保護（新規）**：`build_deck` は前回の書き出しと中身が違う pptx を `--force` なしでは上書きしない。`copy_slide_pptx.py` で 1 枚単位の差し替えができる（他の枚からのリンク・背景の画像・図形の結線も引き継ぐ）。
 - **プレビュー（新規）**：`make_preview.py`（Chrome / Edge。1280×720 を検定）。
 - **見本（新規）**：`references/sample_deck.py`。全機能を使う生成器の手本で、テストでも通しで走る。
 

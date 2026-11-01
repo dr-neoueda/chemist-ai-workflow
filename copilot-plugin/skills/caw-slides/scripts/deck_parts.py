@@ -14,6 +14,7 @@ from PIL import Image
 Cell = str | tuple[str, str] | tuple[str, str, bool]  # 文字 / (文字, 色) / (文字, 色, 太字)
 
 FRAME_PAD = 10        # 図の枠と画像のあいだ [px]
+XML_SPECIAL = set("&<>\"'")   # SVG の属性で置き換えられ、svg_quality_checker が画像を見つけられなくなる
 
 
 def centred(x: float, y: float, label: str, *, size: float = 15, fill: str = NAVY, bold: bool = False,
@@ -59,10 +60,13 @@ def figure(png: str | Path, x: float, y: float, *, w: float | None = None,
     Raises
     ------
     ValueError
-        ``w`` と ``h`` を両方渡した、または両方渡さなかった。
+        ``w`` と ``h`` を両方渡した、または両方渡さなかった。画像の名前に ``& < > " '`` がある。
     """
     if (w is None) == (h is None):
         raise ValueError("figure: w と h のどちらか一方を渡す")
+    name = Path(png).name
+    if XML_SPECIAL & set(name):
+        raise ValueError(f"figure: 画像の名前 {name} に記号 & < > \" ' を使わない（名前を変える）")
     with Image.open(png) as im:
         ratio = im.width / im.height
     if w is not None:
@@ -74,7 +78,7 @@ def figure(png: str | Path, x: float, y: float, *, w: float | None = None,
     outer_w, outer_h = round(image_w + 2 * FRAME_PAD), round(image_h + 2 * FRAME_PAD)
     markup = (f'    <rect x="{x}" y="{y}" width="{outer_w}" height="{outer_h}" fill="#FFFFFF" stroke="{FRAME}" '
               f'stroke-width="1"/>\n'
-              f'    <image href="../images/{Path(png).name}" x="{x + FRAME_PAD}" y="{y + FRAME_PAD}" '
+              f'    <image href="../images/{name}" x="{x + FRAME_PAD}" y="{y + FRAME_PAD}" '
               f'width="{image_w:.1f}" height="{image_h:.1f}" preserveAspectRatio="xMidYMid meet"/>\n')
     return markup, outer_w, outer_h
 

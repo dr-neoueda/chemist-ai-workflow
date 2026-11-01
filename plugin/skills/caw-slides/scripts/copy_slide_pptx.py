@@ -17,6 +17,7 @@ import copy
 import io
 
 from pptx.enum.shapes import MSO_SHAPE_TYPE
+from pptx.opc.constants import RELATIONSHIP_TYPE as RT
 from pptx.oxml.ns import qn
 
 R_ATTRS = (qn("r:embed"), qn("r:id"), qn("r:link"), qn("r:pict"))
@@ -39,15 +40,18 @@ def _next_id(slide) -> int:
 
 def copy_slide(src_slide, dst_prs, layout=None):
     """``src_slide`` を ``dst_prs`` の末尾へ写して、新しい枚を返す。``layout`` が無ければ相手の最後の枚の配置を使う。"""
-    _check_relationships(_shape_elements(src_slide))
+    bg = src_slide._element.cSld.find(qn("p:bg"))
+    elements = _shape_elements(src_slide)
+    _check_relationships(elements if bg is None else [bg, *elements])
     layout = layout or dst_prs.slides[-1].slide_layout
     new = dst_prs.slides.add_slide(layout)
     for ph in list(new.placeholders):
         ph._element.getparent().remove(ph._element)
-    bg = src_slide._element.cSld.find(qn("p:bg"))
     if bg is not None:
-        new._element.cSld.insert(0, copy.deepcopy(bg))
-    _append_copies(_shape_elements(src_slide), src_slide, new)
+        dup = copy.deepcopy(bg)
+        _rebind_images(dup, src_slide, new)
+        new._element.cSld.insert(0, dup)
+    _append_copies(elements, src_slide, new)
     return new
 
 
@@ -58,18 +62,38 @@ def _check_relationships(elements: list) -> None:
                 raise ValueError(f"画像以外の関係（{attr}）を持つ図形は写せない: {el.tag}")
 
 
+def _rebind_images(el, src_slide, dst_slide) -> None:
+    """``el`` の画像の中身を ``dst_slide`` に入れ直し、参照を付け替える。"""
+    for blip in el.iter(qn("a:blip")):
+        blob = src_slide.part.related_part(blip.get(qn("r:embed"))).blob
+        _, rid = dst_slide.part.get_or_add_image_part(io.BytesIO(blob))
+        blip.set(qn("r:embed"), rid)
+
+
+def _remap_connections(el, new_ids: dict[str, str]) -> None:
+    """結線の相手を振り直した id へ付け替える。相手が写らなかった端は結線を外す（別の図形へつながらないように）。"""
+    for tag in ("a:stCxn", "a:endCxn"):
+        for cxn in list(el.iter(qn(tag))):
+            target = new_ids.get(cxn.get("id"))
+            if target is None:
+                cxn.getparent().remove(cxn)
+            else:
+                cxn.set("id", target)
+
+
 def _append_copies(elements: list, src_slide, dst_slide) -> int:
     """図形の XML を写して ``dst_slide`` の最前面に足す（画像は中身を入れ直し、id は振り直す）。足した数を返す。"""
     next_id = _next_id(dst_slide)
-    for el in elements:
-        dup = copy.deepcopy(el)
-        for blip in dup.iter(qn("a:blip")):
-            blob = src_slide.part.related_part(blip.get(qn("r:embed"))).blob
-            _, rid = dst_slide.part.get_or_add_image_part(io.BytesIO(blob))
-            blip.set(qn("r:embed"), rid)
+    copies = [copy.deepcopy(el) for el in elements]
+    new_ids: dict[str, str] = {}
+    for dup in copies:
+        _rebind_images(dup, src_slide, dst_slide)
         for c in dup.iter(qn("p:cNvPr")):
+            new_ids[c.get("id")] = str(next_id)
             c.set("id", str(next_id))
             next_id += 1
+    for dup in copies:
+        _remap_connections(dup, new_ids)
         dst_slide.shapes._spTree.append(dup)
     return len(elements)
 
@@ -92,6 +116,14 @@ def move_shapes(slide, select, dy_emu: int) -> int:
     return len(hits)
 
 
+def _retarget_links(prs, old_part, new_part) -> None:
+    """他の枚から ``old_part`` へのリンクを ``new_part`` へ付け替える。"""
+    for slide in prs.slides:
+        for rel in slide.part.rels.values():
+            if rel.reltype == RT.SLIDE and rel.target_part is old_part:
+                rel._target = new_part
+
+
 def replace_slide(prs, number: int, src_slide):
     """``number`` 枚目（1 から数える）を ``src_slide`` の写しに入れ替える（末尾に写して位置へ移し、古い枚を外す）。新しい枚を返す。
 
@@ -102,10 +134,12 @@ def replace_slide(prs, number: int, src_slide):
         raise IndexError(f"{number} 枚目は無い（{len(ids)} 枚）")
     new = copy_slide(src_slide, prs)
     new_id, old_id = ids[-1], ids[number - 1]
+    old_part = prs.part.related_part(old_id.rId)
     ids.remove(new_id)
     ids.insert(number - 1, new_id)
     prs.part.drop_rel(old_id.rId)
     ids.remove(old_id)
+    _retarget_links(prs, old_part, new.part)
     return new
 
 

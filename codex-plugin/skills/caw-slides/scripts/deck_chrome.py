@@ -56,7 +56,7 @@ DIVIDER_Y = 140
 _JP_EXTRA = set("①②③④⑤⑥⑦⑧⑨⑩⚠★●▶→←↑↓⇒〜・「」『』（）、。％±×÷≦≧≠∼—―")
 
 # ASCII 外でも Arial が描ける記号。「ΔΔE‡」を 2 つのフォントに分けると字間が開く
-_ARIAL_EXTRA = set("Δ‡≈¹")
+_ARIAL_EXTRA = set("Δ‡≈¹²³")
 
 _SCRIPT = re.compile(r"(\^\{[^}]*\}|_\{[^}]*\})")
 
