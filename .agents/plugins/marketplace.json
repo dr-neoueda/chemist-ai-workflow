@@ -1,11 +1,11 @@
 {
-  "name": "chemist-ai-workflow",
+  "name": "researcher-ai-workflow",
   "interface": {
-    "displayName": "Chemist's AI Workflow"
+    "displayName": "Researcher's AI Workflow"
   },
   "plugins": [
     {
-      "name": "caw",
+      "name": "raw",
       "source": {
         "source": "local",
         "path": "./codex-plugin"

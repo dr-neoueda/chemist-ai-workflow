@@ -1,5 +1,5 @@
 #!/bin/bash
-# PostToolUse hook (caw plugin v1.3+)
+# PostToolUse hook (raw plugin v1.3+)
 # Edit/Write/MultiEdit が office/<dept>/<旧パス>/ に書き込もうとした時に
 # 「成果物配置の二層原則」違反として警告を出す。
 # Block はしない（exit 0）。警告のみ stdout に出力し Claude が次ターンで読む。
@@ -67,13 +67,13 @@ case "$rel_path" in
 esac
 
 cat <<EOF
-[caw output-location-check]
+[raw output-location-check]
 
 ⚠️ 成果物配置の二層原則違反を検出
 
 書き込んだパス: $rel_path
 
-caw v1.2 以降では、AI が生成する成果物は `work/` 配下に置くルールです。
+raw v1.2 以降では、AI が生成する成果物は `work/` 配下に置くルールです。
 office/ は AI 部署の運営情報専用エリア（可視フォルダだが運営情報専用）。要約 md・スライド・グラフ・
 ノートをここに置くと、ユーザーが成果物を見つけにくくなります。
 
@@ -86,7 +86,7 @@ office/ は AI 部署の運営情報専用エリア（可視フォルダだが�
   2. 必要なら work/ 配下の dir に README.md を追加
   3. 移動先のパスでリンクや参照を更新
 
-参照: \${CLAUDE_PLUGIN_ROOT}/skills/caw/SKILL.md の「成果物配置の二層原則」セクション
+参照: \${CLAUDE_PLUGIN_ROOT}/skills/raw/SKILL.md の「成果物配置の二層原則」セクション
 EOF
 
 exit 0

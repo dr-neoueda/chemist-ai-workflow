@@ -54,7 +54,7 @@ Codex は内部で 2 つの子エージェントを spawn し、それぞれが�
 
 - 入門〜中級の研究者運用（並列調査・並列要約・並列レビュー）では **ほぼ同等**
 - ECC の `python-reviewer` + `codex:review` 二段レビューのような **役割を細かく分担した自動パイプライン** を組む場合は、Claude Code の方が既製プリセットの厚みで有利
-- ただし Codex 側でも `caw-review` / `caw-search` のような sub-agent をプラグイン経由で配信することは可能（[配布プラグイン（caw）](/plugin/)）
+- ただし Codex 側でも `raw-review` / `raw-search` のような sub-agent をプラグイン経由で配信することは可能（[配布プラグイン（raw）](/plugin/)）
 
 ## 化学研究での活用パターン
 

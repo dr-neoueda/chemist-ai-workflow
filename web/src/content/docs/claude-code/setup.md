@@ -7,10 +7,10 @@ description: Claude Code のインストール、認証、IDE 連携、モデル
 
 ## 動作環境
 
-caw の対応 OS は **Windows** と **macOS** です。
+raw の対応 OS は **Windows** と **macOS** です。
 
 - **macOS**（Apple Silicon / Intel）
-- **Windows**：Claude Code はネイティブ動作。caw の Hooks は bash スクリプトのため、Git Bash または WSL2 を併用します
+- **Windows**：Claude Code はネイティブ動作。raw の Hooks は bash スクリプトのため、Git Bash または WSL2 を併用します
 
 必要な外部ツールと OS 別のインストール手順は [必要なツールとインストール](/requirements/) にまとめています。著者環境は macOS Tahoe（M5 Max, 128 GB RAM）。
 
@@ -123,36 +123,36 @@ Claude Code は **モデル**と**思考レベル**の 2 軸で挙動を調整�
 
 ## `office/` 部署システムの構築
 
-研究プロジェクトの中心となる `office/` 部署システムを構築します。本書では **`caw` プラグイン**による自動構築を推奨します。プラグインを使わない手動セットアップも代替ルートとして利用可能です。
+研究プロジェクトの中心となる `office/` 部署システムを構築します。本書では **`raw` プラグイン**による自動構築を推奨します。プラグインを使わない手動セットアップも代替ルートとして利用可能です。
 
-### caw プラグインで自動構築（推奨）
+### raw プラグインで自動構築（推奨）
 
-`caw`（Chemist's AI Workflow）は本書の中核成果物として配布される Claude Code プラグインです。`/caw` 1 コマンドで研究分野・使用ソフト・ナレッジベース等を対話的にヒアリングし、化学者向けにカスタマイズされた `office/` 部署と作業ディレクトリを一括で構築します。
+`raw`（Researcher's AI Workflow）は本書の中核成果物として配布される Claude Code プラグインです。`/raw` 1 コマンドで研究分野・使用ソフト・ナレッジベース等を対話的にヒアリングし、化学者向けにカスタマイズされた `office/` 部署と作業ディレクトリを一括で構築します。
 
 #### 配布ステータス
 
-- **v1.0.0 公開済み（2026-05-13）**: 公式 marketplace（`dr-neoueda/chemist-ai-workflow`、MIT ライセンス）から導入可能
-- **今後の機能拡張**: 追加スキル（`caw-register` / `caw-playbook` / `caw-input` / `caw-apply`）と Hooks を順次追加予定（詳細は [配布プラグイン（caw）](/plugin/) 参照）
+- **v1.0.0 公開済み（2026-05-13）**: 公式 marketplace（`dr-neoueda/researcher-ai-workflow`、MIT ライセンス）から導入可能
+- **今後の機能拡張**: 追加スキル（`raw-register` / `raw-playbook` / `raw-input` / `raw-apply`）と Hooks を順次追加予定（詳細は [配布プラグイン（raw）](/plugin/) 参照）
 
 #### Step 1：プラグインのインストール
 
 ```bash
 claude
-> /plugin marketplace add dr-neoueda/chemist-ai-workflow
-> /plugin install caw
+> /plugin marketplace add dr-neoueda/researcher-ai-workflow
+> /plugin install raw
 ```
 
-`/plugin list` で `caw` が `enabled` 表示されれば導入完了。
+`/plugin list` で `raw` が `enabled` 表示されれば導入完了。
 
 #### Step 2：オンボーディング
 
 ```bash
 cd ~/your-research-project
 claude
-> /caw
+> /raw
 ```
 
-`office/` が存在しない場合、`caw` は対話的なオンボーディングモードに入ります。
+`office/` が存在しない場合、`raw` は対話的なオンボーディングモードに入ります。
 
 **研究プロファイル（4 問）**
 
@@ -178,11 +178,11 @@ claude
 | ルート直下 `work/gaussian/` `work/orca/` 等 | 選択した計算ソフトの作業ディレクトリ（README 付き） |
 | ルート直下 `work/papers/` `work/manuscripts/` `slides/` | 選択した部署に対応するドメイン作業ディレクトリ |
 
-詳細な部署構成・スキャフォールド内容は [配布プラグイン（caw）](/plugin/) を参照。
+詳細な部署構成・スキャフォールド内容は [配布プラグイン（raw）](/plugin/) を参照。
 
-### 手動セットアップ（caw を使わない場合）
+### 手動セットアップ（raw を使わない場合）
 
-`caw` プラグインを使わずに `office/` を手動で構築することも可能です。プラグインの動作をカスタマイズしたい場合や、テンプレートの中身を学びながら段階的に立ち上げたい場合に利用してください。
+`raw` プラグインを使わずに `office/` を手動で構築することも可能です。プラグインの動作をカスタマイズしたい場合や、テンプレートの中身を学びながら段階的に立ち上げたい場合に利用してください。
 
 <details>
 <summary>手動セットアップ手順を展開</summary>
@@ -280,7 +280,7 @@ mkdir -p papers manuscripts slides
 | 「読んだ論文を登録して」 | PDF → `work/papers/<author-year>.md` に書誌情報付き md を生成、`work/papers/` のステージング PDF と紐付け |
 | 「ここまでの会話で決めたことを記録して」 | `secretary/notes/YYYY-MM-DD-decisions.md` に追記 |
 
-オンボーディング（caw 版）または初期セットアップ（手動版）は初回のみ。2 回目以降の起動は既存の `office/` を検出し、自動的に運営モードに入ります。
+オンボーディング（raw 版）または初期セットアップ（手動版）は初回のみ。2 回目以降の起動は既存の `office/` を検出し、自動的に運営モードに入ります。
 
 部署設計の詳細は [office/ 部署テンプレート](/claude-code/company-template/) を参照。
 

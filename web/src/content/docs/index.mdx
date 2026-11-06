@@ -1,6 +1,6 @@
 ---
-title: "Chemist's AI Workflow"
-description: 化学者の研究タスク・情報収集・計算・アウトプット制作を、必要に応じて拡張できる AI 部署で一貫運用する——研究プロセス全体の AI 化メソッド
+title: "Researcher's AI Workflow"
+description: 理工系の研究者の研究タスク・情報収集・計算・アウトプット制作を、必要に応じて拡張できる AI 部署で一貫運用する——研究プロセス全体の AI 化メソッド
 template: splash
 hero:
   tagline: 研究室を AI 部署で運用する — 拡張可能な AI エージェント実践ハンドブック
@@ -17,7 +17,7 @@ import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
 AI エージェントを単発のチャットツールとしてではなく、研究プロセス全体を支える基盤として運用するための手法をまとめます。
 
-ファイルシステム上に「部署フォルダ」を作り、各部署が固有のルール（CLAUDE.md / AGENTS.md など）に従って働く構造を、**化学・材料・実験系研究者**の業務に合わせて体系化した、日本語の実践ハンドブックです。
+ファイルシステム上に「部署フォルダ」を作り、各部署が固有のルール（CLAUDE.md / AGENTS.md など）に従って働く構造を、**理工系の研究者**（化学・材料／物理・地球惑星／生命科学／工学・情報）の業務に合わせて体系化した、日本語の実践ハンドブックです。
 
 ## AI 部署が支える 4 つの研究プロセス
 
@@ -28,21 +28,21 @@ AI エージェントを単発のチャットツールとしてではなく、�
   <Card title="情報の収集と管理" icon="magnifier">
     関心テーマに関連する論文を、**DOI・arXiv ID・出版元 URL 等の識別子とともに 100 件規模で一括収集**。書誌情報の整理から、入手済み PDF の**ナレッジベース + クラウドストレージ**への自動登録、要約・タグ付け・引用整理まで一貫運用。対応ツールごとの実装パスは[対応ツール一覧](/tools/)を参照。
   </Card>
-  <Card title="計算化学の効率化と品質保証" icon="setting">
-    **CLI ベースの計算ソフト**（量子化学・古典 MD・周期系 DFT 等）の入力作成・ジョブ管理・log 解析・結果可視化、コードと計算妥当性のレビューまでを AI 部署に委譲。Playbook（既知の罠と処方）はセッションごとに蓄積される。GUI 必須ソフトは対象外。詳細は[対応ツール一覧](/tools/)。
+  <Card title="計算の効率化と品質保証" icon="setting">
+    **CLI ベースの計算ソフト**（量子化学・MD・第一原理・有限要素・数値計算 等）の入力作成・ジョブ管理・log 解析・結果可視化、コードと計算妥当性のレビューまでを AI 部署に委譲。Playbook（既知の罠と処方）はセッションごとに蓄積される。GUI 必須ソフトは対象外。詳細は[対応ツール一覧](/tools/)。
   </Card>
   <Card title="研究アウトプットの一貫制作" icon="pencil">
     論文（**LaTeX / Word**）・申請書（学振・科研費 等）・発表資料を、研究分野の文体と字数制約に沿って AI と共著。図表・参考文献の整理、査読対応、投稿先スタイルへの再投影まで包括的に対応。詳細は[対応ツール一覧](/tools/)。
   </Card>
 </CardGrid>
 
-<div class="caw-signature coral">
+<div class="raw-signature coral">
 
-## 化学研究の「研究以外」を AI 部署に任せる
+## 研究の「研究以外」を AI 部署に任せる
 
 文献の収集と整理、計算ジョブの仕込みと log 解析、論文・申請書・発表資料の制作 — これらを単発タスクではなく、ファイル構造で恒久化された **AI 部署**に運用させます。秘書から始めて、必要な部署を必要なときに増やす。
 
-<a href="/plugin/" class="caw-btn">配布プラグイン caw を見る</a>
+<a href="/plugin/" class="raw-btn">配布プラグイン raw を見る</a>
 
 </div>
 
@@ -55,7 +55,7 @@ AI エージェントを単発のチャットツールとしてではなく、�
 <CardGrid>
   <Card title="秘書（Secretary）" icon="comment">窓口・TODO・壁打ち・意思決定ログ</Card>
   <Card title="文献部（Research）" icon="magnifier">文献検索・要約・ナレッジ DB 化（Notion / Obsidian / Logseq 等）</Card>
-  <Card title="計算管理部（Computation）" icon="puzzle">量子化学・古典 MD・周期系 DFT など各種ジョブ管理 + Playbook</Card>
+  <Card title="計算管理部（Computation）" icon="puzzle">量子化学・MD・第一原理・有限要素・数値計算など各種ジョブ管理 + Playbook</Card>
   <Card title="データ解析部（Analysis）" icon="bars">解析スクリプト・可視化</Card>
   <Card title="開発部（Engineering）" icon="laptop">Python ツール・CLI ユーティリティ</Card>
   <Card title="論文執筆部（Writing）" icon="pencil">LaTeX 原稿・図表・参考文献</Card>
@@ -66,19 +66,19 @@ AI エージェントを単発のチャットツールとしてではなく、�
 
 部署設計は固定スキーマではなく、最小 1〜2 部署から始めて段階的に増やすことも、最初から多部署で運用することもできます。本書では**部署を新設・分割・統合する判断基準**と**ファイル構造の設計パターン**を体系化しています。
 
-<div class="caw-signature cream">
+<div class="raw-signature cream">
 
 ## 初めての方も、強めに誘導します
 
-ターミナルや AI エージェントを触ったことがなくても大丈夫。`/caw` の最初の質問で **「はい、初めて」** を選ぶと、平易な言い回しと毎回の「次はこれ」提示で手を引きます。セットアップに必要なツールも、用意したスクリプトが順番にインストールします。
+ターミナルや AI エージェントを触ったことがなくても大丈夫。`/raw` の最初の質問で **「はい、初めて」** を選ぶと、平易な言い回しと毎回の「次はこれ」提示で手を引きます。セットアップに必要なツールも、用意したスクリプトが順番にインストールします。
 
-<a href="/beginner/" class="caw-btn outline">はじめての方へ</a>
+<a href="/beginner/" class="raw-btn outline">はじめての方へ</a>
 
 </div>
 
 ## CLI 中立 ── 主軸 2 本 + 補助 3 本
 
-特定の CLI に縛られない方法論を核に、**主軸となる 2 つの CLI（Claude Code / Codex CLI）** と **補助選択肢 3 つ（Gemini CLI / GitHub Copilot CLI / Web 版）** を並列に提示します。Claude Code と Codex CLI はいずれも Skills / Sub-agents / MCP / プラグイン配信に対応しており、caw プラグインは両方に並列配信されています。GitHub Copilot CLI も同型のプリミティブをサポートし、PoC プラグインを同梱しています。
+特定の CLI に縛られない方法論を核に、**主軸となる 2 つの CLI（Claude Code / Codex CLI）** と **補助選択肢 3 つ（Gemini CLI / GitHub Copilot CLI / Web 版）** を並列に提示します。Claude Code と Codex CLI はいずれも Skills / Sub-agents / MCP / プラグイン配信に対応しており、raw プラグインは両方に並列配信されています。GitHub Copilot CLI も同型のプリミティブをサポートし、PoC プラグインを同梱しています。
 
 <CardGrid>
   <LinkCard
@@ -88,17 +88,17 @@ AI エージェントを単発のチャットツールとしてではなく、�
   />
   <LinkCard
     title="Codex CLI"
-    description="OpenAI 製。Skills（自然言語マッチ）/ Commands（スラッシュ）/ Sub-agents / MCP に対応。AGENTS.md ベース。caw プラグインを Claude Code 版と並列配信。"
+    description="OpenAI 製。Skills（自然言語マッチ）/ Commands（スラッシュ）/ Sub-agents / MCP に対応。AGENTS.md ベース。raw プラグインを Claude Code 版と並列配信。"
     href="/codex-cli/"
   />
   <LinkCard
     title="Gemini CLI（補助・OSS）"
-    description="OSS（Apache 2.0）のターミナル native エージェント。無料枠は限定的で caw 利用には有料 API が前提。Phase 2 で執筆予定。"
+    description="OSS（Apache 2.0）のターミナル native エージェント。無料枠は限定的で raw 利用には有料 API が前提。Phase 2 で執筆予定。"
     href="/gemini-cli/"
   />
   <LinkCard
     title="GitHub Copilot CLI（補助・PoC 実証済）"
-    description="Microsoft 傘下 GitHub のターミナル native エージェント。AGENTS.md / Skills / hooks / MCP を caw と同型でサポート。PoC プラグインを同梱。"
+    description="Microsoft 傘下 GitHub のターミナル native エージェント。AGENTS.md / Skills / hooks / MCP を raw と同型でサポート。PoC プラグインを同梱。"
     href="/copilot-cli/"
   />
   <LinkCard
@@ -108,24 +108,24 @@ AI エージェントを単発のチャットツールとしてではなく、�
   />
 </CardGrid>
 
-<div class="caw-signature dark">
+<div class="raw-signature dark">
 
 ## テストユーザーを募集しています
 
-研究・就活・開発のいずれでも構いません。あなたの分野で caw を試してみたい方を募集中です。導入手順とテンプレ、相談サポートをこちらから提供します。
+研究・就活・開発のいずれでも構いません。あなたの分野で raw を試してみたい方を募集中です。導入手順とテンプレ、相談サポートをこちらから提供します。
 
-<a href="/requirements/" class="caw-btn outline">まず必要なツールを確認</a>
+<a href="/requirements/" class="raw-btn outline">まず必要なツールを確認</a>
 
 </div>
 
-<div class="caw-cta-band">
+<div class="raw-cta-band">
 
 ## さっそく始める
 
 VS Code・ターミナルが初めての方は **「はじめての方へ」** からどうぞ。慣れている方は **「必要なツールとインストール」** の自動セットアップスクリプトをお使いください。
 
-<a href="/beginner/" class="caw-btn outline">はじめての方へ</a>
-<a href="/requirements/" class="caw-btn">セットアップを開始</a>
+<a href="/beginner/" class="raw-btn outline">はじめての方へ</a>
+<a href="/requirements/" class="raw-btn">セットアップを開始</a>
 
 </div>
 

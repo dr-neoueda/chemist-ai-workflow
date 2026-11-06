@@ -13,28 +13,28 @@ Anthropic 製のターミナル CLI エージェント。本書では **Codex CL
 - **MCP（Model Context Protocol）**：各種ナレッジベース・クラウドストレージ・GitHub・Playwright などに直接接続。Notion・Google Drive は Anthropic 公式 MCP、Obsidian / Logseq などファイルベースのツールは Filesystem MCP 経由で連携（[対応ツール一覧](/tools/)）
 - **CLAUDE.md** をプロジェクトルールの標準ファイルとする（Codex の `AGENTS.md` に対応）
 
-## caw プラグイン（Claude Code 版）導入
+## raw プラグイン（Claude Code 版）導入
 
 ```bash
-/plugin marketplace add dr-neoueda/chemist-ai-workflow
-/plugin install caw@chemist-ai-workflow
+/plugin marketplace add dr-neoueda/researcher-ai-workflow
+/plugin install raw@researcher-ai-workflow
 ```
 
-`/plugin list` で `caw` が `enabled` 表示されれば導入完了。詳細手順は [環境構築](/claude-code/setup/) を参照。
+`/plugin list` で `raw` が `enabled` 表示されれば導入完了。詳細手順は [環境構築](/claude-code/setup/) を参照。
 
 ## クイックスタート
 
 ```bash
 cd ~/your-research-project
 claude
-> /caw
+> /raw
 ```
 
 `office/` が存在しない場合、対話的オンボーディング（研究プロファイル 4 問 + 部署選択）が起動し、化学者向けにカスタマイズされた部署と作業ディレクトリが一括生成される。
 
 ## Codex CLI との関係 — 使い分けの目安
 
-caw プラグインは Claude Code 版と Codex CLI 版の **両方** で並列配信されており、研究室で混在運用が可能。両者は機能パリティを保っていますが、運用上の使い分けの目安は以下のとおりです。
+raw プラグインは Claude Code 版と Codex CLI 版の **両方** で並列配信されており、研究室で混在運用が可能。両者は機能パリティを保っていますが、運用上の使い分けの目安は以下のとおりです。
 
 | 場面 | 推奨 CLI | 理由 |
 |---|---|---|

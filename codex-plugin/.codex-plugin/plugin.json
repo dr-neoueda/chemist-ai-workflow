@@ -1,18 +1,20 @@
 {
-  "name": "caw",
-  "version": "1.77.0",
-  "description": "化学研究プロジェクトのための AI 部署システム（Codex CLI 版）。秘書から始めて、必要な部署を必要なときに増やす。化学者特有の業務（実験・計算・論文・申請書・発表）に最適化されたテンプレートと Playbook を内蔵。",
+  "name": "raw",
+  "version": "2.0.0",
+  "description": "理工系の研究プロジェクトのための AI 部署システム（Codex CLI 版）。秘書から始めて、実験・計算・論文・申請書・発表を 9 つの部署で回す。分野ごと（化学・材料／物理・地球惑星／生命科学／工学・情報）の規律と、計算ソフトの Playbook を内蔵。",
   "author": {
     "name": "Shinno Ueda (UEC SPRING)",
     "url": "https://github.com/dr-neoueda"
   },
-  "homepage": "https://github.com/dr-neoueda/chemist-ai-workflow",
-  "repository": "https://github.com/dr-neoueda/chemist-ai-workflow",
+  "homepage": "https://github.com/dr-neoueda/researcher-ai-workflow",
+  "repository": "https://github.com/dr-neoueda/researcher-ai-workflow",
   "license": "MIT",
   "keywords": [
-    "chemistry",
     "research",
-    "computational-chemistry",
+    "science",
+    "engineering",
+    "chemistry",
+    "computational-science",
     "literature-management",
     "manuscript-editing",
     "agents-md"

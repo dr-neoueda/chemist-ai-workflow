@@ -1,4 +1,4 @@
-# caw — Chemist's AI Workflow Plugin (Codex CLI 版)
+# raw — Researcher's AI Workflow Plugin (Codex CLI 版)
 
 化学研究プロジェクトのための AI 部署システムを 1 コマンドで構築する Codex CLI プラグイン。秘書部から開始し、必要な部署を必要なときに増やす。計算ソフトの Playbook と作業ディレクトリも対話的に整備。
 
@@ -7,20 +7,20 @@ Claude Code 版（`../plugin/`）と内容は基本同一。`office/<dept>/CLAUD
 ## インストール
 
 ```bash
-codex plugin marketplace add dr-neoueda/chemist-ai-workflow
-codex plugin install caw
+codex plugin marketplace add dr-neoueda/researcher-ai-workflow
+codex plugin install raw
 ```
 
 > **前提**：事前に **git** と **Node.js（LTS）** が必要です（`codex plugin marketplace add` は配布元 GitHub を clone するため git が要ります。macOS は `xcode-select --install`、Windows は「Git for Windows」）。
 
-`codex plugin list` で `caw` が `enabled` 表示されれば導入完了。
+`codex plugin list` で `raw` が `enabled` 表示されれば導入完了。
 
 ## クイックスタート
 
 ```bash
 cd ~/your-research-project
 codex
-> caw
+> raw
 ```
 
 `office/` が存在しない場合、対話的オンボーディングが起動：
@@ -56,20 +56,20 @@ your-research-project/
 
 | スキル | 役割 |
 |---|---|
-| `caw` | オンボーディング → 自動スキャフォールド → 運営モードの一連（起動は `caw` と入力、または自然言語で指示） |
-| `caw-research` | 関心テーマの論文検索（arXiv / Crossref / Semantic Scholar / OpenAlex / PubMed）→ クリック可能な HTML リスト |
-| `caw-register` | 入手済み PDF → 書誌付き要約 md → ナレッジベース + クラウドストレージへ登録 |
-| `caw-write` | 登録済み文献を引用源に、論文・申請書・学会要旨を本人の文体で執筆 |
-| `caw-input` | 7 ソフト（Gaussian / ORCA / CP2K / GROMACS / VASP / Quantum ESPRESSO / ChimeraX）の入力雛形 + ジョブ記録 |
-| `caw-playbook` | 計算 log の解析 → Lessons Learned 起案 → Playbook 追記。`_past-data/` の過去データ一括取り込みで初期 seed |
-| `caw-analyze` | 手法非依存の解析コンパニオン。汎用ツールでその場の解析を組み、再利用に値する手順を playbook に蒸留 |
-| `caw-slides` | 発表資料を SVG-first（手描き SVG → native DrawingML pptx）で生成。図形・表・数式が PowerPoint で編集可能 |
-| `caw-setup` | 外部ツール（Python・poppler・python-pptx 等）の不足を検出し、**1 つずつ「なぜ必要か」を説明しながら**導入。CLI/Node 自体は `setup/caw-setup.sh`・`setup/caw-setup.ps1` を案内 |
-| `caw-doctor` | `office/` 構造の健全性チェックと修復提示 |
-| `caw-intake` | 統合 `inbox/` の自動仕分け。処理後の原本は種類別 `work/*/_source/` へ移動 |
-| `caw-report` | 開発者向けの匿名動作レポート |
+| `raw` | オンボーディング → 自動スキャフォールド → 運営モードの一連（起動は `raw` と入力、または自然言語で指示） |
+| `raw-research` | 関心テーマの論文検索（arXiv / Crossref / Semantic Scholar / OpenAlex / PubMed）→ クリック可能な HTML リスト |
+| `raw-register` | 入手済み PDF → 書誌付き要約 md → ナレッジベース + クラウドストレージへ登録 |
+| `raw-write` | 登録済み文献を引用源に、論文・申請書・学会要旨を本人の文体で執筆 |
+| `raw-input` | 7 ソフト（Gaussian / ORCA / CP2K / GROMACS / VASP / Quantum ESPRESSO / ChimeraX）の入力雛形 + ジョブ記録 |
+| `raw-playbook` | 計算 log の解析 → Lessons Learned 起案 → Playbook 追記。`_past-data/` の過去データ一括取り込みで初期 seed |
+| `raw-analyze` | 手法非依存の解析コンパニオン。汎用ツールでその場の解析を組み、再利用に値する手順を playbook に蒸留 |
+| `raw-slides` | 発表資料を SVG-first（手描き SVG → native DrawingML pptx）で生成。図形・表・数式が PowerPoint で編集可能 |
+| `raw-setup` | 外部ツール（Python・poppler・python-pptx 等）の不足を検出し、**1 つずつ「なぜ必要か」を説明しながら**導入。CLI/Node 自体は `setup/raw-setup.sh`・`setup/raw-setup.ps1` を案内 |
+| `raw-doctor` | `office/` 構造の健全性チェックと修復提示 |
+| `raw-intake` | 統合 `inbox/` の自動仕分け。処理後の原本は種類別 `work/*/_source/` へ移動 |
+| `raw-report` | 開発者向けの匿名動作レポート |
 
-**就活トラック（3）**：`caw-es`（エントリーシート）・`caw-interview`（面接対策）・`caw-events`（1 社深掘り＋募集/締切予測）
+**就活トラック（3）**：`raw-es`（エントリーシート）・`raw-interview`（面接対策）・`raw-events`（1 社深掘り＋募集/締切予測）
 
 ### テンプレート・生成物
 
@@ -84,11 +84,11 @@ your-research-project/
 | プラグインマニフェスト | `.claude-plugin/plugin.json` | `.codex-plugin/plugin.json` |
 | マーケットプレイス manifest | `<repo>/.claude-plugin/marketplace.json` | `<repo>/.agents/plugins/marketplace.json` |
 | 生成される指示ファイル | `<dept>/CLAUDE.md` | `<dept>/AGENTS.md` |
-| インストール | `/plugin install caw@chemist-ai-workflow` | `codex plugin install caw` |
+| インストール | `/plugin install raw@researcher-ai-workflow` | `codex plugin install raw` |
 | スキル本体（プロンプト指示） | 同一 | 同一 |
 | Playbook 雛形 | 同一 | 同一 |
 
-両プラグインは同じリポジトリ（`dr-neoueda/chemist-ai-workflow`）から並列配信。研究室で Claude Code 派と Codex CLI 派が混在しても、同じ `office/` メソッドを共有できる。
+両プラグインは同じリポジトリ（`dr-neoueda/researcher-ai-workflow`）から並列配信。研究室で Claude Code 派と Codex CLI 派が混在しても、同じ `office/` メソッドを共有できる。
 
 ## ライセンス
 
@@ -96,6 +96,6 @@ MIT License. 詳細は repo 直下の [LICENSE](../LICENSE) を参照。
 
 ## 関連リンク
 
-- 配布元 LP: [Chemist's AI Workflow](https://github.com/dr-neoueda/chemist-ai-workflow)
+- 配布元 LP: [Researcher's AI Workflow](https://github.com/dr-neoueda/researcher-ai-workflow)
 - Claude Code 版: [`../plugin/`](../plugin/)
 - 開発元: 電気通信大学 SPRING（戦略的研究人材育成事業）

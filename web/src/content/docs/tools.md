@@ -149,7 +149,7 @@ PDF (inbox)
 
 ---
 
-## 計算化学ソフト対応状況
+## 計算ソフト対応状況
 
 文献管理と同様、**「ChatGPT を超える」のような誇張をせず、実装可能性を honest に示す**ことを優先します。
 
@@ -187,8 +187,14 @@ AI 部署が**読み書き・編集・提出・log 解析・Playbook 蓄積**を
 | 周期系 DFT | **Quantum ESPRESSO** | `.in`（テキスト） | OSS、人気 |
 | 周期系 DFT | CASTEP / SIESTA / ABINIT / CRYSTAL | テキスト | CLI |
 | Python ライブラリ | ASE / pymatgen / cclib / MDAnalysis / RDKit / Open Babel | Python script | 自動化最適 |
+| 有限要素・流体 | **OpenFOAM** | 辞書ファイル（`system/` `constant/` `0/`） | OSS、完全 CLI |
+| 有限要素 | **FEniCS** | Python script | OSS |
+| 数値計算 | **MATLAB / Julia / GNU Octave** | `.m` / `.jl` script | バッチ実行可 |
+| 統計・配列解析 | **R・Bioconductor / BLAST** | R script / コマンド | 完全 CLI |
+| 構造予測 | **AlphaFold・ColabFold** | FASTA | GPU が必要（ColabFold は Colab でも可） |
+| 機械学習 | **PyTorch / scikit-learn** | Python script | 自動化最適 |
 
-**Playbook は各ソフト固有**だが、書式・運用パターンは Gaussian / GROMACS / CP2K の Playbook をテンプレートに作れます。
+**Playbook は各ソフト固有**だが、書式・運用パターンは Gaussian / GROMACS / CP2K の Playbook をテンプレートに作れます。化学以外の分野のソフトは同梱の出発点が無く、空の Playbook から始まって使うたびに育ちます。
 
 ### CLI + GUI 並存：CLI モードで自動化可能 ★★
 
@@ -197,6 +203,7 @@ AI 部署が**読み書き・編集・提出・log 解析・Playbook 蓄積**を
 | **PyMol** | Python script で描画自動化可（GUI なしで PNG / 動画生成可） |
 | **VMD** | Tcl スクリプトで自動化可 |
 | **CASTEP / WIEN2k** | GUI もあるが CLI で完結可 |
+| **COMSOL / ANSYS** | モデル作りは GUI が前提。計算はバッチ実行と API（COMSOL の Java・MATLAB API、ANSYS の APDL・journal）で自動化可 |
 | Avogadro / Chemcraft | 主に可視化、自動化は限定的 |
 
 ### ハイブリッド：一部のみ自動化可 ★

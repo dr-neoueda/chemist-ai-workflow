@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# check-consistency.sh — release-hygiene guard for the caw distribution.
+# check-consistency.sh — release-hygiene guard for the raw distribution.
 #
 # Catches the recurring manual-mirroring mistakes:
 #   1. plugin version vs marketplace version drift
@@ -72,10 +72,10 @@ fi
 
 # --- 2. plugin <-> codex mirror (byte-identical shared assets only) ---
 mirror_dirs=(
-  "skills/caw-slides/references"
-  "skills/caw-slides/scripts"
-  "skills/caw-slides/vendor"
-  "skills/caw-analyze/references"
+  "skills/raw-slides/references"
+  "skills/raw-slides/scripts"
+  "skills/raw-slides/vendor"
+  "skills/raw-analyze/references"
 )
 for d in "${mirror_dirs[@]}"; do
   p="plugin/$d"; c="codex-plugin/$d"
@@ -95,7 +95,7 @@ done
 # --- 2a. plugin <-> codex single shared files (byte-identical) ---
 # HTML design contract: all HTML-producing skills follow it, so plugin and codex
 # must carry the exact same file (Gemini inlines it in GEMINI.md separately).
-for f in skills/caw/references/html-style.md skills/caw/references/playbook-web-seeding.md skills/caw/scripts/scaffold.py; do
+for f in skills/raw/references/html-style.md skills/raw/references/playbook-web-seeding.md skills/raw/references/field-rules.md skills/raw/scripts/scaffold.py; do
   pf="plugin/$f"; cf="codex-plugin/$f"
   if [ ! -f "$pf" ] || [ ! -f "$cf" ]; then
     printf '%s    skip mirror %s (missing)%s\n' "$dim" "$f" "$off"; continue
@@ -107,10 +107,20 @@ for f in skills/caw/references/html-style.md skills/caw/references/playbook-web-
   fi
 done
 
+# copilot-plugin is PAUSED (see copilot-plugin/PAUSED.md): development continues on
+# Claude Code + Codex only, so the codex <-> copilot mirror checks (2b, 2c) are
+# skipped until the pause is lifted. Report the gap so it stays visible.
+paused_file="copilot-plugin/PAUSED.md"
+if [ -f "$paused_file" ]; then
+  pplug=$(sed -n 's/^paused_at_plugin_version:[[:space:]]*//p' "$paused_file" | head -1)
+  printf '%s    copilot mirror checks skipped (PAUSED at plugin %s; plugin now %s — see %s)%s\n' \
+    "$dim" "${pplug:-?}" "${pv:-?}" "$paused_file" "$off"
+else
+
 # --- 2b. codex <-> copilot shared reference files ---
 # copilot-plugin reuses codex's CLI-agnostic templates verbatim.
 # (mcp-setup-templates.md intentionally differs per CLI and is NOT enforced here.)
-for f in skills/caw/references/agents-md-template.md skills/caw/references/playbook-starters.md skills/caw/references/job-hunting-departments.md skills/caw/references/engine-validation-map.md skills/caw/references/playbook-web-seeding.md skills/caw/references/html-style.md skills/caw/references/chemistry-departments.md skills/caw/scripts/scaffold.py; do
+for f in skills/raw/references/agents-md-template.md skills/raw/references/playbook-starters.md skills/raw/references/job-hunting-departments.md skills/raw/references/engine-validation-map.md skills/raw/references/playbook-web-seeding.md skills/raw/references/html-style.md skills/raw/references/research-departments.md skills/raw/references/field-rules.md skills/raw/scripts/scaffold.py; do
   cf="codex-plugin/$f"; pf="copilot-plugin/$f"
   if [ ! -f "$cf" ] || [ ! -f "$pf" ]; then
     printf '%s    skip copilot mirror %s (missing)%s\n' "$dim" "$f" "$off"; continue
@@ -124,10 +134,10 @@ done
 
 # --- 2c. codex <-> copilot skill directories (byte-identical) ---
 # The 2026-08-21 full port copied these 13 skills verbatim from codex-plugin.
-# caw/ and caw-setup/ are deliberately excluded: they carry Copilot-specific
+# raw/ and raw-setup/ are deliberately excluded: they carry Copilot-specific
 # CLI names (copilot vs codex/claude) and must be maintained per variant.
-for s in caw-research caw-register caw-write caw-input caw-playbook caw-analyze \
-         caw-slides caw-doctor caw-intake caw-report caw-es caw-interview caw-events; do
+for s in raw-research raw-register raw-write raw-input raw-playbook raw-analyze \
+         raw-slides raw-doctor raw-intake raw-report raw-es raw-interview raw-events; do
   cd_="codex-plugin/skills/$s"; pd_="copilot-plugin/skills/$s"
   if [ ! -d "$cd_" ] || [ ! -d "$pd_" ]; then
     printf '%s    skip copilot skill mirror %s (missing)%s\n' "$dim" "$s" "$off"; continue
@@ -138,6 +148,8 @@ for s in caw-research caw-register caw-write caw-input caw-playbook caw-analyze 
     bad "copilot skill mirror DRIFT: $s (codex vs copilot differ)"
   fi
 done
+
+fi  # copilot PAUSED
 
 # --- 3. personalization leak scan (distributed tree only) ---
 # Specific proper nouns only — generic field terms (MLIP/CP2K/DFT) are allowed.
@@ -153,13 +165,13 @@ else
 fi
 
 # --- 4. ABSOLUTE: no Finder/Explorer-invisible (dot-prefixed) ops folder ---
-# caw must scaffold only VISIBLE folders in the user's project (ops dir = 'office/').
+# raw must scaffold only VISIBLE folders in the user's project (ops dir = 'office/').
 # Guard against regressing to the old hidden '.company/' name.
 hidden=$(grep -RIn --exclude-dir=dist --exclude-dir=node_modules '\.company' plugin codex-plugin copilot-plugin gemini-plugin web docs README.md RESUME.md 2>/dev/null || true)
 if [ -z "$hidden" ]; then
   ok "no hidden '.company' ops-folder references (visible 'office/' is used)"
 else
-  bad "hidden '.company' folder reference found — caw must scaffold the visible 'office/' dir:"
+  bad "hidden '.company' folder reference found — raw must scaffold the visible 'office/' dir:"
   printf '%s\n' "$hidden" | sed 's/^/      /'
 fi
 

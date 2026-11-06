@@ -1,36 +1,36 @@
-# caw プラグイン ローカルテスト手順
+# raw プラグイン ローカルテスト手順
 
-`~/lab` の環境を汚さずに、`~/caw-test/` 配下の別フォルダで caw プラグインを試すための手順書。
+`~/lab` の環境を汚さずに、`~/raw-test/` 配下の別フォルダで raw プラグインを試すための手順書。
 
 ---
 
 ## 前提
 
-- 開発中の caw プラグインは `~/lab/spring/chemist-ai-workflow/plugin/` にある
-- ローカル marketplace `caw-local` は `~/.claude/plugins/marketplaces/caw-local/` に作成済み
-- `~/.claude/plugins/known_marketplaces.json` には `caw-local` 登録済み
+- 開発中の raw プラグインは `~/lab/spring/chemist-ai-workflow/plugin/` にある
+- ローカル marketplace `raw-local` は `~/.claude/plugins/marketplaces/raw-local/` に作成済み
+- `~/.claude/plugins/known_marketplaces.json` には `raw-local` 登録済み
 - **未完了**: `installed_plugins.json` と `settings.json` への登録（auto モードの自己改変ブロックにより手動対応必須）
 
 ---
 
 ## Phase 0 — プラグインを Claude Code に有効化する（残作業）
 
-caw プラグインを使えるようにするには、以下のいずれかの方法で「登録 + 有効化」が必要。
+raw プラグインを使えるようにするには、以下のいずれかの方法で「登録 + 有効化」が必要。
 
 ### 方法 A（推奨）— `/plugin install` で自動登録
 
 新しい Claude Code セッションを別ターミナル / 別 tmux ウィンドウで開き、以下を実行：
 
 ```
-/plugin install caw@caw-local
+/plugin install raw@raw-local
 ```
 
 これで以下 3 ファイルが自動更新される：
-- `~/.claude/plugins/installed_plugins.json` に `caw@caw-local` エントリ追加
-- `~/.claude/settings.json` の `enabledPlugins` に `"caw@caw-local": true` 追加
-- `~/.claude/settings.json` の `extraKnownMarketplaces` に `caw-local` 追加（既存の場合スキップ）
+- `~/.claude/plugins/installed_plugins.json` に `raw@raw-local` エントリ追加
+- `~/.claude/settings.json` の `enabledPlugins` に `"raw@raw-local": true` 追加
+- `~/.claude/settings.json` の `extraKnownMarketplaces` に `raw-local` 追加（既存の場合スキップ）
 
-実行後、`/plugin list` で `caw@caw-local` が表示されれば成功。
+実行後、`/plugin list` で `raw@raw-local` が表示されれば成功。
 
 ### 方法 B — 手動 JSON 編集
 
@@ -41,10 +41,10 @@ caw プラグインを使えるようにするには、以下のいずれかの�
 既存の JSON に下記エントリを追加：
 
 ```json
-"caw@caw-local": {
-  "marketplace": "caw-local",
-  "plugin": "caw",
-  "installLocation": "/Users/neoueda/.claude/plugins/cache/caw-local/caw/0.1.0",
+"raw@raw-local": {
+  "marketplace": "raw-local",
+  "plugin": "raw",
+  "installLocation": "/Users/neoueda/.claude/plugins/cache/raw-local/raw/0.1.0",
   "installedAt": "2026-05-11T00:00:00.000Z",
   "version": "0.1.0"
 }
@@ -55,7 +55,7 @@ caw プラグインを使えるようにするには、以下のいずれかの�
 ```json
 "enabledPlugins": {
   ...既存エントリ...,
-  "caw@caw-local": true
+  "raw@raw-local": true
 }
 ```
 
@@ -64,7 +64,7 @@ caw プラグインを使えるようにするには、以下のいずれかの�
 ```json
 "extraKnownMarketplaces": [
   ...既存エントリ...,
-  "caw-local"
+  "raw-local"
 ]
 ```
 
@@ -73,15 +73,15 @@ caw プラグインを使えるようにするには、以下のいずれかの�
 ### 共通の確認
 
 ```bash
-ls -la ~/.claude/plugins/cache/caw-local/caw/0.1.0
+ls -la ~/.claude/plugins/cache/raw-local/raw/0.1.0
 # → ~/lab/spring/chemist-ai-workflow/plugin/ への symlink になっていること
 ```
 
 symlink が壊れていたら：
 
 ```bash
-mkdir -p ~/.claude/plugins/cache/caw-local/caw
-ln -sfn ~/lab/spring/chemist-ai-workflow/plugin ~/.claude/plugins/cache/caw-local/caw/0.1.0
+mkdir -p ~/.claude/plugins/cache/raw-local/raw
+ln -sfn ~/lab/spring/chemist-ai-workflow/plugin ~/.claude/plugins/cache/raw-local/raw/0.1.0
 ```
 
 ---
@@ -91,13 +91,13 @@ ln -sfn ~/lab/spring/chemist-ai-workflow/plugin ~/.claude/plugins/cache/caw-loca
 `~/lab` を汚さないため、ホーム直下に専用ディレクトリを切る。
 
 ```bash
-mkdir -p ~/caw-test/sample-project-01
-cd ~/caw-test/sample-project-01
+mkdir -p ~/raw-test/sample-project-01
+cd ~/raw-test/sample-project-01
 ```
 
 ### サンプルプロジェクトの想定
 
-caw の対話的ウィザードを試すために、以下のような架空のプロファイルを用意：
+raw の対話的ウィザードを試すために、以下のような架空のプロファイルを用意：
 
 | 項目 | 想定値 |
 |---|---|
@@ -110,11 +110,11 @@ caw の対話的ウィザードを試すために、以下のような架空の�
 別プロファイルも試したい場合は `sample-project-02`, `sample-project-03` を別途切る。
 
 ```bash
-mkdir -p ~/caw-test/sample-project-02  # 例: 計算化学者プロファイル（GROMACS + ORCA）
-mkdir -p ~/caw-test/sample-project-03  # 例: 文献調査メインプロファイル（Obsidian + Dropbox）
+mkdir -p ~/raw-test/sample-project-02  # 例: 計算化学者プロファイル（GROMACS + ORCA）
+mkdir -p ~/raw-test/sample-project-03  # 例: 文献調査メインプロファイル（Obsidian + Dropbox）
 ```
 
-各ディレクトリは互いに独立、`/caw` を実行するたびに別の構成が生成される。
+各ディレクトリは互いに独立、`/raw` を実行するたびに別の構成が生成される。
 
 ---
 
@@ -123,20 +123,20 @@ mkdir -p ~/caw-test/sample-project-03  # 例: 文献調査メインプロファ�
 このセッション（`~/lab` で動いている方）を**閉じずに**、別ターミナル / 別 tmux ウィンドウで：
 
 ```bash
-cd ~/caw-test/sample-project-01
+cd ~/raw-test/sample-project-01
 claude
 ```
 
-新セッションで `/plugin list` を実行し、`caw@caw-local` がリストに出ることを確認。
+新セッションで `/plugin list` を実行し、`raw@raw-local` がリストに出ることを確認。
 
 ---
 
-## Phase 3 — `/caw` 実行（オンボーディングウィザード）
+## Phase 3 — `/raw` 実行（オンボーディングウィザード）
 
 新セッション内で：
 
 ```
-/caw
+/raw
 ```
 
 期待される挙動：
@@ -170,7 +170,7 @@ claude
 ## Phase 4 — Scaffold 出力の検証
 
 ```bash
-cd ~/caw-test/sample-project-01
+cd ~/raw-test/sample-project-01
 tree office
 ```
 
@@ -213,10 +213,10 @@ office/
 
 ## Phase 5 — 結果記録
 
-`~/caw-test/results.md` に検証結果をテーブル形式で記録：
+`~/raw-test/results.md` に検証結果をテーブル形式で記録：
 
 ```markdown
-# caw プラグインテスト結果
+# raw プラグインテスト結果
 
 ## 2026-05-11
 
@@ -224,7 +224,7 @@ office/
 
 | 検証項目 | 結果 | メモ |
 |---|---|---|
-| `/caw` 認識 | ✅ / ❌ | |
+| `/raw` 認識 | ✅ / ❌ | |
 | オンボーディング Call 1 表示 | ✅ / ❌ | |
 | オンボーディング Call 2 表示 | ✅ / ❌ | |
 | `office/CLAUDE.md` 生成 | ✅ / ❌ | プレースホルダ残: あり/なし |
@@ -243,7 +243,7 @@ office/
 テスト終了後：
 
 ```bash
-rm -rf ~/caw-test
+rm -rf ~/raw-test
 ```
 
 これだけで完全に除去できる。`~/lab` には一切影響しない。
@@ -251,34 +251,34 @@ rm -rf ~/caw-test
 プラグイン自体を外したい場合は別途：
 
 ```
-/plugin uninstall caw@caw-local
+/plugin uninstall raw@raw-local
 ```
 
-または手動で `~/.claude/plugins/installed_plugins.json` と `settings.json` から `caw@caw-local` 関連を削除。
+または手動で `~/.claude/plugins/installed_plugins.json` と `settings.json` から `raw@raw-local` 関連を削除。
 
 ---
 
 ## トラブルシューティング
 
-### Q1. `/caw` が認識されない
+### Q1. `/raw` が認識されない
 
-- `/plugin list` で `caw@caw-local` が `enabled` か確認
-- `~/.claude/plugins/cache/caw-local/caw/0.1.0/skills/caw/SKILL.md` が存在するか確認
+- `/plugin list` で `raw@raw-local` が `enabled` か確認
+- `~/.claude/plugins/cache/raw-local/raw/0.1.0/skills/raw/SKILL.md` が存在するか確認
 - symlink が切れていれば Phase 0 末尾の `ln -sfn` で再作成
 - Claude Code を完全再起動
 
 ### Q2. symlink が壊れている
 
 ```bash
-ls -la ~/.claude/plugins/cache/caw-local/caw/0.1.0
+ls -la ~/.claude/plugins/cache/raw-local/raw/0.1.0
 # 「No such file or directory」または点線で表示される場合
-mkdir -p ~/.claude/plugins/cache/caw-local/caw
-ln -sfn ~/lab/spring/chemist-ai-workflow/plugin ~/.claude/plugins/cache/caw-local/caw/0.1.0
+mkdir -p ~/.claude/plugins/cache/raw-local/raw
+ln -sfn ~/lab/spring/chemist-ai-workflow/plugin ~/.claude/plugins/cache/raw-local/raw/0.1.0
 ```
 
 ### Q3. Scaffold 結果が想定と違う
 
-- `references/chemistry-departments.md` で該当部署のテンプレ内容を確認
+- `references/research-departments.md` で該当部署のテンプレ内容を確認
 - `references/claude-md-template.md` のプレースホルダ仕様を確認
 - 修正 → symlink 経由で即反映 → 別 sample-project-NN で再テスト
 
@@ -294,31 +294,31 @@ ln -sfn ~/lab/spring/chemist-ai-workflow/plugin ~/.claude/plugins/cache/caw-loca
 ### Q6. プラグインを完全に外したい
 
 ```
-/plugin uninstall caw@caw-local
+/plugin uninstall raw@raw-local
 ```
 
 または手動で：
 
 ```bash
-# 1. installed_plugins.json から caw@caw-local エントリ削除
-# 2. settings.json の enabledPlugins から "caw@caw-local" 削除
-# 3. settings.json の extraKnownMarketplaces から "caw-local" 削除（他で使ってなければ）
+# 1. installed_plugins.json から raw@raw-local エントリ削除
+# 2. settings.json の enabledPlugins から "raw@raw-local" 削除
+# 3. settings.json の extraKnownMarketplaces から "raw-local" 削除（他で使ってなければ）
 # 4. キャッシュ削除
-rm -rf ~/.claude/plugins/cache/caw-local
+rm -rf ~/.claude/plugins/cache/raw-local
 # 5. marketplace 削除（不要なら）
-rm -rf ~/.claude/plugins/marketplaces/caw-local
-# 6. known_marketplaces.json から caw-local エントリ削除
+rm -rf ~/.claude/plugins/marketplaces/raw-local
+# 6. known_marketplaces.json から raw-local エントリ削除
 ```
 
 ---
 
 ## イテレーション運用
 
-ローカル symlink 経由で動作させているため、プラグイン本体（`~/lab/spring/chemist-ai-workflow/plugin/`）を編集すると次の `/caw` 実行で即反映される（キャッシュなし）。
+ローカル symlink 経由で動作させているため、プラグイン本体（`~/lab/spring/chemist-ai-workflow/plugin/`）を編集すると次の `/raw` 実行で即反映される（キャッシュなし）。
 
 推奨ワークフロー：
 
-1. `~/caw-test/sample-project-NN` で `/caw` 実行
+1. `~/raw-test/sample-project-NN` で `/raw` 実行
 2. 想定通りでない箇所を記録
 3. このセッション（`~/lab`）で SKILL.md / references を編集
 4. 新しい `sample-project-NN+1` を作成して再実行（既存 sample は履歴として残す）
@@ -329,6 +329,6 @@ rm -rf ~/.claude/plugins/marketplaces/caw-local
 ## 関連ファイル
 
 - プラグイン本体: `~/lab/spring/chemist-ai-workflow/plugin/`
-- ローカル marketplace: `~/.claude/plugins/marketplaces/caw-local/`
-- キャッシュ symlink: `~/.claude/plugins/cache/caw-local/caw/0.1.0`
+- ローカル marketplace: `~/.claude/plugins/marketplaces/raw-local/`
+- キャッシュ symlink: `~/.claude/plugins/cache/raw-local/raw/0.1.0`
 - LP plugin ページ: `~/lab/spring/chemist-ai-workflow/web/src/content/docs/plugin.md`

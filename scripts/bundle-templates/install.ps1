@@ -1,24 +1,24 @@
-# caw オフライン導入インストーラ（Windows / PowerShell）
+# raw オフライン導入インストーラ（Windows / PowerShell）
 #
 # USB メモリの中でこのファイルを右クリック →「PowerShell で実行」
 # またはプロンプトで:
 #   powershell -ExecutionPolicy Bypass -File install.ps1
 #
 # このスクリプトがやること:
-#   1. USB の中身を、あなたの PC の中（既定 %USERPROFILE%\caw-plugin）にコピーする
+#   1. USB の中身を、あなたの PC の中（既定 %USERPROFILE%\raw-plugin）にコピーする
 #   2. お使いの AI CLI に「そのコピー先」を登録する
-#   3. caw プラグインをインストールする
+#   3. raw プラグインをインストールする
 #
 # ★ なぜコピーするのか
-#   USB のパスを直接登録すると、USB を抜いた時点で caw が動かなくなります。
+#   USB のパスを直接登録すると、USB を抜いた時点で raw が動かなくなります。
 #   （ローカルパスの marketplace は、その場所を参照し続ける仕様のため）
 #   なので必ず PC の中にコピーしてから登録します。
 
 $ErrorActionPreference = 'Stop'
 
 $Src  = Split-Path -Parent $MyInvocation.MyCommand.Path
-$Dest = if ($env:CAW_DEST) { $env:CAW_DEST } else { Join-Path $env:USERPROFILE 'caw-plugin' }
-$Marketplace = 'chemist-ai-workflow'
+$Dest = if ($env:RAW_DEST) { $env:RAW_DEST } else { Join-Path $env:USERPROFILE 'raw-plugin' }
+$Marketplace = 'researcher-ai-workflow'
 
 function Say  ($m) { Write-Host $m }
 function OK   ($m) { Write-Host "[OK] $m"   -ForegroundColor Green }
@@ -26,7 +26,7 @@ function Warn ($m) { Write-Host "[!] $m"    -ForegroundColor Yellow }
 function Err  ($m) { Write-Host "[X] $m"    -ForegroundColor Red }
 
 Say ''
-Say 'caw（化学者のための AI エージェント導入伴走）オフライン導入'
+Say 'raw（研究者のための AI エージェント導入伴走）オフライン導入'
 Say "  コピー元: $Src"
 Say "  コピー先: $Dest"
 Say ''
@@ -35,8 +35,8 @@ Say ''
 $hasAny = @('codex-plugin','plugin','copilot-plugin') |
           Where-Object { Test-Path (Join-Path $Src $_) }
 if (-not $hasAny) {
-  Err 'このフォルダに caw のファイルが見つかりません。'
-  Err "USB の中の 'caw-bundle' フォルダごとコピーできているか確認してください。"
+  Err 'このフォルダに raw のファイルが見つかりません。'
+  Err "USB の中の 'raw-bundle' フォルダごとコピーできているか確認してください。"
   exit 1
 }
 
@@ -69,7 +69,8 @@ function Try-Cli ($cmd, $label, $addArgs, $installArgs) {
     return $false
   }
   Say "$label が見つかりました"
-  $ans = Read-Host "  caw を $label に導入しますか？ [Y/n]"
+  $name = if ($cmd -eq 'copilot') { 'caw（旧名・開発を保留中の版）' } else { 'raw' }
+  $ans = Read-Host "  $name を $label に導入しますか？ [Y/n]"
   if ($ans -match '^[nN]') { Say '  スキップしました。'; return $true }
 
   & $cmd @addArgs
@@ -79,10 +80,10 @@ function Try-Cli ($cmd, $label, $addArgs, $installArgs) {
 }
 
 Say 'お使いの AI CLI を探しています...'
-if (Try-Cli 'codex'  'Codex CLI'    @('plugin','marketplace','add',$Dest) @('plugin','add',"caw@$Marketplace"))     { $found = $true }
-if (Try-Cli 'claude' 'Claude Code'  @('plugin','marketplace','add',$Dest) @('plugin','install',"caw@$Marketplace")) { $found = $true }
+if (Try-Cli 'codex'  'Codex CLI'    @('plugin','marketplace','add',$Dest) @('plugin','add',"raw@$Marketplace"))     { $found = $true }
+if (Try-Cli 'claude' 'Claude Code'  @('plugin','marketplace','add',$Dest) @('plugin','install',"raw@$Marketplace")) { $found = $true }
 if (Get-Command 'copilot' -ErrorAction SilentlyContinue) {
-  Warn 'GitHub Copilot CLI 版はまだ実機確認が済んでいません。'
+  Warn 'GitHub Copilot CLI 版は開発を保留中で、旧名 caw（化学者向け・v1.78）のままです。実機確認も済んでいません。'
   Warn 'うまくいかなかったら配布元にご連絡ください。'
   if (Try-Cli 'copilot' 'GitHub Copilot CLI' @('plugin','marketplace','add',$Dest) @('plugin','install','caw'))     { $found = $true }
 }
@@ -108,7 +109,7 @@ Say '  1. 研究プロジェクト用のフォルダを作る（例: %USERPROFIL
 Say '  2. そのフォルダで PowerShell を開き、CLI を起動する'
 Say '       codex      （または claude）'
 Say '  3. こう話しかける:'
-Say '       caw'
+Say '       raw'
 Say ''
 Say 'はじめての質問に答えていくと、office/（AI 部署）と work/（成果物置き場）が'
 Say '自動で作られます。詳しくは同じフォルダの「はじめにお読みください.md」を見てください。'

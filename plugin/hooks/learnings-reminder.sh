@@ -1,5 +1,5 @@
 #!/bin/bash
-# Stop hook (caw plugin)
+# Stop hook (raw plugin)
 # 今日の活動（decisions / 新規 notes / playbook 更新 / 計算ジョブ記録）があるのに
 # <today>-learnings.md がまだ無い場合、Claude を引き戻して学びを抽出させる。
 
@@ -54,7 +54,7 @@ fi
 [ "$activity" -eq 0 ] && exit 0
 
 cat <<EOF
-[caw learnings-reminder]
+[raw learnings-reminder]
 
 今日 ($today) のセッションで decisions / notes / playbook / jobs に活動があるのに、
 $learnings_file がまだ作成されていません。

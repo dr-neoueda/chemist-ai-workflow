@@ -20,7 +20,7 @@ Codex CLI は以下の順で `AGENTS.md` を探索し、コンテキストに注
 
 - **グローバル**：研究者個人の好み（言語、コーディング規約、思考レベル）
 - **プロジェクトルート**：その研究プロジェクト共通のルール（使う計算ソフト、ファイル命名規則）
-- **サブディレクトリ**：部署単位 / 計算単位の固有ルール（caw の `office/<dept>/AGENTS.md` がこの層）
+- **サブディレクトリ**：部署単位 / 計算単位の固有ルール（raw の `office/<dept>/AGENTS.md` がこの層）
 
 ## 最小構成
 
@@ -85,7 +85,7 @@ Codex CLI は以下の順で `AGENTS.md` を探索し、コンテキストに注
 
 ## 関連
 
-- 部署システム: `office/`（caw プラグインで scaffold 済）
+- 部署システム: `office/`（raw プラグインで scaffold 済）
 - 計算 Playbook: `office/computation/playbooks/<tool>.md`
 - 文献 DB: `<KB の場所>`
 ```
@@ -111,13 +111,13 @@ Codex CLI は以下の順で `AGENTS.md` を探索し、コンテキストに注
 
 ## サブディレクトリでの上書き
 
-caw プラグインが生成する構造の場合：
+raw プラグインが生成する構造の場合：
 
 ```
 my-research-project/
 ├── AGENTS.md                            ← プロジェクト全体ルール（任意）
 └── office/
-    ├── AGENTS.md                        ← office/ 運営ルール（caw 生成）
+    ├── AGENTS.md                        ← office/ 運営ルール（raw 生成）
     ├── secretary/AGENTS.md              ← 秘書部 ロール
     ├── research/AGENTS.md               ← 文献部 ロール
     ├── computation/AGENTS.md            ← 計算管理部 ロール
@@ -135,7 +135,7 @@ my-research-project/
 | 内容の構造 | 自由形式 | 自由形式 |
 | エージェント横断性 | 高（universal 標準） | 中（Codex も読むが Claude 寄り） |
 
-**両方使う場合の推奨**：プロジェクトルートに `AGENTS.md` のみ置き、Claude Code 側にも `AGENTS.md` を読ませる。これで二重管理を避けられます。caw プラグイン側は CLI に応じて出し分け（Claude Code 版 → `CLAUDE.md`、Codex 版 → `AGENTS.md`）。
+**両方使う場合の推奨**：プロジェクトルートに `AGENTS.md` のみ置き、Claude Code 側にも `AGENTS.md` を読ませる。これで二重管理を避けられます。raw プラグイン側は CLI に応じて出し分け（Claude Code 版 → `CLAUDE.md`、Codex 版 → `AGENTS.md`）。
 
 ## ECC 連携ルールの記述例
 
@@ -163,7 +163,7 @@ my-research-project/
 - ツールやライブラリの変更（バージョンアップ、API 変更）があれば追記
 - 不要になったルールは積極的に削除（古い記述は noise になる）
 
-caw プラグインの運用知（学び 3-5 件を毎日 `secretary/notes/<date>-learnings.md` に記録）と連動させると、定期的なルール棚卸しが自然に行えます。
+raw プラグインの運用知（学び 3-5 件を毎日 `secretary/notes/<date>-learnings.md` に記録）と連動させると、定期的なルール棚卸しが自然に行えます。
 
 ## 次のステップ
 

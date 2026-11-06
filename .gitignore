@@ -30,5 +30,5 @@ __pycache__/
 *.pyc
 *.pyo
 
-# caw-slides smoke test artifacts (top-level presentations/ from running templates)
+# raw-slides smoke test artifacts (top-level presentations/ from running templates)
 presentations/

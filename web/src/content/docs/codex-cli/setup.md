@@ -1,16 +1,16 @@
 ---
 title: 環境構築（Codex CLI）
-description: Codex CLI のインストール、認証、caw プラグイン導入、office/ 部署システムの初期化までの一通り
+description: Codex CLI のインストール、認証、raw プラグイン導入、office/ 部署システムの初期化までの一通り
 ---
 
 このページでは、Codex CLI をゼロから「化学プロジェクトで動く `office/` 部署システム」が立ち上がるところまで一通り通します。**Codex CLI 自体に触るのが初めての方も対象**です。
 
 ## 動作環境
 
-caw の対応 OS は **macOS** と **Windows**（同列にサポート）。
+raw の対応 OS は **macOS** と **Windows**（同列にサポート）。
 
 - **macOS**（Apple Silicon / Intel）
-- **Windows**：標準の **PowerShell** でそのまま動作します。Codex 版 caw は **Hooks（bash スクリプト）を含まない**ため、Git Bash や WSL2 は不要です
+- **Windows**：標準の **PowerShell** でそのまま動作します。Codex 版 raw は **Hooks（bash スクリプト）を含まない**ため、Git Bash や WSL2 は不要です
 
 必要な外部ツールと OS 別のインストール手順は [必要なツールとインストール](/requirements/) にまとめています。
 
@@ -83,35 +83,35 @@ model_reasoning_effort = "high"
 
 ## `office/` 部署システムの構築
 
-研究プロジェクトの中心となる `office/` 部署システムを構築します。**caw プラグイン**による自動構築を推奨。
+研究プロジェクトの中心となる `office/` 部署システムを構築します。**raw プラグイン**による自動構築を推奨。
 
-### caw プラグインで自動構築（推奨）
+### raw プラグインで自動構築（推奨）
 
-`caw`（Chemist's AI Workflow）の Codex 版は、起動後に `caw` と入力（または「化学プロジェクトの環境を作って」など自然言語で指示）するだけで、研究分野・使用ソフト・ナレッジベース等を対話的にヒアリングし、化学者向けにカスタマイズされた `office/` 部署と作業ディレクトリを一括で構築します。
+`raw`（Researcher's AI Workflow）の Codex 版は、起動後に `raw` と入力（または「化学プロジェクトの環境を作って」など自然言語で指示）するだけで、研究分野・使用ソフト・ナレッジベース等を対話的にヒアリングし、化学者向けにカスタマイズされた `office/` 部署と作業ディレクトリを一括で構築します。
 
 #### 配布ステータス
 
-- **Codex 1.2.1 公開済み（2026-05-14）**: 公式 marketplace（`dr-neoueda/chemist-ai-workflow`、MIT ライセンス）から導入可能。Claude Code 版と同じ 5 Skills（caw / caw-register / caw-input / caw-playbook / caw-doctor）
+- **Codex 1.2.1 公開済み（2026-05-14）**: 公式 marketplace（`dr-neoueda/researcher-ai-workflow`、MIT ライセンス）から導入可能。Claude Code 版と同じ 5 Skills（raw / raw-register / raw-input / raw-playbook / raw-doctor）
 
 #### Step 1: プラグインのインストール
 
-Codex CLI は **marketplace を登録 → そこから caw プラグイン本体を追加**の 2 ステップです。
+Codex CLI は **marketplace を登録 → そこから raw プラグイン本体を追加**の 2 ステップです。
 
 ```bash
 # 1. marketplace を登録
-codex plugin marketplace add dr-neoueda/chemist-ai-workflow
-# 2. caw プラグイン本体を追加
-codex plugin add caw@chemist-ai-workflow
+codex plugin marketplace add dr-neoueda/researcher-ai-workflow
+# 2. raw プラグイン本体を追加
+codex plugin add raw@researcher-ai-workflow
 ```
 
-`~/.codex/config.toml` に `[plugins."caw@chemist-ai-workflow"]` が追加されていれば導入完了。除去・更新の手順は [アンインストールと環境リセット](/codex-cli/uninstall/) を参照。
+`~/.codex/config.toml` に `[plugins."raw@researcher-ai-workflow"]` が追加されていれば導入完了。除去・更新の手順は [アンインストールと環境リセット](/codex-cli/uninstall/) を参照。
 
 #### Step 2: オンボーディング
 
 ```bash
 cd ~/your-research-project
 codex
-> caw
+> raw
 ```
 
 `office/` が存在しない場合、対話的オンボーディングモードに入ります。
@@ -140,11 +140,11 @@ codex
 | ルート直下 `work/gaussian/` `work/orca/` 等 | 選択した計算ソフトの作業ディレクトリ（README 付き） |
 | ルート直下 `work/papers/` `work/manuscripts/` `slides/` | 選択した部署に対応するドメイン作業ディレクトリ |
 
-詳細な部署構成・スキャフォールド内容は [配布プラグイン（caw）](/plugin/) を参照（Claude Code 版と同じ部署構成）。
+詳細な部署構成・スキャフォールド内容は [配布プラグイン（raw）](/plugin/) を参照（Claude Code 版と同じ部署構成）。
 
-### 手動セットアップ（caw を使わない場合）
+### 手動セットアップ（raw を使わない場合）
 
-`caw` プラグインを使わずに `office/` を手動で構築することも可能です。Claude Code 用の [手動セットアップ手順](/claude-code/setup/) と同じ流れで、各 `CLAUDE.md` を `AGENTS.md` に置き換えるだけで Codex 環境にも対応できます。
+`raw` プラグインを使わずに `office/` を手動で構築することも可能です。Claude Code 用の [手動セットアップ手順](/claude-code/setup/) と同じ流れで、各 `CLAUDE.md` を `AGENTS.md` に置き換えるだけで Codex 環境にも対応できます。
 
 ## 試運転
 
@@ -157,10 +157,10 @@ codex
 | 「読んだ論文を登録して」 | PDF → `work/papers/<author-year>.md` に書誌情報付き md を生成 |
 | 「ここまでの会話で決めたことを記録して」 | `secretary/notes/YYYY-MM-DD-decisions.md` に追記 |
 
-オンボーディング（caw 版）または初期セットアップ（手動版）は初回のみ。2 回目以降の起動は既存の `office/` を検出し、自動的に運営モードに入ります。
+オンボーディング（raw 版）または初期セットアップ（手動版）は初回のみ。2 回目以降の起動は既存の `office/` を検出し、自動的に運営モードに入ります。
 
 ## 次のステップ
 
 - [Codex CLI トップ](/codex-cli/) — Codex CLI 全体像
-- [配布プラグイン（caw）](/plugin/) — caw の含まれる内容（Claude Code 版・Codex 版共通）
+- [配布プラグイン（raw）](/plugin/) — raw の含まれる内容（Claude Code 版・Codex 版共通）
 - [対応ツール一覧](/tools/) — 計算ソフト・ナレッジベース・クラウドストレージのマトリクス
