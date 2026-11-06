@@ -3,7 +3,7 @@ title: 環境構築
 description: Claude Code のインストール、認証、IDE 連携、モデル設定、office/ 初期化までの一通り
 ---
 
-このページでは、Claude Code をゼロから「化学プロジェクトで動く `office/` 部署システム」が立ち上がるところまで、一通り通します。**Claude Code 自体に触るのが初めての方も対象**です。
+このページでは、Claude Code をゼロから「研究プロジェクトで動く `office/` 部署システム」が立ち上がるところまで、一通り通します。**Claude Code 自体に触るのが初めての方も対象**です。
 
 ## 動作環境
 
@@ -127,7 +127,7 @@ Claude Code は **モデル**と**思考レベル**の 2 軸で挙動を調整�
 
 ### raw プラグインで自動構築（推奨）
 
-`raw`（Researcher's AI Workflow）は本書の中核成果物として配布される Claude Code プラグインです。`/raw` 1 コマンドで研究分野・使用ソフト・ナレッジベース等を対話的にヒアリングし、化学者向けにカスタマイズされた `office/` 部署と作業ディレクトリを一括で構築します。
+`raw`（Researcher's AI Workflow）は本書の中核成果物として配布される Claude Code プラグインです。`/raw` 1 コマンドで研究分野・使用ソフト・ナレッジベース等を対話的にヒアリングし、研究分野に合わせてカスタマイズされた `office/` 部署と作業ディレクトリを一括で構築します。
 
 #### 配布ステータス
 
@@ -171,7 +171,7 @@ claude
 
 | 場所 | 内容 |
 |---|---|
-| `office/CLAUDE.md` | ルート組織図 + 化学者向け運用ルール |
+| `office/CLAUDE.md` | ルート組織図 + 運用ルール・研究分野の規律 |
 | `office/secretary/` | 秘書部（窓口・TODO・意思決定ログ・学び） |
 | `office/<選択部署>/` | 選択した各部署の CLAUDE.md とサブフォルダ |
 | `office/computation/playbooks/` | 選択した計算ソフトの Playbook 雛形 |

@@ -72,11 +72,11 @@ rm -rf ~/.codex/.tmp/marketplaces/.staging/marketplace-add-*
 ### Step 4: 完全除去の確認
 
 ```bash
-find ~/.codex -iname '*raw*' -o -iname '*chemist*'
-grep -rn "raw\|chemist" ~/.codex/config.toml
+find ~/.codex -iname '*researcher-ai-workflow*' -o -iname '*chemist-ai-workflow*'
+grep -rnE "researcher-ai-workflow|chemist-ai-workflow" ~/.codex/config.toml
 ```
 
-どちらも何も出なければ「raw を一度も入れたことがない環境」と同じ状態です。
+どちらも何も出なければ「raw（旧名 caw を含む）を一度も入れたことがない環境」と同じ状態です。新旧どちらのマーケットプレイス名も探します。
 
 > `config.toml` に `[projects."/Users/.../raw-test/..."]` のような行がヒットすることがありますが、これは **パス名に "raw" を含むプロジェクトの trust 設定**であって raw プラグインの足跡ではありません。無害なので放置で構いません（消したい場合は該当ブロックを削除）。
 

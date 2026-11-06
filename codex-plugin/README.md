@@ -1,6 +1,6 @@
 # raw — Researcher's AI Workflow Plugin (Codex CLI 版)
 
-化学研究プロジェクトのための AI 部署システムを 1 コマンドで構築する Codex CLI プラグイン。秘書部から開始し、必要な部署を必要なときに増やす。計算ソフトの Playbook と作業ディレクトリも対話的に整備。
+理工系の研究プロジェクトのための AI 部署システムを 1 コマンドで構築する Codex CLI プラグイン（旧名 caw / Chemist's AI Workflow）。秘書部から開始し、必要な部署を必要なときに増やす。計算ソフトの Playbook と作業ディレクトリも対話的に整備。
 
 Claude Code 版（`../plugin/`）と内容は基本同一。`office/<dept>/CLAUDE.md` の代わりに `office/<dept>/AGENTS.md` を生成する点のみ異なる。
 

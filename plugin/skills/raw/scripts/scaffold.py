@@ -220,6 +220,8 @@ def resolve_within(base: Path, rel: str) -> Path:
 
 _PATH_HEADER = re.compile(r"^###\s+(.+?)\s*$")
 _FENCE_OPEN = re.compile(r"^(`{3,})\s*[A-Za-z0-9_-]*\s*$")
+# lines allowed between a closed choice body and the next header: blank, a rule, a one-line comment
+_AFTER_BODY_OK = re.compile(r"^(|---|<!--(?:(?!-->).)*-->)$")
 
 
 def _clean_path(raw: str) -> str | None:
@@ -330,7 +332,7 @@ def _choice_blocks(text: str, label: str) -> dict[str, str]:
         body, i = _read_fence(lines, i)
         # a nested fence closes the block early; the rest of the body would be lost silently
         while i < n and not (_PATH_HEADER.match(lines[i]) or lines[i].startswith("## ")):
-            if lines[i].strip() and lines[i].strip() != "---":
+            if not _AFTER_BODY_OK.match(lines[i].strip()):
                 raise ValueError(f"text after the fenced body of '### {label} = {token}' (line {i + 1})")
             i += 1
         out[token] = body
