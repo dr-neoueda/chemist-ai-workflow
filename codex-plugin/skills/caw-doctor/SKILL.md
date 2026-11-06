@@ -45,7 +45,7 @@ description: >
 
 ### 3. 各部署の構造
 
-化学者モードの全部署 (research / engineering / computation / analysis / writing / review / presentation) ごとに：
+研究トラックの全部署 (research / engineering / computation / analysis / writing / review / presentation) ごとに：
 
 - [ ] `office/<dept>/AGENTS.md` が存在
 - [ ] `office/<dept>/` 配下のサブディレクトリが運営情報のみ（成果物ディレクトリが含まれていない）
@@ -102,12 +102,12 @@ description: >
 研究向けの §5・§6・§6b の代わりに、就活モードの構造を点検する。
 
 #### J-1. 就活部署の構造
-立ち上げた就活部署ごとに（`research` / `analysis` / `writing` / `presentation` のうち作った分。フォルダ名は化学トラックと共通）：
+立ち上げた就活部署ごとに（`research` / `analysis` / `writing` / `presentation` のうち作った分。フォルダ名は研究トラックと共通）：
 - [ ] `office/<dept>/` に部署設定ファイル（`CLAUDE.md` または `AGENTS.md`）が存在
 - [ ] `office/<dept>/` 配下が運営情報のみ（ES・企業研究まとめ等の成果物が混ざっていない）
 
 #### J-2. 就活の成果物ディレクトリ（`work/` 配下）
-| 部署（化学と共通フォルダ） | 期待される `work/` 配下 dir |
+| 部署（研究トラックと共通フォルダ） | 期待される `work/` 配下 dir |
 |---|---|
 | `research` | `work/companies/` `work/recruit/` |
 | `writing` | `work/documents/` |

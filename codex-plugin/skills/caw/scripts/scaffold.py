@@ -10,8 +10,9 @@ small config JSON + the tiny work/profile/ personalization.
 
 Design: the reference files are already section-structured, so we parse rather
 than ship duplicate templates:
-  - chemistry-departments.md : ``### <path>`` + fenced block -> office/<path>
+  - research-departments.md  : ``### <path>`` + fenced block -> office/<path>
   - claude-md-template.md    : first fenced body -> office/CLAUDE.md
+  - field-rules.md           : ``### field = <group>`` fence -> {{FIELD_RULES}}
   - playbook-starters.md     : ``### computation/playbooks/<tool>.md`` block
   - mcp-setup-templates.md   : header fence + ``### Q3/Q4 = <choice>`` fences
 Folder READMEs are short, so they live here as templates.
@@ -21,6 +22,7 @@ Safety (hardened after adversarial review):
   - tool names are slugified and charset-checked before use in paths
   - fence parsing is fail-closed (unterminated fence -> ValueError)
   - any ``{{TOKEN}}`` left in a generated file is a hard error
+  - an unknown ``field_group`` stops before anything is written
   - mutable files (playbooks, first todo) are never overwritten, even --force
 
 Usage:
@@ -36,7 +38,7 @@ import sys
 from pathlib import Path, PurePosixPath
 from typing import Any
 
-# --- static data (all-9-department chemist mode; matches claude-md-template.md) ---
+# --- static data (all-9-department research track; matches claude-md-template.md) ---
 
 DEPARTMENT_TREE = "\n".join(
     [
@@ -55,8 +57,8 @@ DEPARTMENT_TABLE_ROWS = "\n".join(
     [
         "| 文献部 | research | 文献検索、要約、ナレッジ DB 化 |",
         "| 開発部 | engineering | Python ツール、計算入力ジェネレータ、CLI |",
-        "| 計算管理部 | computation | 量子化学・MD・DFT ジョブ管理 + Playbook |",
-        "| 実験部 | experiment | 実験の段取り・電子ノート・試薬/サンプル在庫・安全 |",
+        "| 計算管理部 | computation | 計算ジョブの管理（量子化学・MD・FEM・数値計算 等）+ Playbook |",
+        "| 実験部 | experiment | 実験の段取り・電子ノート・試料/試薬の在庫・安全 |",
         "| データ解析部 | analysis | 手法非依存の解析コンパニオン（fit・定量・可視化） |",
         "| 論文執筆部 | writing | LaTeX / Word 原稿、図表、参考文献 |",
         "| レビュー部 | review | コード品質、計算妥当性の確認 |",
@@ -121,6 +123,9 @@ _CLOUD_ALIASES = {
 }
 _KB_UNSET = "使わない / まだ決めていない"
 _CLOUD_UNSET = "使わない / ローカルのみ"
+
+# field_group が空のときの規律（field-rules.md の ``### field = 共通``）
+FIELD_COMMON = "共通"
 
 _ILLEGAL = set('<>:"|?*\x00')
 _WIN_RESERVED = {
@@ -286,14 +291,14 @@ def assert_no_placeholders(text: str, where: str) -> None:
         raise ValueError(f"unresolved placeholder(s) {sorted(set(left))} in {where}")
 
 
-# --- MCP setup assembly (fence-aware, keyed on ### Q3/Q4 = <choice>) -------
+# --- choice sections (### <label> = <choice> + fence) ----------------------
 
 
-def _mcp_choice_blocks(text: str, qnum: str) -> dict[str, str]:
-    """Return ``{choice_token: fenced_body}`` for each ``### Q<n> = <token>``."""
+def _choice_blocks(text: str, label: str) -> dict[str, str]:
+    """Return ``{choice_token: fenced_body}`` for each ``### <label> = <token>``."""
     lines = text.splitlines()
     out: dict[str, str] = {}
-    pat = re.compile(rf"^###\s+Q{qnum}\s*=\s*(.+?)\s*$")
+    pat = re.compile(rf"^###\s+{re.escape(label)}\s*=\s*(.+?)\s*$")
     i, n = 0, len(lines)
     while i < n:
         m = pat.match(lines[i])
@@ -307,10 +312,29 @@ def _mcp_choice_blocks(text: str, qnum: str) -> dict[str, str]:
                 break
             i += 1
         if i >= n or not _FENCE_OPEN.match(lines[i]):
-            raise ValueError(f"mcp selector '### Q{qnum} = {token}' has no fenced body")
+            raise ValueError(f"selector '### {label} = {token}' has no fenced body")
         body, i = _read_fence(lines, i)
         out[token] = body
     return out
+
+
+def _mcp_choice_blocks(text: str, qnum: str) -> dict[str, str]:
+    """MCP template choices for onboarding question ``Q<qnum>``."""
+    return _choice_blocks(text, f"Q{qnum}")
+
+
+def field_rule_blocks(text: str) -> dict[str, str]:
+    """``{group: rules}`` from field-rules.md (``### field = <group>`` sections)."""
+    return _choice_blocks(text, "field")
+
+
+def select_field_rules(text: str, group: str | None) -> str:
+    """Rules for ``group``; empty/None means 共通. Unknown groups are an error."""
+    blocks = field_rule_blocks(text)
+    key = str(group or "").strip() or FIELD_COMMON
+    if key not in blocks:
+        raise ValueError(f"unknown field_group {key!r}; choose one of {sorted(blocks)}")
+    return blocks[key]
 
 
 def _select_choice(blocks: dict[str, str], answer: str, aliases: dict[str, str], unset_token: str) -> str:
@@ -386,11 +410,17 @@ def scaffold(config: dict[str, Any], skill_dir: Path, out_dir: Path, *, force: b
     if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", today):
         raise ValueError(f"config.today must be YYYY-MM-DD, got {today!r}")
 
+    # resolve the field rules first so an unknown field_group writes nothing
+    field_group = str(config.get("field_group") or "").strip() or FIELD_COMMON
+    field_rules = select_field_rules((refs / "field-rules.md").read_text(encoding="utf-8"), field_group)
+
     written: list[str] = []
     office = out_dir / "office"
 
     mapping = {
         "RESEARCH_FIELD": str(config.get("research_field", "")),
+        "FIELD_GROUP": field_group,
+        "FIELD_RULES": field_rules.strip(),
         "COMPUTATION_CATEGORIES": str(config.get("computation_categories", "")),
         "KNOWLEDGE_BASE": str(config.get("knowledge_base", "")),
         "CLOUD_STORAGE": str(config.get("cloud_storage", "")),
@@ -408,7 +438,7 @@ def scaffold(config: dict[str, Any], skill_dir: Path, out_dir: Path, *, force: b
         _write(target, content, written, force=force, mutable=mutable)
 
     # 1. root office file: CLAUDE.md (Claude Code) or AGENTS.md (Codex / Copilot).
-    #    Dept files auto-adapt because chemistry-departments.md ships the right
+    #    Dept files auto-adapt because research-departments.md ships the right
     #    ``### <dept>/CLAUDE.md`` or ``### <dept>/AGENTS.md`` paths per variant.
     if (refs / "claude-md-template.md").exists():
         root_tmpl, root_name = "claude-md-template.md", "CLAUDE.md"
@@ -422,7 +452,7 @@ def scaffold(config: dict[str, Any], skill_dir: Path, out_dir: Path, *, force: b
     emit(office / root_name, substitute(tmpl, mapping))
 
     # 2. department CLAUDE.md + secretary first todo (todo is mutable)
-    blocks = extract_path_blocks((refs / "chemistry-departments.md").read_text(encoding="utf-8"))
+    blocks = extract_path_blocks((refs / "research-departments.md").read_text(encoding="utf-8"))
     for rel_path, body in blocks.items():
         target_rel = safe_relpath(rel_path.replace("YYYY-MM-DD", today))
         emit(resolve_within(office, target_rel), substitute(body, mapping), mutable="todos/" in target_rel)

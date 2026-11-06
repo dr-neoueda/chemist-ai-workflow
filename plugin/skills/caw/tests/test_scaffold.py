@@ -93,7 +93,7 @@ def test_mcp_choice_blocks_fail_loud_on_missing_fence():
 
 
 def test_extract_path_blocks_on_real_departments():
-    text = (REFS / "chemistry-departments.md").read_text(encoding="utf-8")
+    text = (REFS / "research-departments.md").read_text(encoding="utf-8")
     blocks = scaffold.extract_path_blocks(text)
     assert "secretary/CLAUDE.md" in blocks
     assert "secretary/todos/YYYY-MM-DD.md" in blocks
@@ -251,6 +251,88 @@ def test_scaffold_protects_mutable_and_static_force(tmp_path, config):
     scaffold.scaffold(config, SKILL_DIR, tmp_path, force=True)
     assert static.read_text(encoding="utf-8") != "USER EDIT"          # static refreshed
     assert playbook.read_text(encoding="utf-8") == "USER LESSONS"     # mutable protected
+
+
+# --- field rules (研究分野の規律) -------------------------------------------
+
+FIELD_GROUPS = ("化学・材料", "物理・地球惑星", "生命科学", "工学・情報", "共通")
+
+# 理工系へ広げる前の office/CLAUDE.md にあった化学の規律。化学の利用者には一字一句このまま出す。
+CHEMISTRY_RULES = (
+    "- **物理量には必ず単位コメントを付ける**（例：`# kJ/mol`, `# Å`, `# fs`, `# K`）",
+    "- **計算パラメータは設定ファイルまたは引数で渡す**（ハードコーディング禁止）",
+    "- **乱数シードは固定**（再現性確保）",
+    "- **エネルギー単位変換に注意**（kcal/mol ↔ kJ/mol ↔ eV ↔ Hartree）",
+    "- **計算ソフトのバージョン依存挙動に注意**（GROMACS の mdp 文法など）",
+    "- **化学物理の用語は正確に**（汎関数名・基底関数・force field・cell parameter など）",
+)
+
+# 化学以外の分野の office/ に出てはいけない「化学向け」の言い回し（化学の具体例そのものは可）
+CHEMISTRY_FRAMING = ("化学研究", "化学者", "化学用語", "化学物理", "湿式ラボ", "化学的に")
+
+
+def _field_rules_text() -> str:
+    return (REFS / "field-rules.md").read_text(encoding="utf-8")
+
+
+def test_field_rules_cover_every_group():
+    assert set(scaffold.field_rule_blocks(_field_rules_text())) == set(FIELD_GROUPS)
+
+
+def test_missing_field_group_falls_back_to_common():
+    text = _field_rules_text()
+    common = scaffold.select_field_rules(text, "共通")
+    assert scaffold.select_field_rules(text, "") == common
+    assert scaffold.select_field_rules(text, None) == common
+    assert scaffold.select_field_rules(text, " 生命科学 ") == scaffold.select_field_rules(text, "生命科学")
+
+
+def test_unknown_field_group_is_rejected():
+    with pytest.raises(ValueError, match="field_group"):
+        scaffold.select_field_rules(_field_rules_text(), "文学")
+
+
+def test_chemistry_keeps_its_rules_verbatim(tmp_path, config):
+    config["field_group"] = "化学・材料"
+    scaffold.scaffold(config, SKILL_DIR, tmp_path)
+    body = (tmp_path / "office" / "CLAUDE.md").read_text(encoding="utf-8")
+    for rule in CHEMISTRY_RULES:
+        assert rule in body, rule
+    assert "## 研究分野の規律" in body
+    assert "**分野の群**: 化学・材料" in body
+
+
+@pytest.mark.parametrize("group", [g for g in FIELD_GROUPS if g != "化学・材料"])
+def test_other_fields_carry_no_chemistry_framing(tmp_path, group):
+    cfg = {"today": "2026-11-06", "field_group": group, "research_field": "分野", "tools": []}
+    scaffold.scaffold(cfg, SKILL_DIR, tmp_path)
+    body = (tmp_path / "office" / "CLAUDE.md").read_text(encoding="utf-8")
+    assert scaffold.select_field_rules(_field_rules_text(), group).strip() in body
+    assert "エネルギー単位変換" not in body                    # 化学の規律が混ざらない
+    for path in (tmp_path / "office").rglob("*.md"):
+        text = path.read_text(encoding="utf-8")
+        for phrase in CHEMISTRY_FRAMING:
+            assert phrase not in text, f"{phrase!r} in {path.relative_to(tmp_path)}"
+
+
+def test_codex_variant_gets_field_rules_too(tmp_path, config):
+    codex_skill = SKILL_DIR.parent.parent.parent / "codex-plugin" / "skills" / "caw"
+    if not (codex_skill / "references" / "agents-md-template.md").exists():
+        pytest.skip("codex-plugin references not present")
+    config["field_group"] = "工学・情報"
+    scaffold.scaffold(config, codex_skill, tmp_path)
+    body = (tmp_path / "office" / "AGENTS.md").read_text(encoding="utf-8")
+    assert scaffold.select_field_rules(_field_rules_text(), "工学・情報").strip() in body
+
+
+def test_main_cli_rejects_unknown_field_group(tmp_path, config, capsys):
+    config["field_group"] = "文学"
+    cfg_path = tmp_path / "cfg.json"
+    cfg_path.write_text(json.dumps(config, ensure_ascii=False), encoding="utf-8")
+    rc = scaffold.main(["--config", str(cfg_path), "--skill", str(SKILL_DIR), "--out", str(tmp_path)])
+    assert rc == 2
+    assert "field_group" in capsys.readouterr().err
+    assert not (tmp_path / "office").exists()                 # 止まったら何も書かない
 
 
 def test_main_cli_happy(tmp_path, config, capsys):

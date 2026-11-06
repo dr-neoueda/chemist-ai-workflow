@@ -7,13 +7,14 @@
 ## テンプレート本体
 
 ````markdown
-# Company - 化学研究プロジェクト管理システム
+# Company - 研究プロジェクト管理システム
 
 > トラック: 研究
 
 ## オーナープロフィール
 
 - **研究分野**: {{RESEARCH_FIELD}}
+- **分野の群**: {{FIELD_GROUP}}
 - **使う計算ソフト**: {{COMPUTATION_CATEGORIES}}
 - **ナレッジベース**: {{KNOWLEDGE_BASE}}
 - **クラウドストレージ**: {{CLOUD_STORAGE}}
@@ -71,7 +72,7 @@ office/
 | `work/scripts/` | 単発スクリプト |
 | `work/tools/` | 再利用ツール |
 | `work/reports/` | 報告書 |
-| `work/gaussian/` `work/gromacs/` `work/cp2k/` 等 | 計算ソフトの入出力 |
+| `work/<ツール名>/`（例：`work/gaussian/`・`work/openfoam/`） | 計算ソフトの入出力 |
 | `work/experiments/` | 実験記録 |
 
 ❌ AI 生成成果物（要約 md、スライド、グラフ等）を `office/<dept>/` に置かない
@@ -119,14 +120,9 @@ office/
 2. 既存ファイルは上書きしない（追記のみ）
 3. 追記時はタイムスタンプを付ける
 
-## 化学研究プロジェクト特有のルール
+## 研究分野の規律
 
-- **物理量には必ず単位コメントを付ける**（例：`# kJ/mol`, `# Å`, `# fs`, `# K`）
-- **計算パラメータは設定ファイルまたは引数で渡す**（ハードコーディング禁止）
-- **乱数シードは固定**（再現性確保）
-- **エネルギー単位変換に注意**（kcal/mol ↔ kJ/mol ↔ eV ↔ Hartree）
-- **計算ソフトのバージョン依存挙動に注意**（GROMACS の mdp 文法など）
-- **化学物理の用語は正確に**（汎関数名・基底関数・force field・cell parameter など）
+{{FIELD_RULES}}
 
 ## パーソナライズメモ
 
@@ -139,27 +135,29 @@ office/
 
 | 変数 | ソース | 説明 |
 |------|--------|------|
-| `{{RESEARCH_FIELD}}` | Q1 | 研究分野（有機化学・物理化学・材料化学・計算化学等） |
-| `{{COMPUTATION_CATEGORIES}}` | Q2 | 計算ソフトのカテゴリ（QC, MD, DFT 等、複数可） |
+| `{{RESEARCH_FIELD}}` | Q1〜Q2 | 研究分野（有機化学・凝縮系物理・構造生物学・機械工学 等） |
+| `{{FIELD_GROUP}}` | Q1 | 分野の群（化学・材料 / 物理・地球惑星 / 生命科学 / 工学・情報 / 共通） |
+| `{{FIELD_RULES}}` | Q1 | `field-rules.md` から群ごとに選ばれる規律（scaffold が差し込む） |
+| `{{COMPUTATION_CATEGORIES}}` | Q4 | 計算ソフト（量子化学・MD・FEM・数値計算 等、複数可） |
 | `{{KNOWLEDGE_BASE}}` | Q3 | ナレッジベース（Notion, Obsidian, Logseq 等） |
 | `{{CLOUD_STORAGE}}` | Q4 | クラウドストレージ（Google Drive, Dropbox 等） |
 | `{{CREATED_DATE}}` | 自動 | 組織構築日（YYYY-MM-DD） |
-| `{{DEPARTMENT_TREE}}` | 全部署（固定） | 化学者モード全 9 部署のディレクトリツリー（インデント済） |
-| `{{DEPARTMENT_TABLE_ROWS}}` | 全部署（固定） | 化学者モード全 9 部署のテーブル行 |
+| `{{DEPARTMENT_TREE}}` | 全部署（固定） | 研究トラック全 9 部署のディレクトリツリー（インデント済） |
+| `{{DEPARTMENT_TABLE_ROWS}}` | 全部署（固定） | 研究トラック全 9 部署のテーブル行 |
 | `{{PERSONALIZATION_NOTES}}` | Q1〜Q4 から派生 | 研究分野と使用ツールに応じた運用ヒント |
 
 ---
 
 ## 部署 → ツリー / テーブル マッピング
 
-全 9 部署を `{{DEPARTMENT_TREE}}` と `{{DEPARTMENT_TABLE_ROWS}}` に反映するための対応表（化学者モードは全部署を常に作成）：
+全 9 部署を `{{DEPARTMENT_TREE}}` と `{{DEPARTMENT_TABLE_ROWS}}` に反映するための対応表（研究トラックは全部署を常に作成）：
 
 | 部署 ID | ツリー行 | テーブル行 |
 |---|---|---|
 | research | `├── research/` | `\| 文献部 \| research \| 文献検索、要約、ナレッジ DB 化 \|` |
 | engineering | `├── engineering/` | `\| 開発部 \| engineering \| Python ツール、計算入力ジェネレータ、CLI \|` |
-| computation | `├── computation/` | `\| 計算管理部 \| computation \| 量子化学・MD・DFT ジョブ管理 + Playbook \|` |
-| experiment | `├── experiment/` | `\| 実験部 \| experiment \| 実験の段取り・電子ノート・試薬/サンプル在庫・安全 \|` |
+| computation | `├── computation/` | `\| 計算管理部 \| computation \| 計算ジョブの管理（量子化学・MD・FEM・数値計算 等）+ Playbook \|` |
+| experiment | `├── experiment/` | `\| 実験部 \| experiment \| 実験の段取り・電子ノート・試料/試薬の在庫・安全 \|` |
 | analysis | `├── analysis/` | `\| データ解析部 \| analysis \| 手法非依存の解析コンパニオン（fit・定量・可視化） \|` |
 | writing | `├── writing/` | `\| 論文執筆部 \| writing \| LaTeX / Word 原稿、図表、参考文献 \|` |
 | review | `├── review/` | `\| レビュー部 \| review \| コード品質、計算妥当性の確認 \|` |
@@ -171,7 +169,7 @@ office/
 
 ## パーソナライズメモ生成ガイド
 
-`{{PERSONALIZATION_NOTES}}` には、Q1〜Q4 の組み合わせから派生する運用上の助言を入れる。
+`{{PERSONALIZATION_NOTES}}` には、Q1〜Q4 の組み合わせから派生する運用上の助言を入れる。分野ごとの決まりごと（単位・命名・誤差）は `{{FIELD_RULES}}` が担うので、ここには**その人の研究に固有のこと**だけを書く。
 
 ### 例: 研究分野 = 有機化学 + 計算カテゴリ = 量子化学
 
@@ -195,4 +193,28 @@ office/
 - 物理化学 + 実験中心の構成。NMR / IR / UV-Vis / 蛍光分光など測定データの管理と解析を想定
 - engineering 部署で測定データ処理スクリプトを蓄積、analysis 部署で可視化・統計
 - computation 部署は不要だが、後から DFT 計算を始める場合に追加できる
+```
+
+### 例: 研究分野 = 凝縮系物理 + 計算ソフトは使わない / 主に実験中心
+
+```
+- 凝縮系物理 + 実験中心の構成。輸送測定・磁化・比熱など温度・磁場を掃引する測定の管理と解析を想定
+- 掃引の条件（温度・磁場・掃引速度）を測定ファイル名かメタデータに残し、analysis 部署で fit・相図化
+- 理論曲線との比較は engineering 部署で数値計算スクリプトとして蓄積する
+```
+
+### 例: 研究分野 = 構造生物学 + 計算カテゴリ = 構造予測・MD
+
+```
+- 構造生物学 + 構造予測（AlphaFold 等）と MD（GROMACS 等）の組み合わせ。予測構造の評価・変異体の比較・動的挙動の解析を想定
+- 予測の信頼度（pLDDT・PAE）と実験構造（PDB）の突き合わせは analysis 部署を併用
+- 配列・構造の ID（UniProt・PDB）を文献部の要約とジョブ記録の両方に残す
+```
+
+### 例: 研究分野 = 機械工学（流体） + 計算カテゴリ = CFD
+
+```
+- 機械工学 + CFD（OpenFOAM 等）の組み合わせ。形状・境界条件を変えた比較計算と、実験（PIV・圧力測定）との突き合わせを想定
+- computation 部署の playbook（openfoam.md 等）にメッシュの作り方・乱流モデルの選択・収束の判定を蓄積していく
+- 設計値・計算値・実測値は analysis 部署で同じ図に重ねるとき凡例で区別する
 ```

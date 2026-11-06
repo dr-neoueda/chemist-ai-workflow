@@ -1,7 +1,7 @@
 ---
 name: caw
 description: >
-  研究プロジェクト（化学者向け）と就活の 2 トラックに対応した AI 部署システム。
+  研究プロジェクト（理工系の研究者向け）と就活の 2 トラックに対応した AI 部署システム。
   「caw」と呼びかける、または「環境を作って」等の自然言語で起動し、秘書部から開始。研究なら研究分野・計算ソフト・
   ナレッジベース等を、就活なら区分・志望業界・就活フェーズをヒアリングして、用途に合わせた部署 AGENTS.md を一括スキャフォールドする。
 ---
@@ -10,8 +10,8 @@ description: >
 
 ## いつ使うか
 
-- 「caw」と呼びかけられたとき、化学プロジェクトの環境構築を依頼されたとき
-- 化学プロジェクトのディレクトリで「秘書」「TODO」「研究」「文献」「計算」「論文」「申請書」「スライド」などと言われたとき
+- 「caw」と呼びかけられたとき、研究プロジェクトの環境構築を依頼されたとき
+- 研究プロジェクトのディレクトリで「秘書」「TODO」「研究」「文献」「計算」「論文」「申請書」「スライド」などと言われたとき
 - **就活で**「自己分析」「企業研究」「ES」「エントリーシート」「志望動機」「ガクチカ」「面接対策」などと言われたとき
 - `office/` がカレントディレクトリに存在し、Claude が運営モードに入るべきと判断したとき
 
@@ -52,27 +52,30 @@ QT (トラック): 「caw を主に何に使いますか？」
 
 ```
 Q1 (分野・大): 「研究分野は、大きくはどれに当たりますか？」
-  - 化学
-  - 物理・物性
-  - 材料・デバイス
-  - 生命科学・生化学
-  - 計算・データ科学
-  - 環境・エネルギー
+  - 化学・材料
+  - 物理・地球惑星
+  - 生命科学
+  - 工学・情報
   (multiSelect: false; Other で自由入力可)
 ```
 
+Q1 の答えが**分野の群**（`field_group`）になり、`office/AGENTS.md` の「研究分野の規律」（`references/field-rules.md`）が群ごとに切り替わる。
+
+- 選択肢の 4 群はそのまま `field_group` に使う（表記を変えない）
+- Other の答えは**最も近い群**に寄せる（例：計算化学・ケモインフォマティクス → 化学・材料、データ科学・機械学習 → 工学・情報、環境分析 → 化学・材料、大気・海洋 → 物理・地球惑星）。寄せた群はユーザーに 1 行で伝える
+- どの群にも当たらない（数学・文系の研究 等）ときは `field_group` を `共通` にする
+
 #### Call 2: 研究分野・中分類（Q1 に適応・1 問）
 
-Q1 の回答に応じて中分類の選択肢を出す（下表。複数領域・該当なしは Other 自由入力で拾う）。ここまでで**領域**が定まる ── 手法・ツール名はまだ出さない。
+Q1 の回答に応じて中分類の選択肢を出す（下表。各群 4 個まで＋Other。複数領域・該当なしは Other 自由入力で拾う）。ここまでで**領域**が定まる ── 手法・ツール名はまだ出さない。
 
-| Q1 大分類 | 中分類の選択肢（例・各 ＋Other） |
+| Q1 大分類 | 中分類の選択肢（各 ＋Other） |
 |---|---|
-| 化学 | 有機化学 / 無機・錯体化学 / 物理化学・分光 / 分析化学 / 高分子・超分子 / 結晶・構造化学 / ケミカルバイオロジー |
-| 物理・物性 | 凝縮系 / 表面・界面 / 光物性 / 磁性・スピン / ソフトマター |
-| 材料・デバイス | 電池・エネルギー材料 / 半導体・電子材料 / 触媒 / 高分子材料 / ナノ材料 |
-| 生命科学・生化学 | 構造生物学 / 生化学・酵素 / ケミカルバイオロジー / 創薬 / オミクス |
-| 計算・データ科学 | 量子化学・理論 / 分子シミュレーション / マテリアルズインフォマティクス / ケモインフォマティクス |
-| 環境・エネルギー | 触媒・グリーンケミストリー / エネルギー変換・貯蔵 / 環境分析 |
+| 化学・材料 | 有機・高分子・超分子 / 無機・錯体・結晶 / 物理化学・分光・理論 / 材料・電池・触媒 |
+| 物理・地球惑星 | 凝縮系・物性 / 光・量子 / 素粒子・原子核・宇宙 / 地球惑星・大気海洋 |
+| 生命科学 | 分子・構造生物 / 細胞・発生・神経 / 創薬・医薬 / 生態・農学 |
+| 工学・情報 | 機械・航空・流体 / 電気電子・デバイス / 土木・建築・環境 / 情報・データ科学 |
+| （Other・共通） | 自由入力で 1 行（中分類は聞かない） |
 
 #### Call 3: 論文添付（任意・環境理解のためだけに浅く読む）
 
@@ -88,8 +91,10 @@ Q1 の回答に応じて中分類の選択肢を出す（下表。複数領域�
 
 「研究で使う計算ツール・アプリを教えてください（複数可）。Call 3 の論文で見えたものはここで**確認・補完**します。」
 
+選択肢は Q1 の群ごとに出す（multiSelect: true。各群とも Other で具体的なソフト名を自由入力）。
+
 ```
-Q (計算ツール):
+化学・材料（候補が 7 個あるので、1 回の質問の中で 2 問に分ける：4 個＋3 個）:
   - Gaussian / ORCA / Psi4（量子化学）
   - GROMACS / AMBER / LAMMPS / OpenMM（古典 MD）
   - CP2K / VASP / Quantum ESPRESSO（周期系 DFT）
@@ -97,8 +102,30 @@ Q (計算ツール):
   - MLIP・MLFF（MACE / CHGNet / NequIP 等：ポテンシャルの **利用＋訓練/fine-tune** 両方）
   - ChimeraX（構造可視化・密度フィット）
   - 計算は使わない / 主に実験中心
-  (multiSelect: true; Other で具体的なソフト名を自由入力。選択肢が 4 を超えるので代表＋Other で拾う)
+
+物理・地球惑星:
+  - VASP / Quantum ESPRESSO（第一原理）
+  - LAMMPS（分子動力学）
+  - MATLAB / Julia / Mathematica（数値計算）
+  - 計算は使わない / 主に実験中心
+
+生命科学:
+  - AlphaFold・ColabFold / ChimeraX / PyMOL（構造予測・可視化）
+  - GROMACS / AMBER（分子動力学）
+  - R・Bioconductor / BLAST（配列・オミクス解析）
+  - 計算は使わない / 主に実験中心
+
+工学・情報:
+  - COMSOL / ANSYS / OpenFOAM（有限要素・流体）
+  - MATLAB・Simulink / Julia（数値計算・制御）
+  - PyTorch / scikit-learn（機械学習）
+  - 計算は使わない / 主に実験中心
+
+共通（Other）:
+  - 計算は使わない / 主に実験中心（使うソフトは Other で自由入力）
 ```
+
+- 同梱の Playbook の出発点（`references/playbook-starters.md`）があるのは主に化学・材料の計算ソフト。**それ以外のソフトも名指しすれば同じように Playbook とフォルダを作る**（出発点は空。初めて使うときに web 種まきを 1 回だけ提案し、使うたびに育つ）
 
 - **ディレクトリ・Playbook は、ここ（＋Call 3 の論文）で名指しされたツールについてのみ作る**。MLIP を挙げたら `work/mlip/`（**利用も訓練/fine-tune も**扱う）。
 - 「計算は使わない / 主に実験中心」を選んだら計算ディレクトリは作らず、実験記録用 `work/experiments/` の要否を `AskUserQuestion` で 1 問だけ確認（既定 Yes）。
@@ -153,6 +180,7 @@ Call 1〜6 の回答から `.caw-scaffold.json`（プロジェクト直下・一
 {
   "today": "<今日 YYYY-MM-DD>",
   "research_field": "<Call 1〜2 大→中＋Call 3 論文で補強>",
+  "field_group": "<Call 1 の群: 化学・材料 / 物理・地球惑星 / 生命科学 / 工学・情報 / 共通>",
   "computation_categories": "<Call 4 の計算ツール（表示名可）>",
   "knowledge_base": "<Call 5 文献管理: Notion / Obsidian / Logseq / 空>",
   "cloud_storage": "<Call 5 クラウド: Google Drive / Dropbox / OneDrive / 空>",
@@ -162,6 +190,7 @@ Call 1〜6 の回答から `.caw-scaffold.json`（プロジェクト直下・一
 }
 ```
 
+- `field_group` は上の 5 つのどれかを**この表記のまま**書く（表記が違うと scaffold は何も書かずに止まる。止まったら表記を直して再実行）。空なら `共通` になる。
 - `tools` は **名指しされたものだけ**（一覧の全ソフトは入れない）。「計算は使わない / 主に実験中心」なら `tools` を `[]`、`wants_experiment_dir` を `true` にする。
 - `personalization_notes` はモデルが生成する（ここだけ知的作業）。**API key 等の秘匿情報は入れない**。
 
@@ -171,11 +200,11 @@ Call 1〜6 の回答から `.caw-scaffold.json`（プロジェクト直下・一
 python3 "${SKILL}/scripts/scaffold.py" --config .caw-scaffold.json --skill "${SKILL}" --out .
 ```
 
-- `python3` が無ければ `py`（Windows）。**Python 未導入なら先に 3-6b の caw-setup で Python を入れてから実行**する（Python はスライド・解析でも必須）。どうしても Python が使えない環境のみ、フォールバックとして `references/chemistry-departments.md` の各 `### <path>` フェンスブロックを手で書き出す。
+- `python3` が無ければ `py`（Windows）。**Python 未導入なら先に 3-6b の caw-setup で Python を入れてから実行**する（Python はスライド・解析でも必須）。どうしても Python が使えない環境のみ、フォールバックとして `references/research-departments.md` の各 `### <path>` フェンスブロックを手で書き出す（「研究分野の規律」には `references/field-rules.md` の該当群を入れる）。
 - 出力の `wrote: …` 行と末尾 `scaffold complete: N files` を確認する。失敗時は `error: …`（exit 2）を読んで対処。
 
 **スクリプトが生成するもの（モデルは個別に Write しない）**：
-- `office/AGENTS.md`（`agents-md-template.md` を置換・全 9 部署の表/ツリー込み）＋ **全 9 部署 `AGENTS.md`**（`chemistry-departments.md`）＋ secretary の当日 `todos/<today>.md`
+- `office/AGENTS.md`（`agents-md-template.md` を置換・全 9 部署の表/ツリー込み）＋ **全 9 部署 `AGENTS.md`**（`research-departments.md`）＋ secretary の当日 `todos/<today>.md`
 - 名指しツールの `office/computation/playbooks/<tool>.md`（`playbook-starters.md` の該当セクション、無いツールは frontmatter＋空 `## Lessons Learned` の最小 stub）
 - `office/.mcp-setup.md`（`mcp-setup-templates.md` から Call 5 の Notion/Obsidian/Logseq × Google Drive/Dropbox/OneDrive を選んで組立。**API key は書かない手順書**）
 - `work/` 配下：名指しツール dir（README＋`inbox/`＋`_past-data/`）＋ドメイン dir（papers{pdf,md}/topics/manuscripts/presentations{slides,figures}/analyses/notebooks/figures/scripts/tools）＋統合 `inbox/`（README つき）
@@ -207,16 +236,16 @@ scaffold 後、**`work/profile/research-profile.md`** に研究プロファイ�
     ├── topics/ manuscripts/ analyses/ notebooks/ figures/
     ├── presentations/slides/    ← 発表資料（.pptx）
     ├── scripts/ tools/
-    └── gaussian/ gromacs/ …     ← 計算ソフト選択時（各 inbox/・_past-data/ 付き）
+    └── <ツール名>/              ← 計算ソフト選択時（例 gaussian/・openfoam/。各 inbox/・_past-data/ 付き）
 
 これからは caw でいつでも秘書に話しかけられます。
 「今日の TODO を整理して」「論文を登録して」「計算の入力ファイル作って」など、
-化学研究のあらゆる場面で使ってください。
+研究のあらゆる場面で使ってください。
 
 💡 ヒント:
 - 部署を追加したくなったら「<部署名> を作って」と言うだけで OK
 - computation 部署があれば、各 Playbook に新しい知見を追記していけます
-- 過去データがあれば `work/gaussian/_past-data/` 等に入れて「過去データを取り込んで」と言うと、
+- 過去データがあれば `work/<ツール名>/_past-data/` に入れて「過去データを取り込んで」と言うと、
   あなた用に Playbook を最適化します
 - **成果物（要約 md、スライド、グラフ等）は `work/` 配下**に保存されます。
   ファイラーから普通に開けます。`office/` は AI の運営情報専用です
@@ -280,15 +309,15 @@ scaffold 完了後、**`caw-setup` SKILL の Step 2〜4 を per-tool モード�
 | 意思決定の記録 | `secretary/notes/YYYY-MM-DD-decisions.md` に追記 |
 | 学び・気づき | `secretary/notes/YYYY-MM-DD-learnings.md` に追記 |
 
-### 化学研究タスクの部署振り分け
+### 研究タスクの部署振り分け
 
 | 文脈・キーワード | 振り分け先 |
 |---|---|
 | 論文の検索・文献調査（探す/集める） | research（caw-research） |
 | 論文 PDF の登録・要約・書誌・引用整理 | research（caw-register） |
 | Python スクリプト作成、CLI 化、解析ツール | engineering |
-| Gaussian / GROMACS / CP2K / ORCA / VASP / ChimeraX / 計算ジョブ・log 解析 | computation |
-| 実験の記録・段取り・電子ノート・試薬/サンプル在庫・安全（SDS/廃棄） | experiment |
+| 計算ソフト（Gaussian・GROMACS・VASP・COMSOL・MATLAB 等）の入力・ジョブ・log 解析 | computation |
+| 実験の記録・段取り・電子ノート・試料/試薬の在庫・安全（SDS/廃棄/承認番号） | experiment |
 | データ解析・定量・fit・可視化（測定/計算データ、手法問わず） | analysis（caw-analyze） |
 | 論文・申請書・要旨の執筆（書く） | writing（caw-write） |
 | コードレビュー、計算妥当性、validation | review |
@@ -300,7 +329,7 @@ scaffold 完了後、**`caw-setup` SKILL の Step 2〜4 を per-tool モード�
 
 ユーザーが明示的に「<部署名> を作って」と言った場合、または同じ領域のタスクが 2 回以上繰り返された場合：
 
-1. `references/chemistry-departments.md` から該当部署のテンプレを取得
+1. `references/research-departments.md` から該当部署のテンプレを取得
 2. `office/<dept>/` ディレクトリとサブフォルダを作成
 3. `<dept>/AGENTS.md` を配置
 4. `office/AGENTS.md` の組織構成ツリーと部署一覧テーブルを更新
@@ -311,7 +340,7 @@ scaffold 完了後、**`caw-setup` SKILL の Step 2〜4 を per-tool モード�
 - **丁寧だが堅すぎない**: 「〜ですね！」「承知しました」「いいですね！」
 - **主体的に提案する**: 「ついでに〇〇もやっておきましょうか？」
 - **記憶を活用する**: 過去のメモや決定事項を参照して文脈を持った対話
-- **化学者として話す**: 化合物名・計算手法・実験装置名などを正しく理解して応答
+- **その分野の研究者として話す**: 物質名・計算手法・実験装置名などを正しく理解して応答
 
 ---
 
@@ -345,7 +374,8 @@ scaffold 完了後、**`caw-setup` SKILL の Step 2〜4 を per-tool モード�
 
 ## ファイル参照
 
-- 化学者向け部署テンプレ: `references/chemistry-departments.md`
+- 研究トラックの部署テンプレ: `references/research-departments.md`
+- 分野ごとの規律（`office/` ルートに差し込む）: `references/field-rules.md`
 - 就活モード（部署テンプレ + オンボーディング + 運営ディスパッチ）: `references/job-hunting-departments.md`
 - ルート AGENTS.md 生成テンプレ: `references/agents-md-template.md`
 - 計算ソフト Playbook 雛形: `references/playbook-starters.md`
@@ -386,7 +416,7 @@ AI 部署の運営記録を集約する場所。**`office/` は先頭ドット�
 | `work/tools/` | 再利用される本格的なツール | engineering |
 | `work/reports/` | 報告書、調査結果まとめ | research / analysis |
 | `work/experiments/` | 実験記録（実験中心の研究で生成） | （実験部・将来追加） |
-| `work/gaussian/` `work/gromacs/` `work/cp2k/` 等 | 計算ソフトの入出力 | computation |
+| `work/<ツール名>/`（例：`work/gaussian/`・`work/openfoam/`） | 計算ソフトの入出力 | computation |
 
 ### 禁則
 
@@ -423,6 +453,6 @@ AI 部署の運営記録を集約する場所。**`office/` は先頭ドット�
 - ファイル操作前に必ず日付を確認する
 - ファイル名は `kebab-case`、日付ベースは `YYYY-MM-DD`
 - 既存ファイルは上書きしない。追記または新規作成のみ
-- **化学物理・計算手法の用語は正しく扱う**（汎関数名・基底関数・force field・cell parameter など）
+- **分野の用語・計算手法の用語は正しく扱う**（例：汎関数名・基底関数・force field、遺伝子記号、メッシュ・境界条件）
 - **成果物は `office/` 配下に置かない**（上の「成果物配置の二層原則」を参照）
 - 二段レビュー（Claude + Codex）等の高度な品質ゲートは応用編。本 skill 単独では取り入れない（ユーザーが慣れてから手動で追加）

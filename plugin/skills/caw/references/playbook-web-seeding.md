@@ -13,7 +13,7 @@
 
 ## 各エージェントへの入力
 
-- 対象ツール名 1 つ（例：Gaussian / ORCA / CP2K / GROMACS / MACE・MLIP / VASP / Quantum ESPRESSO 等）
+- 対象ツール名 1 つ（例：Gaussian / ORCA / CP2K / GROMACS / MACE・MLIP / VASP / Quantum ESPRESSO / COMSOL / OpenFOAM / MATLAB / AlphaFold 等）
 - ユーザーの**研究分野**（Call 1 大分類・Call 2 中分類）と対象系 ── 汎用チュートリアルでなく、その分野で使う既定に寄せるため
 
 ## 各エージェントの成果物（何を書くか）
@@ -38,6 +38,10 @@
 - 古典 MD（GROMACS/AMBER/LAMMPS/OpenMM）：**力場**選択、thermostat/barostat、`dt`・cutoff・PME、平衡化手順
 - 周期系 DFT（CP2K/VASP/QE）：**汎関数・擬ポテンシャル/basis set**、k 点・cutoff、SCF/smearing、格子最適化の注意
 - MLIP/MLFF（MACE 等）：foundation model の選択、fine-tune の主要ハイパー、committee/AL の目安、NPT に必要な stress の有無
+- 有限要素・流体（COMSOL/ANSYS/OpenFOAM/FEniCS）：**メッシュ**の作り方と収束の確かめ方、境界条件・材料モデル、ソルバーと時間刻み、乱流モデルの選択
+- 数値計算（MATLAB/Julia/Mathematica）：刻み幅・許容誤差の既定と数値誤差、乱数の扱い、ツールボックス・パッケージの版差
+- 生命系（AlphaFold・ColabFold/Rosetta/BLAST/R・Bioconductor）：入力配列・MSA の作り方、信頼度の指標（pLDDT・PAE・E 値）の読み方、データベースとパッケージの版の固定
+- 機械学習（PyTorch/scikit-learn）：データ分割と情報の漏れ、乱数シードと決定性、評価指標の選び方、GPU・版による差
 
 ## 規律（厳守）
 

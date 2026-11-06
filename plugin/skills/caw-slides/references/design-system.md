@@ -1,7 +1,7 @@
 # caw-slides デザインシステム
 
 SVG-first で研究発表スライドを描くときの**オーサリング規約**。土台は PPT Master のデフォルト出力
-（© 2025–2026 Hugo He, MIT。`vendor/NOTICE.md` 参照）で、**日本語の化学スライド向けに調整**してある。
+（© 2025–2026 Hugo He, MIT。`vendor/NOTICE.md` 参照）で、**日本語の理工系の学会スライド向けに調整**してある。
 特定の研究室のロゴや色は入れない。
 
 規約の多くは `scripts/deck_chrome.py` と `scripts/deck_parts.py` に実装してある。**手で座標を書かず、この部品で組む**

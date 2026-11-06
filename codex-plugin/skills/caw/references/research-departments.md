@@ -1,10 +1,10 @@
-# 化学者向け部署テンプレート集
+# 研究トラックの部署テンプレート集
 
 `/caw` のオンボーディング Step 3 で各部署フォルダへ配置するテンプレート。秘書室は常設（必ず scaffold）。他の部署はユーザーの選択に応じて配置される。
 
 各部署のセクションには：
 
-1. **`CLAUDE.md` 本文**：そのまま `<dept>/CLAUDE.md` に書き込むテンプレ
+1. **`AGENTS.md` 本文**：そのまま `<dept>/AGENTS.md` に書き込むテンプレ
 2. **サブディレクトリ構成**：`mkdir -p` で作るサブフォルダ
 3. **必要に応じて README または初期テンプレファイル**
 
@@ -14,14 +14,14 @@
 
 **サブディレクトリ**: `inbox/`, `todos/`, `notes/`
 
-### secretary/CLAUDE.md
+### secretary/AGENTS.md
 
 ```markdown
 # 秘書室
 
 ## 役割
 
-オーナー（研究者）の常駐窓口。何でも相談に乗り、TODO 管理・壁打ち・メモ・意思決定ログを担当する。化学研究のあらゆる場面で最初の入口になる。
+オーナー（研究者）の常駐窓口。何でも相談に乗り、TODO 管理・壁打ち・メモ・意思決定ログを担当する。研究のあらゆる場面で最初の入口になる。
 
 ## 口調・キャラクター
 
@@ -29,7 +29,7 @@
 - 主体的に提案する。「ついでにこれもやっておきましょうか？」
 - 壁打ち時はカジュアルに寄り添う
 - 過去のメモや決定事項を参照して文脈を持った対話をする
-- 化学用語（化合物名・計算手法・実験装置名）を正しく理解して応答する
+- 分野の専門用語（物質名・計算手法・実験装置名など）を正しく理解して応答する
 
 ## ルール
 
@@ -97,14 +97,14 @@ type: daily
 
 **成果物の置き場（`work/` 配下、ファイラーで見える）**: `work/papers/`, `work/topics/`, `work/reports/`
 
-### research/CLAUDE.md
+### research/AGENTS.md
 
 ```markdown
 # 文献部（research）
 
 ## 役割
 
-論文・先行研究の調査、要約、ナレッジベース登録を担当。化学・材料分野の文献を体系的に蓄積する。
+論文・先行研究の調査、要約、ナレッジベース登録を担当。研究分野の文献を体系的に蓄積する。
 
 ## 成果物の置き場（CRITICAL）
 
@@ -126,13 +126,13 @@ type: daily
 
 - 情報源は必ず DOI / arXiv ID / URL を記載
 - 調査結果には必ず「目的」「結論」「ネクストアクション」を含める
-- 化学物質名は IUPAC 名 + 慣用名（よく使われるもの）を併記
-- 計算手法・パラメータは正確に転記（汎関数名・基底関数・force field 等）
+- 物質・生物種・遺伝子などの固有名は分野の正式表記で書く（例：化学物質は IUPAC 名 + 慣用名、遺伝子・タンパク質は公式記号）
+- 計算・解析の手法とパラメータは正確に転記（例：汎関数名・基底関数・force field、メッシュ・境界条件、モデルのハイパーパラメータ）
 - 完了時は秘書の TODO に報告を追記
 
 ## ナレッジベース連携
 
-`office/CLAUDE.md` の「ナレッジベース」設定に応じて、要約後の登録先を切り替える：
+`office/AGENTS.md` の「ナレッジベース」設定に応じて、要約後の登録先を切り替える：
 
 - **Notion** → API / MCP 経由で DB 登録（ローカル `work/papers/md/` と並列で同期）
 - **Obsidian / Logseq** → vault フォルダに Markdown を保存（frontmatter にメタデータ）
@@ -147,7 +147,7 @@ type: daily
 
 **成果物の置き場（`work/` 配下、ファイラーで見える）**: `work/scripts/`, `work/tools/`
 
-### engineering/CLAUDE.md
+### engineering/AGENTS.md
 
 ```markdown
 # 開発部（engineering）
@@ -174,7 +174,7 @@ type: daily
 
 - Python 3.12+ を使用
 - **型ヒント必須**
-- **物理量には必ず単位コメント**（`# kJ/mol`, `# Å`, `# fs`, `# K` など）
+- **物理量には必ず単位コメント**（`# K`, `# Pa`, `# eV`, `# µM` など。分野の単位は `office/AGENTS.md` の「研究分野の規律」に従う）
 - 計算パラメータはハードコーディング禁止、設定ファイル / 引数 / `.env` で渡す
 - 乱数シード固定（再現性確保）
 - スクリプト名: `<purpose>_<target>_<date>.py`（例: `analyze_md_drift_20260511.py`）
@@ -193,23 +193,26 @@ type: daily
 
 **サブディレクトリ**: `jobs/`, `parameters/`, `playbooks/`
 
-### computation/CLAUDE.md
+### computation/AGENTS.md
 
 ```markdown
 # 計算管理部（computation）
 
 ## 役割
 
-量子化学計算・古典 MD・周期系 DFT などの計算ジョブの管理、入力ファイル生成、log 解析、そして **Playbook の蓄積**（既知の罠と処方の知識ベース）。
+量子化学・分子動力学・第一原理計算・有限要素法・数値計算などの計算ジョブの管理、入力ファイル生成、log 解析、そして **Playbook の蓄積**（既知の罠と処方の知識ベース）。
 
 ## 対応ソフト
 
-`office/CLAUDE.md` の「使う計算ソフト」設定に応じて、各ソフトの Playbook が `playbooks/` 配下に配置されています。
+`office/AGENTS.md` の「使う計算ソフト」設定に応じて、各ソフトの Playbook が `playbooks/` 配下に配置されています。下は例で、ここに無いソフトも名前を挙げれば空の Playbook から始まり、使うたびに育ちます。
 
 - 量子化学: Gaussian, ORCA, Psi4, GAMESS, NWChem
 - 古典 MD: GROMACS, AMBER, NAMD, LAMMPS, OpenMM
 - 周期系 DFT: CP2K, VASP, Quantum ESPRESSO, CASTEP, SIESTA
 - 構造可視化・密度マップフィッティング: ChimeraX, PyMOL, Coot
+- 構造予測・配列解析: AlphaFold・ColabFold, Rosetta, BLAST
+- 有限要素・流体: COMSOL, ANSYS, OpenFOAM, FEniCS
+- 数値計算・統計: MATLAB, Julia, R, Mathematica
 
 ## ルール
 
@@ -218,8 +221,8 @@ type: daily
 - Playbook（罠と処方）: `playbooks/<tool>.md` ── **新しい知見は必ず追記**
 - 入力ファイル生成時は最新の Playbook を参照
 - 失敗ジョブは必ず記録し、原因と処方を Playbook に反映
-- 計算手法（汎関数・基底関数・force field・cutoff 等）はジョブ記録に明記
-- エネルギー単位を統一（推奨: kJ/mol または kcal/mol）
+- 計算手法と設定（例：汎関数・基底関数・force field・cutoff、メッシュ・境界条件・時間刻み）はジョブ記録に明記
+- 単位を統一し、換算したらジョブ記録に書く（例：エネルギーは kJ/mol・kcal/mol・eV のどれかに揃える）
 - 計算結果は analysis 部署に渡して可視化
 
 ## Playbook の運用
@@ -232,7 +235,7 @@ type: daily
 
 - HPC ジョブ submission script は `jobs/` 配下
 - qsub / sbatch の queue 状況・walltime は記録に残す
-- chk / restart ファイルの位置と継承関係を明記
+- チェックポイント・restart ファイルの位置と継承関係を明記
 
 ## フォルダ構成
 
@@ -251,33 +254,33 @@ type: daily
 
 **サブディレクトリ**: `notebook/`, `inventory/`, `safety/`
 
-### experiment/CLAUDE.md
+### experiment/AGENTS.md
 
 ```markdown
 # 実験部（experiment）
 
 ## 役割
 
-湿式ラボの実験ワークフロー（合成・試料調製・各種測定・観察）の**段取り・記録・在庫・安全**を担当する窓口。実験の「家」＝計画から記録・受け渡しまで。**具体的な測定データの定量・解析は analysis 部署（caw-analyze）へ渡す**（実験部＝記録と段取り、analysis＝結果の定量、と役割分担）。
+実験のワークフロー（合成・試料調製・培養・装置での測定・観察・フィールド観測）の**段取り・記録・在庫・安全**を担当する窓口。実験の「家」＝計画から記録・受け渡しまで。**具体的な測定データの定量・解析は analysis 部署（caw-analyze）へ渡す**（実験部＝記録と段取り、analysis＝結果の定量、と役割分担）。
 
-## 対象（機能的役割・化学サブ領域では分けない）
+## 対象（機能的役割・分野では分けない）
 
-有機・無機・材料・生化学など**分野を問わず**、実験を行う研究者の湿式ラボ業務を横断的に支える。合成・測定・観察の手法そのものはユーザー依存なので固定しない（具体は解析時に per-data で扱う）。
+化学・物理・生命・工学など**分野を問わず**、実験を行う研究者の業務を横断的に支える。合成・測定・観察の手法そのものはユーザー依存なので固定しない（具体は解析時に per-data で扱う）。
 
 ## ルール
 
-- **電子実験ノート**: `notebook/YYYY-MM-DD-<実験名>.md`（目的・手順・観察・結果・次アクションを再現可能に。試薬量・当量・条件は単位つきで）
-- **試薬・サンプル在庫**: `inventory/` に台帳（合成ノート ID・入手先・量・保管場所・危険性）
-- **安全・SDS・リスクアセスメント**: `safety/` に SDS 参照・リスク評価・廃棄区分
+- **電子実験ノート**: `notebook/YYYY-MM-DD-<実験名>.md`（目的・手順・観察・結果・次アクションを再現可能に。試料・試薬の量や装置の条件は単位つきで）
+- **試料・試薬・部品の在庫**: `inventory/` に台帳（試料 ID・入手先・量・保管場所・危険性）
+- **安全**: `safety/` に SDS 参照・装置の安全手順・リスク評価・廃棄区分（遺伝子組換え・動物実験などの承認番号もここに記録）
 - **測定スケジュール**: 装置予約・ビームタイム等を記録
 - 測定 raw データは `work/experiments/<sample-id>/<technique>/` の規約に沿って配置し、**定量・解析は analysis（caw-analyze）へ**渡す
-- **科学判断（合成ルート・条件の是非・手法選定）はユーザーが決める**。実験部は記録・整理・段取りを助ける協働者に徹する
+- **科学判断（実験計画・条件の是非・手法選定）はユーザーが決める**。実験部は記録・整理・段取りを助ける協働者に徹する
 
 ## フォルダ構成
 
 - `notebook/` - 電子実験ノート（日付別）
-- `inventory/` - 試薬・サンプル在庫台帳
-- `safety/` - SDS・リスクアセスメント・廃棄区分
+- `inventory/` - 試料・試薬・部品の在庫台帳
+- `safety/` - SDS・装置の安全手順・リスクアセスメント・廃棄区分・承認番号
 ```
 
 ---
@@ -288,7 +291,7 @@ type: daily
 
 **成果物の置き場（`work/` 配下、ファイラーで見える）**: `work/analyses/`, `work/figures/`, `work/notebooks/`
 
-### analysis/CLAUDE.md
+### analysis/AGENTS.md
 
 ```markdown
 # データ解析部（analysis）
@@ -314,7 +317,7 @@ type: daily
 
 ## ルール
 
-- matplotlib + seaborn / plotly を使用。化学者向けには高解像度（dpi=300）+ Type 1 フォント（投稿時の要件）を意識
+- matplotlib + seaborn / plotly を使用。論文用の図は高解像度（dpi=300）+ Type 1 フォント（投稿時の要件）を意識
 - 統計検定を行う場合は p 値だけでなく効果量も報告
 - 機械学習モデルは交差検証 + テストセット分離を厳守
 - 結果には必ず「データソース」「処理ステップ」「結論」を明記
@@ -335,7 +338,7 @@ type: daily
 
 **成果物の置き場（`work/` 配下、ファイラーで見える）**: `work/manuscripts/`
 
-### writing/CLAUDE.md
+### writing/AGENTS.md
 
 ```markdown
 # 論文執筆部（writing）
@@ -392,14 +395,14 @@ type: daily
 
 **サブディレクトリ**: `code-reviews/`, `validation/`
 
-### review/CLAUDE.md
+### review/AGENTS.md
 
 ```markdown
 # レビュー部（review）
 
 ## 役割
 
-コード品質・計算妥当性・解析手法の確認。化学者にとって致命的なバグ（単位ミス・符号反転・convergence の見落としなど）を防ぐ。
+コード品質・計算妥当性・解析手法の確認。研究にとって致命的なバグ（単位ミス・符号反転・convergence の見落としなど）を防ぐ。
 
 ## ルール
 
@@ -409,7 +412,7 @@ type: daily
   - **構文・コード品質**: PEP 8、型ヒント、docstring、DRY
   - **物理的妥当性**: 単位・符号・収束判定・統計手法
   - **再現性**: シード固定、入力データの履歴、バージョン情報
-  - **計算結果のサニティチェック**: エネルギー scale、桁オーダー、既知の参照値との比較
+  - **計算結果のサニティチェック**: 物理量の scale・桁オーダー、既知の参照値との比較
 - 重大度: CRITICAL（修正必須）/ HIGH（修正推奨）/ MEDIUM（検討）/ LOW（任意）
 - HIGH 以上が残った状態で「完了」報告は禁止
 
@@ -445,7 +448,7 @@ Claude + Codex の二段レビューは応用編。本部署単独で運用し�
 
 `caw-slides` skill は **SVG-first**（SVG → native pptx で図形・表・chart が編集可能）で 4 用途（学会発表 / 論文紹介 / 報告会 / 講義）に対応。`references/design-system.md`（PPT Master default 準拠のデザイン規約）＋フォント/重なりゲート＋同梱変換器を持つ。詳細は同 skill の `SKILL.md` 参照。
 
-### presentation/CLAUDE.md
+### presentation/AGENTS.md
 
 ```markdown
 # プレゼン部（presentation）
@@ -492,7 +495,7 @@ Claude + Codex の二段レビューは応用編。本部署単独で運用し�
 1. `assert_no_overlap` がスクリプト内で自動 raise（重なりゼロ保証）
 2. python-pptx で .pptx を再読込、スライド数・16:9 アスペクト確認
 3. soffice があれば PNG 化して目視（フォント豆腐・L1 配置）
-4. matplotlib が描いた図は Read ツールで視覚確認（化学的に正しいか）
+4. matplotlib が描いた図は Read ツールで視覚確認（科学的に正しいか）
 ```
 
 ---
@@ -501,7 +504,7 @@ Claude + Codex の二段レビューは応用編。本部署単独で運用し�
 
 ユーザーが上記以外の部署を作りたいと言った場合のフォールバック。
 
-### `<dept>/CLAUDE.md`
+### `<dept>/AGENTS.md`
 
 ```markdown
 # {{DEPARTMENT_NAME}}
@@ -515,7 +518,7 @@ Claude + Codex の二段レビューは応用編。本部署単独で運用し�
 - ファイル命名: `kebab-case-title.md`
 - 1 トピック 1 ファイル
 - 同じ日付のファイルは追記、新規作成しない
-- 化学物理の用語は正確に
+- 分野の用語は正確に
 - 物理量には必ず単位を明記
 
 ## フォルダ構成

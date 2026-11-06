@@ -21,7 +21,7 @@ trigger: /caw-input
 
 ## はじめてモードを尊重する
 
-このスキルを実行する前に `office/CLAUDE.md`（Codex CLI / GitHub Copilot CLI では `AGENTS.md`）を読み、冒頭に `> 運用モード: はじめて` があれば、`caw` skill の「はじめてモードの挙動」を全応答に適用する：**平易な日本語**で話し、専門用語（化学・計算手法・書誌の用語）は初出で 1 行説明を添え、各ステップの最後に**「次はこれをしましょう」を 1 つ**だけ提示する。元に戻せない操作（削除・上書き・外部登録・送信）は必ず事前確認する。
+このスキルを実行する前に `office/CLAUDE.md`（Codex CLI / GitHub Copilot CLI では `AGENTS.md`）を読み、冒頭に `> 運用モード: はじめて` があれば、`caw` skill の「はじめてモードの挙動」を全応答に適用する：**平易な日本語**で話し、専門用語（分野・計算手法・書誌の用語）は初出で 1 行説明を添え、各ステップの最後に**「次はこれをしましょう」を 1 つ**だけ提示する。元に戻せない操作（削除・上書き・外部登録・送信）は必ず事前確認する。
 
 ## ワークフロー
 
@@ -271,4 +271,4 @@ cd ../../../<tool>/<system>_<purpose>_<YYYYMMDD>/
 - **計算手法の選択は Playbook の Lessons Learned を踏まえる**（過去の失敗事例があれば回避策を組み込む）
 - **HPC ジョブスクリプトは環境固有**：queue 名・walltime・並列数・モジュール load 順・account は、**まず `office/computation/CLAUDE.md` の submission 既定（オンボ Q6）** を使う。無ければ Playbook の過去事例、それも無ければユーザーに確認。**local 実行（SLURM 等を使わない）** 設定ならジョブスクリプトの代わりに直接実行コマンドを出す
 - **入力ファイル・ジョブ記録は上書きしない**：同名サブディレクトリがあれば `<YYYYMMDD>` を `<YYYYMMDD>_v2` などに拡張。`jobs/...md` も同名があれば末尾に `-2` を付ける
-- **化学物理の用語は正確に**：汎関数名（B3LYP は B3LYP）、基底（def2-SVP は def2-SVP）、force field（OPLS-AA / CHARMM36）の表記揺れを起こさない
+- **分野の用語は正確に**：汎関数名（B3LYP は B3LYP）、基底（def2-SVP は def2-SVP）、force field（OPLS-AA / CHARMM36）、ソルバー名・要素の種類などの表記揺れを起こさない
