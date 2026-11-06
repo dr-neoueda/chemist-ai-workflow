@@ -221,7 +221,7 @@ def resolve_within(base: Path, rel: str) -> Path:
 _PATH_HEADER = re.compile(r"^###\s+(.+?)\s*$")
 _FENCE_OPEN = re.compile(r"^(`{3,})\s*[A-Za-z0-9_-]*\s*$")
 # lines allowed between a closed choice body and the next header: blank, a rule, a one-line comment
-_AFTER_BODY_OK = re.compile(r"^(|---|<!--.*-->)$")
+_AFTER_BODY_OK = re.compile(r"^(|---|<!--(?:(?!-->).)*-->)$")
 
 
 def _clean_path(raw: str) -> str | None:

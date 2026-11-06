@@ -316,10 +316,19 @@ def test_one_line_comment_and_rule_after_the_body_are_allowed():
     assert scaffold.field_rule_blocks(text) == {"共通": "A", "生命科学": "B"}
 
 
-def test_unclosed_comment_after_the_body_is_still_rejected():
-    text = "### field = 共通\n\n```markdown\nA\n```\n<!-- 閉じていない\nTAIL\n"
+@pytest.mark.parametrize("tail", ["<!-- 閉じていない\nTAIL", "<!-- a --> 後ろに本文", "<!-- a --> 本文 <!-- c -->"])
+def test_text_outside_a_one_line_comment_is_still_rejected(tail):
+    text = f"### field = 共通\n\n```markdown\nA\n```\n{tail}\n"
     with pytest.raises(ValueError, match="after the fenced body"):
         scaffold.field_rule_blocks(text)
+
+
+@pytest.mark.parametrize("text", [
+    "### field = 共通\n\n```markdown\nA\n```\n<!-- フェンスの直後 -->\n\n### field = 生命科学\n\n```markdown\nB\n```\n",
+    "### field = 生命科学\n\n```markdown\nB\n```\n\n### field = 共通\n\n```markdown\nA\n```\n<!-- ファイルの最後 -->",
+])
+def test_comment_right_after_the_fence_or_at_the_end_is_allowed(text):
+    assert scaffold.field_rule_blocks(text) == {"共通": "A", "生命科学": "B"}
 
 
 def test_empty_rules_body_is_rejected():

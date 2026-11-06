@@ -10,7 +10,7 @@
 |---|---|
 | **配布版** | plugin **2.0.1** / codex 2.0.1 / copilot 1.46.0（**保留中**・旧名 caw）/ gemini 1.49.0（凍結） |
 | **直近の作業** | 対象を化学者から理工系の研究者へ広げ、名前を `caw` → `raw` に変えた（ブランチ `feat/researchers-ai-workflow`）。その前は `caw-slides` の lab 同等化（PR #65、ブランチ `feat/caw-slides-lab-parity`） |
-| テスト | `plugin/skills` 全体で 265 passed（scaffold 64・カバレッジ 96 %） |
+| テスト | `plugin/skills` 全体で 269 passed（scaffold 68・カバレッジ 96 %） |
 | 配布元 | https://github.com/dr-neoueda/researcher-ai-workflow（2026-11-06 に `chemist-ai-workflow` から改名。旧 URL は GitHub が転送） |
 
 ## ★ 商品モデル（2026-08-21 確定）— 売り物はプラグインではない
