@@ -1,11 +1,11 @@
-# caw 解析層リデザイン — 「解析コンパニオン」設計ノート
+# raw 解析層リデザイン — 「解析コンパニオン」設計ノート
 
 > 状態: 合意済み（2026-06-30）。実装前の設計ロック。
 
 ## 背景：v1 の per-technique スキルを撤回
 
-2026-06 に caw-parse / caw-analyze / caw-xrd / caw-echem / caw-kinetics / caw-medchem /
-caw-xas / caw-db ＋ caw-input 拡張（9 スキル分・237 テスト）を作ったが、**手法ごとにパイプラインを固定する設計**だった。問題：
+2026-06 に raw-parse / raw-analyze / raw-xrd / raw-echem / raw-kinetics / raw-medchem /
+raw-xas / raw-db ＋ raw-input 拡張（9 スキル分・237 テスト）を作ったが、**手法ごとにパイプラインを固定する設計**だった。問題：
 
 1. 購入者の実ワークフローに合わない（具体的すぎる）
 2. 手法が増えるたび helper＋TDD＋dual-review で**保守が重い**
@@ -16,17 +16,17 @@ caw-xas / caw-db ＋ caw-input 拡張（9 スキル分・237 テスト）を作�
 ## 設計原則：「何を解析するか」でなく「どう働くか」を出荷する
 
 広い化学領域への対応は、**技術スキルの列挙ではなく、汎用性 × ユーザーごとの蓄積**で達成する。
-caw は解析パイプラインを同梱しない。土台・規律・蓄積の仕組みだけを提供する。
+raw は解析パイプラインを同梱しない。土台・規律・蓄積の仕組みだけを提供する。
 
 ## 構成（合意 A1 / B / C）
 
-### [A1] 1 スキル：caw-analyze（解析コンパニオン）
+### [A1] 1 スキル：raw-analyze（解析コンパニオン）
 
 手法非依存の“司会者”。新規 per-technique スキルは作らない。
 
 - ユーザーのデータと「何を知りたいか」に対し、**汎用ツール**（pandas / numpy / scipy /
   matplotlib / RDKit 等、ユーザーが既に使うもの）でその場の解析を一緒に組む。
-- **pre-baked パイプラインを持たない**（caw-xas / caw-echem 等は出荷しない）。
+- **pre-baked パイプラインを持たない**（raw-xas / raw-echem 等は出荷しない）。
 - **規律ガードレールを効かせる**：
   - 物理量の単位明示
   - 再現性（乱数 seed・パラメータ記録・ハードコード禁止）
@@ -37,14 +37,14 @@ caw は解析パイプラインを同梱しない。土台・規律・蓄積の�
 - ワークフロー：データと問いを理解 → 配置/整理 → 汎用ツールで解析スクリプトを起こす →
   規律チェック → 必要なら可視化 → **繰り返す価値があればレシピを playbook に蒸留**。
 
-### [B] 蓄積：caw-playbook を解析に一般化
+### [B] 蓄積：raw-playbook を解析に一般化
 
-現 `caw-playbook`（計算 log → Lessons Learned を計算ソフト別に蓄積）を**解析にも拡張**する。
+現 `raw-playbook`（計算 log → Lessons Learned を計算ソフト別に蓄積）を**解析にも拡張**する。
 
 - ユーザー / 領域ごとに**解析レシピ playbook が育つ**。
 - 一度やった解析（例：XANES 規格化）を丁寧に手伝いつつ、*そのユーザーの* playbook に
   「手順・使った汎用ツール・罠・検証観点」を書き残す。次回からそこにある。
-- = caw が caw-xas を出荷せずとも、**使うほど各ユーザーに特化する**。これが「抽象なのに役立つ」の肝。
+- = raw が raw-xas を出荷せずとも、**使うほど各ユーザーに特化する**。これが「抽象なのに役立つ」の肝。
 
 ### [C] スターター素材：なし
 
@@ -63,33 +63,33 @@ caw は解析パイプラインを同梱しない。土台・規律・蓄積の�
 化学全 16 領域の監査で **全領域が partial**（下流解析◎／一次データ還元は専用ソフト依存で外）と判明。
 「全分野対応」は誇張とし、**役割境界を正直に明記**した上で、横断ギャップを **手法別スキルを増やさず** 次で埋める。
 
-- **役割境界**: caw は ①9 部署の組織運営 ②raw→数値化後の下流定量解析＋規律 ③執筆・文献・playbook のハブ。
-  ベンダー GUI/MATLAB 専用ソフトの対話的 raw 還元（SCXRD 精密化・XPS 定量・EPR・cryo-EM 等）は外部委譲。
+- **役割境界**: raw は ①9 部署の組織運営 ②生データ→数値化後の下流定量解析＋規律 ③執筆・文献・playbook のハブ。
+  ベンダー GUI/MATLAB 専用ソフトの対話的な生データの還元（SCXRD 精密化・XPS 定量・EPR・cryo-EM 等）は外部委譲。
   詳細＝[`chemistry-coverage-audit.md`](./chemistry-coverage-audit.md)。
-- **3 つの汎用資産**（[`caw-analyze/references/analysis-conventions.md`](../plugin/skills/caw-analyze/references/analysis-conventions.md)）:
+- **3 つの汎用資産**（[`raw-analyze/references/analysis-conventions.md`](../plugin/skills/raw-analyze/references/analysis-conventions.md)）:
   1. **取込アダプタ規約** — ベンダーバイナリ → 中立形式の変換レシピ（OSS リーダ or native）を playbook 蓄積。
   2. **外部専用ソフト orchestration 契約** — scriptable ソフト（GSAS-II scriptable・xraylarch・phreeqpython 等）を
-     caw-analyze が駆動し規律をラップ。GUI/MATLAB 専用は外部委譲と明示。
+     raw-analyze が駆動し規律をラップ。GUI/MATLAB 専用は外部委譲と明示。
   3. **高リスク解析の規律チェックリスト** — モデル依存工程の誤帰属防止（前提開示・代替モデル・過剰フィット・一意性）。
-- **caw-input の分離** — 「幾何＋メソッド＋エンジン方言アダプタ」に分け、新エンジンは playbook にテンプレ 1 枚で拡張
+- **raw-input の分離** — 「幾何＋メソッド＋エンジン方言アダプタ」に分け、新エンジンは playbook にテンプレ 1 枚で拡張
   （CREST/xtb・DP4+・PHREEQC・Vina を標準レシピ化）。エンジンを無制限に足さない。
 
 ## 配線（最小）
 
-- 既存 `analysis` 部署に属する **1 スキル**。dispatch は「データ解析・可視化 → analysis（caw-analyze）」の 1 行のみ（手法別の行を作らない）。
-- `caw-playbook` の一般化（解析レシピも扱う）を SKILL／テンプレに反映。
+- 既存 `analysis` 部署に属する **1 スキル**。dispatch は「データ解析・可視化 → analysis（raw-analyze）」の 1 行のみ（手法別の行を作らない）。
+- `raw-playbook` の一般化（解析レシピも扱う）を SKILL／テンプレに反映。
 - 4 CLI（plugin / codex / gemini / copilot）へ**薄く**配布。per-technique helper が無いので mirror 対象は SKILL／テンプレのみ（重い helper ミラーは不要）。
 
 ## 非目標（やらないことを明記）
 
 - 手法別スキル・固定フォーマットパーサ・同梱レシピ／サンプルコード。
-- caw が科学判断を肩代わりすること（**規律ある協働者**に徹する。手法選定や解釈はユーザーが決める）。
+- raw が科学判断を肩代わりすること（**規律ある協働者**に徹する。手法選定や解釈はユーザーが決める）。
 
 ---
 
 ## オンボーディング — ヒアリング funnel（abstract → concrete）
 
-caw のチューニングは、**固定の標準 scaffold** の上に、**最初のヒアリングで作るユーザー/領域プロファイル**（`work/profile/`）を重ねて行う。ヒアリングは**抽象から入り、点いた枝だけ具体へ絞る**。**全設問は選択形式（各設問に「その他＝自由入力」を必ず添える）**。
+raw のチューニングは、**固定の標準 scaffold** の上に、**最初のヒアリングで作るユーザー/領域プロファイル**（`work/profile/`）を重ねて行う。ヒアリングは**抽象から入り、点いた枝だけ具体へ絞る**。**全設問は選択形式（各設問に「その他＝自由入力」を必ず添える）**。
 
 ### 設計の柱
 - **部署は固定の標準セット**（後から増設可）。「どの部署か」は尋ねない。
@@ -113,9 +113,9 @@ caw のチューニングは、**固定の標準 scaffold** の上に、**最初
 | 項目 | 構成する環境成果物 |
 |---|---|
 | 計算実行環境（ローカル / HPC〔SLURM・PBS〕/ クラウド） | ジョブ投入スクリプト雛形（queue/walltime/module） |
-| 文献管理・ナレッジベース（Notion / Obsidian / Zotero …） | caw-register の格納先・連携 |
+| 文献管理・ナレッジベース（Notion / Obsidian / Zotero …） | raw-register の格納先・連携 |
 | クラウドストレージ（Drive / Dropbox / OneDrive） | 成果物の同期先 |
-| （既存）申請書の予定・研究体制・論文ステータス | caw-write の様式／共有規約 等 |
+| （既存）申請書の予定・研究体制・論文ステータス | raw-write の様式／共有規約 等 |
 
 ### ヒアリングから作る環境
 - **固定 scaffold**（部署＋標準 work ディレクトリ）。
@@ -124,5 +124,5 @@ caw のチューニングは、**固定の標準 scaffold** の上に、**最初
 - 抽出した研究理解は**ユーザーに反映して確認してから確定**（黙って決めつけない）。
 
 ### 実装メモ（go 後）
-- funnel は `caw`（オンボーディング）スキルの研究トラックに実装。論文の浅い読み取りは `caw-intake`/`caw-register` の機構を**環境理解に限定**して流用（重い voice/glossary は呼ばない）。
+- funnel は `raw`（オンボーディング）スキルの研究トラックに実装。論文の浅い読み取りは `raw-intake`/`raw-register` の機構を**環境理解に限定**して流用（重い voice/glossary は呼ばない）。
 - 未確定の細目：分野の小分類（中分類の下にもう一段）を入れるか、計算ツール選択肢の確定リスト。実装着手時に詰める。

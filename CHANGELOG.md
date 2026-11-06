@@ -2,6 +2,31 @@
 
 本ファイルは [Keep a Changelog](https://keepachangelog.com/) と [Semantic Versioning](https://semver.org/) に準拠。
 
+## [2.0.0 / Codex 2.0.0] - 2026-11-06
+
+### Changed — 対象を理工系の研究者へ広げ、名前を変えた（破壊的変更）
+
+- **名前**：商品名を「研究者のための AI エージェント導入伴走」（英語名 Researcher's AI Workflow）に変えた。
+  コマンドとプラグイン ID を `caw` → **`raw`**、スキル名を `caw-*` → **`raw-*`**、配布元とマーケットプレイス ID を
+  `chemist-ai-workflow` → **`researcher-ai-workflow`** に変えた。**旧名で入れたプラグインは自動では更新されない**ので
+  入れ直す（README「旧名 caw から移る」）。作ってあった `office/` と `work/` はそのまま使える
+- **分野ごとの規律**：オンボーディングの分野（化学・材料／物理・地球惑星／生命科学／工学・情報／共通）を設定の
+  `field_group` に書くと、scaffold が `references/field-rules.md` から該当する規律を選んで `office/` のルートに差し込む。
+  知らない値なら何も書かずに止まる。**化学・材料の規律は従来の 6 行と一字一句同じ**
+- **オンボーディング**：分野の大分類を 4 群＋その他に（質問の選択肢の上限 4 に合わせた）。中分類と計算ソフトの
+  選択肢を群ごとにした。化学・材料の計算ソフトの候補は従来どおり（7 個を 2 問に分けて聞く）
+- **部署の雛形**：`chemistry-departments.md` → `research-departments.md`。化学に寄った言い回しを研究一般に直し、
+  化学の具体例は「例：」として残した。計算管理部の対応ソフトの例に構造予測・有限要素・数値計算を足した
+- **web 種まき**：有限要素・流体、数値計算、生命系、機械学習の観点を足した
+- **`raw-doctor`**：規則ファイルに残った旧名 `caw` を見つけ、了承を得て置き換える検査を足した（メモ・TODO は書き換えない）
+- 他のスキル（input / playbook / register / write / intake / doctor / report / slides）の文言を研究一般に直した。
+  文書の中で「生データ」の意味の raw は「生データ」と書き、コマンド名と区別した
+
+### Paused — GitHub Copilot CLI 版
+
+- 理工系への拡張と改名は Claude Code 版と Codex CLI 版だけ。Copilot 版は v1.78 の内容（化学者向け・旧名 `caw`）のまま
+  開発を保留した（`copilot-plugin/PAUSED.md`）。保留中は `check-consistency.sh` の Codex↔Copilot のミラー検査を飛ばす
+
 ## [1.78.0 / Codex 1.77.0 / Copilot 1.46.0] - 2026-11-01
 
 ### Changed — `caw-slides` を実運用の到達点まで引き上げ

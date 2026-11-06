@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # make-offline-bundle.sh — USB 等で手渡しするためのオフライン導入バンドルを作る
 #
-# 用途: GitHub からのダウンロードが制限されている相手に caw を届ける。
+# 用途: GitHub からのダウンロードが制限されている相手に raw を届ける。
 #       ネット接続そのものは前提（CLI がモデル API を呼ぶため必須）。
 #
 # 使い方:
-#   bash scripts/make-offline-bundle.sh ~/Desktop/caw-bundle
+#   bash scripts/make-offline-bundle.sh ~/Desktop/raw-bundle
 #   （出力先は存在しないか空である必要がある。既存を上書きしない）
 #
 # 設計原則:
@@ -82,8 +82,8 @@ copy_pair ".github/plugin/marketplace.json"   "copilot-plugin" "GitHub Copilot C
 
 # --- 2. 前提ツールの導入スクリプト・ライセンス -----------------------------
 mkdir -p "$OUT/setup"
-cp "$REPO_ROOT/setup/caw-setup.sh"  "$OUT/setup/" 2>/dev/null && ok "setup/caw-setup.sh"
-cp "$REPO_ROOT/setup/caw-setup.ps1" "$OUT/setup/" 2>/dev/null && ok "setup/caw-setup.ps1"
+cp "$REPO_ROOT/setup/raw-setup.sh"  "$OUT/setup/" 2>/dev/null && ok "setup/raw-setup.sh"
+cp "$REPO_ROOT/setup/raw-setup.ps1" "$OUT/setup/" 2>/dev/null && ok "setup/raw-setup.ps1"
 cp "$REPO_ROOT/LICENSE" "$OUT/" 2>/dev/null && ok "LICENSE"
 
 # --- 3. 受け取った人が実行するインストーラと手順書 -------------------------

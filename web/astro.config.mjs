@@ -14,8 +14,8 @@ export default defineConfig({
 	},
 	integrations: [
 		starlight({
-			title: "Chemist's AI Workflow",
-			description: '化学者のための AI エージェント活用法 — 研究室そのものを多部署化する実践メソッド',
+			title: "Researcher's AI Workflow",
+			description: '研究者のための AI エージェント活用法 — 研究室そのものを多部署化する実践メソッド',
 			defaultLocale: 'root',
 			locales: {
 				root: { label: '日本語', lang: 'ja' },
@@ -43,7 +43,7 @@ export default defineConfig({
 						{ label: '誰のためのものか', slug: 'audience' },
 						{ label: '対応ツール一覧', slug: 'tools' },
 						{ label: '必要なツールとインストール', slug: 'requirements' },
-						{ label: '配布プラグイン（caw）', slug: 'plugin' },
+						{ label: '配布プラグイン（raw）', slug: 'plugin' },
 						{ label: 'ロードマップ', slug: 'roadmap' },
 					],
 				},

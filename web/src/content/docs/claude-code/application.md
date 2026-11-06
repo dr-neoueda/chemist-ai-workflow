@@ -47,18 +47,18 @@ md/paper.md  +  クラウド upload  +  ナレッジベース登録
 - **スタイルガイド**: 指導教員の文体プロファイル + 投稿先誌のスタイルを 50 本の参考論文から自動抽出
 - 詳細な実装パスは [対応ツール一覧](/tools/)
 
-## 5. プレゼン部のスライド生成（caw-slides skill）
+## 5. プレゼン部のスライド生成（raw-slides skill）
 
-caw v1.4.0 から **`caw-slides`** skill が同梱され、自然言語で「スライド作って」「学会発表用に」「論文紹介スライド」と言うだけで発火する。
+raw v1.4.0 から **`raw-slides`** skill が同梱され、自然言語で「スライド作って」「学会発表用に」「論文紹介スライド」と言うだけで発火する。
 
 - **4 用途バリアント**: 学会発表（口頭・ポスター）/ 論文紹介（journal club）/ 研究室報告会・進捗共有 / 講義・チュートリアル
 - **共通スタイルガイド**: 16:9、和文 MS Gothic + 英数字 Arial 自動切替、L1 強調 1 個ルール、白背景、Excel-editable native chart のみ
 - **`pptx_helpers.py`（1000+ 行）**: `add_slide_chrome` / `add_key_message_band` / `mixed_runs` / `assert_no_overlap` / `add_bar_chart` / `add_scatter_line_chart` 等の battle-tested ヘルパ
 - **`assert_no_overlap` で shape 矩形交差ゼロ保証**（スクリプト内自動検証、見落としを物理的に防止）
-- **二段レビュー連携**: Claude Code 版は `caw-slides` skill が Codex 委譲ワークフロー（v2 完全お任せ）を内包、Codex CLI 版は直接実行
+- **二段レビュー連携**: Claude Code 版は `raw-slides` skill が Codex 委譲ワークフロー（v2 完全お任せ）を内包、Codex CLI 版は直接実行
 - **PNG 視覚確認**で化学物理の意味論バグも検出（実例：水分子の中央元素が H/O 入れ替わって描画されたケース）
 
-詳細は [配布プラグイン（caw）](/plugin/) の caw-slides セクション参照。
+詳細は [配布プラグイン（raw）](/plugin/) の raw-slides セクション参照。
 
 ## 6. 高校生向け教育コンテンツ生成
 

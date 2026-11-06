@@ -1,5 +1,5 @@
 #!/bin/bash
-# SessionStart hook (caw plugin)
+# SessionStart hook (raw plugin)
 # カレントプロジェクトの office/ を検出し、直近の secretary/notes と
 # computation/playbooks/ をコンテキストに注入する。
 # ユーザー個人パスをハードコードしない（プラグイン配布版）。
@@ -17,7 +17,7 @@ sec_dir="$company_dir/secretary/notes"
 playbooks_dir="$company_dir/computation/playbooks"
 
 cat <<EOF
-## caw SessionStart コンテキスト
+## raw SessionStart コンテキスト
 
 プロジェクト: $project_dir
 office/ 検出済。秘書を窓口に運営モードで起動。

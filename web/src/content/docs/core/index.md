@@ -208,7 +208,7 @@ type: learnings
 本メソッドは **特定の AI CLI に依存しない設計** を保ちます。
 
 - 部署フォルダのルールファイル名は `CLAUDE.md`（Claude Code）と `AGENTS.md`（Codex CLI / Gemini CLI）の **両方で読まれる** 形に保つ
-- caw プラグインは Claude Code 版と Codex CLI 版で **同一の部署構成・Playbook 雛形** を配信
+- raw プラグインは Claude Code 版と Codex CLI 版で **同一の部署構成・Playbook 雛形** を配信
 - ファイル構造・命名規則・運用ルールはすべて plain Markdown で、特定 AI の固有機能に依存しない
 - Skills / Sub-agents / Hooks のような CLI 固有機能は **増分** として使い、メソッドの核ではない
 
@@ -226,4 +226,4 @@ type: learnings
 
 - [Claude Code 版](/claude-code/) — 主軸 CLI 実装、Skills / Hooks / Sub-agents / MCP フル活用
 - [Codex CLI 版](/codex-cli/) — 主軸 CLI 実装、AGENTS.md ベースで Claude Code 版と機能パリティ
-- [配布プラグイン（caw）](/plugin/) — 部署テンプレ・Playbook 雛形・MCP 設定ガイドを一括配信
+- [配布プラグイン（raw）](/plugin/) — 部署テンプレ・Playbook 雛形・MCP 設定ガイドを一括配信

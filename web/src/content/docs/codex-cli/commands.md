@@ -108,18 +108,18 @@ Preflight 失敗時は明確なエラーで止める。silently スキップし�
 「Skills を明示的に発火させたい」ケースのために、Command が Skills を参照することもできます：
 
 ```markdown
-# /caw-init
+# /raw-init
 
 化学研究プロジェクトのための AI 部署システムを初期化する。
 
 ## 実行手順
 
-1. **必ず最初に** `${CODEX_PLUGIN_ROOT}/skills/caw/SKILL.md` を Read tool で読み込む
+1. **必ず最初に** `${CODEX_PLUGIN_ROOT}/skills/raw/SKILL.md` を Read tool で読み込む
 2. SKILL.md の指示に従ってオンボーディング → スキャフォールドを実行する
 3. ユーザーが日本語で話しかけたら日本語で応答
 ```
 
-ただし caw の場合、ユーザーが「caw」と入力するか「化学プロジェクトの環境を作って」と自然言語で言えば Skills が自動発火するので、専用 Command は通常不要。Command を作るのは：
+ただし raw の場合、ユーザーが「raw」と入力するか「化学プロジェクトの環境を作って」と自然言語で言えば Skills が自動発火するので、専用 Command は通常不要。Command を作るのは：
 
 - 副作用が強く、ユーザーの明示的意思表示が必要な操作
 - パラメータを毎回受け取る場合
@@ -223,21 +223,21 @@ EOF
 
 ### `plugin-creator` を使う
 
-caw が使ったのと同じ scaffold スクリプトで commands ディレクトリも含めて生成可能。詳細は `~/.codex/skills/.system/plugin-creator/SKILL.md` を参照。
+raw が使ったのと同じ scaffold スクリプトで commands ディレクトリも含めて生成可能。詳細は `~/.codex/skills/.system/plugin-creator/SKILL.md` を参照。
 
 ## ユーザー視点での発見性
 
-Codex で利用可能な Commands は `/` を入力すると候補一覧が表示される（Claude Code と同じ UX）。プラグインインストール時、ユーザーが「/」を打って caw の Commands が見えるかどうかが発見性の鍵。description を分かりやすく書くと UI 上で意図が伝わります。
+Codex で利用可能な Commands は `/` を入力すると候補一覧が表示される（Claude Code と同じ UX）。プラグインインストール時、ユーザーが「/」を打って raw の Commands が見えるかどうかが発見性の鍵。description を分かりやすく書くと UI 上で意図が伝わります。
 
-## caw プラグインに Commands を追加するべきか？
+## raw プラグインに Commands を追加するべきか？
 
-現状の caw（v1.0.0 / v1.1.0）は Skills のみで Commands は無い設計。これは Codex 流の「やりたいことを述べれば発火」UX を尊重した結果。
+現状の raw（v1.0.0 / v1.1.0）は Skills のみで Commands は無い設計。これは Codex 流の「やりたいことを述べれば発火」UX を尊重した結果。
 
 将来 Commands を追加する場合の候補：
 
-- `/caw-reset` — 既存 `office/` を破棄して再 scaffold（destructive 操作なので明示的 command が妥当）
-- `/caw-export` — `office/` 全体を tar.gz でエクスポート（バックアップ用途）
-- `/caw-import <path>` — エクスポートを別プロジェクトに展開
+- `/raw-reset` — 既存 `office/` を破棄して再 scaffold（destructive 操作なので明示的 command が妥当）
+- `/raw-export` — `office/` 全体を tar.gz でエクスポート（バックアップ用途）
+- `/raw-import <path>` — エクスポートを別プロジェクトに展開
 
 destructive または 副作用が強い操作は Command として明示し、ユーザーの確認を 1 ステップ挟む設計が安全。
 
@@ -245,4 +245,4 @@ destructive または 副作用が強い操作は Command として明示し、�
 
 - [Skills](/codex-cli/skills/) — 継続的な能力を Skills として作る
 - [MCP サーバー連携](/codex-cli/mcp/) — 外部サービス統合
-- [配布プラグイン（caw）](/plugin/) — caw の現状の設計（Skills only）と理由
+- [配布プラグイン（raw）](/plugin/) — raw の現状の設計（Skills only）と理由

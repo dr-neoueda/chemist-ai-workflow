@@ -1,25 +1,25 @@
 #!/usr/bin/env bash
-# caw オフライン導入インストーラ（macOS / Linux）
+# raw オフライン導入インストーラ（macOS / Linux）
 #
 # USB メモリの中でダブルクリック、またはターミナルで
 #   bash install.sh
 # を実行してください。
 #
 # このスクリプトがやること:
-#   1. USB の中身を、あなたの PC の中（既定 ~/caw-plugin）にコピーする
+#   1. USB の中身を、あなたの PC の中（既定 ~/raw-plugin）にコピーする
 #   2. お使いの AI CLI に「そのコピー先」を登録する
-#   3. caw プラグインをインストールする
+#   3. raw プラグインをインストールする
 #
 # ★ なぜコピーするのか
-#   USB のパスを直接登録すると、USB を抜いた時点で caw が動かなくなります。
+#   USB のパスを直接登録すると、USB を抜いた時点で raw が動かなくなります。
 #   （ローカルパスの marketplace は、その場所を参照し続ける仕様のため）
 #   なので必ず PC の中にコピーしてから登録します。
 
 set -euo pipefail
 
 SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DEST="${CAW_DEST:-$HOME/caw-plugin}"
-MARKETPLACE="chemist-ai-workflow"
+DEST="${RAW_DEST:-$HOME/raw-plugin}"
+MARKETPLACE="researcher-ai-workflow"
 
 bold=$'\033[1m'; grn=$'\033[0;32m'; ylw=$'\033[0;33m'; red=$'\033[0;31m'; dim=$'\033[2m'; off=$'\033[0m'
 say()  { printf '%s\n' "$*"; }
@@ -28,15 +28,15 @@ warn() { printf '%s!%s %s\n' "$ylw" "$off" "$*"; }
 err()  { printf '%s✗%s %s\n' "$red" "$off" "$*" >&2; }
 
 say ""
-say "${bold}caw（化学者のための AI エージェント導入伴走）オフライン導入${off}"
+say "${bold}raw（研究者のための AI エージェント導入伴走）オフライン導入${off}"
 say "${dim}コピー元: $SRC${off}"
 say "${dim}コピー先: $DEST${off}"
 say ""
 
 # --- 0. 中身の確認 ----------------------------------------------------------
 if [ ! -d "$SRC/codex-plugin" ] && [ ! -d "$SRC/plugin" ] && [ ! -d "$SRC/copilot-plugin" ]; then
-  err "このフォルダに caw のファイルが見つかりません。"
-  err "USB の中の 'caw-bundle' フォルダごとコピーできているか確認してください。"
+  err "このフォルダに raw のファイルが見つかりません。"
+  err "USB の中の 'raw-bundle' フォルダごとコピーできているか確認してください。"
   exit 1
 fi
 
@@ -72,7 +72,7 @@ try_cli() {  # <コマンド名> <表示名> <marketplace add> <install>
   command -v "$cmd" >/dev/null 2>&1 || { say "${dim}  - $label: 見つかりません（スキップ）${off}"; return; }
   FOUND=1
   say "${bold}$label が見つかりました${off}"
-  printf "  caw を %s に導入しますか？ [Y/n]: " "$label"
+  printf "  raw を %s に導入しますか？ [Y/n]: " "$label"
   read -r ans
   case "$ans" in
     [nN]*) say "  スキップしました。"; return ;;
@@ -81,14 +81,14 @@ try_cli() {  # <コマンド名> <表示名> <marketplace add> <install>
   case "$cmd" in
     codex)
       codex plugin marketplace add "$DEST" && \
-      codex plugin add "caw@${MARKETPLACE}" && ok "$label に導入しました"
+      codex plugin add "raw@${MARKETPLACE}" && ok "$label に導入しました"
       ;;
     claude)
       claude plugin marketplace add "$DEST" && \
-      claude plugin install "caw@${MARKETPLACE}" && ok "$label に導入しました"
+      claude plugin install "raw@${MARKETPLACE}" && ok "$label に導入しました"
       ;;
     copilot)
-      warn "GitHub Copilot CLI 版はまだ実機確認が済んでいません。"
+      warn "GitHub Copilot CLI 版は開発を保留中で、旧名 caw（化学者向け・v1.78）のままです。実機確認も済んでいません。"
       warn "うまくいかなかったら配布元にご連絡ください。"
       copilot plugin marketplace add "$DEST" && \
       copilot plugin install caw && ok "$label に導入しました"
@@ -122,7 +122,7 @@ say "  1. 研究プロジェクト用のフォルダを作る（例: ~/my-resear
 say "  2. そのフォルダでターミナルを開き、CLI を起動する"
 say "       codex      （または claude）"
 say "  3. こう話しかける:"
-say "       caw"
+say "       raw"
 say ""
 say "はじめての質問に答えていくと、office/（AI 部署）と work/（成果物置き場）が"
 say "自動で作られます。詳しくは同じフォルダの「はじめにお読みください.md」を見てください。"

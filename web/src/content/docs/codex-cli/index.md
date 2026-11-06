@@ -1,30 +1,30 @@
 ---
 title: "Codex CLI"
-description: OpenAI 製のターミナル CLI エージェント。AGENTS.md ベース、Skills / Commands / Sub-agents / MCP に対応。Claude Code と並ぶ主軸 CLI として、caw プラグインを並列配信
+description: OpenAI 製のターミナル CLI エージェント。AGENTS.md ベース、Skills / Commands / Sub-agents / MCP に対応。Claude Code と並ぶ主軸 CLI として、raw プラグインを並列配信
 ---
 
-OpenAI 公式のターミナル CLI エージェント。**AGENTS.md** を標準としてプロジェクトルールを記述する。本書では **Claude Code と並ぶ主軸 CLI** として扱う。Claude Code 派と Codex CLI 派が混在する研究室でも、同じ caw メソッドを共有できる。
+OpenAI 公式のターミナル CLI エージェント。**AGENTS.md** を標準としてプロジェクトルールを記述する。本書では **Claude Code と並ぶ主軸 CLI** として扱う。Claude Code 派と Codex CLI 派が混在する研究室でも、同じ raw メソッドを共有できる。
 
-## caw プラグイン（Codex 版）導入
+## raw プラグイン（Codex 版）導入
 
 ```bash
 # 1. marketplace を登録
-codex plugin marketplace add dr-neoueda/chemist-ai-workflow
-# 2. caw プラグイン本体を追加
-codex plugin add caw@chemist-ai-workflow
+codex plugin marketplace add dr-neoueda/researcher-ai-workflow
+# 2. raw プラグイン本体を追加
+codex plugin add raw@researcher-ai-workflow
 ```
 
-Codex CLI は **marketplace を登録 → そこからプラグインを追加**の 2 ステップです。`~/.codex/config.toml` に `[plugins."caw@chemist-ai-workflow"]` が追加されていれば導入完了。
+Codex CLI は **marketplace を登録 → そこからプラグインを追加**の 2 ステップです。`~/.codex/config.toml` に `[plugins."raw@researcher-ai-workflow"]` が追加されていれば導入完了。
 
 ## クイックスタート
 
 ```bash
 cd ~/your-research-project
 codex
-> caw
+> raw
 ```
 
-Codex CLI ではスラッシュ不要。`caw` と入力するか、「化学プロジェクトの環境を作って」など自然言語で指示すれば、スキルが自動的に発火します。
+Codex CLI ではスラッシュ不要。`raw` と入力するか、「化学プロジェクトの環境を作って」など自然言語で指示すれば、スキルが自動的に発火します。
 
 `office/` が存在しない場合、対話的オンボーディング（研究プロファイルのヒアリング）が起動し、化学者向けの全部署と作業ディレクトリが一括生成される。生成される指示ファイルは Codex CLI の標準である **AGENTS.md** 形式。
 
@@ -51,28 +51,28 @@ Codex CLI ではスラッシュ不要。`caw` と入力するか、「化学プ�
 | プロジェクトルールファイル | CLAUDE.md（AGENTS.md も読む） | AGENTS.md |
 | プラグインマーケットプレイス | あり | あり |
 
-両者とも caw の中核機能（部署スキャフォールド・Playbook 蓄積・MCP 連携）を実装できる。Hooks エコシステムや Claude Code 専用 sub-agents 群（`everything-claude-code` 等）の規模差はあるが、**入門〜中級の研究者運用ではほぼ機能等価**。
+両者とも raw の中核機能（部署スキャフォールド・Playbook 蓄積・MCP 連携）を実装できる。Hooks エコシステムや Claude Code 専用 sub-agents 群（`everything-claude-code` 等）の規模差はあるが、**入門〜中級の研究者運用ではほぼ機能等価**。
 
 ## Claude Code 版との関係
 
 | 観点 | Claude Code 版 | Codex 版 |
 |---|---|---|
-| インストール | `/plugin install caw@chemist-ai-workflow` | `codex plugin marketplace add dr-neoueda/chemist-ai-workflow` → `codex plugin add caw@chemist-ai-workflow` |
+| インストール | `/plugin install raw@researcher-ai-workflow` | `codex plugin marketplace add dr-neoueda/researcher-ai-workflow` → `codex plugin add raw@researcher-ai-workflow` |
 | プラグイン構造 | `.claude-plugin/plugin.json` | `.codex-plugin/plugin.json` |
 | 生成される指示ファイル | `<dept>/CLAUDE.md` | `<dept>/AGENTS.md` |
 | 部署テンプレ内容 | 同一 | 同一 |
 | Playbook 雛形 | 同一 | 同一 |
-| 配布元 | `dr-neoueda/chemist-ai-workflow`（同一リポジトリ） | 同左 |
+| 配布元 | `dr-neoueda/researcher-ai-workflow`（同一リポジトリ） | 同左 |
 
-両版は同じ `chemist-ai-workflow` リポジトリから並列配信。研究室で Claude Code 派と Codex CLI 派が混在しても、共通の `office/` メソッドで運用できる。
+両版は同じ `researcher-ai-workflow` リポジトリから並列配信。研究室で Claude Code 派と Codex CLI 派が混在しても、共通の `office/` メソッドで運用できる。
 
 ## 章立て
 
-1. [環境構築](/codex-cli/setup/) — Codex CLI インストール + 認証 + caw プラグイン導入 + `office/` 初期化
-2. [アンインストールと環境リセット](/codex-cli/uninstall/) — caw の完全除去、最新版への更新、`office/` の作り直し
+1. [環境構築](/codex-cli/setup/) — Codex CLI インストール + 認証 + raw プラグイン導入 + `office/` 初期化
+2. [アンインストールと環境リセット](/codex-cli/uninstall/) — raw の完全除去、最新版への更新、`office/` の作り直し
 3. [設定の階層と基礎](/codex-cli/basics/) — `~/.codex/config.toml`、プロジェクト trust、モデル選択、思考レベル
 4. [`AGENTS.md` の書き方](/codex-cli/agents-md/) — Codex 流のプロジェクトルール記述、Claude Code の `CLAUDE.md` との対応
-5. [Skills](/codex-cli/skills/) — Codex Skills の構造、`SKILL.md` フォーマット、caw を例として
+5. [Skills](/codex-cli/skills/) — Codex Skills の構造、`SKILL.md` フォーマット、raw を例として
 6. [Commands（スラッシュコマンド）](/codex-cli/commands/) — `commands/<name>.md` の作り方、Skills との使い分け
 7. [Sub-agents](/codex-cli/subagents/) — Codex の sub-agent 機能、並列調査・並列レビューの組み方
 8. [MCP サーバー連携](/codex-cli/mcp/) — Notion / Google Drive / Gmail などへの統合
@@ -87,4 +87,4 @@ Codex CLI ではスラッシュ不要。`caw` と入力するか、「化学プ�
 
 ## ステータス
 
-**caw v1.0.0（2026-05-13）公開済み**：マーケットプレイス（`dr-neoueda/chemist-ai-workflow`）経由で導入可能。Claude Code 版（`/caw`）と内容は基本同一で、AGENTS.md ターゲットに対応。
+**raw v1.0.0（2026-05-13）公開済み**：マーケットプレイス（`dr-neoueda/researcher-ai-workflow`）経由で導入可能。Claude Code 版（`/raw`）と内容は基本同一で、AGENTS.md ターゲットに対応。

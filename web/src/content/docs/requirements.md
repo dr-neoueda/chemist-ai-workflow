@@ -1,15 +1,15 @@
 ---
 title: 必要なツールとインストール
-description: caw を十分に活用するために別途用意するソフトウェアと、Windows / macOS 別のインストール手順
+description: raw を十分に活用するために別途用意するソフトウェアと、Windows / macOS 別のインストール手順
 ---
 
 ## 対応 OS
 
-caw が対象とする OS は **Windows** と **macOS** の 2 つです。どちらでもコア機能・Python 機能ともに利用できます。
+raw が対象とする OS は **Windows** と **macOS** の 2 つです。どちらでもコア機能・Python 機能ともに利用できます。
 
-## caw 本体と「十分に使う」ための差
+## raw 本体と「十分に使う」ための差
 
-caw のコア（オンボーディング、部署スキャフォールド、Playbook、運営モード）は markdown ベースのワークフローで動くため、AI CLI が 1 つあれば動作します。
+raw のコア（オンボーディング、部署スキャフォールド、Playbook、運営モード）は markdown ベースのワークフローで動くため、AI CLI が 1 つあれば動作します。
 
 一方で、**スライド生成・図の作成・PDF からの図／メタデータ抽出・解析スクリプト**といった機能まで十分に活かすには、下記の外部ツールを別途用意する必要があります。本ページでは、それらを Windows / macOS 別にまとめます。
 
@@ -17,11 +17,11 @@ caw のコア（オンボーディング、部署スキャフォールド、Play
 
 | 区分 | ツール | 役割 | 必須度 |
 |---|---|---|---|
-| 土台 | AI CLI（Claude Code / Codex CLI / GitHub Copilot CLI のいずれか） | caw の実行環境 | いずれか必須 |
+| 土台 | AI CLI（Claude Code / Codex CLI / GitHub Copilot CLI のいずれか） | raw の実行環境 | いずれか必須 |
 | 土台 | Node.js（LTS） | Claude Code 本体・npx ベースの MCP サーバー | 必須 |
 | 土台 | git | プラグインの取得・バージョン管理 | 必須 |
 | Python<br />機能 | Python 3.12 以上 | スライド・図・解析・PDF 処理の基盤 | 十分活用に必須 |
-| スライド | python-pptx | 生成した SVG を編集可能な pptx に変換（caw-slides の核） | スライドに必須 |
+| スライド | python-pptx | 生成した SVG を編集可能な pptx に変換（raw-slides の核） | スライドに必須 |
 | スライド | pillow | 画像の検定と埋め込み | スライドに必須 |
 | スライド | PyMuPDF | 論文 PDF から図を高解像度で切り抜く | 論文紹介スライドに必須 |
 | スライド | matplotlib | 数値の図・数式（LaTeX）レンダ・解析グラフ作成 | 図・数式に必須 |
@@ -45,19 +45,19 @@ Python パッケージはシステム環境を汚さないよう、仮想環境�
 
 ```bash
 # macOS（ダウンロードして実行）
-curl -fsSL https://raw.githubusercontent.com/dr-neoueda/chemist-ai-workflow/main/setup/caw-setup.sh -o caw-setup.sh
-bash caw-setup.sh
+curl -fsSL https://raw.githubusercontent.com/dr-neoueda/researcher-ai-workflow/main/setup/raw-setup.sh -o raw-setup.sh
+bash raw-setup.sh
 ```
 
 ```powershell
 # Windows（PowerShell でダウンロードして実行）
-iwr https://raw.githubusercontent.com/dr-neoueda/chemist-ai-workflow/main/setup/caw-setup.ps1 -OutFile caw-setup.ps1
-powershell -ExecutionPolicy Bypass -File caw-setup.ps1
+iwr https://raw.githubusercontent.com/dr-neoueda/researcher-ai-workflow/main/setup/raw-setup.ps1 -OutFile raw-setup.ps1
+powershell -ExecutionPolicy Bypass -File raw-setup.ps1
 ```
 
 :::tip
-すでに Claude Code / Codex CLI / GitHub Copilot CLI が動く環境なら、CLI の中で **`/caw-setup`**（Codex / Copilot では「環境を整えて」）と
-言うだけで、不足ツールを **1 つずつ「なぜ必要か」を説明しながら**導入するか尋ねてくれます（`/caw` オンボーディングの一部としても自動で実行されます）。
+すでに Claude Code / Codex CLI / GitHub Copilot CLI が動く環境なら、CLI の中で **`/raw-setup`**（Codex / Copilot では「環境を整えて」）と
+言うだけで、不足ツールを **1 つずつ「なぜ必要か」を説明しながら**導入するか尋ねてくれます（`/raw` オンボーディングの一部としても自動で実行されます）。
 :::
 
 以下は、何が入るのかを把握したい場合の **手動インストール手順**です。
@@ -77,7 +77,7 @@ npm install -g @openai/codex
 # GitHub Copilot CLI を使う場合（任意、Node.js 22 以上）
 npm install -g @github/copilot
 
-# Python パッケージ（caw-slides のスライド生成）
+# Python パッケージ（raw-slides のスライド生成）
 python3 -m pip install python-pptx pillow pymupdf matplotlib numpy
 
 # 任意：PR ワークフロー / pptx 目視確認
@@ -108,14 +108,14 @@ npm install -g @openai/codex
 # GitHub Copilot CLI を使う場合（任意、Node.js 22 以上）
 npm install -g @github/copilot
 
-# Python パッケージ（caw-slides のスライド生成）
+# Python パッケージ（raw-slides のスライド生成）
 py -m pip install python-pptx pillow pymupdf matplotlib numpy
 
 # poppler（Scoop 経由。または conda install -c conda-forge poppler）
 scoop install poppler
 ```
 
-- **bash（Hooks 用・Claude Code 版のみ）**：caw の Hooks（bash スクリプト）は **Claude Code 版にのみ**含まれます。Claude Code を Windows で使う場合は `Git.Git` 同梱の **Git Bash**（または PowerShell で `wsl --install` を実行して WSL2）で動きます。**Codex CLI / GitHub Copilot CLI 版には Hooks が無いため、Git Bash / WSL は不要**で、標準の PowerShell で動作します。
+- **bash（Hooks 用・Claude Code 版のみ）**：raw の Hooks（bash スクリプト）は **Claude Code 版にのみ**含まれます。Claude Code を Windows で使う場合は `Git.Git` 同梱の **Git Bash**（または PowerShell で `wsl --install` を実行して WSL2）で動きます。**Codex CLI / GitHub Copilot CLI 版には Hooks が無いため、Git Bash / WSL は不要**で、標準の PowerShell で動作します。
 - **Python の PATH**：インストーラ利用時は「Add python.exe to PATH」を必ず有効にします。`py` ランチャー経由でも実行できます。
 - **日本語フォント**：MS Gothic / Yu Gothic が標準搭載で matplotlib が自動検出します。図に □（豆腐）が出る場合は、フォント名を明示するか日本語フォントパッケージを追加してください。
 
@@ -138,4 +138,4 @@ python -c "import pptx, PIL, fitz, matplotlib, numpy; print('slide deps OK')"
 - [Codex CLI の環境構築](/codex-cli/setup/) — Codex CLI を使う場合
 - [GitHub Copilot CLI（PoC）](/copilot-cli/) — GitHub Copilot CLI で使う場合（`npm install -g @github/copilot`）
 - [対応ツール一覧](/tools/) — ナレッジベース・クラウドストレージ・計算ソフト・執筆環境の対応状況
-- [配布プラグイン（caw）](/plugin/) — プラグイン本体の導入とスキル一覧
+- [配布プラグイン（raw）](/plugin/) — プラグイン本体の導入とスキル一覧
