@@ -310,6 +310,18 @@ def test_nested_fence_that_cuts_the_body_short_is_rejected():
         scaffold.field_rule_blocks(text)
 
 
+def test_one_line_comment_and_rule_after_the_body_are_allowed():
+    """フェンスの後に書けるのは空行・``---``・1 行の HTML コメントだけ（保守の注記を書ける）。"""
+    text = "### field = 共通\n\n```markdown\nA\n```\n\n<!-- 保守の注記 -->\n\n---\n\n### field = 生命科学\n\n```markdown\nB\n```\n"
+    assert scaffold.field_rule_blocks(text) == {"共通": "A", "生命科学": "B"}
+
+
+def test_unclosed_comment_after_the_body_is_still_rejected():
+    text = "### field = 共通\n\n```markdown\nA\n```\n<!-- 閉じていない\nTAIL\n"
+    with pytest.raises(ValueError, match="after the fenced body"):
+        scaffold.field_rule_blocks(text)
+
+
 def test_empty_rules_body_is_rejected():
     with pytest.raises(ValueError, match="empty"):
         scaffold.select_field_rules("### field = 共通\n\n```markdown\n\n```\n", "共通")

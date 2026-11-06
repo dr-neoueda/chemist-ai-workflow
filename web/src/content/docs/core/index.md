@@ -1,6 +1,6 @@
 ---
 title: 核：CLI 中立メソッド
-description: OS / CLI に依存しない、AI 部署システムの設計と運用方法。化学者向けに体系化された方法論の全体像
+description: OS / CLI に依存しない、AI 部署システムの設計と運用方法。研究者向けに体系化された方法論の全体像
 ---
 
 特定の AI CLI（Claude Code / Codex CLI / Gemini CLI / ChatGPT 等）に依存しない、**方法論のレイヤー**を扱います。実装 CLI が何であっても流用できる、部署設計・ファイル構造・運用ルール・品質ゲートの体系です。

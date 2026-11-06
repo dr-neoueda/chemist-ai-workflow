@@ -3,7 +3,7 @@ title: 配布プラグイン（raw）
 description: Researcher's AI Workflow プラグイン — 部署システム・Playbook・スキル一式を Claude Code に一括導入
 ---
 
-本商品の中核成果物は、Claude Code プラグイン **`raw`（Researcher's AI Workflow）** として配布されます。化学研究プロジェクトで使う AI 部署システム・Playbook・スキルを一式まとめて提供する MIT ライセンスの OSS プラグインです。
+本商品の中核成果物は、Claude Code プラグイン **`raw`（Researcher's AI Workflow）** として配布されます。理工系の研究プロジェクト（化学・材料／物理・地球惑星／生命科学／工学・情報）で使う AI 部署システム・Playbook・スキルを一式まとめて提供する MIT ライセンスの OSS プラグインです。
 
 ## プラグインの位置付け
 
