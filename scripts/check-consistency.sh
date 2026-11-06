@@ -141,9 +141,10 @@ done
 
 # --- 3. personalization leak scan (distributed tree only) ---
 # Specific proper nouns only — generic field terms (MLIP/CP2K/DFT) are allowed.
-leak_re='aaBrAdox|SPReAD|Bis\(BrPhCH2O\)|NU-[0-9]|PILATUS|n267302|neoueda@|/Users/neoueda'
+# The author credit in the manifests is intentional and is the only allowed use of the name.
+leak_re='aaBrAdox|SPReAD|Bis\(BrPhCH2O\)|NU-[0-9]|PILATUS|n267302|neoueda@|/Users/neoueda|上田|Ueda|9-CNAD|平野研'
 hits=$(grep -RInE "$leak_re" plugin codex-plugin copilot-plugin gemini-plugin .github/plugin 2>/dev/null \
-        | grep -v 'Binary file' || true)
+        | grep -v 'Binary file' | grep -v 'Shinno Ueda (UEC SPRING)' || true)
 if [ -z "$hits" ]; then
   ok "no personalization leaks in plugin/, codex-plugin/, copilot-plugin/, gemini-plugin/, .github/plugin/"
 else

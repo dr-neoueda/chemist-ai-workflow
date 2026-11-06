@@ -1,5 +1,4 @@
 """assert_no_overlap ゲートのテスト（はみ出し・テキスト重なり検出）。"""
-import pytest
 
 import assert_no_overlap as ano
 
@@ -112,3 +111,38 @@ def test_check_path_nonzero_on_offcanvas(tmp_path):
 
 def test_check_path_missing_returns_two(tmp_path):
     assert ano.check_path(str(tmp_path / "nope")) == 2
+
+
+def test_poster_canvas_is_read_from_the_viewbox(tmp_path):
+    """16:9 以外（A0 ポスター）を既定の 1280x720 で測らない。"""
+    svg = tmp_path / "poster.svg"
+    svg.write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3370 2384">'
+                   '<text x="3000" y="2000" font-size="40" font-family="Arial">inside</text></svg>', encoding="utf-8")
+    oob, _, warns = ano.check_svg(str(svg))
+    assert oob == [] and warns == []
+
+
+def test_infinite_canvas_does_not_disable_the_off_canvas_check(tmp_path):
+    svg = tmp_path / "bad.svg"
+    svg.write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1e400 1e400">'
+                   '<text x="5000" y="300" font-size="40" font-family="Arial">outside</text></svg>', encoding="utf-8")
+    oob, _, warns = ano.check_svg(str(svg))
+    assert oob and any("canvas size undetermined" in w for w in warns)
+
+
+def test_gate_output_survives_a_cp932_console(tmp_path):
+    """Windows の既定の標準出力でも、cp932 に無い文字（≈ ⚠ —）で落ちない。"""
+    import os
+    import pathlib
+    import subprocess
+    import sys
+
+    svg = tmp_path / "s.svg"
+    svg.write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">'
+                   '<text x="100" y="300" font-size="24" font-family="Arial">≈ ⚠ OVERLAP AAAAA</text>'
+                   '<text x="108" y="304" font-size="24" font-family="Arial">≈ ⚠ OVERLAP BBBBB</text></svg>', encoding="utf-8")
+    script = pathlib.Path(__file__).resolve().parent.parent / "scripts" / "assert_no_overlap.py"
+    done = subprocess.run([sys.executable, str(script), str(svg)], capture_output=True,
+                          env={**os.environ, "PYTHONIOENCODING": "cp932"})
+    assert done.returncode == 1
+    assert b"Traceback" not in done.stderr

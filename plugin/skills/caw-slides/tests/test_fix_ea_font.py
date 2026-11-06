@@ -1,7 +1,6 @@
 """fix_ea_font のテスト（ビルド後 pptx の CJK run を ea=MS Gothic に強制）。"""
-import pytest
-
 import fix_ea_font as fef
+import pytest
 
 
 @pytest.mark.parametrize(
@@ -130,3 +129,11 @@ def test_fix_recurses_into_table_cells(tmp_path):
     prs.save(path)
 
     assert fef.fix_ea_font(path) == 1
+
+
+def test_circled_digit_alone_counts_as_cjk():
+    assert fef.has_cjk("①") is True
+
+
+def test_rare_kanji_beyond_the_basic_plane_counts_as_cjk():
+    assert fef.has_cjk("\U00020BB7") is True                 # 𠮷（ゲートと同じ判定表）

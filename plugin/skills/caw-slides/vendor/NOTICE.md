@@ -5,7 +5,7 @@ provide native SVG → PPTX (DrawingML) conversion. It is kept isolated under
 `vendor/` and is **not** caw's own code. caw's own slide helpers live in
 `skills/caw-slides/scripts/` and `skills/caw-slides/references/`.
 
-## svg_to_pptx, svg_finalize, config.py, console_encoding.py
+## svg_to_pptx, svg_finalize, svg_quality_checker.py, config.py, console_encoding.py, project_utils.py, error_helper.py
 
 - **Upstream**: PPT Master — https://github.com/hugohe3/ppt-master
 - **Copyright**: © 2025–2026 Hugo He
@@ -13,6 +13,8 @@ provide native SVG → PPTX (DrawingML) conversion. It is kept isolated under
 - **Vendored components**:
   - `svg_to_pptx/` — SVG → DrawingML slide/shape conversion package
   - `svg_finalize/` — SVG finalize helpers (tspan flattening etc.) required by the core text/shape path
+  - `svg_quality_checker.py` — SVG constraint checker run by `scripts/build_deck.py`
+  - `project_utils.py`, `error_helper.py` — helpers imported by the checker
   - `config.py` — canvas format definitions (`CANVAS_FORMATS`)
   - `console_encoding.py` — UTF-8 stdio helper
 
@@ -31,7 +33,7 @@ editing these files (so upstream updates can be re-vendored cleanly).
 
 ## Re-vendoring / updating
 
-To update, re-copy the four components above from a current PPT Master checkout at the
+To update, re-copy the components above from a current PPT Master checkout at the
 same relative paths, delete any `__pycache__/`, and re-run the Phase 0 smoke test
 (convert a text+shape SVG with only python-pptx installed; assert native AUTO_SHAPE /
 TEXT_BOX / FREEFORM shapes, not a single Picture).

@@ -25,21 +25,14 @@ import os
 import sys
 from typing import Any, Iterator
 
-# East-Asian フォントを要する文字範囲（かな・漢字・全角・囲み CJK ①②③ 等）
-_CJK_RANGES: tuple[tuple[int, int], ...] = (
-    (0x3000, 0x30FF),   # 句読点・ひらがな・カタカナ・全角記号
-    (0x3200, 0x33FF),   # 囲み CJK（丸数字 ①②③ 等）・CJK 互換
-    (0x3400, 0x9FFF),   # CJK 統合漢字（拡張 A 含む）
-    (0xF900, 0xFAFF),   # CJK 互換漢字
-    (0xFF00, 0xFFEF),   # 半角・全角形
-)
+from assert_font_rule import CJK_RANGES      # 判定表はゲートと共有する（表が分かれると食い違う）
 
 DEFAULT_JA_FONT = "MS Gothic"
 
 
 def has_cjk(text: str) -> bool:
     """text に East-Asian フォントを要する文字が含まれるか。"""
-    return any(any(lo <= ord(ch) <= hi for lo, hi in _CJK_RANGES) for ch in text)
+    return any(any(lo <= ord(ch) <= hi for lo, hi in CJK_RANGES) for ch in text)
 
 
 def _iter_shapes(shapes: Any) -> Iterator[Any]:

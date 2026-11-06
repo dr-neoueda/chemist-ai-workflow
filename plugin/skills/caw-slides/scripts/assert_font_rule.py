@@ -56,7 +56,8 @@ CSS_INHERIT_KEYWORDS: frozenset[str] = frozenset({"inherit", "initial", "unset",
 CJK_RANGES: tuple[tuple[int, int], ...] = (
     (0x3000, 0x30FF),   # 句読点・ひらがな・カタカナ・全角記号
     (0x31F0, 0x31FF),   # カタカナ音声拡張
-    (0x3200, 0x33FF),   # 囲み CJK・CJK 互換（丸数字 ①②③ を含む）
+    (0x2460, 0x24FF),   # 囲み英数字（丸数字 ①②③。Arial に無く豆腐になる）
+    (0x3200, 0x33FF),   # 囲み CJK・CJK 互換
     (0x3400, 0x9FFF),   # CJK 統合漢字（拡張 A 含む）
     (0xF900, 0xFAFF),   # CJK 互換漢字
     (0xFF00, 0xFFEF),   # 半角・全角形
@@ -235,6 +236,7 @@ def check_path(path: str) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
+    sys.stdout.reconfigure(errors="replace")   # cp932 に無い文字（— ≈）で検定そのものが落ちないように
     parser = argparse.ArgumentParser(description="和文フォントルール・ゲート (assert_font_rule)")
     parser.add_argument("path", help=".svg ファイル or SVG を含むディレクトリ")
     args = parser.parse_args(argv)
