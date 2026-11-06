@@ -57,7 +57,7 @@ copilot plugin marketplace add dr-neoueda/researcher-ai-workflow
 copilot plugin install caw
 ```
 
-> Copilot CLI 版は v1.78 の内容（化学者向け・コマンド名 `caw`）のまま保留しています（`copilot-plugin/PAUSED.md`）。理工系への拡張と `raw` への改名は Claude Code 版・Codex CLI 版だけです。
+> Copilot CLI 版は v1.78 の内容（化学者向け・コマンド名 `caw`）のまま保留しています（`copilot-plugin/PAUSED.md`）。登録されるマーケットプレイスの ID も旧名の `chemist-ai-workflow-copilot` のままです。理工系への拡張と `raw` への改名は Claude Code 版・Codex CLI 版だけです。
 
 GitHub Copilot CLI は `AGENTS.md`（および `CLAUDE.md`）・`SKILL.md`・hooks・MCP を Codex CLI 版と同型でサポートします。本リポジトリには保留中のプラグイン（`copilot-plugin/`、旧名 `caw` の 15 スキル）を同梱。対象は **GitHub Copilot CLI / VS Code Agent Mode** で、Microsoft 365 Copilot・消費者 Copilot は対象外です。詳細は [GitHub Copilot CLI](/copilot-cli/)。
 

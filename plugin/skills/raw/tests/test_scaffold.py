@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import re
+import shutil
 import sys
 from pathlib import Path
 
@@ -292,7 +293,32 @@ def _field_rules_text() -> str:
 
 
 def test_field_rules_cover_every_group():
-    assert set(scaffold.field_rule_blocks(_field_rules_text())) == set(FIELD_GROUPS)
+    blocks = scaffold.field_rule_blocks(_field_rules_text())
+    assert set(blocks) == set(FIELD_GROUPS)
+    assert all(body.strip() for body in blocks.values())
+
+
+def test_duplicate_choice_section_is_rejected():
+    text = "### field = 共通\n\n```markdown\nA\n```\n\n### field = 共通\n\n```markdown\nB\n```\n"
+    with pytest.raises(ValueError, match="duplicate"):
+        scaffold.field_rule_blocks(text)
+
+
+def test_nested_fence_that_cuts_the_body_short_is_rejected():
+    text = "### field = 共通\n\n```markdown\nA\n```py\nx\n```\nTAIL\n```\n"
+    with pytest.raises(ValueError, match="after the fenced body"):
+        scaffold.field_rule_blocks(text)
+
+
+def test_empty_rules_body_is_rejected():
+    with pytest.raises(ValueError, match="empty"):
+        scaffold.select_field_rules("### field = 共通\n\n```markdown\n\n```\n", "共通")
+
+
+@pytest.mark.parametrize("value", [0, False, [], ["化学・材料"]])
+def test_non_string_field_group_is_rejected(value):
+    with pytest.raises(ValueError, match="field_group"):
+        scaffold.select_field_rules(_field_rules_text(), value)
 
 
 def test_missing_field_group_falls_back_to_common():
@@ -318,25 +344,61 @@ def test_chemistry_keeps_its_rules_verbatim(tmp_path, config):
     assert "**分野の群**: 化学・材料" in body
 
 
+def _chemistry_framing_hits(root: Path) -> list[str]:
+    """``root`` 以下の全 .md から、化学向けの言い回しを ``"<相対パス>: <語>"`` で返す。"""
+    return [f"{path.relative_to(root)}: {phrase}"
+            for path in root.rglob("*.md")
+            for phrase in CHEMISTRY_FRAMING if phrase in path.read_text(encoding="utf-8")]
+
+
+def _scaffold_group(out: Path, group: str, skill: Path = SKILL_DIR) -> None:
+    cfg = {"today": "2026-11-06", "field_group": group, "research_field": "分野",
+           "tools": ["r", "openfoam", "alphafold"], "wants_experiment_dir": True}
+    scaffold.scaffold(cfg, skill, out)
+
+
 @pytest.mark.parametrize("group", [g for g in FIELD_GROUPS if g != "化学・材料"])
 def test_other_fields_carry_no_chemistry_framing(tmp_path, group):
-    cfg = {"today": "2026-11-06", "field_group": group, "research_field": "分野", "tools": []}
-    scaffold.scaffold(cfg, SKILL_DIR, tmp_path)
+    _scaffold_group(tmp_path, group)
+    assert _chemistry_framing_hits(tmp_path) == []
     body = (tmp_path / "office" / "CLAUDE.md").read_text(encoding="utf-8")
-    assert scaffold.select_field_rules(_field_rules_text(), group).strip() in body
-    assert "エネルギー単位変換" not in body                    # 化学の規律が混ざらない
-    for path in (tmp_path / "office").rglob("*.md"):
-        text = path.read_text(encoding="utf-8")
-        for phrase in CHEMISTRY_FRAMING:
-            assert phrase not in text, f"{phrase!r} in {path.relative_to(tmp_path)}"
+    own = scaffold.select_field_rules(_field_rules_text(), group)
+    for rule in CHEMISTRY_RULES:
+        if rule not in own:                                    # 単位・パラメータ・シードの行は各群に共通
+            assert rule not in body, rule                      # 化学だけの規律が混ざらない
+
+
+@pytest.mark.parametrize("group", FIELD_GROUPS)
+def test_exactly_one_group_of_rules_reaches_the_root_file(tmp_path, group):
+    _scaffold_group(tmp_path, group)
+    body = (tmp_path / "office" / "CLAUDE.md").read_text(encoding="utf-8")
+    blocks = scaffold.field_rule_blocks(_field_rules_text())
+    present = [g for g, rules in blocks.items() if rules.strip() in body]
+    assert present == [group]
+
+
+def test_framing_check_catches_an_injected_phrase(tmp_path):
+    """検定が働くことの確かめ: 雛形の写しに「化学研究」を戻すと拾う。"""
+    skill = tmp_path / "skill"
+    shutil.copytree(SKILL_DIR / "references", skill / "references")
+    dept = skill / "references" / "research-departments.md"
+    dept.write_text(dept.read_text(encoding="utf-8").replace("研究のあらゆる場面", "化学研究のあらゆる場面", 1),
+                    encoding="utf-8")
+    _scaffold_group(tmp_path / "out", "共通", skill)
+    assert any("化学研究" in hit for hit in _chemistry_framing_hits(tmp_path / "out"))
+
+
+CODEX_SKILL = SKILL_DIR.parent.parent.parent / "codex-plugin" / "skills" / "raw"
+
+
+@pytest.mark.parametrize("rel", ["references/field-rules.md", "scripts/scaffold.py"])
+def test_codex_copy_is_byte_identical(rel):
+    assert (CODEX_SKILL / rel).read_bytes() == (SKILL_DIR / rel).read_bytes()
 
 
 def test_codex_variant_gets_field_rules_too(tmp_path, config):
-    codex_skill = SKILL_DIR.parent.parent.parent / "codex-plugin" / "skills" / "raw"
-    if not (codex_skill / "references" / "agents-md-template.md").exists():
-        pytest.skip("codex-plugin references not present")
     config["field_group"] = "工学・情報"
-    scaffold.scaffold(config, codex_skill, tmp_path)
+    scaffold.scaffold(config, CODEX_SKILL, tmp_path)
     body = (tmp_path / "office" / "AGENTS.md").read_text(encoding="utf-8")
     assert scaffold.select_field_rules(_field_rules_text(), "工学・情報").strip() in body
 
@@ -345,10 +407,11 @@ def test_main_cli_rejects_unknown_field_group(tmp_path, config, capsys):
     config["field_group"] = "文学"
     cfg_path = tmp_path / "cfg.json"
     cfg_path.write_text(json.dumps(config, ensure_ascii=False), encoding="utf-8")
-    rc = scaffold.main(["--config", str(cfg_path), "--skill", str(SKILL_DIR), "--out", str(tmp_path)])
+    out = tmp_path / "project"
+    rc = scaffold.main(["--config", str(cfg_path), "--skill", str(SKILL_DIR), "--out", str(out)])
     assert rc == 2
     assert "field_group" in capsys.readouterr().err
-    assert not (tmp_path / "office").exists()                 # 止まったら何も書かない
+    assert not out.exists() or not any(out.iterdir())         # 止まったら何も書かない
 
 
 def test_main_cli_happy(tmp_path, config, capsys):

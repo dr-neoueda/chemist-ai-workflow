@@ -72,7 +72,9 @@ try_cli() {  # <コマンド名> <表示名> <marketplace add> <install>
   command -v "$cmd" >/dev/null 2>&1 || { say "${dim}  - $label: 見つかりません（スキップ）${off}"; return; }
   FOUND=1
   say "${bold}$label が見つかりました${off}"
-  printf "  raw を %s に導入しますか？ [Y/n]: " "$label"
+  local name="raw"
+  [ "$cmd" = "copilot" ] && name="caw（旧名・開発を保留中の版）"
+  printf "  %s を %s に導入しますか？ [Y/n]: " "$name" "$label"
   read -r ans
   case "$ans" in
     [nN]*) say "  スキップしました。"; return ;;

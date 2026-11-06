@@ -69,7 +69,8 @@ function Try-Cli ($cmd, $label, $addArgs, $installArgs) {
     return $false
   }
   Say "$label が見つかりました"
-  $ans = Read-Host "  raw を $label に導入しますか？ [Y/n]"
+  $name = if ($cmd -eq 'copilot') { 'caw（旧名・開発を保留中の版）' } else { 'raw' }
+  $ans = Read-Host "  $name を $label に導入しますか？ [Y/n]"
   if ($ans -match '^[nN]') { Say '  スキップしました。'; return $true }
 
   & $cmd @addArgs

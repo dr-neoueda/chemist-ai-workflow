@@ -325,7 +325,14 @@ def _choice_blocks(text: str, label: str) -> dict[str, str]:
             i += 1
         if i >= n or not _FENCE_OPEN.match(lines[i]):
             raise ValueError(f"selector '### {label} = {token}' has no fenced body")
+        if token in out:
+            raise ValueError(f"duplicate selector '### {label} = {token}'")
         body, i = _read_fence(lines, i)
+        # a nested fence closes the block early; the rest of the body would be lost silently
+        while i < n and not (_PATH_HEADER.match(lines[i]) or lines[i].startswith("## ")):
+            if lines[i].strip() and lines[i].strip() != "---":
+                raise ValueError(f"text after the fenced body of '### {label} = {token}' (line {i + 1})")
+            i += 1
         out[token] = body
     return out
 
@@ -340,12 +347,21 @@ def field_rule_blocks(text: str) -> dict[str, str]:
     return _choice_blocks(text, "field")
 
 
-def select_field_rules(text: str, group: str | None) -> str:
-    """Rules for ``group``; empty/None means 共通. Unknown groups are an error."""
+def resolve_field_group(group: object) -> str:
+    """The field_group key to use: a string, or 共通 when missing/empty."""
+    if group is not None and not isinstance(group, str):
+        raise ValueError(f"field_group must be a string, got {group!r}")
+    return (group or "").strip() or FIELD_COMMON
+
+
+def select_field_rules(text: str, group: object) -> str:
+    """Rules for ``group``; empty/None means 共通. Unknown or empty groups are an error."""
     blocks = field_rule_blocks(text)
-    key = str(group or "").strip() or FIELD_COMMON
+    key = resolve_field_group(group)
     if key not in blocks:
         raise ValueError(f"unknown field_group {key!r}; choose one of {sorted(blocks)}")
+    if not blocks[key].strip():
+        raise ValueError(f"field rules for {key!r} are empty")
     return blocks[key]
 
 
@@ -423,7 +439,7 @@ def scaffold(config: dict[str, Any], skill_dir: Path, out_dir: Path, *, force: b
         raise ValueError(f"config.today must be YYYY-MM-DD, got {today!r}")
 
     # resolve the field rules first so an unknown field_group writes nothing
-    field_group = str(config.get("field_group") or "").strip() or FIELD_COMMON
+    field_group = resolve_field_group(config.get("field_group"))
     field_rules = select_field_rules((refs / "field-rules.md").read_text(encoding="utf-8"), field_group)
 
     written: list[str] = []
@@ -432,7 +448,7 @@ def scaffold(config: dict[str, Any], skill_dir: Path, out_dir: Path, *, force: b
     mapping = {
         "RESEARCH_FIELD": str(config.get("research_field", "")),
         "FIELD_GROUP": field_group,
-        "FIELD_RULES": field_rules.strip(),
+        "FIELD_RULES": field_rules.strip("\n"),
         "COMPUTATION_CATEGORIES": str(config.get("computation_categories", "")),
         "KNOWLEDGE_BASE": str(config.get("knowledge_base", "")),
         "CLOUD_STORAGE": str(config.get("cloud_storage", "")),
